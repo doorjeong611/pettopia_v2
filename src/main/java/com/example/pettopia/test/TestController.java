@@ -7,10 +7,19 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @Slf4j
 public class TestController {
-	@GetMapping("/test")
+	@GetMapping("/home")
 	public String getMethodName() {
-		log.debug("index");
-		return "index";
+		return "template";
+	}
+	
+	@GetMapping("/notice")
+	public String getnotice() {
+		return "notice";
+	}
+	
+	@GetMapping("/employee")
+	public String employee() {
+		return "employee";
 	}
 	
 }
