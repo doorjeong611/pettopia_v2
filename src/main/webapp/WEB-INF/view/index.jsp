@@ -71,52 +71,140 @@
                   <i class="fas fa-search"></i>
                 </div>
               </div>
-              <input class="navbar-search form-control" type="text" placeholder="Search for something..." aria-label="Search"> </div>
+              <input class="navbar-search form-control" type="text" placeholder="Search for something..." aria-label="Search"> 
+              </div>
           </form>
           <div class="nav-wrapper">
             <ul class="nav flex-column">
-              <li class="nav-item">
-                <a class="nav-link active" href="index.jsp">
-                  <i class="material-icons">edit</i>
-                  <span>쪽지 보관함</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link " href="components-blog-posts.html">
-                  <i class="material-icons">vertical_split</i>
-                  <span>Blog Posts</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link " href="add-new-post.html">
-                  <i class="material-icons">note_add</i>
-                  <span>Add New Post</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link " href="form-components.html">
-                  <i class="material-icons">view_module</i>
-                  <span>Forms &amp; Components</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link " href="tables.html">
-                  <i class="material-icons">table_chart</i>
-                  <span>Tables</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link " href="user-profile-lite.html">
-                  <i class="material-icons">person</i>
-                  <span>User Profile</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link " href="errors.html">
-                  <i class="material-icons">error</i>
-                  <span>Errors</span>
-                </a>
-              </li>
+            	<li class="nav-item">
+                	<a class="nav-link " href="components-blog-posts.html">
+	                  	<i class="material-icons">campaign</i>
+	                  	<span>공지사항</span>
+                	</a>
+              	</li>
+                <li class="nav-item dropdown">
+                   <a class="nav-link dropdown-toggle text-nowrap px-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                     <i class="material-icons">campaign</i>
+                     <span class="d-none d-md-inline-block">직원</span>
+                   </a>
+                   <div class="dropdown-menu dropdown-menu-small">
+                     <a class="dropdown-item" href="user-profile-lite.html">
+                       <i class="material-icons">&#xE7FD;</i>직원 조회</a>
+                       <a class="dropdown-item" href="user-profile-lite.html">
+                       <i class="material-icons">&#xE7FD;</i>직원 등록</a>
+                   </div>
+                 </li>
+                 
+                 <li class="nav-item dropdown">
+                   <a class="nav-link dropdown-toggle text-nowrap px-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                     <i class="material-icons">campaign</i>
+                     <span class="d-none d-md-inline-block">일정</span>
+                   </a>
+                   <div class="dropdown-menu dropdown-menu-small">
+                     <a class="dropdown-item" href="user-profile-lite.html">
+                       <i class="material-icons">&#xE7FD;</i>캘린더</a>
+                       <a class="dropdown-item" href="user-profile-lite.html">
+                       <i class="material-icons">&#xE7FD;</i>일정 조회</a>
+                   </div>
+                 </li>
+                 
+                 <li class="nav-item">
+                	<a class="nav-link " href="components-blog-posts.html">
+	                  	<i class="material-icons">campaign</i>
+	                  	<span>사내 게시판</span>
+                	</a>
+              	</li>
+              	
+              	<li class="nav-item dropdown">
+                   <a class="nav-link dropdown-toggle text-nowrap px-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                     <i class="material-icons">campaign</i>
+                     <span class="d-none d-md-inline-block">쪽지</span>
+                   </a>
+                   <div class="dropdown-menu dropdown-menu-small">
+                     <a class="dropdown-item" href="user-profile-lite.html">
+                       <i class="material-icons">&#xE7FD;</i>캘린더</a>
+                       <a class="dropdown-item" href="user-profile-lite.html">
+                       <i class="material-icons">&#xE7FD;</i>일정 조회</a>
+                   </div>
+                 </li>
+              	
+              	<li class="nav-item dropdown">
+                   <a class="nav-link dropdown-toggle text-nowrap px-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                     <i class="material-icons">campaign</i>
+                     <span class="d-none d-md-inline-block">회의실 예약</span>
+                   </a>
+                   <div class="dropdown-menu dropdown-menu-small">
+                     <a class="dropdown-item" href="user-profile-lite.html">
+                       <i class="material-icons">&#xE7FD;</i>캘린더</a>
+                       <a class="dropdown-item" href="user-profile-lite.html">
+                       <i class="material-icons">&#xE7FD;</i>일정 조회</a>
+                   </div>
+                 </li>
+                 
+                 <li class="nav-item dropdown">
+                   <a class="nav-link dropdown-toggle text-nowrap px-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                     <i class="material-icons">campaign</i>
+                     <span class="d-none d-md-inline-block">결재</span>
+                   </a>
+                   <div class="dropdown-menu dropdown-menu-small">
+                     <a class="dropdown-item" href="user-profile-lite.html">
+                       <i class="material-icons">&#xE7FD;</i>캘린더</a>
+                       <a class="dropdown-item" href="user-profile-lite.html">
+                       <i class="material-icons">&#xE7FD;</i>일정 조회</a>
+                   </div>
+                 </li>
+                 
+                 <li class="nav-item dropdown">
+                   <a class="nav-link dropdown-toggle text-nowrap px-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                     <i class="material-icons">campaign</i>
+                     <span class="d-none d-md-inline-block">휴가</span>
+                   </a>
+                   <div class="dropdown-menu dropdown-menu-small">
+                     <a class="dropdown-item" href="user-profile-lite.html">
+                       <i class="material-icons">&#xE7FD;</i>캘린더</a>
+                       <a class="dropdown-item" href="user-profile-lite.html">
+                       <i class="material-icons">&#xE7FD;</i>일정 조회</a>
+                   </div>
+                 </li>
+                 
+                 <li class="nav-item dropdown">
+                   <a class="nav-link dropdown-toggle text-nowrap px-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                     <i class="material-icons">campaign</i>
+                     <span class="d-none d-md-inline-block">펫 서비스</span>
+                   </a>
+                   <div class="dropdown-menu dropdown-menu-small">
+                     <a class="dropdown-item" href="user-profile-lite.html">
+                       <i class="material-icons">&#xE7FD;</i>캘린더</a>
+                       <a class="dropdown-item" href="user-profile-lite.html">
+                       <i class="material-icons">&#xE7FD;</i>일정 조회</a>
+                   </div>
+                 </li>
+                 
+                 <li class="nav-item dropdown">
+                   <a class="nav-link dropdown-toggle text-nowrap px-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                     <i class="material-icons">campaign</i>
+                     <span class="d-none d-md-inline-block">어매니티</span>
+                   </a>
+                   <div class="dropdown-menu dropdown-menu-small">
+                     <a class="dropdown-item" href="user-profile-lite.html">
+                       <i class="material-icons">&#xE7FD;</i>캘린더</a>
+                       <a class="dropdown-item" href="user-profile-lite.html">
+                       <i class="material-icons">&#xE7FD;</i>일정 조회</a>
+                   </div>
+                 </li>
+                 
+                 <li class="nav-item dropdown">
+                   <a class="nav-link dropdown-toggle text-nowrap px-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                     <i class="material-icons">campaign</i>
+                     <span class="d-none d-md-inline-block">객실</span>
+                   </a>
+                   <div class="dropdown-menu dropdown-menu-small">
+                     <a class="dropdown-item" href="user-profile-lite.html">
+                       <i class="material-icons">&#xE7FD;</i>캘린더</a>
+                       <a class="dropdown-item" href="user-profile-lite.html">
+                       <i class="material-icons">&#xE7FD;</i>일정 조회</a>
+                   </div>
+                 </li>
             </ul>
           </div>
         </aside>
@@ -126,49 +214,16 @@
             <!-- Main Navbar -->
             <nav class="navbar align-items-stretch navbar-light flex-md-nowrap p-0">
               <form action="#" class="main-navbar__search w-100 d-none d-md-flex d-lg-flex">
-                <div class="input-group input-group-seamless ml-3">
-                  <div class="input-group-prepend">
-                    <div class="input-group-text">
-                      <i class="fas fa-search"></i>
-                    </div>
-                  </div>
-                  <input class="navbar-search form-control" type="text" placeholder="Search for something..." aria-label="Search"> </div>
               </form>
               <ul class="navbar-nav border-left flex-row ">
                 <li class="nav-item border-right dropdown notifications">
                   <a class="nav-link nav-link-icon text-center" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <div class="nav-link-icon__wrapper">
-                      <i class="material-icons">&#xE7F4;</i>
+                      <i class="material-icons">mail</i>
                       <span class="badge badge-pill badge-danger">2</span>
                     </div>
                   </a>
-                  <div class="dropdown-menu dropdown-menu-small" aria-labelledby="dropdownMenuLink">
-                    <a class="dropdown-item" href="#">
-                      <div class="notification__icon-wrapper">
-                        <div class="notification__icon">
-                          <i class="material-icons">&#xE6E1;</i>
-                        </div>
-                      </div>
-                      <div class="notification__content">
-                        <span class="notification__category">Analytics</span>
-                        <p>Your websiteâs active users count increased by
-                          <span class="text-success text-semibold">28%</span> in the last week. Great job!</p>
-                      </div>
-                    </a>
-                    <a class="dropdown-item" href="#">
-                      <div class="notification__icon-wrapper">
-                        <div class="notification__icon">
-                          <i class="material-icons">&#xE8D1;</i>
-                        </div>
-                      </div>
-                      <div class="notification__content">
-                        <span class="notification__category">Sales</span>
-                        <p>Last week your storeâs sales count decreased by
-                          <span class="text-danger text-semibold">5.52%</span>. It could have been worse!</p>
-                      </div>
-                    </a>
-                    <a class="dropdown-item notification__all text-center" href="#"> View all Notifications </a>
-                  </div>
+                  
                 </li>
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle text-nowrap px-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
