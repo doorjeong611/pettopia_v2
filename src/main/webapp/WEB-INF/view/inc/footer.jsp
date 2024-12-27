@@ -6,6 +6,6 @@
 	<title>Footer</title>
 </head>
 <body>
-	<div class="copyright ml-auto my-auto mr-2">Copyright 2024 <a href="${pageContext.request.contextPath}" rel="nofollow">PetTopia Co.</a> &nbsp;All rights reserved.</div>
+	<div style="margin: auto;">Copyright 2024 <a href="${pageContext.request.contextPath}" rel="nofollow">PetTopia Co.</a> &nbsp;All rights reserved.</div>
 </body>
 </html>
