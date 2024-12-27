@@ -183,6 +183,7 @@ body {
   color: #c28967;
   font-size: 12px;
   text-decoration: none;
+  
 }
 .form-panel {
   padding: 60px calc(5% + 60px) 60px 60px;
