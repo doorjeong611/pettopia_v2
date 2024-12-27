@@ -29,7 +29,9 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
 
   <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons'>
-  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&family=Jua&display=swap" rel="stylesheet">
 <style>
 html {
   width: 100%;
@@ -38,11 +40,16 @@ html {
 
 body {
   color: rgba(0, 0, 0, 0.6);
-  font-family: "Roboto", sans-serif;
+  font-family: "Gowun Batang", sans-serif;
   font-size: 14px;
   line-height: 1.6em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+.gowun-batang-regular {
+  font-family: "Gowun Batang", serif;
+  font-weight: 400;
+  font-style: normal;
 }
 
 .overlay, .form-panel.one:before {
@@ -63,7 +70,7 @@ body {
   border-radius: 4px;
   box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
-  margin: 100px auto 10px;
+  margin: 100px 22% 10px;
   overflow: hidden;
 }
 .form-toggle {
@@ -115,7 +122,7 @@ body {
   display: block;
   margin: 0 0 10px;
   color: rgba(0, 0, 0, 0.6);
-  font-size: 12px;
+  font-size: 15px;
   font-weight: 500;
   line-height: 1;
   text-transform: uppercase;
@@ -169,7 +176,7 @@ body {
   color: #4285F4;
 }
 .form-group .form-remember {
-  font-size: 12px;
+  font-size: 15px;
   font-weight: 400;
   letter-spacing: 0;
   text-transform: none;
@@ -181,7 +188,7 @@ body {
 }
 .form-group .form-recovery {
   color: #c28967;
-  font-size: 12px;
+  font-size: 15px;
   text-decoration: none;
   
 }
@@ -248,7 +255,7 @@ body {
 .form-header h1 {
   padding: 4px 0;
   color: #c28967;
-  font-size: 24px;
+  font-size: 30px;
   font-weight: 700;
   text-transform: uppercase;
 }
@@ -281,6 +288,7 @@ body {
   background: #FFFFFF !important;
   color: #4285F4 !important;
 }
+
 </style>
 
   
@@ -294,25 +302,25 @@ body {
   <div class="form-toggle"></div>
   <div class="form-panel one">
     <div class="form-header">
-      <h1>Account Login</h1>
+      <h1>직원 로그인</h1>
     </div>
     <div class="form-content">
       <form>
         <div class="form-group">
-          <label for="username">Username</label>
+          <label for="username">사번</label>
           <input type="text" id="username" name="username" required="required"/>
         </div>
         <div class="form-group">
-          <label for="password">Password</label>
+          <label for="password">비밀번호</label>
           <input type="password" id="password" name="password" required="required"/>
         </div>
         <div class="form-group">
           <label class="form-remember">
-            <input type="checkbox"/>Remember Me
-          </label><a class="form-recovery" href="#">Forgot Password?</a>
+            <input type="checkbox"/> 아이디 저장하기
+          </label><a class="form-recovery" href="#">비밀번호 찾기</a>
         </div>
         <div class="form-group">
-          <button type="submit">Log In</button>
+          <button type="submit">로그인</button>
         </div>
       </form>
     </div>
