@@ -151,7 +151,7 @@ body {
 }
 .form-group button {
   outline: none;
-  background: #4285F4;
+  background: #c28967;
   width: 100%;
   border: 0;
   border-radius: 4px;
@@ -180,7 +180,7 @@ body {
   margin: 0 10px 0 0;
 }
 .form-group .form-recovery {
-  color: #4285F4;
+  color: #c28967;
   font-size: 12px;
   text-decoration: none;
 }
@@ -205,7 +205,7 @@ body {
   position: absolute;
   top: 0;
   left: 95%;
-  background: #4285F4;
+  background: #c28967;
   width: 100%;
   min-height: 100%;
   padding: 60px calc(10% + 60px) 60px 60px;
@@ -246,7 +246,7 @@ body {
 }
 .form-header h1 {
   padding: 4px 0;
-  color: #4285F4;
+  color: #c28967;
   font-size: 24px;
   font-weight: 700;
   text-transform: uppercase;
