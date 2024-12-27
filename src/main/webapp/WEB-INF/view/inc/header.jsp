@@ -27,9 +27,6 @@
                 	<a class="dropdown-item" href="#">
                    		<i class="material-icons">&#xE7FD;</i> 마이 페이지
                    	</a>
-                   	<a class="dropdown-item" href="#">
-                   		<i class="material-icons">history</i> 근태 조회
-                   	</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item text-danger" href="#">
                     	<i class="material-icons text-danger">&#xE879;</i> 로그아웃 
