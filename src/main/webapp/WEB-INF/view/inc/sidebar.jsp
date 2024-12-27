@@ -71,6 +71,9 @@ $(document).ready(function() {
 			        <span class="d-none d-md-inline-block">직원</span>
 			    </a>
 			    <div class="dropdown-menu dropdown-menu-small">
+			    	<a class="dropdown-item" href="${pageContext.request.contextPath}/employee">
+                   		<i class="material-icons">history</i>근태 조회
+                   	</a>
 			        <a class="dropdown-item" href="${pageContext.request.contextPath}/employee">
 			            <i class="material-icons">people</i>직원 조회
 			        </a>
