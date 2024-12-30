@@ -9,26 +9,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @Slf4j
 public class TestController {
-	@GetMapping("/home")
+	@GetMapping("/index")
 	public String getMethodName() {
-		return "template";
+		return "index";
 	}
 	
-	@GetMapping("/notice")
-	public String getnotice() {
-		return "notice";
+
+	@GetMapping("/calendar")
+	public String calendar() {
+		return "calendar";
 	}
-	
-	@GetMapping("/employee")
-	public String employee() {
-		return "employee";
-	}
-	
-	@GetMapping("/login")
-	public String login() {
-		return "login";
-	}
-	
 	
 	
 	
