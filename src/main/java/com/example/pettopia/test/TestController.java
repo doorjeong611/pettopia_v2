@@ -20,6 +20,11 @@ public class TestController {
 		return "calendar";
 	}
 	
+	@GetMapping("/template")
+	public String template() {
+		return "template";
+	}
+	
 	
 	
 	
