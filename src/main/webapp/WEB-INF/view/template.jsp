@@ -11,7 +11,7 @@
     <meta content="Minimal Admin & Dashboard Template" name="description">
     <meta content="Themesdesign" name="author">
     <!-- App favicon -->
-    <link rel="shortcut icon" href="./assets/images/favicon.ico">
+    <link rel="shortcut icon" href="./assets/images/pettopia_favicon.ico">
     <!-- Layout config Js -->
     <script src="assets/js/layout.js"></script>
     <!-- Tailwind CSS -->
@@ -48,7 +48,7 @@
                         </li>
                     </ul>
                 </div>
-                
+                <!-- Main content -->
                 
                 
             </div>
