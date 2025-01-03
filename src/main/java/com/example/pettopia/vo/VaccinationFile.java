@@ -12,3 +12,4 @@ public class VaccinationFile {
 	private String fileExt;
 	private String createDate;
 }
+ 

@@ -8,5 +8,5 @@ public class Attendance {
 	private Integer empNo;
 	private String startTime;
 	private String endTime;
-	private String attandanceStatus;
+	private String attendanceStatus;
 }
