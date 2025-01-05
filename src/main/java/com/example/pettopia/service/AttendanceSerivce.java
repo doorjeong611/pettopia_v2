@@ -10,6 +10,11 @@ import com.example.pettopia.vo.Attendance;
 public class AttendanceSerivce {
 	@Autowired AttendanceMapper attendanceMapper;
 	
+	// 오자윤 : /employee/attendanceOn & Off 근태기록 조회
+	public Integer getAttendanceStatus(Attendance attendance) {
+		return attendanceMapper.getAttendanceExists(attendance);
+	}
+	
 	// 오자윤 : /employee/attendanceOn 근태 : 출근
 	public Integer attendanceOn(Attendance attendance) {
 		return attendanceMapper.insertAttendanceOn(attendance);
