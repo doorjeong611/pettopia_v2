@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.pettopia.mapper.BoardMapper">
+
+	<!-- 게시글 작성 쿼리 - 작업자 : 이준호 -->
+	<insert id="insertBoard" parameterType="com.example.pettopia.vo.Board">
+		INSERT INTO board(
+			board_title,
+			division_no,
+			board_content,
+			board_header,
+			create_datetime
+		) VALUES (
+			#{boardTitle},
+			#{divisionNo},
+			#{boardContent},
+			#{boardHeader},
+			NOW()
+		)
+	</insert>
+	
+
+</mapper>
