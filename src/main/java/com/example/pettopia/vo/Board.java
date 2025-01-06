@@ -4,14 +4,14 @@ import lombok.Data;
 
 @Data
 public class Board {
-	private Integer boardNo;
+	private Integer boardNo; // PK
 	private String boardTitle;
-	private Integer boardWriterNo;
+ 	private Integer boardWriterNo; // FK
 	private Integer divisionNo;
 	private String boardContent;
 	private Integer boardLike;
 	private Integer boardView;
 	private String boardHeader;
-	private String createDate;
+	private String createDatetime;
 	private String updateDatetime;
 }

@@ -4,8 +4,8 @@ import lombok.Data;
 
 @Data
 public class VaccinationFile {
-	private Integer vaccinationFileNo;
-	private Integer rsvNo;
+	private Integer vaccinationFileNo; // PK
+	private Integer rsvNo; // FK
 	private String originFileName;
 	private String fileName;
 	private String fileExt;

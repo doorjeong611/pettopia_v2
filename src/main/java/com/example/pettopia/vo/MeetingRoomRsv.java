@@ -4,9 +4,9 @@ import lombok.Data;
 
 @Data
 public class MeetingRoomRsv {
-	private Integer rsvNo;
-	private Integer roomNo;
-	private Integer empNo;
+	private Integer rsvNo; // PK
+	private Integer roomNo; // FK
+	private Integer empNo; // FK
 	private String rsvDate;
 	private String conferenceTitle;
 	private String conferenceDesc;
