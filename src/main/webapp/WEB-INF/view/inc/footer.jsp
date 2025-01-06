@@ -10,7 +10,7 @@
 	    <div class="grid items-center grid-cols-1 text-center lg:grid-cols-2 text-slate-400 dark:text-zink-200 ltr:lg:text-left rtl:lg:text-right">
 	        <div>
 	            Copyright <script>document.write(new Date().getFullYear())</script> 
-	            <a href="${pageContext.request.contextPath}" rel="nofollow">PetTopia Co.</a>
+	            <a href="${pageContext.request.contextPath}" rel="nofollow" style="color: #111d3e;">PetTopia Co.</a>
 	            &nbsp;All rights reserved.
 	        </div>
 	        <div class="hidden lg:block">
