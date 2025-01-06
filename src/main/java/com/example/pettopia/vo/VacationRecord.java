@@ -4,8 +4,8 @@ import lombok.Data;
 
 @Data
 public class VacationRecord {
-	private Integer recordId;
-	private Integer empNo;
+	private Integer recordNo; // PK
+	private Integer empNo; // FK
 	private Integer totalVacation;
 	private Integer createDatetime;
 	private Integer updateDatetime;

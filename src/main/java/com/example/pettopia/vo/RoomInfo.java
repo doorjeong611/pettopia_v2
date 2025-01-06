@@ -4,12 +4,12 @@ import lombok.Data;
 
 @Data
 public class RoomInfo {
-	private Integer roomNo;
+	private Integer roomNo; // PK
 	private String roomName;
 	private String roomType;
 	private Integer roomCapacity;
 	private Integer pricePerNight;
-	private String roomDescription;
+	private String roomDesc;
 	private String createDatetime;
 	private String updateDatetime;
 }

@@ -4,8 +4,8 @@ import lombok.Data;
 
 @Data
 public class Rank {
-	private Integer rankNo;
-	private String rankTitle;
+	private Integer rankNo; // PK
+	private String rankName;
 	private String createDatetime;
 	private String updateDatetime;
 }

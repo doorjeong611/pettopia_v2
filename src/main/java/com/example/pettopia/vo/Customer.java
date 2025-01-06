@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class Customer {
-	private Integer customerNo;
+	private Integer customerNo; // PK
 	private String customerName;
 	private Integer postalCode;
 	private String basicAddress;

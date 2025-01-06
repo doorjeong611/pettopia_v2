@@ -4,8 +4,8 @@ import lombok.Data;
 
 @Data
 public class BoardFile {
-	private Integer boardFileNo;
-	private Integer boardNo;
+	private Integer boardFileNo; // PK
+	private Integer boardNo; // FK
 	private String originFileName;
 	private String fileName;
 	private String fileExt;

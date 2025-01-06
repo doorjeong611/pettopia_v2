@@ -4,14 +4,14 @@ import lombok.Data;
 
 @Data
 public class Document {
-	private Integer docNo;
+	private Integer docNo; // PK
 	private String docTitle;
-	private Integer docWriterNo;
+	private Integer docWriterNo; // FK
 	private String docContent;
 	private String docType;
 	private String approvalStatus;
 	private String docBin;
-	private Integer approverEmpNo;
+	private Integer approverEmpNo; // FK
 	private String vacationType;
 	private String vacationStartDate;
 	private String vacationEndDate;

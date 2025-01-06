@@ -4,8 +4,8 @@ import lombok.Data;
 
 @Data
 public class RoomRsv {
-	private Integer rsvNo;
-	private Integer roomNo;
+	private Integer rsvNo; // PK
+	private Integer roomNo; // FK
 	private Integer customerNo;
 	private String checkInDatetime;
 	private String checkOutDatetime;

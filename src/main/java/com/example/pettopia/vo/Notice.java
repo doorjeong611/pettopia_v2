@@ -4,9 +4,9 @@ import lombok.Data;
 
 @Data
 public class Notice {
-	private Integer noticeNo;
-	private Integer writerEmpNo;
-	private Integer deptNo;
+	private Integer noticeNo; // PK
+	private Integer writerEmpNo; // FK
+	private Integer deptNo; // PK
 	private String noticeTitle;
 	private String noticeContent;
 	private Integer noticeView;

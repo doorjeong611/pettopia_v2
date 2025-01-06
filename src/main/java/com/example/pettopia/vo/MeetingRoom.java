@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class MeetingRoom {
-	private Integer roomNo;
+	private Integer roomNo; // PK
 	private String roomName;
 	private String roomInfo;
 	private Integer roomCapacity;
