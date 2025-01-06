@@ -12,16 +12,16 @@
 		<a href="index.html"
 			class="group-data-[sidebar=dark]:hidden group-data-[sidebar=brand]:hidden group-data-[sidebar=modern]:hidden">
 			<span class="hidden group-data-[sidebar-size=sm]:block"> <img
-				src="${pageContext.request.contextPath}/assets/images/logo-pettopia.png" alt="" class="h-7 mx-auto">
+				src="${pageContext.request.contextPath}/assets/images/logo-pettopia.png" alt="" class="h-12 mx-auto">
 		</span> <span class="group-data-[sidebar-size=sm]:hidden"> <img
-				src="${pageContext.request.contextPath}/assets/images/logo-pettopia.png" alt="" class="h-7 mx-auto">
+				src="${pageContext.request.contextPath}/assets/images/logo-pettopia.png" alt="" class="h-12 mx-auto">
 		</span>
 		</a> <a href="index.html"
 			class="hidden group-data-[sidebar=dark]:block group-data-[sidebar=brand]:block group-data-[sidebar=modern]:block">
 			<span class="hidden group-data-[sidebar-size=sm]:block"> <img
-				src="${pageContext.request.contextPath}/assets/images/logo-pettopia.png" alt="" class="h-7 mx-auto">
+				src="${pageContext.request.contextPath}/assets/images/logo-pettopia.png" alt="" class="h-12 mx-auto">
 		</span> <span class="group-data-[sidebar-size=sm]:hidden"> <img
-				src="${pageContext.request.contextPath}/assets/images/logo-pettopia.png" alt="" class="h-7 mx-auto">
+				src="${pageContext.request.contextPath}/assets/images/logo-pettopia.png" alt="" class="h-12 mx-auto">
 		</span>
 		</a>
 		<button type="button" class="hidden p-0 float-end" id="vertical-hover">
