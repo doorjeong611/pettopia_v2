@@ -8,8 +8,9 @@ public class VaccinationFile {
 	private Integer rsvNo;
 	private String originFileName;
 	private String fileName;
-	private String fileType;
 	private String fileExt;
-	private String createDate;
+	private String fileType;
+	private String createDatetime;
+	private String updateDatetime;
 }
  

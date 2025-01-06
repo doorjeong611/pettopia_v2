@@ -11,12 +11,16 @@ public class Employee {
 	private String empBirth;
 	private String empGender;
 	private String empPhone;
-	private Integer addressNo;
-	private Integer statusNo;
+	private Integer postalCode;
+	private String basicAddress;
+	private String detailAddress;
+	private String empStatus;
+	private String isTeamLeader;
+	private String isFirstLogin;
 	private Integer deptNo;
 	private Integer rankNo;
 	private String hiredate;
 	private String resignationDate;
-	private String createDate;
-	private String updateDate;
+	private String createDatetime;
+	private String updateDatetime;
 }

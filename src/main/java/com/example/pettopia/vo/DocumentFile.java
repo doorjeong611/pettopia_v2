@@ -10,6 +10,6 @@ public class DocumentFile {
 	private String fileName;
 	private String fileExt;
 	private String fileType;
-	private String createDate;
-	private String updateDate;
+	private String createDatetime;
+	private String updateDatetime;
 }

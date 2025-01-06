@@ -9,6 +9,6 @@ public class MeetingRoom {
 	private String roomInfo;
 	private Integer roomCapacity;
 	private String roomLocation;
-	private String createDate;
-	private String updateDate;
+	private String createDatetime;
+	private String updateDatetime;
 }

@@ -6,8 +6,11 @@ import lombok.Data;
 public class Customer {
 	private Integer customerNo;
 	private String customerName;
-	private Integer addressNo;
+	private Integer postalCode;
+	private String basicAddress;
+	private String detailAddress;
 	private String customerPhone;
-	private String createDate;
-	private String updateDate;
+	private String createDatetime;
+	private String updateDatetime;
+	
 }

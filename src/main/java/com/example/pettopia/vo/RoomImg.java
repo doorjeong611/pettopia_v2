@@ -8,7 +8,8 @@ public class RoomImg {
 	private Integer roomNo;
 	private String originFileName;
 	private String fileName;
-	private String fileType;
 	private String fileExt;
+	private String fileType;
 	private String createDate;
+	private String updateDatetime;
 }

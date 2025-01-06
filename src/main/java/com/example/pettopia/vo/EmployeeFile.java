@@ -3,13 +3,14 @@ package com.example.pettopia.vo;
 import lombok.Data;
 
 @Data
-public class MeetingRoomImg {
-	private Integer roomImgNo;
-	private Integer roomNo;
-	private String originalFileName;
+public class EmployeeFile {
+	private Integer employeeFileNo;
+	private Integer empNo;
+	private String filePurpose;
+	private String originFileName;
 	private String fileName;
-	private String fileType;
 	private String fileExt;
+	private String fileType;
 	private String createDatetime;
 	private String updateDatetime;
 }

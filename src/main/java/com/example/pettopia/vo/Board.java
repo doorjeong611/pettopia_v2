@@ -7,9 +7,11 @@ public class Board {
 	private Integer boardNo;
 	private String boardTitle;
 	private Integer boardWriterNo;
-	private String board_Content;
+	private Integer divisionNo;
+	private String boardContent;
 	private Integer boardLike;
 	private Integer boardView;
+	private String boardHeader;
 	private String createDate;
-	private String updateDate;
+	private String updateDatetime;
 }

@@ -25,7 +25,7 @@ public class AttendanceController {
 	@PostMapping("/employee/attendanceOn")
 	public String attendanceOn(Model model, Attendance attendance) {
 		// 출근 시간 가져오기
-	    String startTimeStr = attendance.getStartTime();
+	    String startTimeStr = attendance.getClockOutTime();
 	    // 문자열 LocalDate 및 LocalTime으로 변환
 	    LocalTime startTime = LocalTime.parse(startTimeStr);
 	    // 출근시간 : 6AM, 퇴근시간 : 9PM
@@ -33,25 +33,25 @@ public class AttendanceController {
 	    LocalTime sixPmEnd = LocalTime.of(18, 0);
 	    
 	    // 출근 상태 가져오기
-	    String attendanceStatus = attendance.getAttendanceStatus();
+	    String attendanceStatus = attendance.getAttendance_status();
 	    
 	    if ("연차".equals(attendanceStatus)) {
-	        attendance.setAttendanceStatus("연차");
+	        attendance.setAttendance_status("연차");
 	    } else if ("반차".equals(attendanceStatus)) {
-	        attendance.setAttendanceStatus("반차");
+	        attendance.setAttendance_status("반차");
 	    } else if (attendanceService.getAttendanceStatus(attendance) > 0) {
 	        // 출근 기록이 있는 경우
 	        if (startTime.isBefore(nineAmStart)) {
-	            attendance.setAttendanceStatus("출근");
+	            attendance.setAttendance_status("출근");
 	        // 9시 이후 출근 & 6시 퇴근 기록 있는 경우
 	        } else if (startTime.isAfter(nineAmStart) && startTime.isBefore(sixPmEnd)) { 
-	            attendance.setAttendanceStatus("지각");
+	            attendance.setAttendance_status("지각");
 	        } else {
-	            attendance.setAttendanceStatus("조퇴");
+	            attendance.setAttendance_status("조퇴");
 	        }	
 	    // 출근 기록이 없는 경우	        
 	    } else {
-	        attendance.setAttendanceStatus("결근");
+	        attendance.setAttendance_status("결근");
 	    }
 	    
 	    // 출근등록 : insertAttendanceOn 쿼리실행
@@ -65,11 +65,11 @@ public class AttendanceController {
     public String attendanceOff(Model model, Attendance attendance) {
         attendanceService.attendanceOff(attendance);
     	// 퇴근 시간 가져오기
-        String endTimeStr = attendance.getEndTime(); 
+        String endTimeStr = attendance.getClockInTime(); 
         LocalTime endTime = LocalTime.parse(endTimeStr);
         
         // 퇴근 상태 설정 
-        attendance.setAttendanceStatus("퇴근");
+        attendance.setAttendance_status("퇴근");
         // 퇴근등록 : insertAttendanceOff 쿼리실행
         attendanceService.attendanceOff(attendance);
         log.debug(attendance.toString() + "-----> attendance");

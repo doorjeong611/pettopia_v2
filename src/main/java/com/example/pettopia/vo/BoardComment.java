@@ -8,6 +8,7 @@ public class BoardComment {
 	private Integer boardNo;
 	private Integer commentWriterNo;
 	private String commentContent;
-	private String createDate;
-	private String updateDate;
+	private String commentDepth;
+	private String createDatetime;
+	private String updateDatetime;
 }
