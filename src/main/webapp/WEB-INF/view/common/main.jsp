@@ -38,36 +38,35 @@
                 <div class="flex flex-col gap-2 py-4 md:flex-row md:items-center print:hidden">
                 </div>
 
-			<!-- Main content -->         
-			<h3 class="mt-4">출근 등록</h3>
-			<form action="${pageContext.request.contextPath}/employee/attendanceOn" method="post">
-			    <label for="empNo">사원 번호:</label>
-			    <input type="text" id="empNo" name="empNo" required>
-			    <label for="attendanceDate">출근 날짜:</label>
-			    <input type="date" id="attendanceDate" name="attendanceDate" required>
-			    <label for="startTime">출근 시간:</label>
-			    <input type="time" id="startTime" name="startTime" required>
-			    <label for="attendanceStatus">출근 상태:</label>
-			    <select id="attendanceStatus" name="attendanceStatus" required>
-			        <option value="">선택하세요</option>
-			        <option value="출근">출근</option>
-			        <option value="연차">연차</option>
-			        <option value="병가">병가</option>
-			    </select>
-			    <input type="submit" value="출근">
-			</form>
-			
-			<h3 class="mt-4">퇴근 등록</h3>
-			<form action="${pageContext.request.contextPath}/employee/attendanceOff" method="post">
-			    <label for="attendanceNo">근태 번호:</label>
-			    <input type="text" id="attendanceNo" name="attendanceNo" required>
-			    <label for="endTime">퇴근 시간:</label>
-			    <input type="time" id="endTime" name="endTime" required>
-			    <input type="submit" value="퇴근">
-			</form>
-			                
-                
-            </div>
+			<!-- Main content -->
+		    <div class="card-body" style="height:196px;">
+		        <!-- 근태 -->
+		        <div class="card gradient-1">
+			    <div class="card-body" style="height:196px; background-color: #343a40;"> <!-- 배경색 추가 -->
+			        <!-- 근태 -->
+			        <div class="float-right">
+			            <form action="${pageContext.request.contextPath}/employee/attendanceOn" method="post">
+			                <input type="hidden" name="empNo" value="${employee.empNo}">
+			                <input type="hidden" name="attendanceDate" value="${currentDate}">
+			                <input type="submit" class="btn btn-light" value="출근">
+			            </form>
+			            <form action="${pageContext.request.contextPath}/employee/attendanceOff" method="post">
+			                <input type="hidden" name="attendanceNo" value="${attendance.attendanceNo}">
+			                <input type="submit" class="btn btn-light" value="퇴근">
+			            </form>
+			        </div>
+			        <h3 class="card-title text-white font-weight-bold"> 오늘의 근무 &gt;&gt; </h3>
+			        
+			        <div class="d-inline-block">             
+			            <div class="text-white" id="attendanceTime">
+			                출근 시간: ${startTime != null ? startTime : '없음'}
+			            </div>
+			            <div class="text-white" id="departureTime">
+			                퇴근 시간: ${endTime != null ? endTime : '없음'}
+			            </div>         
+			        </div>
+			    </div>
+
             <!-- container-fluid -->
         </div>
         <!-- End Page-content -->
