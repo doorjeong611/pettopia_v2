@@ -64,6 +64,7 @@
     </div>
 </div>
 <!-- End Main Content -->
+<c:import url="/WEB-INF/view/inc/customizerButton.jsp"></c:import>
 
 <script src='assets/libs/choices.js/public/assets/scripts/choices.min.js'></script>
 <script src="assets/libs/@popperjs/core/umd/popper.min.js"></script>
