@@ -6,7 +6,9 @@ import lombok.Data;
 public class Attendance {
 	private String attendanceDate;
 	private Integer empNo;
-	private String startTime;
-	private String endTime;
-	private String attendanceStatus;
+	private String attendance_status;
+	private String clockInTime;
+	private String clockOutTime;
+	private String createDatetime;
+	private String updateDatetime;
 }

@@ -10,6 +10,7 @@ public class Message {
 	private String messageTitle;
 	private String messageContent;
 	private String messageState;
+	private String messageBin;
 	private String createDate;
 	private String stateUpdateDate;
 }

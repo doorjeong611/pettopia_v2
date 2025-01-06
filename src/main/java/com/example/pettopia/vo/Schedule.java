@@ -9,6 +9,8 @@ public class Schedule {
 	private String scheduleTitle;
 	private String scheduleContent;
 	private String scheduleType;
-	private String startDate;
-	private String endDate;
+	private String startDatetime;
+	private String endDatetime;
+	private String createDatetime;
+	private String updateDatetime;
 }

@@ -11,6 +11,8 @@ public class MeetingRoomRsv {
 	private String conferenceTitle;
 	private String conferenceDesc;
 	private Integer conferenceUsers;
-	private String startDate;
-	private String endDate;
+	private String startTime;
+	private String endTime;
+	private String createDatetime;
+	private String updateDatetime;
 }

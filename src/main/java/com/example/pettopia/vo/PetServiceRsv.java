@@ -7,8 +7,9 @@ public class PetServiceRsv {
 	private Integer rsvNo;
 	private Integer customerNo;
 	private Integer serviceNo;
-	private String rsvDate;
+	private String rsvDatetime;
 	private String rsvStatus;
-	private String createDate;
-	private String updateDate;
+	private String rsvNoShow;
+	private String createDatetime;
+	private String updateDatetime;
 }

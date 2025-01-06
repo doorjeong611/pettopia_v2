@@ -10,6 +10,7 @@ public class Notice {
 	private String noticeTitle;
 	private String noticeContent;
 	private Integer noticeView;
-	private String createDate;
-	private String updateDate;
+	private String isPinned;
+	private String createDatetime;
+	private String updateDatetime;
 }

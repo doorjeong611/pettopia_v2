@@ -6,6 +6,6 @@ import lombok.Data;
 public class Rank {
 	private Integer rankNo;
 	private String rankTitle;
-	private String createDate;
-	private String updateDate;
+	private String createDatetime;
+	private String updateDatetime;
 }
