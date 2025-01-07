@@ -1,8 +1,50 @@
 package com.example.pettopia.service;
 
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service 
+import com.example.pettopia.mapper.NoticeMapper;
+import com.example.pettopia.util.TeamColor;
+import com.example.pettopia.vo.Division;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Service
+@Slf4j
 public class NoticeService {
+	
+	@Autowired NoticeMapper noticeMapper;
+	
+	// 공지사항 리스트 : 부서 목록
+	public List<Division> getDivisionList(){
+		
+		log.debug(TeamColor.KMJ+"[NoticeService - getDivisionList]");
+		
+		List<Division> divisionList = noticeMapper.selectDivisionList();
+		log.debug(TeamColor.KMJ+ "divisionList : " + divisionList.toString() + TeamColor.RESET);
+		
+		return divisionList;
+				
+	}
+	
+	
+	// 공지사항 리스트 : 게시글 목록
+	public List<Map<String, Object>> getNoticeList(Map<String, Object> paramMap){ // 카테고리, 검색어 추가하기
+		
+		log.debug(TeamColor.KMJ+"[NoticeService - getNoticeList]");
+		log.debug(TeamColor.KMJ+ "paramMap : " + paramMap.toString() + TeamColor.RESET);		
+		
+		List<Map<String, Object>> noticeList = noticeMapper.selectNoticeList(paramMap);
+		
+		log.debug(TeamColor.KMJ+ "noticeList : " + noticeList.toString() + TeamColor.RESET);
+		
+		return noticeList;
+		
+	}
+	
+	
 
 }
