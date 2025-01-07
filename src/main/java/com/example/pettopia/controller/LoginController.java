@@ -49,11 +49,14 @@ public class LoginController {
 			
 			session.setAttribute("loginEmp", login.get("loginEmp"));
 			
-			return "common/main";
+			return "redirect:/common/petTopiaMain";
+
 			
 			// 로그인 실패 	
 		}else {
-			return "redirect:/common/login";
+			
+			
+			return "redirect:/login";
 		}
 		
 

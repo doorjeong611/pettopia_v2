@@ -15,11 +15,11 @@ public class MainController {
 	// 메인페이지
 	@GetMapping("/common/petTopiaMain")
 	public String mainPage() {
-		log.debug(TeamColor.KDH + "Test Log Color" + TeamColor.RESET);
-		log.debug(TeamColor.KMJ + "Test Log Color" + TeamColor.RESET);
-		log.debug(TeamColor.OJY + "Test Log Color" + TeamColor.RESET);
-		log.debug(TeamColor.WJ + "Test Log Color" + TeamColor.RESET);
-		log.debug(TeamColor.LJH + "Test Log Color" + TeamColor.RESET);
+//		log.debug(TeamColor.KDH + "Test Log Color" + TeamColor.RESET);
+//		log.debug(TeamColor.KMJ + "Test Log Color" + TeamColor.RESET);
+//		log.debug(TeamColor.OJY + "Test Log Color" + TeamColor.RESET);
+//		log.debug(TeamColor.WJ + "Test Log Color" + TeamColor.RESET);
+//		log.debug(TeamColor.LJH + "Test Log Color" + TeamColor.RESET);
 		return "common/petTopiaMain";
 	}
 }
