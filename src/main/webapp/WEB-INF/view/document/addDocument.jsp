@@ -139,6 +139,14 @@
 												<input type="radio">
 											</div>
 											<div class="xl:col-span-6">
+											    <label for="docWriter" class="inline-block mb-2 text-base font-medium">휴가 타입</label>
+											    <div class="flex items-center space-x-2">
+											        <!-- 라디오 버튼 추가 -->
+											        <input type="radio" id="docWriterRadio" name="docWriterOption" value="1" class="form-radio text-custom-500"> 연차
+											    </div>
+											</div><!--end col-->
+											
+											<div class="xl:col-span-6">
 											</div>
 											<div class="xl:col-span-12">
 											    <label for="docContent" class="inline-block mb-2 text-base font-medium">휴가 사유</label>
