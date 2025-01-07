@@ -16,6 +16,7 @@
     <script src="${pageContext.request.contextPath}/assets/js/layout.js"></script>
     <!-- Tailwind CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tailwind2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 
 <body class="text-base bg-body-bg text-body font-public dark:text-zink-100 dark:bg-zink-800 group-data-[skin=bordered]:bg-body-bordered group-data-[skin=bordered]:dark:bg-zink-700">
@@ -40,9 +41,8 @@
 
 			<!-- Main content -->
 		    <div class="card-body" style="height:196px;">
-		        <!-- 근태 -->
 		        <div class="card gradient-1">
-			    <div class="card-body" style="height:196px; background-color: #343a40;"> <!-- 배경색 추가 -->
+		        <div class="card-body" style="height:196px; background: #f8f9fa);">
 			        <!-- 근태 -->
 			        <div class="float-right">
 			            <form action="${pageContext.request.contextPath}/employee/attendanceOn" method="post">
@@ -50,25 +50,32 @@
 			                <input type="hidden" name="attendanceDate" value="${currentDate}">
 			                <input type="hidden" name="clockInTime" value="${clockInTime}">
 			                
-			                <input type="submit" class="btn btn-light" value="출근">
+			                <input type="submit" class="btn" style="background-color: rgba(59, 130, 246, 0.5); color: white; margin-bottom: 10px;" value="출근">
 			            </form>
 			            <form action="${pageContext.request.contextPath}/employee/attendanceOff" method="post">
-			                <input type="hidden" name="attendanceNo" value="${attendance.attendanceNo}">
-			                <input type="submit" class="btn btn-light" value="퇴근">
+			            	<input type="hidden" name="empNo" value="${employee.empNo}">
+			                <input type="hidden" name="attendanceDate" value="${currentDate}">
+			                <input type="hidden" name="clockInTime" value="${clockInTime}">
+			                
+			                <input type="submit" class="btn" style="background-color: rgba(59, 130, 246, 0.5); color: white;" value="퇴근">
 			            </form>
 			        </div>
-			        <h3 class="card-title text-white font-weight-bold"> 오늘의 근무 &gt;&gt; </h3>
+			        <h3 class="card-title" style="color: rgb(59, 130, 246); font-weight: bold;">
+			        <i class="fas fa-calendar-check" style="margin-right: 8px;"></i> 오늘의 근무 </h3>
 			        
-			        <div class="d-inline-block">             
-			            <div class="text-white" id="attendanceTime">
-			                출근 시간: ${clockInTime != null ? clockInTime : '없음'}
+			        <c:forEach var="attendance" items="${attendanceList}">
+			        <div class="d-inline-block">   
+			        <c:if test="${not empty attendance}">          
+			            <div class="text-dark" id="attendanceTime" style="color: #003366;">
+			                출근 시간: ${attendance.clockInTime != null ? attendance.clockInTime : '없음'}
 			            </div>
-			            <div class="text-white" id="departureTime">
-			                퇴근 시간: ${clockOutTime != null ? clockOutTime : '없음'}
-			            </div>         
-			        </div>
-			    </div>
-
+			            <div class="text-dark" id="departureTime" style="color: #003366;">
+			                퇴근 시간: ${attendance.clockOutTime != null ? attendance.clockOutTime : '없음'}
+			            </div>   
+		            </c:if>      
+			       </div>
+				</c:forEach>
+			   </div>
             <!-- container-fluid -->
         </div>
         <!-- End Page-content -->

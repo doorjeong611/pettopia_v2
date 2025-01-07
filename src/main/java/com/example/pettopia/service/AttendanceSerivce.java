@@ -1,5 +1,7 @@
 package com.example.pettopia.service;
 
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,8 +13,8 @@ public class AttendanceSerivce {
 	@Autowired AttendanceMapper attendanceMapper;
 	
 	// 오자윤 : /employee/attendanceOn & Off 근태기록 조회
-	public Integer getAttendanceStatus(Attendance attendance) {
-		return attendanceMapper.getAttendanceExists(attendance);
+	public Integer getAttendance(Attendance attendance) {
+		return attendanceMapper.getAttendanceList(attendance);
 	}
 	
 	// 오자윤 : /employee/attendanceOn 근태 : 출근

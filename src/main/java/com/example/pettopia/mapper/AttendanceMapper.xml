@@ -3,8 +3,8 @@
 <mapper namespace="com.example.pettopia.mapper.AttendanceMapper">
 
 <!-- 오자윤 : /employee/attendanceOn & Off 근태조회 -->
-<select id="getAttendanceExists" parameterType="com.example.pettopia.vo.Attendance">
-	SELECT COUNT(*) 
+<select id="getAttendanceList" parameterType="com.example.pettopia.vo.Attendance" resultType="map">
+	SELECT *
 	FROM attendance 
 	WHERE emp_no = #{empNo} AND attendance_date = #{attendanceDate}
 </select>
