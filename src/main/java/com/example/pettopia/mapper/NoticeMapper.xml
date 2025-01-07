@@ -1,5 +1,86 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.pettopia.mapper.NoticeMapper">
+
+	<!-- 공지사항 리스트 : 부서 목록 -->
+	<select id="selectDivisionList" resultType="com.example.pettopia.vo.Division">
+		SELECT division_code divisionCode
+				, division_name divisionName
+		FROM division
+	</select>
+
+
+	<!-- 공지사항 리스트 : 게시글 목록 -->
+	<select id="selectNoticeList" parameterType="map" resultType="map">
+		WITH noticeList AS (
+		    (SELECT n.notice_no 
+		            , n.writer_emp_no 
+		            , e.emp_name 
+		            , n.dept_code 
+		            , di.division_code 
+		            , IFNULL(di.division_name, 'ALL') AS division_name  
+		            , n.notice_title 
+		            , n.notice_view 
+		            , n.create_datetime 
+		            , n.is_pinned 
+		    FROM notice n 
+		    LEFT OUTER JOIN department d ON n.dept_code = d.dept_code
+		    LEFT OUTER JOIN division di ON d.division_code = di.division_code
+		    LEFT OUTER JOIN employee e ON n.writer_emp_no = e.emp_no
+		    WHERE (di.division_code LIKE 'IT' OR di.division_code IS NULL) <!-- where문 괄호 mybatis로 어떻게 처리하는지....? -->
+		    AND n.is_pinned LIKE 'Y'
+		    )
+		    UNION ALL 
+		    (SELECT n.notice_no 
+		            , n.writer_emp_no 
+		            , e.emp_name 
+		            , n.dept_code 
+		            , di.division_code 
+		            , IFNULL(di.division_name, 'ALL') AS division_name  
+		            , n.notice_title 
+		            , n.notice_view 
+		            , n.create_datetime 
+		            , n.is_pinned 
+		    FROM notice n 
+		    LEFT OUTER JOIN department d ON n.dept_code = d.dept_code
+		    LEFT OUTER JOIN division di ON d.division_code = di.division_code
+		    LEFT OUTER JOIN employee e ON n.writer_emp_no = e.emp_no 
+		    WHERE 
+			<where>
+				<if test="searchTitle != null">
+					n.notice_title LIKE CONCAT('%' , #{searchTitle}, '%')
+				</if>
+				<if test="division != null">
+					AND di.division_code LIKE #{division}
+				</if>
+			</where>
+		    AND n.is_pinned LIKE 'N'
+		    )
+		)
+		SELECT notice_no AS noticeNo
+		    , writer_emp_no AS empNo
+		    , emp_name AS empName
+		    , dept_code AS deptCode
+		    , division_code AS divisionCode
+		    , division_name AS divisionName  
+		    , notice_title AS noticeTitle
+		    , notice_view AS noticeView
+		    , create_datetime AS createDate
+		    , is_pinned AS isPinned
+		FROM noticeList 
+		ORDER BY CASE WHEN division_code IS NULL THEN 0 ELSE 1 END, is_pinned DESC, create_datetime DESC;
+		
+
+		<where>
+			<if test="searchTitle != null">
+				n.notice_title LIKE CONCAT('%' , #{searchTitle}, '%')
+			</if>
+			<if test="division != null">
+				AND di.division_code LIKE #{division}
+			</if>
+		</where>
+		ORDER BY is_pinned ASC
+	</select>
+
 	
 </mapper>
