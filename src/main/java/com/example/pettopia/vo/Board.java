@@ -6,8 +6,8 @@ import lombok.Data;
 public class Board {
 	private Integer boardNo; // PK
 	private String boardTitle;
- 	private Integer boardWriterNo; // FK
-	private Integer divisionNo;
+ 	private String boardWriterNo; // FK
+	private String divisionCode;
 	private String boardContent;
 	private Integer boardLike;
 	private Integer boardView;

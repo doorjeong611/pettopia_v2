@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class Schedule {
 	private Integer scheduleNo; // PK
-	private Integer empNo; // FK
+	private String empNo; // FK
 	private String scheduleTitle;
 	private String scheduleContent;
 	private String scheduleType;

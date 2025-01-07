@@ -5,8 +5,8 @@ import lombok.Data;
 @Data
 public class Notice {
 	private Integer noticeNo; // PK
-	private Integer writerEmpNo; // FK
-	private Integer deptNo; // PK
+	private String writerEmpNo; // FK
+	private String deptCode; // PK
 	private String noticeTitle;
 	private String noticeContent;
 	private Integer noticeView;

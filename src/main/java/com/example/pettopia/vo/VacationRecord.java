@@ -5,8 +5,8 @@ import lombok.Data;
 @Data
 public class VacationRecord {
 	private Integer recordNo; // PK
-	private Integer empNo; // FK
+	private String empNo; // FK
 	private Integer totalVacation;
-	private Integer createDatetime;
-	private Integer updateDatetime;
+	private String createDatetime;
+	private String updateDatetime;
 }

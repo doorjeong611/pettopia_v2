@@ -6,7 +6,7 @@ import lombok.Data;
 public class Customer {
 	private Integer customerNo; // PK
 	private String customerName;
-	private Integer postalCode;
+	private String postalCode;
 	private String basicAddress;
 	private String detailAddress;
 	private String customerPhone;
