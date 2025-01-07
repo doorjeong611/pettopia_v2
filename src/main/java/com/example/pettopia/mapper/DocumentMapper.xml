@@ -3,8 +3,12 @@
 <mapper namespace="com.example.pettopia.mapper.DocumentMapper">
 
 	<!-- insertDocument : 문서 작성 -->
-	<insert id="insertDocument">
-		
+	<insert id="insertDocument" parameterType="com.example.pettopia.vo.Document">
+		<selectKey resultType="Integer" keyProperty="docNo" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		INSERT INTO document(doc_title, doc_writer_no, doc_content, doc_type, approver_emp_no, vacation_type, vacation_start_date, vacation_end_date, material_list, material_quantity) 
+		VALUES(#{docTitle}, #{docWriterNo}, #{docContent}, #{docType}, #{approverEmpNo}, #{vacationType}, #{vacationStartDate}, #{vacationEndDate}, #{materialList}, #{materialQuantity})
 	</insert>
 
 </mapper>
