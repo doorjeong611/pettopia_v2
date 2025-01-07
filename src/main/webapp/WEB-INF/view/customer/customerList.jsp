@@ -40,19 +40,52 @@
                         <h5 class="text-16">고객 조회</h5>
                     </div>
                     <ul class="flex items-center gap-2 text-sm font-normal shrink-0">
-                        <li class="relative before:content-['\ea54'] before:font-remix ltr:before:-right-1 rtl:before:-left-1  before:absolute before:text-[18px] before:-top-[3px] ltr:pr-4 rtl:pl-4 before:text-slate-400 dark:text-zink-200">
+                        <li class="relative before:font-remix ltr:before:-right-1 rtl:before:-left-1  before:absolute before:text-[18px] before:-top-[3px] ltr:pr-4 rtl:pl-4 before:text-slate-400 dark:text-zink-200">
                             <a href="#!" class="text-slate-400 dark:text-zink-200">고객 조회</a>
-                        </li>
-                        <li class="text-slate-700 dark:text-zink-100">
-                            템플릿
                         </li>
                     </ul>
                 </div>
                 <!-- Main content -->
-                
-                
-            </div>
-            <!-- container-fluid -->
+                  <div class="card">
+                        <div class="card-body">
+                    
+                            <div class="overflow-x-auto">
+                                <table class="w-full">
+                                    <thead class="ltr:text-left rtl:text-right ">
+                                        <tr>
+                                            <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500">Customer No</th>
+                                            <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500">Customer Name</th>
+                                            <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500">Postal Code</th>
+                                            <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500">Basic Address</th>
+                                            <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500">Detail Address</th>
+                                            <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500">Customer Phone</th>
+                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500">Create Date time</th>
+                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500">Update Date time</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+		                                <c:forEach var="c" items="${customerList}">
+		                                    <tr class="even:bg-slate-50 hover:bg-slate-50 even:hover:bg-slate-100 dark:even:bg-zink-600/50 dark:hover:bg-zink-600 dark:even:hover:bg-zink-600">
+		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">
+		                                            <a href="#" class="transition-all duration-150 ease-linear text-custom-500 hover:text-custom-600">${c.customerNo}</a>
+		                                        </td>
+		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${c.customerName}</td>
+		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${c.postalCode}</td>
+		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${c.basicAddress}</td>
+		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${c.detailAddress}</td>
+		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${c.customerPhone}</td>
+		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${c.createDatetime}</td>
+		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${c.updateDatetime}</td>
+		                                        
+		                                        
+		                                    </tr>
+		                                </c:forEach>
+                            		</tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+        	</div>
         </div>
         <!-- End Page-content -->
 
@@ -73,11 +106,15 @@
 <script src="${pageContext.request.contextPath}/assets/libs/prismjs/prism.js"></script>
 <script src="${pageContext.request.contextPath}/assets/libs/lucide/umd/lucide.js"></script>
 <script src="${pageContext.request.contextPath}/assets/js/tailwick.bundle.js"></script>
-<!--apexchart js-->
-<script src="${pageContext.request.contextPath}/assets/libs/apexcharts/apexcharts.min.js"></script>
+<!-- list js-->
+<script src="${pageContext.request.contextPath}/assets/libs/list.js/list.min.js"></script>
+<script src="${pageContext.request.contextPath}/assets/libs/list.pagination.js/list.pagination.min.js"></script>
+<script src="${pageContext.request.contextPath}/assets/libs/flatpickr/flatpickr.min.js"></script>
+<!-- Sweet Alerts js -->
+<script src="${pageContext.request.contextPath}/assets/libs/sweetalert2/sweetalert2.min.js"></script>
 
-<!--dashboard ecommerce init js-->
-<script src="${pageContext.request.contextPath}/assets/js/pages/dashboards-ecommerce.init.js"></script>
+<!-- listjs init -->
+<script src="${pageContext.request.contextPath}/assets/js/pages/listjs.init.js"></script>
 
 <!-- App js -->
 <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
