@@ -11,11 +11,11 @@
     <meta content="Minimal Admin & Dashboard Template" name="description">
     <meta content="Themesdesign" name="author">
     <!-- App favicon -->
-    <link rel="shortcut icon" href="./assets/images/pettopia_favicon.ico">
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/assets/images/pettopia_favicon.ico">
     <!-- Layout config Js -->
-    <script src="assets/js/layout.js"></script>
+    <script src="${pageContext.request.contextPath}/assets/js/layout.js"></script>
     <!-- Tailwind CSS -->
-    <link rel="stylesheet" href="./assets/css/tailwind2.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tailwind2.css">
 </head>
 
 <body class="text-base bg-body-bg text-body font-public dark:text-zink-100 dark:bg-zink-800 group-data-[skin=bordered]:bg-body-bordered group-data-[skin=bordered]:dark:bg-zink-700">
@@ -66,21 +66,21 @@
 <!-- End Main Content -->
 <c:import url="/WEB-INF/view/inc/customizerButton.jsp"></c:import>
 
-<script src='assets/libs/choices.js/public/assets/scripts/choices.min.js'></script>
-<script src="assets/libs/@popperjs/core/umd/popper.min.js"></script>
-<script src="assets/libs/tippy.js/tippy-bundle.umd.min.js"></script>
-<script src="assets/libs/simplebar/simplebar.min.js"></script>
-<script src="assets/libs/prismjs/prism.js"></script>
-<script src="assets/libs/lucide/umd/lucide.js"></script>
-<script src="assets/js/tailwick.bundle.js"></script>
+<script src='${pageContext.request.contextPath}/assets/libs/choices.js/public/assets/scripts/choices.min.js'></script>
+<script src="${pageContext.request.contextPath}/assets/libs/@popperjs/core/umd/popper.min.js"></script>
+<script src="${pageContext.request.contextPath}/assets/libs/tippy.js/tippy-bundle.umd.min.js"></script>
+<script src="${pageContext.request.contextPath}/assets/libs/simplebar/simplebar.min.js"></script>
+<script src="${pageContext.request.contextPath}/assets/libs/prismjs/prism.js"></script>
+<script src="${pageContext.request.contextPath}/assets/libs/lucide/umd/lucide.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/tailwick.bundle.js"></script>
 <!--apexchart js-->
-<script src="assets/libs/apexcharts/apexcharts.min.js"></script>
+<script src="${pageContext.request.contextPath}/assets/libs/apexcharts/apexcharts.min.js"></script>
 
 <!--dashboard ecommerce init js-->
-<script src="assets/js/pages/dashboards-ecommerce.init.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/pages/dashboards-ecommerce.init.js"></script>
 
 <!-- App js -->
-<script src="assets/js/app.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
 
 </body>
 
