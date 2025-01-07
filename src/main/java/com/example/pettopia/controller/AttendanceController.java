@@ -118,21 +118,21 @@ public class AttendanceController {
     }
     
     // 오자윤 : 출근 기록 보여주기 
-    @GetMapping("/common/petTopiaMain")
-    public String getAttendanceListByEmployee(Model model, HttpSession session) {
-    	// 로그인한 직원 정보 가져오기
-        Employee loginEmp = (Employee) session.getAttribute("loginEmp");
-
-    	  // Attendance 객체를 생성하고 사원 번호를 설정
-        Attendance attendance = new Attendance();
-        attendance.setEmpNo(loginEmp.getEmpNo()); // 사원 번호 설정
-
-        // 출퇴근 기록 조회
-        List<Attendance> attendanceList = new ArrayList<>();
-        attendanceService.getAttendance(attendance);
-        // 모델에 출퇴근 기록 추가
-        model.addAttribute("attendanceList", attendanceList);
-        
-        return "employee/attendanceList"; 
-    }
+//    @GetMapping("/common/petTopiaMain")
+//    public String getAttendanceListByEmployee(Model model, HttpSession session) {
+//    	// 로그인한 직원 정보 가져오기
+//        Employee loginEmp = (Employee) session.getAttribute("loginEmp");
+//
+//    	  // Attendance 객체를 생성하고 사원 번호를 설정
+//        Attendance attendance = new Attendance();
+//        attendance.setEmpNo(loginEmp.getEmpNo()); // 사원 번호 설정
+//
+//        // 출퇴근 기록 조회
+//        List<Attendance> attendanceList = new ArrayList<>();
+//        attendanceService.getAttendance(attendance);
+//        // 모델에 출퇴근 기록 추가
+//        model.addAttribute("attendanceList", attendanceList);
+//        
+//        return "employee/attendanceList"; 
+//    }
 }
