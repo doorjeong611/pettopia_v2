@@ -15,10 +15,10 @@
  	INSERT INTO attendance (
  				emp_no
  				,attendance_date
- 				,start_time
+ 				,clock_in_time
  				,attendance_status
  				) VALUES (
- 						#{empNo}, #{attendanceDate}, #{startTime}, #{attendanceStatus}
+ 						#{empNo}, #{attendanceDate}, #{clockInTime}, #{attendanceStatus}
  				)
 </insert>
 
@@ -26,9 +26,9 @@
  <update id="insertAttendanceOff" parameterType="com.example.pettopia.vo.Attendance">
     UPDATE attendance
     SET 
-    	end_time = #{endTime}
+    	clock_out_time = #{clockOutTime}
     	,attendance_status = #{attendanceStatus}
-    WHERE attendance_no = #{attendanceNo}
+    WHERE emp_no = #{empNo}
 </update>
  
 </mapper>
