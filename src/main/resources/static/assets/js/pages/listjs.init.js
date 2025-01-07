@@ -115,8 +115,25 @@ xhttp.onload = function () {
     });
     customerList.remove("id", '<a href="javascript:void(0);" class="fw-medium link-primary id">#VZ2101</a>');
 }
-xhttp.open("GET", "assets/json/table-customer-list.json");
-xhttp.send();
+fetch('/api/pet-services')
+    .then(response => response.json())
+    .then(data => {
+        // DB에서 가져온 데이터를 customerList에 추가
+        data.forEach(service => {
+            customerList.add({
+                id: `<a href="javascript:void(0);" class="fw-medium link-primary id">#${service.serviceNo}</a>`,
+                customer_name: service.serviceName,
+                email: service.serviceDesc,
+                date: service.createDatetime,
+                phone: service.servicePrice,
+                status: isStatus(service.serviceOption1) // 옵션 데이터 활용
+            });
+        });
+
+        customerList.sort('id', { order: "desc" });
+        refreshCallbacks();
+    })
+    .catch(error => console.error('Error fetching data:', error));
 
 isCount = new DOMParser().parseFromString(
     customerList.items.slice(-1)[0]._values.id,
@@ -287,20 +304,27 @@ var statusVal = new Choices(statusField);
 
 function isStatus(val) {
     switch (val) {
-        case "Active":
+        case "Option1":
             return (
-                '<span class="px-2.5 py-0.5 inline-block text-xs font-medium rounded border bg-green-100 border-transparent text-green-500 dark:bg-green-500/20 dark:border-transparent">' +
+                '<span class="px-2.5 py-0.5 inline-block text-xs font-medium rounded border bg-blue-100 border-transparent text-blue-500">' +
                 val +
                 "</span>"
             );
-        case "Block":
+        case "Option2":
             return (
-                '<span class="px-2.5 py-0.5 inline-block text-xs font-medium rounded border bg-red-100 border-transparent text-red-500 dark:bg-red-500/20 dark:border-transparent">' +
+                '<span class="px-2.5 py-0.5 inline-block text-xs font-medium rounded border bg-yellow-100 border-transparent text-yellow-500">' +
                 val +
+                "</span>"
+            );
+        default:
+            return (
+                '<span class="px-2.5 py-0.5 inline-block text-xs font-medium rounded border bg-gray-100 border-transparent text-gray-500">' +
+                "Unknown" +
                 "</span>"
             );
     }
 }
+
 
 function ischeckboxcheck() {
     Array.from(document.getElementsByName("checkAll")).forEach(function (x) {
