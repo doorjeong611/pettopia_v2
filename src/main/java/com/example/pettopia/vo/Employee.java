@@ -11,7 +11,7 @@ public class Employee {
 	private String empBirth;
 	private String empGender;
 	private String empPhone;
-	private Integer postalCode;
+	private String postalCode;
 	private String basicAddress;
 	private String detailAddress;
 	private String empStatus;
