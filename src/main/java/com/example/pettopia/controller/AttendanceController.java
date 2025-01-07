@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 
 import com.example.pettopia.service.AttendanceSerivce;
 import com.example.pettopia.vo.Attendance;
+import com.example.pettopia.vo.Employee;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
@@ -27,9 +28,19 @@ public class AttendanceController {
 	@PostMapping("/employee/attendanceOn")
 	public String attendanceOn(Model model, HttpSession session, Attendance attendance) {
 		// 세션 empNo 가져오기
-		// String empNo = (String)session.getAttribute("empNo");
-		// attendance.setEmpNo(empNo);
-		// log.debug("attendance객체 ----->" + attendance);
+		Employee loginEmp = (Employee) session.getAttribute("loginEmp");
+		if (loginEmp == null) {
+		    log.debug("loginEmp is null");
+		    // 로그인 상태가 아닐 경우 처리 로직 추가
+		    return "redirect:/login"; // 예: 로그인 페이지로 리다이렉트
+		} else {
+		    log.debug("loginEmp------->" + loginEmp);
+		    String empNo = loginEmp.getEmpNo();
+		    attendance.setEmpNo(empNo);
+		}
+		log.debug("loginEmp------->" + loginEmp);
+		String empNo = loginEmp.getEmpNo();
+		attendance.setEmpNo(empNo);
 		
 		// 현재 날짜 및 시간 설정
 	    String currentDate = LocalDate.now().toString(); 
@@ -77,10 +88,10 @@ public class AttendanceController {
 	// 오자윤 : 퇴근등록
     @PostMapping("/employee/attendanceOff")
     public String attendanceOff(Model model, HttpSession session, Attendance attendance) {
-    	// 세션 empNo값 가져오기
-    	// String empNo = (String) session.getAttribute(empNo);
-    	// attendance.setEmpNo(empNo);
-    	
+    	// 세션 empNo 가져오기
+    	Employee loginEmp = (Employee) session.getAttribute("loginEmp");
+		String empNo = loginEmp.getEmpNo();
+		
     	// 퇴근 시간 설정
         String currentTime = LocalTime.now().toString(); 
         attendance.setClockOutTime(currentTime);
