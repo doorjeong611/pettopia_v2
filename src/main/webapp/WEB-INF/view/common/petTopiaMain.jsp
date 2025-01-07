@@ -48,6 +48,8 @@
 			            <form action="${pageContext.request.contextPath}/employee/attendanceOn" method="post">
 			                <input type="hidden" name="empNo" value="${employee.empNo}">
 			                <input type="hidden" name="attendanceDate" value="${currentDate}">
+			                <input type="hidden" name="clockInTime" value="${clockInTime}">
+			                
 			                <input type="submit" class="btn btn-light" value="출근">
 			            </form>
 			            <form action="${pageContext.request.contextPath}/employee/attendanceOff" method="post">
@@ -59,10 +61,10 @@
 			        
 			        <div class="d-inline-block">             
 			            <div class="text-white" id="attendanceTime">
-			                출근 시간: ${startTime != null ? startTime : '없음'}
+			                출근 시간: ${clockInTime != null ? clockInTime : '없음'}
 			            </div>
 			            <div class="text-white" id="departureTime">
-			                퇴근 시간: ${endTime != null ? endTime : '없음'}
+			                퇴근 시간: ${clockOutTime != null ? clockOutTime : '없음'}
 			            </div>         
 			        </div>
 			    </div>
