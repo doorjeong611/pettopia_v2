@@ -53,49 +53,109 @@
                 <div class="xl:col-span-9">
                         <div class="card">
                             <div class="card-body">
-                                <h6 class="mb-2 text-15">문서 유형 선택</h6>
-                                <select id="docType" class="mb-2">
-                                	<option value="">기안서</option>
-                                	<option value="">휴가 신청서</option>
-                                	<option value="">자재 신청서</option>
-                                </select>
+                                <h6 class="mb-5 text-15">문서 작성</h6>
+                                
+                                
                                 <form id="formAddDocument" method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/document/addDocument">
                                     <div class="grid grid-cols-1 gap-5 lg:grid-cols-2 xl:grid-cols-12">
+                                    	<div class="xl:col-span-6">
+                                            <label for="docTitle" class="inline-block mb-2 text-base font-medium">문서 제목</label>
+                                            <input type="text" id="docTitle" name="docTitle" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" placeholder="문서 제목을 입력하세요" required="">
+                                        </div><!--end col-->
+                                        
+                                    	<div class="xl:col-span-6">
+                                    		<label for="docType" class="inline-block mb-2 text-base font-medium">문서 유형</label>
+                                    		<select id="docType" name="docType" class="form-select border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200">
+			                                    <option value="">유형을 선택하세요</option>
+			                                    <option value="D">기안 문서</option>
+			                                	<option value="V">휴가 신청서</option>
+			                                	<option value="M">자재 신청서</option>
+		                                	</select>
+                                		</div>
+                                        
                                         <div class="xl:col-span-6">
-                                            <label for="docType" class="inline-block mb-2 text-base font-medium">문서 제목</label>
-                                            <input type="text" id="docType" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" placeholder="문서 제목을 입력하세요" required="">
+                                            <label for="docWriterNo" class="inline-block mb-2 text-base font-medium">문서 작성자</label>
+                                            <input type="hidden" name="docWriterNo" id="docWriterNo" value="${loginEmp.empNo}">
+                                            <input type="text" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" value="${loginEmp.empNo} / ${loginEmp.empName}" disabled required>
                                         </div><!--end col-->
+                                        
+                                        <!-- 모달 -->
                                         <div class="xl:col-span-6">
-                                            <label for="docWriterNo" class="inline-block mb-2 text-base font-medium">작성자</label>
-                                            <input type="hidden" id="docWriterNo" value="${loginEmp.empNo}">
-                                            <input type="text" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" value="${loginEmp.empNo} / ${loginEmp.empName}" readonly required>
-                                        </div><!--end col-->
-                                        <div class="xl:col-span-4">
-                                            <label for="qualityInput" class="inline-block mb-2 text-base font-medium">Quantity</label>
-                                            <input type="number" id="qualityInput" class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="Quantity" required="">
-                                        </div><!--end col-->
-                                        <div class="xl:col-span-4">
-                                            <label for="skuInput" class="inline-block mb-2 text-base font-medium">SKU</label>
-                                            <input type="text" id="skuInput" class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="TWT-LP-ALU-08" required="">
-                                        </div><!--end col-->
-                                        <div class="xl:col-span-4">
-                                            <label for="brandInput" class="inline-block mb-2 text-base font-medium">Brand</label>
-                                            <input type="text" id="brandInput" class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="Brand" required="">
-                                        </div><!--end col-->
-                                        <div class="xl:col-span-4">
-                                            <label for="categorySelect" class="inline-block mb-2 text-base font-medium">Category</label>
-                                            <div class="choices" data-type="select-one" tabindex="0" role="listbox" aria-haspopup="true" aria-expanded="false"><div class="choices__inner"><select class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200 choices__input" data-choices="" data-choices-search-false="" name="categorySelect" id="categorySelect" hidden="" tabindex="-1" data-choice="active"><option value="" data-custom-properties="[object Object]">Select Category</option></select><div class="choices__list choices__list--single"><div class="choices__item choices__placeholder choices__item--selectable" data-item="" data-id="1" data-value="" data-custom-properties="[object Object]" aria-selected="true">Select Category</div></div></div><div class="choices__list choices__list--dropdown" aria-expanded="false"><div class="choices__list" role="listbox"><div id="choices--categorySelect-item-choice-6" class="choices__item choices__item--choice is-selected choices__placeholder choices__item--selectable is-highlighted" role="option" data-choice="" data-id="6" data-value="" data-select-text="Press to select" data-choice-selectable="" aria-selected="true">Select Category</div><div id="choices--categorySelect-item-choice-1" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="1" data-value="Beauty, Health, Grocery" data-select-text="Press to select" data-choice-selectable="">Beauty, Health, Grocery</div><div id="choices--categorySelect-item-choice-2" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="2" data-value="Books" data-select-text="Press to select" data-choice-selectable="">Books</div><div id="choices--categorySelect-item-choice-3" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="3" data-value="Home, Kitchen, Pets" data-select-text="Press to select" data-choice-selectable="">Home, Kitchen, Pets</div><div id="choices--categorySelect-item-choice-4" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="4" data-value="Men's Fashion" data-select-text="Press to select" data-choice-selectable="">Men's Fashion</div><div id="choices--categorySelect-item-choice-5" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="5" data-value="Mobiles, Computers" data-select-text="Press to select" data-choice-selectable="">Mobiles, Computers</div><div id="choices--categorySelect-item-choice-7" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="7" data-value="TV, Appliances, Electronics" data-select-text="Press to select" data-choice-selectable="">TV, Appliances, Electronics</div><div id="choices--categorySelect-item-choice-8" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="8" data-value="Women's Fashion" data-select-text="Press to select" data-choice-selectable="">Women's Fashion</div></div></div></div>
-                                        </div><!--end col-->
-                                        <div class="xl:col-span-4">
-                                            <label for="productTypeSelect" class="inline-block mb-2 text-base font-medium">Product Type</label>
-                                            <div class="choices" data-type="select-one" tabindex="0" role="listbox" aria-haspopup="true" aria-expanded="false"><div class="choices__inner"><select class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200 choices__input" data-choices="" data-choices-search-false="" name="productTypeSelect" id="productTypeSelect" hidden="" tabindex="-1" data-choice="active"><option value="" data-custom-properties="[object Object]">Select Type</option></select><div class="choices__list choices__list--single"><div class="choices__item choices__placeholder choices__item--selectable" data-item="" data-id="1" data-value="" data-custom-properties="[object Object]" aria-selected="true">Select Type</div></div></div><div class="choices__list choices__list--dropdown" aria-expanded="false"><div class="choices__list" role="listbox"><div id="choices--productTypeSelect-item-choice-2" class="choices__item choices__item--choice is-selected choices__placeholder choices__item--selectable is-highlighted" role="option" data-choice="" data-id="2" data-value="" data-select-text="Press to select" data-choice-selectable="" aria-selected="true">Select Type</div><div id="choices--productTypeSelect-item-choice-1" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="1" data-value="Boxed" data-select-text="Press to select" data-choice-selectable="">Boxed</div><div id="choices--productTypeSelect-item-choice-3" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="3" data-value="Single" data-select-text="Press to select" data-choice-selectable="">Single</div><div id="choices--productTypeSelect-item-choice-4" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="4" data-value="Unit" data-select-text="Press to select" data-choice-selectable="">Unit</div></div></div></div>
-                                        </div><!--end col-->
-                                        <div class="xl:col-span-4">
-                                            <label for="genderSelect" class="inline-block mb-2 text-base font-medium">Gender</label>
-                                            <div class="choices" data-type="select-one" tabindex="0" role="listbox" aria-haspopup="true" aria-expanded="false"><div class="choices__inner"><select class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200 choices__input" data-choices="" data-choices-search-false="" name="genderSelect" id="genderSelect" hidden="" tabindex="-1" data-choice="active"><option value="" data-custom-properties="[object Object]">Select Gender</option></select><div class="choices__list choices__list--single"><div class="choices__item choices__placeholder choices__item--selectable" data-item="" data-id="1" data-value="" data-custom-properties="[object Object]" aria-selected="true">Select Gender</div></div></div><div class="choices__list choices__list--dropdown" aria-expanded="false"><div class="choices__list" role="listbox"><div id="choices--genderSelect-item-choice-3" class="choices__item choices__item--choice is-selected choices__placeholder choices__item--selectable is-highlighted" role="option" data-choice="" data-id="3" data-value="" data-select-text="Press to select" data-choice-selectable="" aria-selected="true">Select Gender</div><div id="choices--genderSelect-item-choice-1" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="1" data-value="Female" data-select-text="Press to select" data-choice-selectable="">Female</div><div id="choices--genderSelect-item-choice-2" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="2" data-value="Male" data-select-text="Press to select" data-choice-selectable="">Male</div><div id="choices--genderSelect-item-choice-4" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="4" data-value="Unisex" data-select-text="Press to select" data-choice-selectable="">Unisex</div></div></div></div>
-                                        </div><!--end col-->
+										    <label for="approverEmpNo" class="inline-block mb-2 text-base font-medium">결재 수신자</label>
+										    <input type="text" name="approverEmpNo" id="approverEmpNo" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" placeholder="수신 받을 직원을 선택하세요" readonly required>
+										</div>
+                                        
+                                        <div id="approverModal" modal-center="" class="fixed flex flex-col transition-all duration-300 ease-in-out left-2/4 z-drawer -translate-x-2/4 -translate-y-2/4 hidden">
+										    <div class="w-screen lg:w-[55rem] bg-white shadow rounded-md dark:bg-zink-600 flex flex-col h-full">
+										        <!-- Modal Header -->
+										        <div class="flex items-center justify-start p-4 bg-slate-100 border-b">
+												    <h5 class="text-16">결재 수신자 목록</h5>
+												</div>
+
+
+										        
+										        <!-- Modal Content -->
+										        <div class="max-h-[calc(theme('height.screen')_-_180px)] p-4 overflow-y-auto">
+										            <h5 class="mb-3 text-16">직원 검색</h5>
+										            <input type="text" id="approverSearch" class="form-input w-full mb-4" placeholder="직원 검색">
+										            <ul id="approverList" class="mt-2">
+										                <!-- 예시 직원 목록 -->
+										                <li class="approver-item cursor-pointer p-3 hover:bg-gray-100" data-emp-no="202400007">202400007</li>
+										                <li class="approver-item cursor-pointer p-3 hover:bg-gray-100" data-emp-no="202400008">202400008 / 박지민</li>
+										                <li class="approver-item cursor-pointer p-3 hover:bg-gray-100" data-emp-no="202400009">202400009 / 이영호</li>
+										                <li class="approver-item cursor-pointer p-3 hover:bg-gray-100" data-emp-no="202400010">202400010 / 김지혜</li>
+										                <li class="approver-item cursor-pointer p-3 hover:bg-gray-100" data-emp-no="202400011">202400011 / 홍길동</li>
+										            </ul>
+										        </div>
+										
+										        <!-- Modal Footer -->
+										        <div class="flex items-center justify-end p-4 mt-auto border-t border-slate-200 dark:border-zink-500">
+										            <button id="closeModal" class="text-red-500 bg-white btn hover:text-red-500 hover:bg-red-100 focus:text-red-500 focus:bg-red-100 active:text-red-500 active:bg-red-100">
+										                닫기
+										                <i class="align-baseline ltr:pl-1 rtl:pr-1 ri-close-line"></i>
+										            </button>
+										        </div>
+										    </div>
+										</div>
+										
+										<!-- 유형 선택 하기 전 -->
+                                        <div id="documentDiv" class="lg:col-span-2 xl:col-span-12" style="display:block;">
+                                            <div>
+                                                <label for="docContent" class="inline-block mb-2 text-base font-medium">문서 내용</label>
+                                                <textarea name="docContent" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" id="docContent" placeholder="문서 유형을 먼저 선택하세요" rows="10" readonly></textarea>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- 기안 문서 -->
+										<div id="draftDiv" class="lg:col-span-2 xl:col-span-12" style="display:none;">
+										    <label for="docContent" class="inline-block mb-2 text-base font-medium">기안 내용</label>
+										    <textarea name="docContent" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" id="docContent" placeholder="기안 내용을 입력하세요" rows="10"></textarea>
+										</div>
+										
+										<!-- 휴가 신청서 문서 -->
+										<div id="vacationDiv" class="lg:col-span-2 xl:col-span-12" style="display:none;">
+											<div class="xl:col-span-6">
+												<label for="vacationType" class="font-large">연차</label>
+												<input type="radio">
+											</div>
+											<div class="xl:col-span-6">
+											</div>
+											<div class="xl:col-span-12">
+											    <label for="docContent" class="inline-block mb-2 text-base font-medium">휴가 사유</label>
+											    <textarea name="docContent" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" id="docContent" placeholder="휴가 사유를 입력하세요" rows="10"></textarea>
+											</div>
+										</div>
+										
+										<!-- 자재 신청서 문서 -->
+										<div id="materialDiv" class="lg:col-span-2 xl:col-span-12" style="display:none;">
+										    <label for="docContent" class="inline-block mb-2 text-base font-medium">자재 신청 사유</label>
+										    <textarea name="docContent" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" id="docContent" placeholder="자재 신청 사유를 입력하세요" rows="10"></textarea>
+										</div>
+                                        
+                                        
+                                        
                                         <div class="lg:col-span-2 xl:col-span-12">
-                                            <label for="genderSelect" class="inline-block mb-2 text-base font-medium">Product Images</label>
+                                            <label for="genderSelect" class="inline-block mb-2 text-base font-medium">파일 업로드</label>
                                             <div class="flex items-center justify-center bg-white border border-dashed rounded-md cursor-pointer dropzone border-slate-300 dark:bg-zink-700 dark:border-zink-500 dropzone2 dz-clickable">
                                                 
                                                 <div class="w-full py-5 text-lg text-center dz-message needsclick">
@@ -111,45 +171,12 @@
                                                 
                                             </ul>
                                         </div>
-                                        <div class="lg:col-span-2 xl:col-span-12">
-                                            <div>
-                                                <label for="productDescription" class="inline-block mb-2 text-base font-medium">Description</label>
-                                                <textarea class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" id="productDescription" placeholder="Enter Description" rows="5"></textarea>
-                                            </div>
-                                        </div>
-                                        <div class="xl:col-span-4">
-                                            <label for="productPrice" class="inline-block mb-2 text-base font-medium">Price</label>
-                                            <input type="number" id="productPrice" class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="$0.00" required="">
-                                        </div><!--end col-->
-                                        <div class="xl:col-span-4">
-                                            <label for="productDiscounts" class="inline-block mb-2 text-base font-medium">Discounts</label>
-                                            <input type="number" id="productDiscounts" class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="0%" required="">
-                                        </div><!--end col-->
-                                        <div class="xl:col-span-4">
-                                            <label for="taxApplicable" class="inline-block mb-2 text-base font-medium">TAX Applicable</label>
-                                            <div class="choices" data-type="select-one" tabindex="0" role="listbox" aria-haspopup="true" aria-expanded="false"><div class="choices__inner"><select class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200 choices__input" data-choices="" data-choices-search-false="" name="taxApplicable" id="taxApplicable" hidden="" tabindex="-1" data-choice="active"><option value="" data-custom-properties="[object Object]">Select TAX Applicable</option></select><div class="choices__list choices__list--single"><div class="choices__item choices__placeholder choices__item--selectable" data-item="" data-id="1" data-value="" data-custom-properties="[object Object]" aria-selected="true">Select TAX Applicable</div></div></div><div class="choices__list choices__list--dropdown" aria-expanded="false"><div class="choices__list" role="listbox"><div id="choices--taxApplicable-item-choice-5" class="choices__item choices__item--choice is-selected choices__placeholder choices__item--selectable is-highlighted" role="option" data-choice="" data-id="5" data-value="" data-select-text="Press to select" data-choice-selectable="" aria-selected="true">Select TAX Applicable</div><div id="choices--taxApplicable-item-choice-1" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="1" data-value="Entertainment" data-select-text="Press to select" data-choice-selectable="">Entertainment</div><div id="choices--taxApplicable-item-choice-2" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="2" data-value="Exclusive" data-select-text="Press to select" data-choice-selectable="">Exclusive</div><div id="choices--taxApplicable-item-choice-3" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="3" data-value="none" data-select-text="Press to select" data-choice-selectable="">none</div><div id="choices--taxApplicable-item-choice-4" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="4" data-value="Professional" data-select-text="Press to select" data-choice-selectable="">Professional</div></div></div></div>
-                                        </div><!--end col-->
-                                        <div class="xl:col-span-4">
-                                            <label for="publishDateTime" class="inline-block mb-2 text-base font-medium">Publish Date &amp; Time</label>
-                                            <input type="text" id="publishDateTime" class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200 flatpickr-input" placeholder="Select date &amp; time" data-provider="flatpickr" data-date-format="d M, Y" data-enable-time="" required="" readonly="readonly">
-                                        </div><!--end col-->
-                                        <div class="xl:col-span-4">
-                                            <label for="productStatus" class="inline-block mb-2 text-base font-medium">Status</label>
-                                            <div class="choices" data-type="select-one" tabindex="0" role="listbox" aria-haspopup="true" aria-expanded="false"><div class="choices__inner"><select class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200 choices__input" data-choices="" data-choices-search-false="" name="productStatus" id="productStatus" hidden="" tabindex="-1" data-choice="active"><option value="Draft" data-custom-properties="[object Object]">Draft</option></select><div class="choices__list choices__list--single"><div class="choices__item choices__item--selectable" data-item="" data-id="1" data-value="Draft" data-custom-properties="[object Object]" aria-selected="true">Draft</div></div></div><div class="choices__list choices__list--dropdown" aria-expanded="false"><div class="choices__list" role="listbox"><div id="choices--productStatus-item-choice-1" class="choices__item choices__item--choice is-selected choices__item--selectable is-highlighted" role="option" data-choice="" data-id="1" data-value="Draft" data-select-text="Press to select" data-choice-selectable="" aria-selected="true">Draft</div><div id="choices--productStatus-item-choice-2" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="2" data-value="Entertainment" data-select-text="Press to select" data-choice-selectable="">Entertainment</div><div id="choices--productStatus-item-choice-3" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="3" data-value="Published" data-select-text="Press to select" data-choice-selectable="">Published</div><div id="choices--productStatus-item-choice-4" class="choices__item choices__item--choice choices__item--selectable" role="option" data-choice="" data-id="4" data-value="Scheduled" data-select-text="Press to select" data-choice-selectable="">Scheduled</div></div></div></div>
-                                        </div><!--end col-->
-                                        <div class="xl:col-span-4">
-                                            <label for="productVisibility" class="inline-block mb-2 text-base font-medium">Visibility</label>
-                                            <div class="choices" data-type="select-one" tabindex="0" role="listbox" aria-haspopup="true" aria-expanded="false"><div class="choices__inner"><select class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200 choices__input" data-choices="" data-choices-search-false="" name="productVisibility" id="productVisibility" hidden="" tabindex="-1" data-choice="active"><option value="Public" data-custom-properties="[object Object]">Public</option></select><div class="choices__list choices__list--single"><div class="choices__item choices__item--selectable" data-item="" data-id="1" data-value="Public" data-custom-properties="[object Object]" aria-selected="true">Public</div></div></div><div class="choices__list choices__list--dropdown" aria-expanded="false"><div class="choices__list" role="listbox"><div id="choices--productVisibility-item-choice-1" class="choices__item choices__item--choice choices__item--selectable is-highlighted" role="option" data-choice="" data-id="1" data-value="Hidden" data-select-text="Press to select" data-choice-selectable="" aria-selected="true">Hidden</div><div id="choices--productVisibility-item-choice-2" class="choices__item choices__item--choice is-selected choices__item--selectable" role="option" data-choice="" data-id="2" data-value="Public" data-select-text="Press to select" data-choice-selectable="">Public</div></div></div></div>
-                                        </div><!--end col-->
-                                        <div class="lg:col-span-2 xl:col-span-12">
-                                            <label for="productTag" class="inline-block mb-2 text-base font-medium">Product Tag</label>
-                                            <div class="choices" data-type="text" aria-haspopup="true" aria-expanded="false"><div class="choices__inner"><input class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200 choices__input" id="productTag" data-choices="" data-choices-text-unique-true="" type="text" value="Fashion,Clothes,Headphones" hidden="" tabindex="-1" data-choice="active"><div class="choices__list choices__list--multiple"><div class="choices__item choices__item--selectable" data-item="" data-id="1" data-value="Fashion" data-custom-properties="[object Object]" aria-selected="true">Fashion</div><div class="choices__item choices__item--selectable" data-item="" data-id="2" data-value="Clothes" data-custom-properties="[object Object]" aria-selected="true">Clothes</div><div class="choices__item choices__item--selectable" data-item="" data-id="3" data-value="Headphones" data-custom-properties="[object Object]" aria-selected="true">Headphones</div></div><input type="search" name="search_terms" class="choices__input choices__input--cloned" autocomplete="off" autocapitalize="off" spellcheck="false" role="textbox" aria-autocomplete="list" aria-label="null"></div><div class="choices__list choices__list--dropdown" aria-expanded="false"></div></div>
-                                        </div><!--end col-->
                                     </div><!--end grid-->
                                     <div class="flex justify-end gap-2 mt-4">
-                                        <button type="reset" class="text-red-500 bg-white btn hover:text-red-500 hover:bg-red-100 focus:text-red-500 focus:bg-red-100 active:text-red-500 active:bg-red-100 dark:bg-zink-700 dark:hover:bg-red-500/10 dark:focus:bg-red-500/10 dark:active:bg-red-500/10">Reset</button>
-                                        <button type="submit" class="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20">Create Product</button>
-                                        <button type="button" class="text-white bg-green-500 border-green-500 btn hover:text-white hover:bg-green-600 hover:border-green-600 focus:text-white focus:bg-green-600 focus:border-green-600 focus:ring focus:ring-green-100 active:text-white active:bg-green-600 active:border-green-600 active:ring active:ring-green-100 dark:ring-green-400/10">Draft &amp; Preview</button>
+                                        <button type="reset" class="text-red-500 bg-white btn hover:text-red-500 hover:bg-red-100 focus:text-red-500 focus:bg-red-100 active:text-red-500 active:bg-red-100 dark:bg-zink-700 dark:hover:bg-red-500/10 dark:focus:bg-red-500/10 dark:active:bg-red-500/10">리셋</button>
+                                        <button type="submit" class="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100">문서 작성</button>
+										<button type="button" class="text-white bg-green-500 border-green-500 btn hover:text-white hover:bg-green-600 hover:border-green-600 focus:text-white focus:bg-green-600 focus:border-green-600 focus:ring focus:ring-green-100 active:text-white active:bg-green-600 active:border-green-600 active:ring active:ring-green-100">목록</button>
+
                                     </div>
                                 </form>
                             </div>
@@ -157,8 +184,8 @@
                     </div>
             <!-- container-fluid -->
         </div>
+</div>
         <!-- End Page-content -->
-
 		<!-- Start Footer -->
         <footer class="ltr:md:left-vertical-menu rtl:md:right-vertical-menu group-data-[sidebar-size=md]:ltr:md:left-vertical-menu-md group-data-[sidebar-size=md]:rtl:md:right-vertical-menu-md group-data-[sidebar-size=sm]:ltr:md:left-vertical-menu-sm group-data-[sidebar-size=sm]:rtl:md:right-vertical-menu-sm absolute right-0 bottom-0 px-4 h-14 group-data-[layout=horizontal]:ltr:left-0  group-data-[layout=horizontal]:rtl:right-0 left-0 border-t py-3 flex items-center dark:border-zink-600">
         	<c:import url="/WEB-INF/view/inc/footer.jsp"></c:import>    
@@ -185,6 +212,88 @@
 <!-- App js -->
 <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
 <script src="${pageContext.request.contextPath}/assets/libs/dropzone/dropzone-min.js"></script>
+
+<script>
+    // DOM 요소들
+    const approverInput = document.getElementById('approverEmpNo');
+    const approverModal = document.getElementById('approverModal');
+    const closeModalButton = document.getElementById('closeModal');
+    const approverList = document.getElementById('approverList');
+    
+    // 모달 창 열기
+    approverInput.addEventListener('click', () => {
+        approverModal.classList.remove('hidden');  // 모달을 보이게 함
+    });
+
+    // 모달 창 닫기
+    closeModalButton.addEventListener('click', () => {
+        approverModal.classList.add('hidden');  // 모달을 숨김
+    });
+
+    // 모달 외부 클릭 시 닫기
+    window.addEventListener('click', (event) => {
+        if (event.target === approverModal) {
+            approverModal.classList.add('hidden');  // 모달을 숨김
+        }
+    });
+
+    // 모달에서 직원 선택 시 입력 필드에 값 채우기
+    approverList.addEventListener('click', (event) => {
+        // 리스트 항목 클릭 시
+        if (event.target && event.target.classList.contains('approver-item')) {
+            const selectedEmpNo = event.target.getAttribute('data-emp-no');
+            const selectedEmpName = event.target.textContent;
+
+            // 수신자 입력 필드에 직원 이름을 입력하고, empNo 값도 사용할 수 있도록 숨겨둠
+            approverInput.value = selectedEmpName;  // 직원 이름 입력 필드에 넣기
+            approverInput.setAttribute('data-emp-no', selectedEmpNo);  // 숨겨진 값으로 empNo 저장
+
+            approverModal.classList.add('hidden');  // 모달 닫기
+        }
+    });
+    
+    
+ 	// <select> 요소
+    const docTypeSelect = document.getElementById('docType');
+
+    // 문서 작성 텍스트를 변경할 <h6> 요소
+    const documentTitle = document.querySelector('h6.mb-5.text-15');
+
+    // 각 문서 유형에 해당하는 div들
+    const documentDiv = document.getElementById('documentDiv');
+    const draftDiv = document.getElementById('draftDiv');
+    const vacationDiv = document.getElementById('vacationDiv');
+    const materialDiv = document.getElementById('materialDiv');
+
+    // <select>의 변화에 따라 div를 숨기거나 보이게 하기
+    docTypeSelect.addEventListener('change', function() {
+        const selectedValue = docTypeSelect.value;
+        
+        // 모든 div 숨기기
+        documentDiv.style.display = 'none';
+        draftDiv.style.display = 'none';
+        vacationDiv.style.display = 'none';
+        materialDiv.style.display = 'none';
+        
+        // 선택된 문서 유형에 맞는 div만 보이기
+        if (selectedValue === '') {
+            documentDiv.style.display = 'block';  // 기본 문서 내용 보이기
+            documentTitle.textContent = '문서 작성';  // 기본 문서 제목
+        } else if (selectedValue === 'V') {
+            vacationDiv.style.display = 'block';  // 휴가 신청서 보이기
+            documentTitle.textContent = '휴가 신청서 작성';  // 휴가 신청서 제목
+        } else if (selectedValue === 'M') {
+            materialDiv.style.display = 'block';  // 자재 신청서 보이기
+            documentTitle.textContent = '자재 신청서 작성';  // 자재 신청서 제목
+        } else if (selectedValue === 'D') {
+            draftDiv.style.display = 'block';  // 기안 문서 보이기
+            documentTitle.textContent = '기안 문서 작성';  // 기안 문서 제목
+        }
+    });
+
+
+</script>
+
 
 </body>
 
