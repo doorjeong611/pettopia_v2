@@ -191,7 +191,8 @@ function updateList() {
     userList.update();
 }
 
-if (document.getElementById("showModal")) {
+// 모달 수정 전
+/*if (document.getElementById("showModal")) {
     document.getElementById("showModal").addEventListener("show.bs.modal", function (e) {
         if (e.relatedTarget.classList.contains("edit-item-btn")) {
             document.getElementById("exampleModalLabel").innerHTML = "Edit Customer";
@@ -211,7 +212,56 @@ if (document.getElementById("showModal")) {
     document.getElementById("showModal").addEventListener("hidden.bs.modal", function () {
         clearFields();
     });
+}*/
+// 모달 열기 버튼 클릭 이벤트
+document.querySelectorAll('[data-modal-target]').forEach(button => {
+    button.addEventListener('click', function () {
+        const modalId = button.getAttribute('data-modal-target');
+        const modal = document.getElementById(modalId);
+
+        if (modal) {
+            // 모달 표시
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+
+            // 트리거 버튼 클래스에 따라 모달 내용 설정
+            if (button.classList.contains('edit-item-btn')) {
+                document.getElementById("exampleModalLabel").innerHTML = "Edit Customer";
+                document.getElementById("add-btn").innerHTML = "Update";
+            } else if (button.classList.contains('add-btn')) {
+                document.getElementById("exampleModalLabel").innerHTML = "Add Customer";
+                document.getElementById("add-btn").innerHTML = "Add Customer";
+            }
+        }
+    });
+});
+
+// 모달 닫기 버튼 클릭 이벤트
+document.querySelectorAll('[data-modal-close]').forEach(button => {
+    button.addEventListener('click', function () {
+        const modalId = button.getAttribute('data-modal-close');
+        const modal = document.getElementById(modalId);
+
+        if (modal) {
+            // 모달 숨김
+            modal.classList.remove('flex');
+            modal.classList.add('hidden');
+
+            // 폼 초기화 (필요 시)
+            clearFields();
+        }
+    });
+});
+
+// 입력 필드 초기화 함수
+function clearFields() {
+    document.getElementById("customername-field").value = "";
+    document.getElementById("email-field").value = "";
+    document.getElementById("phone-field").value = "";
+    document.getElementById("date-field").value = "";
+    document.getElementById("status-field").value = "";
 }
+
 document.querySelector("#customerList").addEventListener("click", function () {
     ischeckboxcheck();
 });

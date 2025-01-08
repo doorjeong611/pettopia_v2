@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.pettopia.mapper.ServiceMapper">
+
+	<!-- 서비스 등록 -->
+    <insert id="insertService" parameterType="com.example.pettopia.vo.PetService">
+        INSERT INTO pet_service (service_no, service_name, service_desc, service_price, create_datetime, update_datetime)
+        VALUES (#{serviceNo}, #{serviceName}, #{serviceDesc}, #{servicePrice}, NOW(), NOW());
+    </insert>
+	<!-- 서비스 조회 -->
 	<select id="selectService" resultType="com.example.pettopia.vo.PetService">
 		SELECT
 				service_no serviceNo,
 				service_name serviceName,
 				service_desc serviceDesc
-				
 		FROM 
 				pet_service
-	
 	</select>
 </mapper>
