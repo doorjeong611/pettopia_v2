@@ -1,5 +1,9 @@
 package com.example.pettopia.service;
 
+
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,5 +24,10 @@ public class BoardService {
 		// 게시글 삭제 
 		boardMapper.deleteBoard(boardNo);
 	}
+	
+	public List<Map<String, Object>> getBoardList(Map boardMap){
+		return boardMapper.selectBoardList(boardMap);
+	}
+	
 	
 }

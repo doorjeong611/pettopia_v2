@@ -1,10 +1,18 @@
 package com.example.pettopia.controller;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 
 import com.example.pettopia.service.BoardService;
+import com.example.pettopia.vo.Board;
+
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
@@ -15,12 +23,22 @@ public class BoardController {
 	
 	
 	// 게시판 리스트 구현 /board/boardList 작업자 : 이준호
-	@GetMapping("/board/boardList")
+	@PostMapping("/board/boardList")
 	public String getBoardList() {
 		
 		return "board/boardList";
 	}
+	@GetMapping("/board/boardList")
+	public String boardList(Model model) {
+		Map<String, Object> map = new HashMap<>();
+		
+		List<Map<String, Object>> boardList = boardService.getBoardList(map);
+		model.addAttribute("boardList",boardList);
+		
+		return "board/boardList";
+	}
 	
+
 	
 	//	게시글 댓글 통합 삭제 /board/removeBoard 작업자 : 이준호
 	@GetMapping("/board/removeBoard")
@@ -29,5 +47,6 @@ public class BoardController {
 		boardService.deleteBoardWithComment(boardNo);
 		return "redirect:/board/boardList";
 	}
+	
 	
 }
