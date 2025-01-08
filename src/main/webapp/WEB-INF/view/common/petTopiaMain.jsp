@@ -45,14 +45,14 @@
 		        	<div class="card-body" style="height:196px; background: #f8f9fa);">
 			        <!-- 근태 -->
 			        <div class="float-right">
-			            <form action="${pageContext.request.contextPath}/employee/attendanceOn" method="post">
+			            <form id="attendanceOnForm" action="${pageContext.request.contextPath}/employee/attendanceOn" method="post" onsubmit="return checkAttendance(event, 'in');">
 			                <input type="hidden" name="empNo" value="${employee.empNo}">
 			                <input type="hidden" name="attendanceDate" value="${currentDate}">
 			                <input type="hidden" name="clockInTime" value="${clockInTime}">
 			                
 			                <input type="submit" class="btn" style="background-color: rgba(59, 130, 246, 0.5); color: white; margin-bottom: 10px;" value="출근">
 			            </form>
-			            <form action="${pageContext.request.contextPath}/employee/attendanceOff" method="post">
+			            <form id="attendanceOffForm" action="${pageContext.request.contextPath}/employee/attendanceOff" method="post" onsubmit="return checkAttendance(event, 'out');">
 			            	<input type="hidden" name="empNo" value="${employee.empNo}">
 			                <input type="hidden" name="attendanceDate" value="${currentDate}">
 			                <input type="hidden" name="clockInTime" value="${clockInTime}">
@@ -85,26 +85,33 @@
 					    </div>
 					</c:forEach>
 					
-					  <script>
-		                function checkClockIn(clockInTime) {
-		                    if (clockInTime) {
-		                        alert("이미 출근 하였습니다.");
-		                        return false; // 폼 제출 방지
-		                    }
-		                    return true; // 폼 제출 허용
-		                }
-		
-		                function checkClockOut(clockOutTime) {
-		                    if (clockOutTime) {
-		                        alert("이미 퇴근 하였습니다.");
-		                        return false; // 폼 제출 방지
-		                    } else {
-		                        alert("출근시간을 입력해주세요.");
-		                        return false; // 폼 제출 방지
-		                    }
-		                }
-		            </script>
-					   </div>
+						 <script>
+			                function checkAttendance(event, action) {
+			                	event.preventDefault(); // 기본 동작 방지
+			                	
+			                    const clockInTime = "${attendanceList[0] != null ? attendanceList[0].clockInTime : ''}";
+			                    const clockOutTime = "${attendanceList[0] != null ? attendanceList[0].clockOutTime : ''}";
+			
+			                    if (action === 'in') {
+			                        if (clockInTime) {
+			                            alert("이미 출근하셨습니다.");
+			                            return false; 
+			                        }
+			                    } else if (action === 'out') {
+			                        if (clockOutTime) {
+			                            alert("이미 퇴근하셨습니다.");
+			                            return false; 
+			                        } else if (!clockInTime) {
+			                            alert("출근시간을 입력해주세요.");
+			                            return false; 
+			                        }
+			                    }
+			                    
+			                    event.target.submit(); // 유효성 통과 시 폼 제출
+			                    return true; 
+			                }
+			            </script>	
+					 </div>
             <!-- container-fluid -->
         </div>
         <!-- End Page-content -->
