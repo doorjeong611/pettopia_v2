@@ -3,12 +3,17 @@
 <mapper namespace="com.example.pettopia.mapper.AttendanceMapper">
 
 <!-- 오자윤 : /employee/attendanceOn & Off 근태조회 -->
-<select id="getAttendanceList" parameterType="com.example.pettopia.vo.Attendance" resultType="map">
-	SELECT *
-	FROM attendance 
-	WHERE emp_no = #{empNo} AND attendance_date = #{attendanceDate}
+<select id="getAttendanceList" resultType="com.example.pettopia.vo.Attendance">
+    SELECT emp_no empNo, 
+    		attendance_date attendanceDate,
+    		attendance_status attendanceStatus,
+    		clock_in_time clockInTime,
+    		clock_out_time clockOutTime,
+    		create_datetime createDatetime,
+    		update_datetime updateDatetime
+    FROM attendance 
+    WHERE emp_no = #{empNo} AND attendance_date = #{attendanceDate}
 </select>
-
 
 <!-- 오자윤 : /employee/attendanceOn 근태 : 출근 -->
 <insert id="insertAttendanceOn" parameterType="com.example.pettopia.vo.Attendance">

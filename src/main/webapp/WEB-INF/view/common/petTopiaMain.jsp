@@ -42,7 +42,7 @@
 			<!-- Main content -->
 		    <div class="card-body" style="height:196px;">
 		        <div class="card gradient-1">
-		        <div class="card-body" style="height:196px; background: #f8f9fa);">
+		        	<div class="card-body" style="height:196px; background: #f8f9fa);">
 			        <!-- 근태 -->
 			        <div class="float-right">
 			            <form action="${pageContext.request.contextPath}/employee/attendanceOn" method="post">
@@ -61,21 +61,50 @@
 			            </form>
 			        </div>
 			        <h3 class="card-title" style="color: rgb(59, 130, 246); font-weight: bold;">
-			        <i class="fas fa-calendar-check" style="margin-right: 8px;"></i> 오늘의 근무 </h3>
-			        
+			        <i class="fas fa-calendar-check" style="margin-right: 8px;"></i> 오늘의 근무 
+			        </h3>
+			        <br>
 			        <c:forEach var="attendance" items="${attendanceList}">
-			        <div class="d-inline-block">   
-			        <c:if test="${not empty attendance}">          
-			            <div class="text-dark" id="attendanceTime" style="color: #003366;">
-			                출근 시간: ${attendance.clockInTime != null ? attendance.clockInTime : '없음'}
-			            </div>
-			            <div class="text-dark" id="departureTime" style="color: #003366;">
-			                퇴근 시간: ${attendance.clockOutTime != null ? attendance.clockOutTime : '없음'}
-			            </div>   
-		            </c:if>      
-			       </div>
-				</c:forEach>
-			   </div>
+					    <div class="d-inline-block">
+					        <div class="text-dark" id="attendanceClockInTime" style="color: #003366;">
+					            <c:if test="${attendance.clockInTime != null}">
+					                출근 시간: ${attendance.clockInTime}
+					            </c:if>
+					            <c:if test="${attendance.clockInTime == null}">
+					                출근 시간: 없음
+					            </c:if>
+					        </div>
+					        <div class="text-dark" id="attendanceClockOutTime" style="color: #003366;">
+					            <c:if test="${attendance.clockOutTime != null}">
+					                퇴근 시간: ${attendance.clockOutTime}
+					            </c:if>
+					            <c:if test="${attendance.clockOutTime == null}">
+					                퇴근 시간: 없음
+					            </c:if>
+					        </div>
+					    </div>
+					</c:forEach>
+					
+					  <script>
+		                function checkClockIn(clockInTime) {
+		                    if (clockInTime) {
+		                        alert("이미 출근 하였습니다.");
+		                        return false; // 폼 제출 방지
+		                    }
+		                    return true; // 폼 제출 허용
+		                }
+		
+		                function checkClockOut(clockOutTime) {
+		                    if (clockOutTime) {
+		                        alert("이미 퇴근 하였습니다.");
+		                        return false; // 폼 제출 방지
+		                    } else {
+		                        alert("출근시간을 입력해주세요.");
+		                        return false; // 폼 제출 방지
+		                    }
+		                }
+		            </script>
+					   </div>
             <!-- container-fluid -->
         </div>
         <!-- End Page-content -->
