@@ -82,14 +82,14 @@
                                   	
                                     	<input type="text" name="searchTitle" class="ltr:pl-8 rtl:pr-8 search form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="Search for ..." autocomplete="off">
                                     	<!-- <i data-lucide="search" class="inline-block size-4 absolute ltr:left-2.5 rtl:right-2.5 top-2.5 text-slate-500 dark:text-zink-200 fill-slate-100 dark:fill-zink-600"></i>  -->
-                               			<button type="button" class="text-slate-500 btn bg-slate-200 border-slate-200 hover:text-slate-600 hover:bg-slate-300 hover:border-slate-300 focus:text-slate-600 focus:bg-slate-300 focus:border-slate-300 focus:ring focus:ring-slate-100 active:text-slate-600 active:bg-slate-300 active:border-slate-300 active:ring active:ring-slate-100 dark:bg-zink-600 dark:hover:bg-zink-500 dark:border-zink-600 dark:hover:border-zink-500 dark:text-zink-200 dark:ring-zink-400/50">검색</button>
+                               			<button type="submit" class="text-slate-500 btn bg-slate-200 border-slate-200 hover:text-slate-600 hover:bg-slate-300 hover:border-slate-300 focus:text-slate-600 focus:bg-slate-300 focus:border-slate-300 focus:ring focus:ring-slate-100 active:text-slate-600 active:bg-slate-300 active:border-slate-300 active:ring active:ring-slate-100 dark:bg-zink-600 dark:hover:bg-zink-500 dark:border-zink-600 dark:hover:border-zink-500 dark:text-zink-200 dark:ring-zink-400/50">검색</button>
                                		 </form>
                                 	
                                 </div>
                             </div><!--end col-->
                             <div class="xl:col-span-2 xl:col-start-11">
                                 <div class="ltr:lg:text-right rtl:lg:text-left">
-                                    <a href="apps-hr-create-leave.html" type="button" class="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20"><i data-lucide="plus" class="inline-block size-4"></i> <span class="align-middle">Add Leave</span></a>
+                                    <a href="${pageContext.request.contextPath}/admin/addNotice" type="button" class="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20"><i data-lucide="plus" class="inline-block size-4"></i> <span class="align-middle">글쓰기</span></a>
                                 </div>
                             </div>
                         </div><!--col grid-->
@@ -123,7 +123,7 @@
 	                                    		<tr>
 		                                    		<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${status.count}</td>
 		                                    		<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${no.divisionName == 'ALL' ? '전체' : no.divisionName}</td>
-		                                    		<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500"><a href="${no.noticeNo}">${no.noticeTitle}</a></td>
+		                                    		<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500"><a href="${pageContext.request.contextPath}/notice/getNoticeOne?noticeNo=${no.noticeNo}">${no.noticeTitle}</a></td>
 		                                    		<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${no.noticeView}</td>
 		                                    		<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${no.empName}</td>
 		                                    		<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${fn:substring(no.createDate,0,10)}</td>                                		
