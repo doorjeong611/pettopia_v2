@@ -13,7 +13,7 @@ public interface BoardMapper {
 //	게시글 작성 /board/addBoard 작업자 : 이준호	
 	Integer insertBoard (Board board);
 //	게시판 리스트 /board/getBoardList 작업자 : 이준호	
-	List<Map<String, Object>> selectBoardList (int beginRow ,int rowPerPage , String boardCategory);
+	List<Map<String, Object>> selectBoardList (Map<String, Object> boardMap);
 //	게시글 삭제 쿼리 /board/removeBoard 작업자 : 이준호 
 	Integer deleteBoard (int boardNo);
 	
