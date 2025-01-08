@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class BoardController {
 	@Autowired BoardService boardService;
+	
+	
+	
 	// 게시판 리스트 구현 /board/boardList 작업자 : 이준호
 	@GetMapping("/board/boardList")
 	public String getBoardList() {
@@ -19,7 +22,7 @@ public class BoardController {
 	}
 	
 	
-//	게시글 댓글 통합 삭제 /board/removeBoard 작업자 : 이준호
+	//	게시글 댓글 통합 삭제 /board/removeBoard 작업자 : 이준호
 	@GetMapping("/board/removeBoard")
 	public String removeBoard(@RequestParam Integer boardNo) {
 		
