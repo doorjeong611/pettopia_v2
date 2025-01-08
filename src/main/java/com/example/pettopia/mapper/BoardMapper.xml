@@ -44,25 +44,25 @@
 	        board_comment bc ON b.board_no = bc.board_no
 		    <where>
 		        <!-- 전체 카테고리 확인 -->
-		        <if test="BoardCategory == 'ALL'">
-		            AND b.board_header IN ('정보', '건의사항', '토론', '잡담', '질문', '칭찬')
+		        <if test="boardCategory == 'ALL'">
+		            AND b.board_header IN ('IN', 'SG', 'DS', 'CT', 'QA', 'CP')
 		        </if>
-		        <if test="BoardCategory == 'IN'">
+		        <if test="boardCategory == 'IN'">
 		            AND b.board_header = '정보'
 		        </if>
-		        <if test="BoardCategory == 'SG'">
+		        <if test="boardCategory == 'SG'">
 		            AND b.board_header = '건의사항'
 		        </if>
-		        <if test="BoardCategory == 'DS'">
+		        <if test="boardCategory == 'DS'">
 		            AND b.board_header = '토론'
 		        </if>
-		        <if test="BoardCategory == 'CT'">
+		        <if test="boardCategory == 'CT'">
 		            AND b.board_header = '잡담'
 		        </if>
-		        <if test="BoardCategory == 'QA'">
+		        <if test="boardCategory == 'QA'">
 		            AND b.board_header = '질문'
 		        </if>
-		        <if test="BoardCategory == 'CP'">
+		        <if test="boardCategory == 'CP'">
 		            AND b.board_header = '칭찬'
 		        </if>
 		    </where>
@@ -70,6 +70,8 @@
 	        b.board_no
 	    ORDER BY
 	        boardNum DESC
+	    LIMIT 
+			#{beginRow}, #{rowPerPage}
 	</select>
 	
 	<!-- 게시글 삭제 쿼리 /board/removeBoard 작업자 : 이준호 -->

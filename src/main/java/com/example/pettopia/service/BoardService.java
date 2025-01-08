@@ -25,8 +25,12 @@ public class BoardService {
 		boardMapper.deleteBoard(boardNo);
 	}
 	
-	public List<Map<String, Object>> getBoardList(Map boardMap){
-		return boardMapper.selectBoardList(boardMap);
+	public List<Map<String, Object>> getBoardList(int currentPage,String boardCategory, Map boardMap){
+		
+		int rowPerPage = 10;
+		int beginRow = (currentPage - 1) * rowPerPage;
+		
+		return boardMapper.selectBoardList(beginRow,rowPerPage,boardCategory,boardMap);
 	}
 	
 	

@@ -29,11 +29,14 @@ public class BoardController {
 		return "board/boardList";
 	}
 	@GetMapping("/board/boardList")
-	public String boardList(Model model) {
+	public String boardList(Model model,
+			@RequestParam(name="currentPage",defaultValue = "1")int currentPage,
+			@RequestParam(name="category",defaultValue = "ALL") String boardCategory) {
 		Map<String, Object> map = new HashMap<>();
 		
-		List<Map<String, Object>> boardList = boardService.getBoardList(map);
+		List<Map<String, Object>> boardList = boardService.getBoardList(currentPage,boardCategory,map);
 		model.addAttribute("boardList",boardList);
+		model.addAttribute("currentPage",currentPage);
 		
 		return "board/boardList";
 	}
