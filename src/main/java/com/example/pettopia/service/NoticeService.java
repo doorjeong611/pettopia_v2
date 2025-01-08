@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.example.pettopia.mapper.NoticeMapper;
 import com.example.pettopia.util.TeamColor;
 import com.example.pettopia.vo.Division;
+import com.example.pettopia.vo.Notice;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -44,6 +45,31 @@ public class NoticeService {
 		return noticeList;
 		
 	}
+	
+	
+	// 공지사항 상세보기 : 조회수 증가
+	public int addNoticeView(Notice notice) {
+		
+		log.debug(TeamColor.KMJ+"[NoticeService - addNoticeView]");
+		log.debug(TeamColor.KMJ+ "NoticeNo : " + notice.getNoticeNo() + TeamColor.RESET);	
+		
+		return noticeMapper.updateNotice(notice);
+		
+	}
+	
+	// 공지사항 상세보기 : 해당 공지사항 조회
+	public Map<String, Object> getNoticeOne(int noticeNo) {
+		
+		log.debug(TeamColor.KMJ+"[NoticeService - addNoticeView]");
+		log.debug(TeamColor.KMJ+ "noticeNo : " + noticeNo + TeamColor.RESET);
+		
+		Map<String, Object> noticeOne = noticeMapper.selectNoticeOne(noticeNo);
+		
+		return noticeOne; 
+		
+		
+	}
+	
 	
 	
 

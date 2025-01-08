@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.example.pettopia.service.NoticeService;
 import com.example.pettopia.util.TeamColor;
 import com.example.pettopia.vo.Division;
+import com.example.pettopia.vo.Notice;
 
 
 
@@ -108,11 +109,55 @@ public class NoticeController {
 		return "notice/noticeList";
 	}
 	
-	
+	// 공지사항 상세보기
 	@GetMapping("/notice/getNoticeOne")
-	public String getNoticeOne() {
+	public String getNoticeOne(@RequestParam Integer noticeNo, Model model) {
+		
+		log.debug(TeamColor.KMJ+"[NoticeController - getNoticeOne]");
+		log.debug(TeamColor.KMJ+ "noticeNo : " + noticeNo );
+	
+		
+		Notice notice = new Notice();
+		notice.setNoticeNo(noticeNo);
+		
+		// 조회수 증가
+		int successView = noticeService.addNoticeView(notice);
+		
+		if(successView != 1) { // 조회수 증가 실패
+			return "redirect:/notice/noticeList";
+		}
+		
+		// 해당 공지사항 가져오기
+		Map<String, Object> noticeOne = noticeService.getNoticeOne(noticeNo); 
+		log.debug(TeamColor.KMJ+ "noticeOne : " + noticeOne.toString());
+		
+		// 부서 이름 수정
+		if(noticeOne.get("divisionName") != null) {
+			String dName = (String) noticeOne.get("divisionName");
+			int dIndex = dName.indexOf("(");
+			dName = dName.substring(0, dIndex);
+			log.debug(TeamColor.KMJ+ "부서 이름 : " + dName + TeamColor.RESET);
+			
+			noticeOne.put("divisionName", dName);
+			log.debug(TeamColor.KMJ+ "부서 이름 수정 후  : " + noticeOne.toString() + TeamColor.RESET);
+		}
+		model.addAttribute("noticeOne", noticeOne);		
 		return "notice/noticeOne";
 	}
 	
 
+	// 공지사항 작성 
+	@GetMapping("/admin/addNotice")
+	public String addNotice() {
+		return "notice/addNotice";
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

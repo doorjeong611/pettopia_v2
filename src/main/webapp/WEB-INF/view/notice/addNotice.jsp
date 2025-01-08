@@ -38,7 +38,7 @@
             <div class="container-fluid group-data-[content=boxed]:max-w-boxed mx-auto">
                 <div class="flex flex-col gap-2 py-4 md:flex-row md:items-center print:hidden">
                     <div class="grow">
-                        <h5 class="text-16">공지사항 상세보기</h5>
+                        <h5 class="text-16">공지사항 작성</h5>
                     </div>
                     <ul class="flex items-center gap-2 text-sm font-normal shrink-0">
                         <li class="relative before:content-['\ea54'] before:font-remix ltr:before:-right-1 rtl:before:-left-1  before:absolute before:text-[18px] before:-top-[3px] ltr:pr-4 rtl:pl-4 before:text-slate-400 dark:text-zink-200">
@@ -53,7 +53,7 @@
                  <div class="xl:col-span-9">
                         <div class="card max-w-4xl mx-auto">
                             <div class="card-body">
-                                <h6 class="mb-5 text-15">공지사항</h6>
+                                <h6 class="mb-5 text-15">공지사항 작성</h6>
                                 
                                 
                                 <form id="formAddDocument" method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/document/addDocument">
@@ -62,26 +62,29 @@
 									    <!-- 부서, 제목 -->
 									    <div class="flex-1 col-span-1">
 									        <label for="docTitle" class="inline-block mb-2 text-base font-medium">부서</label>
-									        <input type="text" name="docTitle" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" value="${noticeOne.divisionName == null ? '전체공지' : noticeOne.divisionName }" readonly >
+									        <h2 style="color: green">${sessionScope.loginEmp.rankNo}</h2>
+									        <c:if test="${sessionScope.loginEmp.rankNo >= 40}"><!-- 차장 이상 부장 미만 : 소속 부서 공지만 작성 가능 / 부장 이상 : 전체 공지 , 소속 부서 공지 작성 가능-->
+									        	<select name="division">
+									        		<option value=""></option>
+									        	</select>
+									        </c:if>
+									        
 									    </div>
 									    <div class="col-span-1 lg:col-span-8 xl:col-span-9">
 									        <label for="docTitle" class="inline-block mb-2 text-base font-medium">제목</label>
-									        <input type="text" name="docTitle" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" style="border: none; outline: none;" value="${noticeOne.noticeTitle }" readonly >
+									        <input type="text" name="docTitle" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400"  value="" >
 									    </div><!--end col-->
 									    
 									    <!-- 작성자, 작성일, 조회수 -->
 									    <div class="col-span-1 lg:col-span-3">
 									        <label for="docWriterNo" class="inline-block mb-2 text-base font-medium">작성자</label> 
-									        <input type="text" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" style="border: none; outline: none;" value="${noticeOne.empName }" readonly>
+									        <input type="text" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" style="border: none; outline: none;" value="" readonly>
 									    </div><!--end col-->
 									    <div class="col-span-1 lg:col-span-3">
 									        <label for="docWriterNo" class="inline-block mb-2 text-base font-medium">작성일</label> 
-									        <input type="text" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" style="border: none; outline: none;" value="${fn:substring(noticeOne.createDateTime, 0, 10) }" readonly>
+									        <input type="text" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" style="border: none; outline: none;" value="" readonly>
 									    </div><!--end col-->
-									    <div class="col-span-1 lg:col-span-3">
-									        <label for="docWriterNo" class="inline-block mb-2 text-base font-medium">조회수</label>
-									        <input type="text" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" style="border: none; outline: none;" value="${noticeOne.noticeView }" readonly>
-									    </div><!--end col-->
+									    
                                         
                                         <!-- 첨부파일 여부 -->
                                         <div>
