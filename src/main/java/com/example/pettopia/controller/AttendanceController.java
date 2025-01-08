@@ -18,6 +18,9 @@ import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 @Slf4j
@@ -127,5 +130,12 @@ public class AttendanceController {
         log.debug(TeamColor.OJY + "attendanceList------> " + attendanceList + TeamColor.RESET);
         return "common/petTopiaMain";
     }
+    
+    // 오자윤 : 관리자 - 직원 근태조회
+    @GetMapping("employee/attendanceList")
+    public String getMethodName() {
+        return "employee/attendanceList";
+    }
+    
 }
     
