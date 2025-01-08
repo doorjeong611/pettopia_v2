@@ -27,10 +27,16 @@
 		    LEFT OUTER JOIN department d ON n.dept_code = d.dept_code
 		    LEFT OUTER JOIN division di ON d.division_code = di.division_code
 		    LEFT OUTER JOIN employee e ON n.writer_emp_no = e.emp_no
-		    WHERE (di.division_code LIKE 'IT' OR di.division_code IS NULL) <!-- where문 괄호 mybatis로 어떻게 처리하는지....? -->
-		    AND n.is_pinned LIKE 'Y'
+		    <where>
+				    <if test="division != null">
+						(di.division_code LIKE #{division} OR di.division_code IS NULL)
+					</if>
+			    AND n.is_pinned LIKE 'Y'
+		    </where>
 		    )
+		   
 		    UNION ALL 
+		    
 		    (SELECT n.notice_no 
 		            , n.writer_emp_no 
 		            , e.emp_name 
@@ -45,7 +51,6 @@
 		    LEFT OUTER JOIN department d ON n.dept_code = d.dept_code
 		    LEFT OUTER JOIN division di ON d.division_code = di.division_code
 		    LEFT OUTER JOIN employee e ON n.writer_emp_no = e.emp_no 
-		    WHERE 
 			<where>
 				<if test="searchTitle != null">
 					n.notice_title LIKE CONCAT('%' , #{searchTitle}, '%')
@@ -53,8 +58,8 @@
 				<if test="division != null">
 					AND di.division_code LIKE #{division}
 				</if>
+				 AND n.is_pinned LIKE 'N'
 			</where>
-		    AND n.is_pinned LIKE 'N'
 		    )
 		)
 		SELECT notice_no AS noticeNo
@@ -68,18 +73,9 @@
 		    , create_datetime AS createDate
 		    , is_pinned AS isPinned
 		FROM noticeList 
-		ORDER BY CASE WHEN division_code IS NULL THEN 0 ELSE 1 END, is_pinned DESC, create_datetime DESC;
-		
-
-		<where>
-			<if test="searchTitle != null">
-				n.notice_title LIKE CONCAT('%' , #{searchTitle}, '%')
-			</if>
-			<if test="division != null">
-				AND di.division_code LIKE #{division}
-			</if>
-		</where>
-		ORDER BY is_pinned ASC
+		ORDER BY CASE WHEN division_code IS NULL THEN 0 ELSE 1 END
+				, is_pinned DESC
+				, create_datetime DESC
 	</select>
 
 	

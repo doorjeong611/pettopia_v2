@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 
 <!DOCTYPE html>
 <html lang="en" class="light scroll-smooth group" data-layout="vertical" data-sidebar="light" data-sidebar-size="lg" data-mode="light" data-topbar="light" data-skin="default" data-navbar="sticky" data-content="fluid" dir="ltr">
@@ -7,15 +9,26 @@
 <head>
 	<meta charset="utf-8">
     <title>공지사항</title>
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta content="Minimal Admin & Dashboard Template" name="description">
     <meta content="Themesdesign" name="author">
+    
+  
     <!-- App favicon -->
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/assets/images/pettopia_favicon.ico">
     <!-- Layout config Js -->
     <script src="${pageContext.request.contextPath}/assets/js/layout.js"></script>
     <!-- Tailwind CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tailwind2.css">
+    
+    <!-- jQuery -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+	    
+    
+    <!-- Latest compiled JavaScript -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 </head>
 
 <body class="text-base bg-body-bg text-body font-public dark:text-zink-100 dark:bg-zink-800 group-data-[skin=bordered]:bg-body-bordered group-data-[skin=bordered]:dark:bg-zink-700">
@@ -57,20 +70,21 @@
                         <div class="grid grid-cols-1 gap-4 mb-5 lg:grid-cols-2 xl:grid-cols-12">
                             <div class="xl:col-span-3">
                                 <div class="relative">
+                                
                                 <!-- 카테고리 선택 + 검색 -->
-                                	<form action="${pageContext.request.contextPath}/notice/searchTitleByNoticeList" method="post" id="searchForm">
-										<select name="division">
-											<option value="">부서 선택</option>
-											<c:forEach var="dvs" items="${noticeList.divisionList}">
-												<option value="${dvs.divisionCode }">${dvs.divisionName }</option>
+                                	<form action="${pageContext.request.contextPath}/notice/getNoticeList" method="get" id="searchCategoryForm">
+										<select name="divisionCode" id="division">
+											<option value="">전체</option>
+											<c:forEach var="dvs" items="${noticeList.divisionList}" >
+												<option value="${dvs.divisionCode }" ${dvs.divisionCode == CurrentdivisionCode ? 'selected' : ''}>${dvs.divisionName }</option>
 											</c:forEach>
 										</select>
-                                    	
+                                  	
                                     	<input type="text" name="searchTitle" class="ltr:pl-8 rtl:pr-8 search form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="Search for ..." autocomplete="off">
                                     	<!-- <i data-lucide="search" class="inline-block size-4 absolute ltr:left-2.5 rtl:right-2.5 top-2.5 text-slate-500 dark:text-zink-200 fill-slate-100 dark:fill-zink-600"></i>  -->
-                               			<button type="button" class="text-slate-500 btn bg-slate-200 border-slate-200 hover:text-slate-600 hover:bg-slate-300 hover:border-slate-300 focus:text-slate-600 focus:bg-slate-300 focus:border-slate-300 focus:ring focus:ring-slate-100 active:text-slate-600 active:bg-slate-300 active:border-slate-300 active:ring active:ring-slate-100 dark:bg-zink-600 dark:hover:bg-zink-500 dark:border-zink-600 dark:hover:border-zink-500 dark:text-zink-200 dark:ring-zink-400/50">Light</button>
-                               		
-                                	</form>
+                               			<button type="button" class="text-slate-500 btn bg-slate-200 border-slate-200 hover:text-slate-600 hover:bg-slate-300 hover:border-slate-300 focus:text-slate-600 focus:bg-slate-300 focus:border-slate-300 focus:ring focus:ring-slate-100 active:text-slate-600 active:bg-slate-300 active:border-slate-300 active:ring active:ring-slate-100 dark:bg-zink-600 dark:hover:bg-zink-500 dark:border-zink-600 dark:hover:border-zink-500 dark:text-zink-200 dark:ring-zink-400/50">검색</button>
+                               		 </form>
+                                	
                                 </div>
                             </div><!--end col-->
                             <div class="xl:col-span-2 xl:col-start-11">
@@ -94,22 +108,34 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    	<c:forEach var="no" items="${noticeList.noticeList}">
-                                    		<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${no. }</td>
+                                    	<c:forEach var="no" items="${noticeList.noticeList}" varStatus="status">
+                                    		<c:if test="${no.isPinned == 'Y' }">
+	                                    		<tr style="background-color: #F1F5F9">
+		                                    		<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${status.count}</td>
+		                                    		<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${no.divisionName == 'ALL' ? '전체' : no.divisionName}</td>
+		                                    		<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500"><a href="${pageContext.request.contextPath}/notice/getNoticeOne?noticeNo=${no.noticeNo}">${no.noticeTitle}</a></td>
+		                                    		<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${no.noticeView}</td>
+		                                    		<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${no.empName}</td>
+		                                    		<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${fn:substring(no.createDate,0,10)}</td>                                		
+	                                    		</tr>
+                                    		</c:if>
+                                    		<c:if test="${no.isPinned == 'N' }">
+	                                    		<tr>
+		                                    		<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${status.count}</td>
+		                                    		<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${no.divisionName == 'ALL' ? '전체' : no.divisionName}</td>
+		                                    		<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500"><a href="${no.noticeNo}">${no.noticeTitle}</a></td>
+		                                    		<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${no.noticeView}</td>
+		                                    		<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${no.empName}</td>
+		                                    		<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${fn:substring(no.createDate,0,10)}</td>                                		
+	                                    		</tr>
+                                    		</c:if>
+                                    		
                                     	</c:forEach>
                                     
                                     
                                     
                                     
-                                        <tr>
-                                            <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">01</td>
-                                            <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">Medical Leave</td>
-                                            <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">Going to Hospital</td>
-                                            <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">02</td>
-                                            <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">11 Oct, 2023</td>
-                                            <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">12 Oct, 2023</td>
-                                            
-                                        </tr>
+                                      
                                         
                                     </tbody>
                                 </table>
@@ -163,14 +189,27 @@
 <script src="${pageContext.request.contextPath}/assets/libs/lucide/umd/lucide.js"></script>
 <script src="${pageContext.request.contextPath}/assets/js/tailwick.bundle.js"></script>
 <!--apexchart js-->
-<script src="${pageContext.request.contextPath}/assets/libs/apexcharts/apexcharts.min.js"></script>
+<%-- <script src="${pageContext.request.contextPath}/assets/libs/apexcharts/apexcharts.min.js"></script>
 
 <!--dashboard ecommerce init js-->
 <script src="${pageContext.request.contextPath}/assets/js/pages/dashboards-ecommerce.init.js"></script>
-
+ --%>
 <!-- App js -->
 <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
 
 </body>
+
+    <script>
+		/* $(document).ready(function(){ // <body>까지 메모리에 올라간 후 script 실행. */
+			console.log("jQuery 실행중");
+			$('#division').change(function() {// 부서별 공지 확인
+				
+				$('#searchCategoryForm').submit();
+			})
+			
+			
+		/* }) */
+	</script>
+
 
 </html>
