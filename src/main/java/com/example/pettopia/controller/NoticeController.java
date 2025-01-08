@@ -1,5 +1,6 @@
 package com.example.pettopia.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,20 +26,20 @@ public class NoticeController {
 	@Autowired NoticeService noticeService;
 	
 	
-	// 공지사항 페이지로 이동
+	// 공지사항 목록 페이지
 	@GetMapping("/notice/getNoticeList")
-	public String getNoticeList(@RequestParam(required = false) String division, @RequestParam(required = false) String searchTitle, Model model) {
+	public String getNoticeList(@RequestParam(required = false) String divisionCode, @RequestParam(required = false) String searchTitle, Model model) {
 		
 		log.debug(TeamColor.KMJ+"[NoticeController - getNoticeList]");
 		
 		Map<String, Object> paramMap = new HashMap<>();
 		
 		// 부서 카테고리
-		if(division != null && !division.isEmpty()) {
-			paramMap.put("division", division);
+		if(divisionCode != null && !divisionCode.isEmpty()) {
+			paramMap.put("division", divisionCode);
 		
 		}else {
-			log.debug(TeamColor.KMJ+ "division : " + division);
+			log.debug(TeamColor.KMJ+ "division : " + divisionCode);
 			paramMap.put("division", null);
 		}
 		
@@ -51,27 +52,67 @@ public class NoticeController {
 			paramMap.put("searchTitle", null);
 		}
 
-		
 		// 부서 목록 가져오기
 		List<Division> divisionList = noticeService.getDivisionList();
 		log.debug(TeamColor.KMJ+ "divisionList : " + divisionList.toString());
 		
+		// 부서명 수정
+		for(int i=0; i<divisionList.size(); i++) {
+			String divisionNames = divisionList.get(i).getDivisionName();
+			
+			int dIndex = divisionNames.indexOf("부서"); // 부서명까지만 자르기 위해 '부서'의 위치 index 찾기.
+			
+			if(dIndex != -1){ // 전체 공지 제외
+				String dName = divisionNames.substring(0, dIndex);
+//				log.debug(TeamColor.KMJ + "부서명 : " + dName);
+				divisionList.get(i).setDivisionName(dName);
+				
+			}
+			
+		}
+
 		// 전체 공지사항 가져오기
 		List<Map<String, Object>> noticeList = noticeService.getNoticeList(paramMap);
 		log.debug(TeamColor.KMJ+ "noticeList : " + noticeList.toString() + TeamColor.RESET);
 		
+		// 부서 이름 수정 : 부서명 [부서(부서 영어명)]부분 삭제하기.
+		List<String> divisionNames = new ArrayList<>(); 
+		for(int i=0; i<noticeList.size(); i++) {
+			divisionNames.add((String)noticeList.get(i).get("divisionName"));
+//			log.debug((String)noticeList.get(i).get("divisionName"));
+		}		
+		
+		for(int i=0; i<divisionNames.size(); i++) {
+			
+			int dIndex = divisionNames.get(i).indexOf("부서"); // 부서명까지만 자르기 위해 '부서'의 위치 index 찾기.
+			
+			if(dIndex != -1){ // 전체 공지 제외
+				String dName = divisionNames.get(i).substring(0, dIndex);
+//				log.debug(TeamColor.KMJ + dName);
+				noticeList.get(i).put("divisionName", dName);
+				
+			}
+			
+		}
+		log.debug(TeamColor.KMJ+ "noticeList 부서명 수정 후 : " + noticeList.toString() + TeamColor.RESET);
+
 		Map<String, Object> noList = new HashMap<>();
 		noList.put("divisionList", divisionList);
 		noList.put("noticeList", noticeList);
 		noList.put("searchTitle", searchTitle);
-		noList.put("division", division);
+		noList.put("division", divisionCode);
 		
 		model.addAttribute("noticeList", noList);
+		model.addAttribute("CurrentdivisionCode", divisionCode);
 		
 		return "notice/noticeList";
 	}
 	
 	
+	@GetMapping("/notice/getNoticeOne")
+	public String getNoticeOne() {
+		return "notice/noticeOne";
+	}
 	
 
 }
