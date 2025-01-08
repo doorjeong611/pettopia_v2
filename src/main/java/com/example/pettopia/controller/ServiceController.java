@@ -38,7 +38,7 @@ public class ServiceController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "서비스 등록 중 오류가 발생했습니다.");
         }
-        return "redirect:/service/addService"; // 등록 후 리다이렉트
+        return "redirect:/service/getServiceList"; // 등록 페이지로 리다이렉트
     }
     
 
