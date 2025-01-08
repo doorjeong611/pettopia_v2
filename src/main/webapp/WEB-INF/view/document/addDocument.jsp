@@ -16,7 +16,23 @@
     <script src="${pageContext.request.contextPath}/assets/js/layout.js"></script>
     <!-- Tailwind CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tailwind2.css">
-    <script src="assets/libs/flatpickr/flatpickr.min.js"></script>
+    <script src="${pageContext.request.contextPath}/assets/libs/flatpickr/flatpickr.min.js"></script>
+    <script src="${pageContext.request.contextPath}/assets/libs/dropzone/dropzone-min.js"></script>
+    <script>
+	 	// 오늘 날짜 구하기
+	    const today = new Date();
+	
+	    // 날짜를 'yyyy-mm-dd' 형식으로 포맷 (예: 2024-01-08)
+	    const formattedDate = today.toISOString().split('T')[0];
+	
+	    // 'vacationStartDate' 요소 선택
+	    const vacationStartDateElement = document.querySelector('#vacationStartDate');
+	
+	    // data-default-date 속성에 오늘 날짜를 설정
+	    if (vacationStartDateElement) {
+	        vacationStartDateElement.setAttribute('data-default-date', formattedDate);
+	    }
+    </script>
 </head>
 
 <body class="text-base bg-body-bg text-body font-public dark:text-zink-100 dark:bg-zink-800 group-data-[skin=bordered]:bg-body-bordered group-data-[skin=bordered]:dark:bg-zink-700">
@@ -65,7 +81,7 @@
                                         
                                     	<div class="xl:col-span-6">
                                     		<label for="docType" class="inline-block mb-2 text-base font-medium">문서 유형</label>
-                                    		<select id="docType" name="docType" class="form-select border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200">
+                                    		<select id="docType" name="docType" class="form-select border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 dark:text-zink-100 placeholder:text-slate-400 dark:placeholder:text-zink-200">
 			                                    <option value="">유형을 선택하세요</option>
 			                                    <option value="D">기안 문서</option>
 			                                	<option value="V">휴가 신청서</option>
@@ -91,8 +107,6 @@
 										        <div class="flex items-center justify-start p-4 bg-slate-100 border-b">
 												    <h5 class="text-16">결재 수신자 목록</h5>
 												</div>
-
-
 										        
 										        <!-- Modal Content -->
 										        <div class="max-h-[calc(theme('height.screen')_-_180px)] p-4 overflow-y-auto">
@@ -134,20 +148,47 @@
 										
 										<!-- 휴가 신청서 문서 -->
 										<div id="vacationDiv" class="lg:col-span-2 xl:col-span-12" style="display:none;">
-											<div class="xl:col-span-6">
-												<label for="vacationType" class="font-large">연차</label>
-												<input type="radio">
-											</div>
-											<div class="xl:col-span-6">
-											    <label for="docWriter" class="inline-block mb-2 text-base font-medium">휴가 타입</label>
-											    <div class="flex items-center space-x-2">
-											        <!-- 라디오 버튼 추가 -->
-											        <input type="radio" id="docWriterRadio" name="docWriterOption" value="1" class="form-radio text-custom-500"> 연차
+											<div class="xl:col-span-12 mb-3 flex flex-wrap gap-4">
+											    <div class="xl:col-span-6 flex flex-col">
+											        <label for="vacationType" class="inline-block mb-2 text-base font-medium">휴가 타입 선택</label>
+											        <div class="flex gap-4">
+											            <div class="flex items-center gap-2">
+											                <input id="vacationTypeAL" name="vacationType" class="border rounded-full appearance-none cursor-pointer size-4 bg-slate-100 border-slate-200 dark:bg-zink-600 dark:border-zink-500 checked:bg-custom-500 checked:border-custom-500" type="radio" value="AL">
+											                <label for="vacationTypeAL" class="align-middle">연차</label>
+											            </div>
+											            <div class="flex items-center gap-2">
+											                <input id="vacationTypeHLa" name="vacationType" class="border rounded-full appearance-none cursor-pointer size-4 bg-slate-100 border-slate-200 dark:bg-zink-600 dark:border-zink-500 checked:bg-green-500 checked:border-green-500" type="radio" value="HLa">
+											                <label for="vacationTypeHLa" class="align-middle">반차(오전)</label>
+											            </div>
+											            <div class="flex items-center gap-2">
+											                <input id="vacationTypeHLp" name="vacationType" class="border rounded-full appearance-none cursor-pointer size-4 bg-slate-100 border-slate-200 dark:bg-zink-600 dark:border-zink-500 checked:bg-green-500 checked:border-green-500" type="radio" value="HLp">
+											                <label for="vacationTypeHLp" class="align-middle">반차(오후)</label>
+											            </div>
+											        </div>
 											    </div>
-											</div><!--end col-->
-											
-											<div class="xl:col-span-6">
+											    
+											    <!-- 연차 기간 -->
+											    <div id="ALDivStart" class="xl:col-span-6 flex flex-col" style="display:none;">
+											        <label for="vacationStartDate" class="inline-block mb-2 text-base font-medium">연차 시작 날짜 선택</label>
+						                            <input type="text" name="vacationStartDate" id="vacationStartDate" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400 flatpickr-input" data-provider="flatpickr" data-date-format="Y-m-d" readonly="readonly" placeholder="날짜를 선택하세요">
+											    </div>
+												
+											    <div id="ALDivEnd" class="xl:col-span-6 flex flex-col" style="display:none;">
+											        <label for="vacationEndDate" class="inline-block mb-2 text-base font-medium">연차 종료 날짜 선택</label>
+						                            <input type="text" name="vacationEndDate" id="vacationEndDate" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400 flatpickr-input" data-provider="flatpickr" data-date-format="Y-m-d" readonly="readonly" placeholder="날짜를 선택하세요">
+											    </div>
+											    
+											    <!-- 반차 날짜 선택 -->
+											    <div id="HLDivStart" class="xl:col-span-6 flex flex-col" style="display:none;">
+											        <label for="publishDateTimeStart" class="inline-block mb-2 text-base font-medium">반차 날짜 선택</label>
+						                            <input type="text" name="vacationStartDate" id="vacationStartDate" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400 flatpickr-input" data-provider="flatpickr" data-date-format="Y-m-d" readonly="readonly" placeholder="날짜를 선택하세요">
+											    </div>
+											    
+											    
+											    
 											</div>
+
+											
 											<div class="xl:col-span-12">
 											    <label for="docContent" class="inline-block mb-2 text-base font-medium">휴가 사유</label>
 											    <textarea name="docContent" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" id="docContent" placeholder="휴가 사유를 입력하세요" rows="10"></textarea>
@@ -160,10 +201,8 @@
 										    <textarea name="docContent" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" id="docContent" placeholder="자재 신청 사유를 입력하세요" rows="10"></textarea>
 										</div>
                                         
-                                        
-                                        
                                         <div class="lg:col-span-2 xl:col-span-12">
-                                            <label for="genderSelect" class="inline-block mb-2 text-base font-medium">파일 업로드</label>
+                                            <label for="genderSelect" class="inline-block mb-2 text-base font-medium">Product Images</label>
                                             <div class="flex items-center justify-center bg-white border border-dashed rounded-md cursor-pointer dropzone border-slate-300 dark:bg-zink-700 dark:border-zink-500 dropzone2 dz-clickable">
                                                 
                                                 <div class="w-full py-5 text-lg text-center dz-message needsclick">
@@ -180,11 +219,11 @@
                                             </ul>
                                         </div>
                                     </div><!--end grid-->
+                                    
                                     <div class="flex justify-end gap-2 mt-4">
                                         <button type="reset" class="text-red-500 bg-white btn hover:text-red-500 hover:bg-red-100 focus:text-red-500 focus:bg-red-100 active:text-red-500 active:bg-red-100 dark:bg-zink-700 dark:hover:bg-red-500/10 dark:focus:bg-red-500/10 dark:active:bg-red-500/10">리셋</button>
-                                        <button type="submit" class="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100">문서 작성</button>
-										<button type="button" class="text-white bg-green-500 border-green-500 btn hover:text-white hover:bg-green-600 hover:border-green-600 focus:text-white focus:bg-green-600 focus:border-green-600 focus:ring focus:ring-green-100 active:text-white active:bg-green-600 active:border-green-600 active:ring active:ring-green-100">목록</button>
-
+                                        <button type="submit" class="bg-white text-custom-500 btn border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100">문서 작성</button>
+										<button type="button" class="text-green-500 bg-white border-green-500 btn hover:text-white hover:bg-green-600 hover:border-green-600 focus:text-white focus:bg-green-600 focus:border-green-600 focus:ring focus:ring-green-100 active:text-white active:bg-green-600 active:border-green-600 active:ring active:ring-green-100">목록</button>
                                     </div>
                                 </form>
                             </div>
@@ -211,6 +250,7 @@
 <script src="${pageContext.request.contextPath}/assets/libs/prismjs/prism.js"></script>
 <script src="${pageContext.request.contextPath}/assets/libs/lucide/umd/lucide.js"></script>
 <script src="${pageContext.request.contextPath}/assets/js/tailwick.bundle.js"></script>
+<div class="fixed inset-0 bg-slate-900/40 dark:bg-zink-800/70 z-[1049] backdrop-overlay hidden" id="backDropDiv"></div>
 <!--apexchart js-->
 <script src="${pageContext.request.contextPath}/assets/libs/apexcharts/apexcharts.min.js"></script>
 
@@ -219,7 +259,9 @@
 
 <!-- App js -->
 <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
-<script src="${pageContext.request.contextPath}/assets/libs/dropzone/dropzone-min.js"></script>
+
+<input type="file" multiple="multiple" class="dz-hidden-input" tabindex="-1" style="visibility: hidden; position: absolute; top: 0px; left: 0px; height: 0px; width: 0px;">
+
 
 <script>
     // DOM 요소들
@@ -263,6 +305,8 @@
     
  	// <select> 요소
     const docTypeSelect = document.getElementById('docType');
+    // <radio> 요소
+    const vacationTypeRadio = document.querySelectorAll('input[name="vacationType"]');
 
     // 문서 작성 텍스트를 변경할 <h6> 요소
     const documentTitle = document.querySelector('h6.mb-5.text-15');
@@ -272,7 +316,20 @@
     const draftDiv = document.getElementById('draftDiv');
     const vacationDiv = document.getElementById('vacationDiv');
     const materialDiv = document.getElementById('materialDiv');
+    const ALDivStart = document.getElementById('ALDivStart');
+    const ALDivEnd = document.getElementById('ALDivEnd');
+    const HLDivStart = document.getElementById('HLDivStart');
+    const HLDivEnd = document.getElementById('HLDivEnd');
+    
+    // 각 div의 부모와 형제 요소를 기억
+    const alStartParent = ALDivStart.parentNode;
+    const alEndParent = ALDivEnd.parentNode;
+    const hlStartParent = HLDivStart.parentNode;
 
+    const alStartNext = ALDivStart.nextSibling;
+    const alEndNext = ALDivEnd.nextSibling;
+    const hlStartNext = HLDivStart.nextSibling;
+    
     // <select>의 변화에 따라 div를 숨기거나 보이게 하기
     docTypeSelect.addEventListener('change', function() {
         const selectedValue = docTypeSelect.value;
@@ -287,21 +344,68 @@
         if (selectedValue === '') {
             documentDiv.style.display = 'block';  // 기본 문서 내용 보이기
             documentTitle.textContent = '문서 작성';  // 기본 문서 제목
+            if (ALDivStart.parentNode) ALDivStart.remove();
+            if (ALDivEnd.parentNode) ALDivEnd.remove();
+            if (HLDivStart.parentNode) HLDivStart.remove();
         } else if (selectedValue === 'V') {
             vacationDiv.style.display = 'block';  // 휴가 신청서 보이기
             documentTitle.textContent = '휴가 신청서 작성';  // 휴가 신청서 제목
+            if (ALDivStart.parentNode) ALDivStart.remove();
+            if (ALDivEnd.parentNode) ALDivEnd.remove();
+            if (HLDivStart.parentNode) HLDivStart.remove();
         } else if (selectedValue === 'M') {
             materialDiv.style.display = 'block';  // 자재 신청서 보이기
             documentTitle.textContent = '자재 신청서 작성';  // 자재 신청서 제목
+            if (ALDivStart.parentNode) ALDivStart.remove();
+            if (ALDivEnd.parentNode) ALDivEnd.remove();
+            if (HLDivStart.parentNode) HLDivStart.remove();
         } else if (selectedValue === 'D') {
             draftDiv.style.display = 'block';  // 기안 문서 보이기
             documentTitle.textContent = '기안 문서 작성';  // 기안 문서 제목
+            if (ALDivStart.parentNode) ALDivStart.remove();
+            if (ALDivEnd.parentNode) ALDivEnd.remove();
+            if (HLDivStart.parentNode) HLDivStart.remove();
         }
     });
+    
+ // 라디오 버튼에 'change' 이벤트 추가
+    vacationTypeRadio.forEach(radio => {
+        radio.addEventListener('change', function() {
+            const radioValue = this.value;  // 선택된 radio 버튼의 value 가져오기
+
+            // vacationDiv가 숨겨져 있다면 보이게 하기
+            vacationDiv.style.display = 'block';  // vacationDiv는 보이게 설정
+
+            // 선택된 문서 유형에 맞는 div만 보이게 하기
+            if (radioValue === 'AL') {
+                // 연차 관련 div 추가
+                if (ALDivStart.parentNode) ALDivStart.remove();
+                if (ALDivEnd.parentNode) ALDivEnd.remove();
+                if (HLDivStart.parentNode) HLDivStart.remove();
+                vacationDiv.appendChild(ALDivStart);
+                vacationDiv.appendChild(ALDivEnd);
+                // 삭제된 요소를 원래 위치에 복원
+                if (alStartParent) alStartParent.insertBefore(ALDivStart, alStartNext);
+                if (alEndParent) alEndParent.insertBefore(ALDivEnd, alEndNext);
+                ALDivStart.style.display = 'block';
+                ALDivEnd.style.display = 'block';
+            } else if (radioValue === 'HLa' || radioValue === 'HLp') {
+                // 반차 관련 div 추가
+                if (ALDivStart.parentNode) ALDivStart.remove();
+                if (ALDivEnd.parentNode) ALDivEnd.remove();
+                if (HLDivStart.parentNode) HLDivStart.remove();
+                vacationDiv.appendChild(HLDivStart);
+                // 삭제된 요소를 원래 위치에 복원
+                if (hlStartParent) hlStartParent.insertBefore(HLDivStart, hlStartNext);
+                HLDivStart.style.display = 'block';
+            }
+        });
+    });
+ 
+
 
 
 </script>
-
 
 </body>
 
