@@ -133,7 +133,13 @@ public class AttendanceController {
     
     // 오자윤 : 관리자 - 직원 근태조회
     @GetMapping("employee/attendanceList")
-    public String getMethodName() {
+    public String getAttendanceListByAdmin(Model model, Attendance attendance) {
+    	String attendanceDate = attendance.getAttendanceDate(); 
+    	
+    	// 출석 목록 조회
+    	List<Attendance> attendanceList = attendanceService.getAttendance(attendance);
+    	model.addAttribute("attendanceList", attendanceList);
+    	
         return "employee/attendanceList";
     }
     
