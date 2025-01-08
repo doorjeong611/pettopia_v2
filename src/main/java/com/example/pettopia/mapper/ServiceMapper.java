@@ -9,4 +9,6 @@ import com.example.pettopia.vo.PetService;
 @Mapper
 public interface ServiceMapper {
 	List<PetService> selectService();
+	
+	void insertService(PetService service);
 }

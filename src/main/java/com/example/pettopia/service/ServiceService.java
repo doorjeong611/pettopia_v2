@@ -13,7 +13,13 @@ public class ServiceService {
 	@Autowired
     private ServiceMapper serviceMapper;
 
+	// 서비스 리스트 조회
     public List<PetService> getAllServices() {
         return serviceMapper.selectService();
+    }
+
+    // 서비스 등록 (추가)
+    public void insertService(PetService service) {
+        serviceMapper.insertService(service);
     }
 }
