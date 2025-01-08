@@ -2,6 +2,8 @@ package com.example.pettopia.service;
 
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +15,7 @@ public class AttendanceSerivce {
 	@Autowired AttendanceMapper attendanceMapper;
 	
 	// 오자윤 : /employee/attendanceOn & Off 근태기록 조회
-	public Integer getAttendance(Attendance attendance) {
+	public List<Attendance> getAttendance(Attendance attendance) {
 		return attendanceMapper.getAttendanceList(attendance);
 	}
 	

@@ -17,7 +17,6 @@ import com.example.pettopia.vo.Employee;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 
@@ -42,9 +41,13 @@ public class AttendanceController {
 	    String currentTime = LocalTime.now().toString(); 
 
 	    attendance.setAttendanceDate(currentDate); // 출근 날짜 설정
+	    log.debug(TeamColor.OJY + "attendanceDate------>" + attendance.getAttendanceDate() + TeamColor.RESET);
 	    attendance.setClockInTime(currentTime); // 출근 시간 설정
 	    
-	    // 출근 상태 결정 로직
+	    // 출근 기록 조회
+	    List<Attendance> attendanceList = attendanceService.getAttendance(attendance);
+	    log.debug(TeamColor.OJY + "attendanceList------>" + attendanceList + TeamColor.RESET);
+	    // 출근 상태 결정
 	    String attendanceStatus = attendance.getAttendanceStatus(); // 연차/반차/출근 상태
 
 	    if ("연차".equals(attendanceStatus)) {
@@ -57,11 +60,9 @@ public class AttendanceController {
 	        LocalTime nineAmStart = LocalTime.of(9, 0);
 	        LocalTime sixPmEnd = LocalTime.of(18, 0);
 	        
-	        // 출근 기록 조회
-	        Integer attendanceCount = attendanceService.getAttendance(attendance);
 
-	        // 출근 기록이 있는 경우
-	        if (attendanceCount != null && attendanceCount >= 0) {
+	        // 출근 기록이 없는 경우
+	        if (attendanceList != null && attendanceList.isEmpty()) {
 	            if (startTime.isBefore(nineAmStart)) {
 	                attendance.setAttendanceStatus("P"); // 출근
 	            } else if (startTime.isAfter(nineAmStart) && startTime.isBefore(sixPmEnd)) {
@@ -70,15 +71,20 @@ public class AttendanceController {
 	                attendance.setAttendanceStatus("E"); // 조퇴
 	            }
 	        } else {
-	            // 출근 기록이 없는 경우
+	            // 출근 기록이 있는 경우
 	            attendance.setAttendanceStatus("A"); // 결근
 	        }
 	    }
 	    
 	    // 출근등록 : insertAttendanceOn 쿼리실행
 		attendanceService.attendanceOn(attendance);
-		log.debug(attendance.toString() + "------> attendance");
-		return "redirect:/common/petTopiaMain";
+		log.debug(TeamColor.OJY + "attendance------> " + attendance + TeamColor.RESET);
+		
+		 // 출퇴근 기록 다시 조회
+	    attendanceList = attendanceService.getAttendance(attendance);
+	    
+	    model.addAttribute("attendanceList", attendanceList);
+		return "common/petTopiaMain";
 	}
 	
 	// 오자윤 : 퇴근등록
@@ -86,9 +92,9 @@ public class AttendanceController {
     public String attendanceOff(Model model, HttpSession session, Attendance attendance) {
     	// 세션 empNo 가져오기
     	Employee loginEmp = (Employee) session.getAttribute("loginEmp");
-    	log.debug(TeamColor.OJY + "loginEmp------> in attendanceOff" + loginEmp + TeamColor.RESET);
+    	log.debug(TeamColor.OJY + "loginEmp------> " + loginEmp + TeamColor.RESET);
 		String empNo = loginEmp.getEmpNo();
-		log.debug(TeamColor.OJY + "empNo------> empNo" + loginEmp + TeamColor.RESET);
+		log.debug(TeamColor.OJY + "empNo------> " + loginEmp + TeamColor.RESET);
 		attendance.setEmpNo(empNo);
 		
     	// 퇴근 시간 설정
@@ -114,25 +120,12 @@ public class AttendanceController {
         // 퇴근등록 : insertAttendanceOff 쿼리실행
         attendanceService.attendanceOff(attendance);
 
-        return "redirect:/common/petTopiaMain";
+        // 출퇴근 기록 조회
+        attendance.setAttendanceDate(LocalDate.now().toString()); // 오늘 날짜설정
+        List<Attendance> attendanceList = attendanceService.getAttendance(attendance);
+        model.addAttribute("attendanceList", attendanceList);
+        log.debug(TeamColor.OJY + "attendanceList------> " + attendanceList + TeamColor.RESET);
+        return "common/petTopiaMain";
     }
-    
-    // 오자윤 : 출근 기록 보여주기 
-//    @GetMapping("/common/petTopiaMain")
-//    public String getAttendanceListByEmployee(Model model, HttpSession session) {
-//    	// 로그인한 직원 정보 가져오기
-//        Employee loginEmp = (Employee) session.getAttribute("loginEmp");
-//
-//    	  // Attendance 객체를 생성하고 사원 번호를 설정
-//        Attendance attendance = new Attendance();
-//        attendance.setEmpNo(loginEmp.getEmpNo()); // 사원 번호 설정
-//
-//        // 출퇴근 기록 조회
-//        List<Attendance> attendanceList = new ArrayList<>();
-//        attendanceService.getAttendance(attendance);
-//        // 모델에 출퇴근 기록 추가
-//        model.addAttribute("attendanceList", attendanceList);
-//        
-//        return "employee/attendanceList"; 
-//    }
 }
+    
