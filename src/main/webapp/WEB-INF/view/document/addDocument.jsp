@@ -74,32 +74,39 @@
                                 
                                 <form id="formAddDocument" method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/document/addDocument">
                                     <div class="grid grid-cols-1 gap-5 lg:grid-cols-2 xl:grid-cols-12">
-                                    	<div class="xl:col-span-6">
-                                            <label for="docTitle" class="inline-block mb-2 text-base font-medium">문서 제목</label>
-                                            <input type="text" id="docTitle" name="docTitle" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" placeholder="문서 제목을 입력하세요" required="">
-                                        </div><!--end col-->
-                                        
-                                    	<div class="xl:col-span-6">
+                                    	<div class="xl:col-span-2">
                                     		<label for="docType" class="inline-block mb-2 text-base font-medium">문서 유형</label>
-                                    		<select id="docType" name="docType" class="form-select border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 dark:text-zink-100 placeholder:text-slate-400 dark:placeholder:text-zink-200">
+                                    		<select id="docType" name="docType" class="form-select border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 dark:text-zink-100 placeholder:text-slate-400 dark:placeholder:text-zink-200">
 			                                    <option value="">유형을 선택하세요</option>
 			                                    <option value="D">기안 문서</option>
 			                                	<option value="V">휴가 신청서</option>
 			                                	<option value="M">자재 신청서</option>
 		                                	</select>
                                 		</div>
+                                    	<div class="xl:col-span-8">
+                                            <label for="docTitle" class="inline-block mb-2 text-base font-medium">문서 제목</label>
+                                            <input type="text" id="docTitle" name="docTitle" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" placeholder="문서 제목을 입력하세요" required="">
+                                        </div><!--end col-->
                                         
-                                        <div class="xl:col-span-6">
+                                        <div class="xl:col-span-2">
+                                        	<label for="docWriterNo" class="inline-block mb-2 text-base font-medium">부서</label>
+                                            <input type="text" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" value="${empDept.deptName}" disabled required>
+                                        </div>
+                                        
+                                        
+                                        <div class="xl:col-span-4">
                                             <label for="docWriterNo" class="inline-block mb-2 text-base font-medium">문서 작성자</label>
                                             <input type="hidden" name="docWriterNo" id="docWriterNo" value="${loginEmp.empNo}">
                                             <input type="text" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" value="${loginEmp.empNo} / ${loginEmp.empName}" disabled required>
                                         </div><!--end col-->
                                         
                                         <!-- 모달 -->
-                                        <div class="xl:col-span-6">
+                                        <div class="xl:col-span-4">
 										    <label for="approverEmpNo" class="inline-block mb-2 text-base font-medium">결재 수신자</label>
 										    <input type="text" name="approverEmpNo" id="approverEmpNo" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" placeholder="수신 받을 직원을 선택하세요" readonly required>
 										</div>
+                                        
+                                        <div class="xl:col-span-4"></div>
                                         
                                         <div id="approverModal" modal-center="" class="fixed flex flex-col transition-all duration-300 ease-in-out left-2/4 z-drawer -translate-x-2/4 -translate-y-2/4 hidden">
 										    <div class="w-screen lg:w-[55rem] bg-white shadow rounded-md dark:bg-zink-600 flex flex-col h-full">
@@ -183,11 +190,7 @@
 											        <label for="publishDateTimeStart" class="inline-block mb-2 text-base font-medium">반차 날짜 선택</label>
 						                            <input type="text" name="vacationStartDate" id="vacationStartDate" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400 flatpickr-input" data-provider="flatpickr" data-date-format="Y-m-d" readonly="readonly" placeholder="날짜를 선택하세요">
 											    </div>
-											    
-											    
-											    
 											</div>
-
 											
 											<div class="xl:col-span-12">
 											    <label for="docContent" class="inline-block mb-2 text-base font-medium">휴가 사유</label>
@@ -197,9 +200,30 @@
 										
 										<!-- 자재 신청서 문서 -->
 										<div id="materialDiv" class="lg:col-span-2 xl:col-span-12" style="display:none;">
-										    <label for="docContent" class="inline-block mb-2 text-base font-medium">자재 신청 사유</label>
-										    <textarea name="docContent" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" id="docContent" placeholder="자재 신청 사유를 입력하세요" rows="10"></textarea>
+										    <div class="grid grid-cols-12 gap-4 mb-3">
+										        <!-- 신청 물품 -->
+										        <div class="xl:col-span-8 col-span-12">
+										            <label for="materialList" class="inline-block mb-2 text-base font-medium">신청 물품</label>
+										            <input type="text" id="materialList" name="materialList" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" placeholder="신청 물품을 입력하세요" required="">
+										        </div><!--end 신청 물품-->
+										        
+										        <!-- 수량 -->
+										        <div class="xl:col-span-2 col-span-12">
+										            <label for="materialQuantity" class="inline-block mb-2 text-base font-medium">수량</label>
+										            <input type="number" id="materialQuantity" name="materialQuantity" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" placeholder="수량을 입력하세요" min="0" max="9999" required="">
+										        </div><!--end 수량-->
+										        
+										        <div class="xl:col-span-2 col-span-12"></div><!--end 빈 공간-->
+										    </div><!--end grid-->
+										
+										    <!-- 자재 신청 사유 -->
+										    <div class="xl:col-span-12">
+										        <label for="docContent" class="inline-block mb-2 text-base font-medium">자재 신청 사유</label>
+										        <textarea name="docContent" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" id="docContent" placeholder="자재 신청 사유를 입력하세요" rows="10"></textarea>
+										    </div>
 										</div>
+
+
                                         
                                         <div class="lg:col-span-2 xl:col-span-12">
                                             <label for="genderSelect" class="inline-block mb-2 text-base font-medium">Product Images</label>
@@ -325,50 +349,70 @@
     const alStartParent = ALDivStart.parentNode;
     const alEndParent = ALDivEnd.parentNode;
     const hlStartParent = HLDivStart.parentNode;
+    const documentParent = documentDiv.parentNode;
+    const draftParent = draftDiv.parentNode;
+    const vacationParent = vacationDiv.parentNode;
+    const materialParent = materialDiv.parentNode;
 
     const alStartNext = ALDivStart.nextSibling;
     const alEndNext = ALDivEnd.nextSibling;
     const hlStartNext = HLDivStart.nextSibling;
-    
+    const documentNext = documentDiv.nextSibling;
+    const draftNext = draftDiv.nextSibling;
+    const vacationNext = vacationDiv.nextSibling;
+    const materialNext = materialDiv.nextSibling;
+
     // <select>의 변화에 따라 div를 숨기거나 보이게 하기
     docTypeSelect.addEventListener('change', function() {
         const selectedValue = docTypeSelect.value;
         
-        // 모든 div 숨기기
-        documentDiv.style.display = 'none';
-        draftDiv.style.display = 'none';
-        vacationDiv.style.display = 'none';
-        materialDiv.style.display = 'none';
+     	// 모든 div 제거
+		if (documentDiv.parentNode) documentDiv.remove();
+		if (draftDiv.parentNode) draftDiv.remove();
+		if (vacationDiv.parentNode) vacationDiv.remove();
+		if (materialDiv.parentNode) materialDiv.remove();
         
-        // 선택된 문서 유형에 맞는 div만 보이기
-        if (selectedValue === '') {
-            documentDiv.style.display = 'block';  // 기본 문서 내용 보이기
-            documentTitle.textContent = '문서 작성';  // 기본 문서 제목
-            if (ALDivStart.parentNode) ALDivStart.remove();
-            if (ALDivEnd.parentNode) ALDivEnd.remove();
-            if (HLDivStart.parentNode) HLDivStart.remove();
-        } else if (selectedValue === 'V') {
-            vacationDiv.style.display = 'block';  // 휴가 신청서 보이기
-            documentTitle.textContent = '휴가 신청서 작성';  // 휴가 신청서 제목
-            if (ALDivStart.parentNode) ALDivStart.remove();
-            if (ALDivEnd.parentNode) ALDivEnd.remove();
-            if (HLDivStart.parentNode) HLDivStart.remove();
-        } else if (selectedValue === 'M') {
-            materialDiv.style.display = 'block';  // 자재 신청서 보이기
-            documentTitle.textContent = '자재 신청서 작성';  // 자재 신청서 제목
-            if (ALDivStart.parentNode) ALDivStart.remove();
-            if (ALDivEnd.parentNode) ALDivEnd.remove();
-            if (HLDivStart.parentNode) HLDivStart.remove();
-        } else if (selectedValue === 'D') {
-            draftDiv.style.display = 'block';  // 기안 문서 보이기
-            documentTitle.textContent = '기안 문서 작성';  // 기안 문서 제목
+        function resetVacationRadioButtons() {
+            document.getElementById('vacationTypeAL').checked = false;  // 연차 버튼 초기화
+            document.getElementById('vacationTypeHLa').checked = false;  // 반차(오전) 버튼 초기화
+            document.getElementById('vacationTypeHLp').checked = false;  // 반차(오후) 버튼 초기화
+        }
+
+        function removeDivs() {
             if (ALDivStart.parentNode) ALDivStart.remove();
             if (ALDivEnd.parentNode) ALDivEnd.remove();
             if (HLDivStart.parentNode) HLDivStart.remove();
         }
+        
+        // 선택된 문서 유형에 맞는 div만 보이기
+        if (selectedValue === '') {
+            document.body.appendChild(documentDiv);
+            vacationDiv.appendChild(HLDivStart);
+            documentDiv.style.display = 'block';  // 기본 문서 내용 보이기
+            documentTitle.textContent = '문서 작성';  // 기본 문서 제목
+            removeDivs();
+            resetVacationRadioButtons();  // 연차 버튼 초기화
+        } else if (selectedValue === 'V') {
+            document.body.appendChild(vacationDiv);
+            vacationDiv.style.display = 'block';  // 휴가 신청서 보이기
+            documentTitle.textContent = '휴가 신청서 작성';  // 휴가 신청서 제목
+            removeDivs();
+        } else if (selectedValue === 'M') {
+            document.body.appendChild(materialDiv);
+            materialDiv.style.display = 'block';  // 자재 신청서 보이기
+            documentTitle.textContent = '자재 신청서 작성';  // 자재 신청서 제목
+            removeDivs();
+            resetVacationRadioButtons();  // 연차 버튼 초기화
+        } else if (selectedValue === 'D') {
+            document.body.appendChild(draftDiv);
+            draftDiv.style.display = 'block';  // 기안 문서 보이기
+            documentTitle.textContent = '기안 문서 작성';  // 기안 문서 제목
+            removeDivs();
+            resetVacationRadioButtons();  // 연차 버튼 초기화
+        }
     });
     
- // 라디오 버튼에 'change' 이벤트 추가
+ 	// 라디오 버튼에 'change' 이벤트 추가
     vacationTypeRadio.forEach(radio => {
         radio.addEventListener('change', function() {
             const radioValue = this.value;  // 선택된 radio 버튼의 value 가져오기
@@ -401,7 +445,7 @@
             }
         });
     });
- 
+ 	
 
 
 
