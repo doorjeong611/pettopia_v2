@@ -10,9 +10,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta content="Minimal Admin & Dashboard Template" name="description">
     <meta content="Themesdesign" name="author">
+    <!-- CKEditor5 -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/boardStyle.css">
+	<link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/44.1.0/ckeditor5.css" crossorigin>
     <!-- App favicon -->
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/assets/images/pettopia_favicon.ico">
     <!-- Layout config Js -->
+    
     <script src="${pageContext.request.contextPath}/assets/js/layout.js"></script>
     <!-- Tailwind CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tailwind2.css">
@@ -39,48 +43,23 @@
                     <div class="grow">
                         <h5 class="text-16">사내 게시판</h5>
                     </div>
-                    
                     <ul class="flex items-center gap-2 text-sm font-normal shrink-0">
                         <li class="relative before:content-['\ea54'] before:font-remix ltr:before:-right-1 rtl:before:-left-1  before:absolute before:text-[18px] before:-top-[3px] ltr:pr-4 rtl:pl-4 before:text-slate-400 dark:text-zink-200">
-                            <a href="#!" class="text-slate-400 dark:text-zink-200">사내 게시판</a>
+                            <a href="${pageContext.request.contextPath}/board/boardList" class="text-slate-400 dark:text-zink-200 ">사내 게시판</a>
                         </li>
-                        <li class="text-slate-700 dark:text-zink-100">
-                            게시판 리스트
+                         <li class="text-slate-700 dark:text-zink-100 before:text-slate-400 dark:text-zink-200">
+                            게시글 작성하기
                         </li>
                     </ul>
-                    
-                    
                 </div>
                 <!-- Main content -->
-                
-                <div>
-        	
-           	
-                   
-                     
-                    <div class="card">
-                    <div class="card-body">
-                        
-                        <table id="basic_tables" class="display stripe group" style="width:100%">
-                            <thead>
-                                <tr >
-                                    <th class="ltr:!text-left rtl:!text-right">Name</th>
-                                    <th>Position</th>
-                                    <th>Office</th>
-                                    <th>Age</th>
-                                    <th>Start date</th>
-                                    <th>Salary</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-			
-                        </table>
-                    </div>
-                </div>
-                   
-                   
-                </div>
-       		</div>
+     		   <!-- CKEditor5 Start -->
+	               <div class="main-container">
+						<div class="editor-container editor-container_classic-editor editor-container_include-word-count" id="editor-container">
+							
+						</div>
+					</div>
+				<!-- CKEditor5 End -->
             </div>
             <!-- container-fluid -->
         </div>
@@ -95,20 +74,10 @@
 </div>
 <!-- End Main Content -->
 <c:import url="/WEB-INF/view/inc/customizerButton.jsp"></c:import>
-
-
-<script src="${pageContext.request.contextPath}/assets/js/datatables/jquery-3.7.0.js"></script>
-<script src="${pageContext.request.contextPath}/assets/js/datatables/data-tables.min.js"></script>
-<script src="${pageContext.request.contextPath}/assets/js/datatables/data-tables.tailwindcss.min.js"></script>
-<!--buttons dataTables-->
-<script src="${pageContext.request.contextPath}/assets/js/datatables/datatables.buttons.min.js"></script>
-<script src="${pageContext.request.contextPath}/assets/js/datatables/jszip.min.js"></script>
-<script src="${pageContext.request.contextPath}/assets/js/datatables/pdfmake.min.js"></script>
-<script src="${pageContext.request.contextPath}/assets/js/datatables/buttons.html5.min.js"></script>
-<script src="${pageContext.request.contextPath}/assets/js/datatables/buttons.print.min.js"></script>
-
-<script src="${pageContext.request.contextPath}/assets/js/datatables/datatables.init.js"></script>
-
+	<script src="https://cdn.ckeditor.com/ckeditor5/44.1.0/ckeditor5.umd.js" crossorigin></script>
+	<script src="https://cdn.ckeditor.com/ckeditor5/44.1.0/translations/ko.umd.js" crossorigin></script>
+	<script src="${pageContext.request.contextPath}/assets/js/boardScript.js"></script>
+<!-- CKeditor5 -->
 
 <script src='${pageContext.request.contextPath}/assets/libs/choices.js/public/assets/scripts/choices.min.js'></script>
 <script src="${pageContext.request.contextPath}/assets/libs/@popperjs/core/umd/popper.min.js"></script>
