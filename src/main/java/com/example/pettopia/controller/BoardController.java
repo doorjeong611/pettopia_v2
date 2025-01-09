@@ -20,6 +20,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class BoardController {
 	@Autowired BoardService boardService;
 	
+	// 게시글 작성 구현 /board/addBoard/ 작업자 : 이준호
+	@GetMapping("/board/addBoard")
+	public String addBoard() {
+		
+		return "board/addBoard";
+	}
 	
 	
 	// 게시판 리스트 구현 /board/boardList 작업자 : 이준호
@@ -28,6 +34,8 @@ public class BoardController {
 		
 		return "board/boardList";
 	}
+	
+	
 	@GetMapping("/board/boardList")
 	public String boardList(Model model,
 			@RequestParam(name="currentPage",defaultValue = "1")int currentPage,
