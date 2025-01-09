@@ -17,7 +17,7 @@
     <!-- Tailwind CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tailwind2.css">
     <script src="${pageContext.request.contextPath}/assets/libs/flatpickr/flatpickr.min.js"></script>
-    <script src="${pageContext.request.contextPath}/assets/libs/dropzone/dropzone-min.js"></script>
+    
     <script>
 	 	// 오늘 날짜 구하기
 	    const today = new Date();
@@ -223,8 +223,6 @@
 										    </div>
 										</div>
 
-
-                                        
                                         <div class="lg:col-span-2 xl:col-span-12">
                                             <label for="genderSelect" class="inline-block mb-2 text-base font-medium">Product Images</label>
                                             <div class="flex items-center justify-center bg-white border border-dashed rounded-md cursor-pointer dropzone border-slate-300 dark:bg-zink-700 dark:border-zink-500 dropzone2 dz-clickable">
@@ -274,6 +272,7 @@
 <script src="${pageContext.request.contextPath}/assets/libs/prismjs/prism.js"></script>
 <script src="${pageContext.request.contextPath}/assets/libs/lucide/umd/lucide.js"></script>
 <script src="${pageContext.request.contextPath}/assets/js/tailwick.bundle.js"></script>
+<script src="${pageContext.request.contextPath}/assets/libs/dropzone/dropzone-min.js"></script>
 <div class="fixed inset-0 bg-slate-900/40 dark:bg-zink-800/70 z-[1049] backdrop-overlay hidden" id="backDropDiv"></div>
 <!--apexchart js-->
 <script src="${pageContext.request.contextPath}/assets/libs/apexcharts/apexcharts.min.js"></script>
@@ -371,6 +370,7 @@
 		if (draftDiv.parentNode) draftDiv.remove();
 		if (vacationDiv.parentNode) vacationDiv.remove();
 		if (materialDiv.parentNode) materialDiv.remove();
+		
         
         function resetVacationRadioButtons() {
             document.getElementById('vacationTypeAL').checked = false;  // 연차 버튼 초기화
@@ -378,7 +378,7 @@
             document.getElementById('vacationTypeHLp').checked = false;  // 반차(오후) 버튼 초기화
         }
 
-        function removeDivs() {
+        function removeDivs() {ㅓ                  
             if (ALDivStart.parentNode) ALDivStart.remove();
             if (ALDivEnd.parentNode) ALDivEnd.remove();
             if (HLDivStart.parentNode) HLDivStart.remove();
@@ -386,30 +386,30 @@
         
         // 선택된 문서 유형에 맞는 div만 보이기
         if (selectedValue === '') {
-            document.body.appendChild(documentDiv);
-            vacationDiv.appendChild(HLDivStart);
+        	document.body.appendChild(documentDiv);
             documentDiv.style.display = 'block';  // 기본 문서 내용 보이기
             documentTitle.textContent = '문서 작성';  // 기본 문서 제목
             removeDivs();
             resetVacationRadioButtons();  // 연차 버튼 초기화
         } else if (selectedValue === 'V') {
-            document.body.appendChild(vacationDiv);
+        	document.body.appendChild(vacationDiv);
             vacationDiv.style.display = 'block';  // 휴가 신청서 보이기
             documentTitle.textContent = '휴가 신청서 작성';  // 휴가 신청서 제목
             removeDivs();
         } else if (selectedValue === 'M') {
-            document.body.appendChild(materialDiv);
+        	document.body.appendChild(materialDiv);
             materialDiv.style.display = 'block';  // 자재 신청서 보이기
             documentTitle.textContent = '자재 신청서 작성';  // 자재 신청서 제목
             removeDivs();
             resetVacationRadioButtons();  // 연차 버튼 초기화
         } else if (selectedValue === 'D') {
-            document.body.appendChild(draftDiv);
+        	document.body.appendChild(draftDiv);
             draftDiv.style.display = 'block';  // 기안 문서 보이기
             documentTitle.textContent = '기안 문서 작성';  // 기안 문서 제목
             removeDivs();
             resetVacationRadioButtons();  // 연차 버튼 초기화
         }
+        
     });
     
  	// 라디오 버튼에 'change' 이벤트 추가
