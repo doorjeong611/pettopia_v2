@@ -10,7 +10,7 @@ import com.example.pettopia.vo.Attendance;
 @Mapper
 public interface AttendanceMapper {
 
-	// 오자윤 : /employee/attendanceList 근태상태 조회
+	// 오자윤 : /employee/attendance 근태리스트 -->
 	Map<String, Object> countEmployeeStatus(Attendance attendance);
 	
 	// 오자윤 : /employee/attendanceOn & Off 근태기록 조회

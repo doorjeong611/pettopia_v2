@@ -29,7 +29,7 @@ public class AttendanceController {
 	@Autowired 
 	AttendanceSerivce attendanceService;
 	
-	// 오자윤 : 출근등록
+	// 오자윤 : /common/petTopiaMain 출근등록
 	@PostMapping("/employee/attendanceOn")
 		// 세션 empNo 가져오기
 		public String attendanceOn(Model model, HttpSession session, Attendance attendance) {
@@ -90,7 +90,7 @@ public class AttendanceController {
 		return "common/petTopiaMain";
 	}
 	
-	// 오자윤 : 퇴근등록
+	// 오자윤 : /common/petTopiaMain 퇴근등록
     @PostMapping("/employee/attendanceOff")
     public String attendanceOff(Model model, HttpSession session, Attendance attendance) {
     	// 세션 empNo 가져오기
