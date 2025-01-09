@@ -114,29 +114,7 @@
 												    <h5 class="text-16">결재 수신자 목록</h5>
 												</div>
 										        
-										        <!-- Modal Content -->
-										        <div class="max-h-[calc(theme('height.screen')_-_180px)] p-4 overflow-y-auto">
-										            <h5 class="mb-3 text-16">직원 검색</h5>
-										            <input type="text" id="approverSearch" class="form-input w-full mb-4" placeholder="직원 검색">
-										            <ul id="approverList" class="mt-2">
-										                <!-- 예시 직원 목록 -->
-										                <li class="approver-item cursor-pointer p-3 hover:bg-gray-100" data-emp-no="202400007">202400007</li>
-										                <li class="approver-item cursor-pointer p-3 hover:bg-gray-100" data-emp-no="202400008">202400008 / 박지민</li>
-										                <li class="approver-item cursor-pointer p-3 hover:bg-gray-100" data-emp-no="202400009">202400009 / 이영호</li>
-										                <li class="approver-item cursor-pointer p-3 hover:bg-gray-100" data-emp-no="202400010">202400010 / 김지혜</li>
-										                <li class="approver-item cursor-pointer p-3 hover:bg-gray-100" data-emp-no="202400011">202400011 / 홍길동</li>
-										            </ul>
-										        </div>
-										
-										        <!-- Modal Footer -->
-										        <div class="flex items-center justify-end p-4 mt-auto border-t border-slate-200 dark:border-zink-500">
-										            <button id="closeModal" class="text-red-500 bg-white btn hover:text-red-500 hover:bg-red-100 focus:text-red-500 focus:bg-red-100 active:text-red-500 active:bg-red-100">
-										                닫기
-										                <i class="align-baseline ltr:pl-1 rtl:pr-1 ri-close-line"></i>
-										            </button>
-										        </div>
-										    </div>
-										</div>
+										       
 										
 										<!-- 유형 선택 하기 전 -->
                                         <div id="documentDiv" class="lg:col-span-2 xl:col-span-12" style="display:block;">
@@ -286,43 +264,7 @@
 
 
 <script>
-    // DOM 요소들
-    const approverInput = document.getElementById('approverEmpNo');
-    const approverModal = document.getElementById('approverModal');
-    const closeModalButton = document.getElementById('closeModal');
-    const approverList = document.getElementById('approverList');
-    
-    // 모달 창 열기
-    approverInput.addEventListener('click', () => {
-        approverModal.classList.remove('hidden');  // 모달을 보이게 함
-    });
 
-    // 모달 창 닫기
-    closeModalButton.addEventListener('click', () => {
-        approverModal.classList.add('hidden');  // 모달을 숨김
-    });
-
-    // 모달 외부 클릭 시 닫기
-    window.addEventListener('click', (event) => {
-        if (event.target === approverModal) {
-            approverModal.classList.add('hidden');  // 모달을 숨김
-        }
-    });
-
-    // 모달에서 직원 선택 시 입력 필드에 값 채우기
-    approverList.addEventListener('click', (event) => {
-        // 리스트 항목 클릭 시
-        if (event.target && event.target.classList.contains('approver-item')) {
-            const selectedEmpNo = event.target.getAttribute('data-emp-no');
-            const selectedEmpName = event.target.textContent;
-
-            // 수신자 입력 필드에 직원 이름을 입력하고, empNo 값도 사용할 수 있도록 숨겨둠
-            approverInput.value = selectedEmpName;  // 직원 이름 입력 필드에 넣기
-            approverInput.setAttribute('data-emp-no', selectedEmpNo);  // 숨겨진 값으로 empNo 저장
-
-            approverModal.classList.add('hidden');  // 모달 닫기
-        }
-    });
     
     
  	// <select> 요소
