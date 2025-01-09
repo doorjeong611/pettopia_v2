@@ -7,14 +7,17 @@ Contact: Themesdesign@gmail.com
 File: apps ecommerce product grid init Js File
 */
 
+// 25.01.09 우정 : gridview 주석 처리
+
+
 const listView = document.getElementById("listView");
-const gridView = document.getElementById("gridView");
+// const gridView = document.getElementById("gridView");
 const cardGridView = document.getElementById("cardGridView");
 
 listView.addEventListener("click", toggleListView);
-gridView.addEventListener("click", toggleGridView);
+// gridView.addEventListener("click", toggleGridView);
 
-function toggleListView() {
+/*function toggleListView() {
     if (!listView.classList.contains('active')) {
         listView.classList.add("active");
     }
@@ -33,4 +36,4 @@ function toggleGridView() {
     }
     gridView.classList.add("active");
     cardGridView.classList.remove("gridView");
-}
+}*/
