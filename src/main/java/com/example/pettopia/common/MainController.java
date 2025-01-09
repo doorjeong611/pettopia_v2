@@ -1,4 +1,4 @@
-package com.example.pettopia.controller;
+package com.example.pettopia.common;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
