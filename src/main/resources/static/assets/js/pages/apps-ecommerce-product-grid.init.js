@@ -17,7 +17,7 @@ const cardGridView = document.getElementById("cardGridView");
 listView.addEventListener("click", toggleListView);
 // gridView.addEventListener("click", toggleGridView);
 
-/*function toggleListView() {
+function toggleListView() {
     if (!listView.classList.contains('active')) {
         listView.classList.add("active");
     }
@@ -27,7 +27,7 @@ listView.addEventListener("click", toggleListView);
     }
 }
 
-function toggleGridView() {
+/*function toggleGridView() {
     if (listView.classList.contains('active')) {
         listView.classList.remove("active");
     }
