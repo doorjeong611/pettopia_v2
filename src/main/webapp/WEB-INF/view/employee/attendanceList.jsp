@@ -105,29 +105,28 @@
                         <div class="overflow-x-auto">
                             <table class="w-full whitespace-nowrap">
                                     <thead>
-            <tr>
-                <!-- 현재 달의 날짜 자동 생성 -->
-                  <c:forEach var="day" begin="1" end="${daysInMonth}">
-                    <th>${day < 10 ? '0' + day : day}</th>
-                </c:forEach>
-            </tr>
-        </thead>
-        <tbody>
-            <c:forEach var="attendance" items="${attendanceList}">
-                <tr>
-                    <td>${attendance.empNo}</td>
-                    <c:forEach var="day" begin="1" end="${daysInMonth}">
-                        <td>
-                            <c:choose>
-                                 <c:when test="${attendance.attendanceDate == currentYear + '-' + (currentMonth < 10 ? '0' + currentMonth : currentMonth) + '-' + (day < 10 ? '0' + day : day)}">
-                                    ${attendance.attendanceStatus}
-                                </c:when>
-                                <c:otherwise>-</c:otherwise>
-                            </c:choose>
-                        </td>
-                    </c:forEach>
-                </tr>
-                
+			            <tr>
+			                <!-- 현재 달의 날짜 자동 생성 -->
+			                  <c:forEach var="day" begin="1" end="${daysInMonth}">
+			                    <th>${day < 10 ? '0' + day : day}</th>
+			                </c:forEach>
+			            </tr>
+			        </thead>
+			        <tbody>
+			            <c:forEach var="attendance" items="${attendanceList}">
+			                <tr>
+			                    <td>${attendance.empNo}</td>
+			                    <c:forEach var="day" begin="1" end="${daysInMonth}">
+			                        <td>
+			                            <c:choose>
+			                                 <c:when test="${attendance.attendanceDate == currentYear + '-' + (currentMonth < 10 ? '0' + currentMonth : currentMonth) + '-' + (day < 10 ? '0' + day : day)}">
+			                                    ${attendance.attendanceStatus}
+			                                </c:when>
+			                                <c:otherwise>-</c:otherwise>
+			                            </c:choose>
+			                        </td>
+			                    </c:forEach>
+			                </tr>
             </c:forEach>
         </tbody>
             <!-- container-fluid -->

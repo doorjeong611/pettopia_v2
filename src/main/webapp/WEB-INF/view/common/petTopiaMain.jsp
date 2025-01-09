@@ -94,15 +94,15 @@
 			
 			                    if (action === 'in') {
 			                        if (clockInTime) {
-			                            alert("이미 출근하셨습니다.");
+			                            alert("이미 출근하셨습니다.😊");
 			                            return false; 
 			                        }
 			                    } else if (action === 'out') {
 			                        if (clockOutTime) {
-			                            alert("이미 퇴근하셨습니다.");
+			                            alert("이미 퇴근하셨습니다.😊");
 			                            return false; 
 			                        } else if (!clockInTime) {
-			                            alert("출근시간을 입력해주세요.");
+			                            alert("출근시간을 입력해주세요.⏰");
 			                            return false; 
 			                        }
 			                    }
