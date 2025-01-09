@@ -45,8 +45,8 @@
                             <div class="flex items-center gap-4 card-body">
                                 <div class="flex items-center justify-center rounded-md size-12 text-sky-500 bg-sky-100 text-15 dark:bg-sky-500/20 shrink-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="users-2" class="lucide lucide-users-2"><path d="M18 21a8 8 0 0 0-16 0"></path><circle cx="10" cy="8" r="5"></circle><path d="M22 20c0-3.37-2-6.5-4-8a5 5 0 0 0-.45-8.3"></path></svg></div>
                                 <div class="overflow-hidden grow">
-                                    <h5 class="mb-1 text-16"><span class="counter-value" data-target="43">43</span></h5>
-                                    <p class="truncate text-slate-500 dark:text-zink-200">전체 직원 수</p>
+                                    <h5 class="mb-1 text-16">${presentEmployee}</h5>
+                                    <p class="truncate text-slate-500 dark:text-zink-200">출근 직원</p>
                                 </div>
                             </div>
                         </div>
@@ -56,7 +56,7 @@
                             <div class="flex items-center gap-4 card-body">
                                 <div class="flex items-center justify-center text-red-500 bg-red-100 rounded-md size-12 text-15 dark:bg-red-500/20 shrink-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="user-x-2" class="lucide lucide-user-x-2"><path d="M2 21a8 8 0 0 1 11.873-7"></path><circle cx="10" cy="8" r="5"></circle><path d="m17 17 5 5"></path><path d="m22 17-5 5"></path></svg></div>
                                 <div class="overflow-hidden grow">
-                                    <h5 class="mb-1 text-16"><span class="counter-value" data-target="6">6</span></h5>
+                                    <h5 class="mb-1 text-16">${absentCount}</h5>
                                     <p class="truncate text-slate-500 dark:text-zink-200">결근 직원</p>
                                 </div>
                             </div>
@@ -67,8 +67,8 @@
                             <div class="flex items-center gap-4 card-body">
                                 <div class="flex items-center justify-center text-green-500 bg-green-100 rounded-md size-12 text-15 dark:bg-green-500/20 shrink-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="user-check-2" class="lucide lucide-user-check-2"><path d="M2 21a8 8 0 0 1 13.292-6"></path><circle cx="10" cy="8" r="5"></circle><path d="m16 19 2 2 4-4"></path></svg></div>
                                 <div class="overflow-hidden grow">
-                                    <h5 class="mb-1 text-16"><span class="counter-value" data-target="32">32</span></h5>
-                                    <p class="truncate text-slate-500 dark:text-zink-200">출석 직원</p>
+                                    <h5 class="mb-1 text-16">${halfDayLeaveCount}</h5>
+                                    <p class="truncate text-slate-500 dark:text-zink-200">반차 직원</p>
                                 </div>
                             </div>
                         </div>
@@ -78,8 +78,8 @@
                             <div class="flex items-center gap-4 card-body">
                                 <div class="flex items-center justify-center rounded-md size-12 text-custom-500 bg-custom-100 text-15 dark:bg-custom-500/20 shrink-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="briefcase" class="lucide lucide-briefcase"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg></div>
                                 <div class="overflow-hidden grow">
-                                    <h5 class="mb-1 text-16"><span class="counter-value" data-target="22">22</span></h5>
-                                    <p class="truncate text-slate-500 dark:text-zink-200">휴가 직원</p>
+                                    <h5 class="mb-1 text-16">${annualLeaveCount}</h5>
+                                    <p class="truncate text-slate-500 dark:text-zink-200">연차 직원</p>
                                 </div>
                             </div>
                         </div>
@@ -105,29 +105,28 @@
                         <div class="overflow-x-auto">
                             <table class="w-full whitespace-nowrap">
                                     <thead>
-            <tr>
-                <!-- 현재 달의 날짜 자동 생성 -->
-                  <c:forEach var="day" begin="1" end="${daysInMonth}">
-                    <th>${day < 10 ? '0' + day : day}</th>
-                </c:forEach>
-            </tr>
-        </thead>
-        <tbody>
-            <c:forEach var="attendance" items="${attendanceList}">
-                <tr>
-                    <td>${attendance.empNo}</td>
-                    <c:forEach var="day" begin="1" end="${daysInMonth}">
-                        <td>
-                            <c:choose>
-                                 <c:when test="${attendance.attendanceDate == currentYear + '-' + (currentMonth < 10 ? '0' + currentMonth : currentMonth) + '-' + (day < 10 ? '0' + day : day)}">
-                                    ${attendance.attendanceStatus}
-                                </c:when>
-                                <c:otherwise>-</c:otherwise>
-                            </c:choose>
-                        </td>
-                    </c:forEach>
-                </tr>
-                
+			            <tr>
+			                <!-- 현재 달의 날짜 자동 생성 -->
+			                  <c:forEach var="day" begin="1" end="${daysInMonth}">
+			                    <th>${day < 10 ? '0' + day : day}</th>
+			                </c:forEach>
+			            </tr>
+			        </thead>
+			        <tbody>
+			            <c:forEach var="attendance" items="${attendanceList}">
+			                <tr>
+			                    <td>${attendance.empNo}</td>
+			                    <c:forEach var="day" begin="1" end="${daysInMonth}">
+			                        <td>
+			                            <c:choose>
+			                                 <c:when test="${attendance.attendanceDate == currentYear + '-' + (currentMonth < 10 ? '0' + currentMonth : currentMonth) + '-' + (day < 10 ? '0' + day : day)}">
+			                                    ${attendance.attendanceStatus}
+			                                </c:when>
+			                                <c:otherwise>-</c:otherwise>
+			                            </c:choose>
+			                        </td>
+			                    </c:forEach>
+			                </tr>
             </c:forEach>
         </tbody>
             <!-- container-fluid -->

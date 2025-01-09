@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -134,8 +135,14 @@ public class AttendanceController {
     // 오자윤 : 관리자 - 직원 근태조회
     @GetMapping("employee/attendanceList")
     public String getAttendanceListByAdmin(Model model, Attendance attendance) {
-    	String attendanceDate = attendance.getAttendanceDate(); 
     	
+        // 직원 근태 상태 카운트 조회
+    	Map<String, Object> employeeStatusCount = attendanceService.countEmployeeStatus(attendance);
+    	
+        model.addAttribute("presentEmployee", employeeStatusCount.get("P"));
+        model.addAttribute("absentCount", employeeStatusCount.get("A"));
+        model.addAttribute("annualLeaveCount", employeeStatusCount.get("V"));
+        model.addAttribute("halfDayLeaveCount", employeeStatusCount.get("H"));
     	// 출석 목록 조회
     	List<Attendance> attendanceList = attendanceService.getAttendance(attendance);
     	model.addAttribute("attendanceList", attendanceList);

@@ -106,7 +106,7 @@ public class NoticeController {
 		model.addAttribute("noticeList", noList);
 		model.addAttribute("CurrentdivisionCode", divisionCode);
 		
-		return "notice/noticeList";
+		return "notice/noticeList2";
 	}
 	
 	// 공지사항 상세보기

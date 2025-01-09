@@ -6,6 +6,6 @@ import org.apache.ibatis.annotations.Mapper;
 public interface CommentMapper {
 	
 //	 댓글 삭제 쿼리 /board/removeComment 작업자 : 이준호
-	Integer deleteComment(int commentNo);
+	Integer deleteComment(int commentNo); 
 	
 }
