@@ -16,13 +16,15 @@
     <!-- App favicon -->
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/assets/images/pettopia_favicon.ico">
     <!-- Layout config Js -->
-    
     <script src="${pageContext.request.contextPath}/assets/js/layout.js"></script>
     <!-- Tailwind CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tailwind2.css">
 </head>
 
 <body class="text-base bg-body-bg text-body font-public dark:text-zink-100 dark:bg-zink-800 group-data-[skin=bordered]:bg-body-bordered group-data-[skin=bordered]:dark:bg-zink-700">
+<style>
+.ck-word-count__words {display:none;}
+</style>
 <div class="group-data-[sidebar-size=sm]:min-h-sm group-data-[sidebar-size=sm]:relative">
     
 	<!-- Left Sidebar Start -->
@@ -53,13 +55,22 @@
                     </ul>
                 </div>
                 <!-- Main content -->
-     		   <!-- CKEditor5 Start -->
+                
+
+                <div class="card" >
+                	 <div class="card-body">
+                	 <!-- CKEditor5 Start -->
 	               <div class="main-container">
-						<div class="editor-container editor-container_classic-editor editor-container_include-word-count" id="editor-container">
-							
-						</div>
-					</div>
+					 <div class="editor-container editor-container_classic-editor editor-container_include-word-count" id="editor-container">
+						<div class="editor-container__editor"><div id="editor"></div></div>
+						<div class="editor_container__word-count" id="editor-word-count "></div>
+					 </div>
+				   </div>
 				<!-- CKEditor5 End -->
+                	 </div>
+                </div>
+              	
+     		   
             </div>
             <!-- container-fluid -->
         </div>
