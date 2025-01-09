@@ -6,7 +6,7 @@ import lombok.Data;
 public class RoomRsv {
 	private Integer rsvNo; // PK
 	private Integer roomNo; // FK
-	private Integer customerNo;
+	private Integer customerNo; // FK
 	private String checkInDatetime;
 	private String checkOutDatetime;
 	private String rsvStatus;
