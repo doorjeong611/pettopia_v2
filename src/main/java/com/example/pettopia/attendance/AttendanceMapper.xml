@@ -16,7 +16,7 @@ WHERE
     attendance_date = CURDATE();
 </select>
 
-<!-- 오자윤 : /employee/attendanceOn & Off 근태조회 -->
+<!-- 오자윤 : /employee/attendance 근태리스트 -->
 <select id="getAttendanceList" resultType="com.example.pettopia.vo.Attendance">
     SELECT emp_no empNo, 
     		attendance_date attendanceDate,
