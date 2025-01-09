@@ -15,6 +15,8 @@ import com.example.pettopia.service.ServiceService;
 import com.example.pettopia.vo.PetService;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @Controller
 @Slf4j
@@ -23,6 +25,20 @@ public class ServiceController {
     @Autowired
     private ServiceService serviceService;
     
+    // 서비스 상세보기 뷰 및 수정 페이지
+    @PostMapping("/service/modifyService")
+    public String modifyService(PetService petService) {
+        // 서비스 수정 처리
+        serviceService.modifyService(petService);
+        return "redirect:/service/getServiceList"; // 수정 후 리스트 페이지로 이동
+    }
+    
+    @GetMapping("/service/modifyService")
+    public String modifyService() {
+        return "service/getModifyService";
+    }
+    
+
     // 서비스 등록 페이지
     @GetMapping("/service/addService")
     public String addService() {
@@ -45,13 +61,12 @@ public class ServiceController {
     /**
      * JSON 형식으로 PetService 데이터 반환
      */
-    @GetMapping("/api/pet-services")
-    @ResponseBody
-    public List<PetService> getAllPetServices() {
-        List<PetService> serviceList = serviceService.getAllServices();
-        log.debug("Fetched serviceList: {}", serviceList); // 디버깅 로그
-        return serviceList;
-    }
+//    @GetMapping("/api/pet-services")
+//    public List<PetService> getAllPetServices() {
+//        List<PetService> serviceList = serviceService.getAllServices();
+//        log.debug("Fetched serviceList: {}", serviceList); // 디버깅 로그
+//        return serviceList;
+//    }
 
     /**
      * PetService View 연결 및 데이터 전달
