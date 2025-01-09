@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.pettopia.boardcomment.CommentMapper">
+	<!-- 댓글 삭제 쿼리 /board/removeComment 작업자 : 이준호 -->
+	<delete id="deleteComment" parameterType="Integer">
+		DELETE 
+		FROM board_comment
+		WHERE
+			comment_no = #{commentNo}
+	</delete>
+</mapper>

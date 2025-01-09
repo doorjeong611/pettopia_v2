@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.example.pettopia.service.EmployeeService;
+import com.example.pettopia.employee.EmployeeService;
 import com.example.pettopia.util.TeamColor;
 import com.example.pettopia.vo.Employee;
 
