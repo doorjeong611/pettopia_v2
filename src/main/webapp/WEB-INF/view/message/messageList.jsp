@@ -66,40 +66,54 @@
                                     </div><!--end col-->
                                 </div><!--end grid-->
                             </div>
-                            <div class="xl:max-h-[calc(100vh_-_300px)]" data-simplebar="init"><div class="simplebar-wrapper" style="margin: 0px;"><div class="simplebar-height-auto-observer-wrapper"><div class="simplebar-height-auto-observer"></div></div><div class="simplebar-mask"><div class="simplebar-offset" style="right: 0px; bottom: 0px;"><div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: auto; overflow: hidden;"><div class="simplebar-content" style="padding: 0px;">
-                                <div class="!pt-0 card-body">
+                            <div class="simplebar-content flex flex-col h-full">
+   								 <div class="!pt-0 card-body flex-grow overflow-y-auto">
+                                <!-- 보낸 사람 시작하는 부분 -->
                                     <div class="overflow-x-auto">
                                     	<br>
 			                               <td colspan="3">
-			                                   <p class="mb-2 text-slate-500 dark:text-zink-200">보낸 사람</p>
+										 	<span class="text-slate-500 dark:text-zink-200" style="margin-right: 29px;">삭제</span>
+										    <span class="text-slate-500 dark:text-zink-200" style="margin: 10px;">읽음</span>
+										    <span class="text-slate-500 dark:text-zink-200" style="margin-left: 25px;">보낸 사람</span>
+										    <span class="text-slate-500 dark:text-zink-200" style="margin-left: 922px;">보낸 날짜</span>
 			                               </td>
                                         <!-- 테이블 시작 부분 -->
                                         <table class="w-full whitespace-nowrap">
                                             <tbody class="elmLoader" id="mail-list">
-                                                <tr>
-                                                    <td></td>
-                                                </tr>
                                                 <!-- 메일리스트 시작부분 -->
-                                                <tr class="relative before:absolute ltr:before:left-0 rtl:before:right-0 before:border [&amp;.checked]:before:border-custom-500 before:inset-y-0 before:border-transparent unread group/mail">
-                                                    <td class="px-3.5 py-2.5 border-y border-transparent first:pl-0 last:pr-0 w-20">
-                                                        <div class="flex items-center gap-3 ltr:pl-2 rtl:pr-2 checkbox-wrapper-mail">
-                                                            <input id="checkbox" class="itemCheckbox size-4 cursor-pointer bg-white border border-slate-200 checked:bg-none dark:bg-zink-700 dark:border-zink-500 rounded-sm appearance-none arrow-none relative after:absolute after:content-['\eb7b'] after:top-0 after:left-0 after:font-remix after:leading-none after:opacity-0 checked:after:opacity-100 after:text-custom-500 checked:border-custom-500 dark:after:text-custom-500 dark:checked:border-custom-800" type="checkbox">
-                                                        </div>
-                                                    </td>
-                                                    <td class="px-3.5 py-2.5 border-y border-transparent  mailBox first:pl-0 last:pr-0 text-slate-500 group-[.unread]/mail:text-slate-800 dark:text-zink-200 dark:group-[.unread]/mail:text-zink-50">
-                                                        <div class="grid items-center grid-cols-12 gap-3 ">
-                                                            <div class="col-span-4 lg:col-span-2">
-                                                                <a href="#!" class="block truncate before:inset-0 before:absolute">Patricia Garcia</a>
-                                                            </div>
-                                                            <div class="col-span-8 lg:col-span-10">
-                                                                <p class="truncate">List all mail-enabled users who have specific permissions on the selected mailboxes, in other words their delegates.</p>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td class="px-3.5 py-2.5 border-y border-transparent first:pl-0 last:pr-0 text-end w-20 text-slate-500 group-[.unread]/mail:text-slate-800 dark:text-zink-200 dark:group-[.unread]/mail:text-zink-50">01:20 AM</td>
-                                                </tr>
-                                            </tbody>
+                                                 <c:forEach var="message" items="${messageList}">
+    									<tr>
+								        <td class="px-3.5 py-2.5 border-y text-slate-500">
+								            <input type="checkbox" class="itemCheckbox" />
+								        </td>
+								        <td class="px-3.5 py-2.5 border-y text-slate-500">
+								                <div class="col-span-4 lg:col-span-2">
+								                    <a>${message.messageState}</a>
+								                </div>
+								            </div>
+								        </td>
+								        <td class="px-3.5 py-2.5 border-y text-slate-500">
+								                <div class="col-span-12 lg:col-span-2">
+								                    <span>${message.senderName}</span> <!-- 보낸 사람 -->
+								                </div>
+								            </div>
+								        </td>
+								        <td class="px-3.5 py-2.5 border-y text-slate-500">
+								                <div class="col-span-8 lg:col-span-10">
+								                    <span>${message.messageTitle}</span> <!-- 제목 -->
+								                </div>
+								            </div>
+								        </td>
+								        <td class="px-3.5 py-2.5 border-y text-slate-500">
+								                <div class="col-span-8 lg:col-span-10">
+								                    <p>${message.createDatetime}</p> <!-- 날짜 -->
+								                </div>
+								            </div>
+								        </td>
+								    </tr>
+									</c:forEach>
                                         </table>
+                                        <!-- 메일리스트 끝나는 부분 -->
                                     </div>
                                 </div>
                             </div></div></div></div><div class="simplebar-placeholder" style="width: 1176px; height: 93px;"></div></div><div class="simplebar-track simplebar-horizontal" style="visibility: hidden;"><div class="simplebar-scrollbar" style="width: 0px; display: none;"></div></div><div class="simplebar-track simplebar-vertical" style="visibility: hidden;"><div class="simplebar-scrollbar" style="height: 0px; display: none;"></div></div></div>

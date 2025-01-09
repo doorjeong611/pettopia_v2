@@ -1,6 +1,7 @@
 package com.example.pettopia.message;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import com.example.pettopia.util.TeamColor;
 import com.example.pettopia.vo.Employee;
-import com.example.pettopia.vo.Message;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -28,7 +28,7 @@ public String getMethodName(HttpSession session, Model model) {
 	String empNo = loginEmp.getEmpNo();
 	
 	// 쪽지 목록 조회
-	List<Message> messageList = messageService.getMessageList(empNo);
+	List<Map<String, Object>> messageList = messageService.getMessageList(empNo);
 	model.addAttribute("messageList", messageList);
 	log.debug(TeamColor.OJY + "messageList------>" + messageList + TeamColor.RESET);
     return "message/messageList";
