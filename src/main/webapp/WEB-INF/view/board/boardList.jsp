@@ -17,7 +17,10 @@
     <!-- Tailwind CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tailwind2.css">
 </head>
-
+<style>
+	.editor-container_classic-editor .editor-container__editor {    min-width: 795px; max-width:1280px;}
+	
+</style>
 <body class="text-base bg-body-bg text-body font-public dark:text-zink-100 dark:bg-zink-800 group-data-[skin=bordered]:bg-body-bordered group-data-[skin=bordered]:dark:bg-zink-700">
 <div class="group-data-[sidebar-size=sm]:min-h-sm group-data-[sidebar-size=sm]:relative">
     
@@ -60,20 +63,45 @@
                      
                     <div class="card">
                     <div class="card-body">
-                        
                         <table id="basic_tables" class="display stripe group" style="width:100%">
                             <thead>
-                                <tr >
-                                    <th class="ltr:!text-left rtl:!text-right">Name</th>
-                                    <th>Position</th>
-                                    <th>Office</th>
-                                    <th>Age</th>
-                                    <th>Start date</th>
-                                    <th>Salary</th>
+                                <tr>
+	                         		<th class="text-center ltr:!text-left rtl:!text-right">번호</th>
+	                                <th class="text-center" >제목</th>
+								    <th class="text-center" >카테고리</th>
+								    <th class="text-center" >조회수</th>
+								    <th class="text-center" >추천</th>
+								    <th class="text-center" >작성일</th>
+								    <th class=""></th>   
                                 </tr>
                             </thead>
                             <tbody>
-			
+                            
+                            	 <c:forEach var="bl" items="${boardList}">
+                            	 <c:if test="${bl.commentCnt==0}">
+                            	 	<tr>
+                                        <td class="text-center">${bl.boardNum}</td>
+                                        <td class="text-center"><a href="#">${bl.boardTitle}</a></td>
+                                        <td class="text-center">${bl.boardHeader}</td>
+                                        <td class="text-center">${bl.boardView}</td>
+                                        <td class="text-center">${bl.boardLike}</td>
+                                        <td class="text-center" >${bl.createDate}</td>
+                                    	<td class="text-center"><a href="#">삭제</a></td>
+                                 	</tr>
+                            	 </c:if>
+                            	 <c:if test="${bl.commentCnt!=0}">
+                            	 	<tr>
+                                        <td class="text-center">${bl.boardNum}</td>
+                                        <td class="text-center"><a href="#">${bl.boardTitle}&nbsp;[${bl.commentCnt}]</a></td>
+                                        <td class="text-center">${bl.boardHeader}</td>
+                                        <td class="text-center">${bl.boardView}</td>
+                                        <td class="text-center">${bl.boardLike}</td>
+                                        <td class="text-center" >${bl.createDate}</td>
+                                    	<td class="text-center"><a href="#">삭제</a></td>
+                                 	</tr>
+                            	 </c:if>
+                            	 </c:forEach>
+							</tbody>
                         </table>
                     </div>
                 </div>
