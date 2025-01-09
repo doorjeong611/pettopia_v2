@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.pettopia.attendance.AttendanceMapper">
+
+<!-- 오자윤 : /employee/attendanceList 직원 상태 카운트 -->
+<select id="countEmployeeStatus" resultType="Map">
+SELECT 
+    COUNT(CASE WHEN attendance_status = 'P' THEN 1 END) AS 'P',  -- 출근
+    COUNT(CASE WHEN attendance_status = 'L' THEN 1 END) AS 'L',  -- 지각
+    COUNT(CASE WHEN attendance_status = 'A' THEN 1 END) AS 'A',  -- 결근
+    COUNT(CASE WHEN attendance_status = 'V' THEN 1 END) AS 'V',  -- 연차
+    COUNT(CASE WHEN attendance_status = 'H' THEN 1 END) AS 'H'   -- 반차
+FROM 
+    attendance
+WHERE 
+    attendance_date = CURDATE();
+</select>
+
+<!-- 오자윤 : /employee/attendanceOn & Off 근태조회 -->
+<select id="getAttendanceList" resultType="com.example.pettopia.vo.Attendance">
+    SELECT emp_no empNo, 
+    		attendance_date attendanceDate,
+    		attendance_status attendanceStatus,
+    		clock_in_time clockInTime,
+    		clock_out_time clockOutTime,
+    		create_datetime createDatetime,
+    		update_datetime updateDatetime
+    FROM attendance 
+    WHERE emp_no = #{empNo} AND attendance_date = #{attendanceDate}
+</select>
+
+<!-- 오자윤 : /employee/attendanceOn 근태 : 출근 -->
+<insert id="insertAttendanceOn" parameterType="com.example.pettopia.vo.Attendance">
+ 	INSERT INTO attendance (
+ 				emp_no
+ 				,attendance_date
+ 				,clock_in_time
+ 				,attendance_status
+ 				) VALUES (
+ 						#{empNo}, #{attendanceDate}, #{clockInTime}, #{attendanceStatus}
+ 				)
+</insert>
+
+<!-- 오자윤 : /employee/attendanceOff 근태 : 퇴근-->
+ <update id="insertAttendanceOff" parameterType="com.example.pettopia.vo.Attendance">
+    UPDATE attendance
+    SET 
+    	clock_out_time = #{clockOutTime}
+    	,attendance_status = #{attendanceStatus}
+    WHERE emp_no = #{empNo}
+</update>
+ 
+</mapper>

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.example.pettopia.service.AttendanceSerivce;
+import com.example.pettopia.attendance.AttendanceSerivce;
 import com.example.pettopia.util.TeamColor;
 import com.example.pettopia.vo.Attendance;
 import com.example.pettopia.vo.Employee;
