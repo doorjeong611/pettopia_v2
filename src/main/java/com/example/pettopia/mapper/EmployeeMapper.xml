@@ -10,7 +10,6 @@
 			, emp_email empEmail
 			, emp_status empStatus
 			, is_team_leader isTeamLeader
-			, is_first_login isFirstLogin
 			, dept_code deptCode
 			, rank_no rankNo
 		FROM employee
