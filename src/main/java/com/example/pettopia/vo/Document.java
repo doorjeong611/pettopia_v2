@@ -11,12 +11,16 @@ public class Document {
 	private String docType;
 	private String approvalStatus;
 	private String docBin;
-	private String approverEmpNo; // FK
+	private String docPurpose;
+	private Integer docPrice;
+	private String docRemarks;
 	private String vacationType;
-	private String vacationStartDate;
-	private String vacationEndDate;
-	private String materialList;
+	private String vacationBackup; // FK
+	private String materialName;
 	private Integer materialQuantity;
+	private String resignationType;
+	private String startDate;
+	private String endDate;
 	private String createDatetime;
 	private String updateDatetime;
 	
