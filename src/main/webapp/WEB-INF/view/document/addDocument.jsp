@@ -673,16 +673,6 @@ $(document).ready(function() {
             currentInput = null; // 모달이 닫힐 때 currentInput 초기화
         }
         
-        var date = new Date();
-        var year = date.getFullYear();
-        var month = ("0" + (1 + date.getMonth())).slice(-2);
-        var day = ("0" + date.getDate()).slice(-2);
-
-        const formattedDate = year + '-' + month + '-' + day;
-        console.log('Formatted Date:', formattedDate); // debug
-
-        $('#writingDate').val(formattedDate);
-    	});
 	});
 </script>
 
