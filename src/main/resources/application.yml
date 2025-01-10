@@ -1,0 +1,25 @@
+spring:
+  mvc:
+    view:
+      prefix: /WEB-INF/view/
+      suffix: .jsp
+  servlet:
+    multipart:
+      enabled: 'true'
+      max-request-size: 200MB
+      max-file-size: 10MB
+  application:
+    name: PetTopia
+  profiles:
+    active: db,mail
+server:
+  servlet:
+    context-path: /pettopia
+    session:
+      timeout: '3600'
+  port: '80'
+logging:
+  level:
+    com:
+      example:
+        pettopia: debug
