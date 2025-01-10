@@ -58,11 +58,27 @@
                 
                 <div>
         	
-           	
+           		
                    
                      
                     <div class="card">
                     <div class="card-body">
+                    	
+                    
+                  			
+                  		
+                  		<div id="boardListContainer">	
+                        	<form action="${pageContext.request.contextPath}/board/boardList" method="get" id="formCategory">
+							<select name="category" id="boardCategory">
+								<option value="ALL" ${boardCategory == 'ALL' ? 'selected' : ''}>전체</option>
+								<option value="SG" ${boardCategory == 'SG' ? 'selected' : ''}>건의사항</option>
+								<option value="DS" ${boardCategory == 'DS' ? 'selected' : ''}>토론</option>
+								<option value="CT" ${boardCategory == 'CT' ? 'selected' : ''}>잡답</option>
+								<option value="IN" ${boardCategory == 'IN' ? 'selected' : ''}>정보</option>
+								<option value="QA" ${boardCategory == 'QA' ? 'selected' : ''}>질문</option>
+								<option value="CP" ${boardCategory == 'CP' ? 'selected' : ''}>칭찬</option>
+							</select>
+						</form>
                         <table id="basic_tables" class="display stripe group" style="width:100%">
                             <thead>
                                 <tr>
@@ -105,7 +121,7 @@
                         </table>
                     </div>
                 </div>
-                   
+               </div>	  
                    
                 </div>
        		</div>
@@ -122,6 +138,7 @@
     </div>
 </div>
 <!-- End Main Content -->
+
 <c:import url="/WEB-INF/view/inc/customizerButton.jsp"></c:import>
 
 
@@ -153,6 +170,28 @@
 
 <!-- App js -->
 <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
+
+<script>
+$(document).ready(function() {
+    // select 항목에서 값이 변경될 때
+    $('#boardCategory').change(function() {
+        var category = $(this).val();  // 선택된 카테고리 값
+
+        $.ajax({
+            url: "${pageContext.request.contextPath}/board/boardList",  // 서버로 보낼 URL
+            type: 'GET',  // HTTP 요청 방식
+            data: { category: category },  // 서버로 보낼 데이터 (카테고리 값)
+            success: function(response) {
+                // 서버에서 응답받은 데이터를 테이블에 동적으로 삽입
+                $('#boardListContainer').html(response);  // 테이블을 업데이트할 영역
+            },
+            error: function() {
+                alert('데이터를 불러오는 데 실패했습니다.');
+            }
+        });
+    });
+});
+</script>
 
 </body>
 
