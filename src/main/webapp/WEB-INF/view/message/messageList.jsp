@@ -72,65 +72,45 @@
                                     <div class="overflow-x-auto">
                                     	<br>
                                         <!-- 테이블 시작 부분 -->
-                                        <table class="w-full whitespace-nowrap">
-                                        	<tr>
-                                        		<td class="text-center">
-                                        			<span class="text-slate-500 dark:text-zink-200" style="margin-right: 29px;">삭제</span>
-                                        		</td>
-                                        		<td class="text-center">
-                                        			<span class="text-slate-500 dark:text-zink-200" style="margin-right: 29px;">읽음</span>
-                                        		</td>
-                                        		<td class="text-center">
-                                        			<span class="text-slate-500 dark:text-zink-200" style="margin-right: 29px;">보낸사람</span>
-                                        		</td>
-                                        		<td class="text-center">
-                                        			<span class="text-slate-500 dark:text-zink-200" style="margin-right: 29px;">제목</span>
-                                        		</td>
-                                        		<td class="text-center">
-                                        			<span class="text-slate-500 dark:text-zink-200" style="margin-right: 29px;">날짜</span>
-                                        		</td>
-                                        	</tr>
-                                            <tbody class="elmLoader" id="mail-list">
-                                                <!-- 메일리스트 시작부분 -->
-                                                 <c:forEach var="message" items="${messageList}">
-    									<tr>
-								        <td class="text-center px-3.5 py-2.5 border-y text-slate-500">
-								            <input type="checkbox" class="itemCheckbox" />
-								        </td>
-								        <td class="text-center px-3.5 py-2.5 border-y text-slate-500">
-								                <div class="col-span-4 lg:col-span-2">
-								                    <a>${message.messageState}</a>
-								                </div>
-								        </td>
-								        <td class="text-center px-3.5 py-2.5 border-y text-slate-500">
-								                <div class="col-span-12 lg:col-span-2">
-								                    <span>${message.senderName}</span> <!-- 보낸 사람 -->
-								                </div>
-								        </td>
-								        <td class="text-center px-3.5 py-2.5 border-y text-slate-500">
-								                <div class="col-span-8 lg:col-span-10">
-								                    <span>${message.messageTitle}</span> <!-- 제목 -->
-								                </div>
-								        </td>
-								        <td class="text-center px-3.5 py-2.5 border-y text-slate-500">
-								                <div class="col-span-8 lg:col-span-10">
-								                    <p>${message.createDatetime}</p> <!-- 날짜 -->
-								                </div>
-								        </td>
-								    </tr>
-									</c:forEach>
-                                        </table>
+                                       <form action="${pageContext.request.contextPath}/message/messageBin" method="post">
+                                       <table class="w-full whitespace-nowrap">
+							    		<tr>
+								        	<td style="padding: 10px;">
+									            <span class="text-slate-500 dark:text-zink-200 deleteMessages" style="margin-right: 20px; cursor: pointer;">삭제</span>
+									            <span class="text-slate-500 dark:text-zink-200" style="margin-right: 24px;">읽음</span>
+									            <span class="text-slate-500 dark:text-zink-200" style="margin-right: 50px;">보낸사람</span>
+									            <span class="text-slate-500 dark:text-zink-200" style="margin-right: 0px;"></span>
+							           	 		<span class="text-slate-500 dark:text-zink-200" style="margin-left: 1000px;">날짜</span>
+								        	</td>
+								    	</tr>
+							   		    <tbody class="elmLoader" id="mail-list">
+								        <!-- 메일리스트 시작부분 -->
+								        <c:forEach var="message" items="${messageList}">
+								        <c:if test="${message.messageBin == 0}">
+								            <tr>
+								                <td class="px-3.5 py-2.5 border-y text-slate-500" style="padding: 10px;">
+								                    <input type="hidden" class="messageNo" value="${message.messageNo}" />
+								                	<input type="checkbox" class="moveToBin" name="messageNo" value="${message.messageNo}" /> 
+								                    <span style="margin-left: 34px;">${message.messageState}</span>
+								                    <span style="margin-left: 37px;">${message.senderName}</span> <!-- 보낸 사람 -->
+								                    <span style="margin-left: 100px;">${message.messageTitle}</span> <!-- 제목 -->
+								                   <span style="margin-left: 830px;">${message.createDatetime}</span> <!-- 날짜 -->
+								                </td>
+								            </tr>
+								            </c:if>
+								        </c:forEach>
+								    </tbody>
+								</table>
                                         <!-- 메일리스트 끝나는 부분 -->
-                                    </div>
-                                </div>
-                            </div></div></div></div><div class="simplebar-placeholder" style="width: 1176px; height: 93px;"></div></div><div class="simplebar-track simplebar-horizontal" style="visibility: hidden;"><div class="simplebar-scrollbar" style="width: 0px; display: none;"></div></div><div class="simplebar-track simplebar-vertical" style="visibility: hidden;"><div class="simplebar-scrollbar" style="height: 0px; display: none;"></div></div></div>
-                        </div>
+                              </div>
+                          </div>
+                      </div></div></div></div><div class="simplebar-placeholder" style="width: 1176px; height: 93px;"></div></div><div class="simplebar-track simplebar-horizontal" style="visibility: hidden;"><div class="simplebar-scrollbar" style="width: 0px; display: none;"></div></div><div class="simplebar-track simplebar-vertical" style="visibility: hidden;"><div class="simplebar-scrollbar" style="height: 0px; display: none;"></div></div></div>
+                  </div>
 
-                    </div>
+              </div>
             <!-- container-fluid -->
-        </div>
         <!-- End Page-content -->
-
+		
 		<!-- Start Footer -->
         <footer class="ltr:md:left-vertical-menu rtl:md:right-vertical-menu group-data-[sidebar-size=md]:ltr:md:left-vertical-menu-md group-data-[sidebar-size=md]:rtl:md:right-vertical-menu-md group-data-[sidebar-size=sm]:ltr:md:left-vertical-menu-sm group-data-[sidebar-size=sm]:rtl:md:right-vertical-menu-sm absolute right-0 bottom-0 px-4 h-14 group-data-[layout=horizontal]:ltr:left-0  group-data-[layout=horizontal]:rtl:right-0 left-0 border-t py-3 flex items-center dark:border-zink-600">
         	<c:import url="/WEB-INF/view/inc/footer.jsp"></c:import>    
@@ -158,5 +138,21 @@
 <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
 
 </body>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelector('.deleteMessages').addEventListener('click', function() {
+        const checkboxes = document.querySelectorAll('.moveToBin:checked'); // 체크된 체크박스 선택
 
+        if (checkboxes.length === 0) {
+            alert('삭제할 메시지를 선택하세요.'); // 선택된 메시지가 없을 경우 사용자에게 알림
+            return;
+        }
+
+        // 확인 대화상자
+        if (confirm('선택한 메시지를 삭제하시겠습니까?')) {
+            document.querySelector('form').submit(); // 폼 제출
+        }
+    });
+});
+</script>
 </html>

@@ -19,6 +19,6 @@ public interface AttendanceMapper {
 	// 오자윤 : /employee/attendanceOn 근태 : 출근
 	Integer insertAttendanceOn(Attendance attendance);
 	
-	// 오자윤 : /employee/attendanceOn 근태 : 출근
+	// 오자윤 : /employee/attendanceOn 근태 : 퇴근
 	Integer insertAttendanceOff(Attendance attendance);
 }

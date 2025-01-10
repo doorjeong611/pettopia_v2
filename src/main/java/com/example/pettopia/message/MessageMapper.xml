@@ -2,28 +2,41 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.pettopia.message.MessageMapper">
 
-<!-- 오자윤 : /employee/messageList 쪽지리스트 조회 -->
-<select id="getMessageList" resultType="map"> 
-	    SELECT 
-		    m.message_no messageNo,
-		    m.sender_emp_no senderEmpNo,
-		    e.emp_name senderName,
-		    m.recipient_emp_no recipientEmpNo,
-		    m.message_title messageTitle,
-		    m.message_content messageContent,
-		    m.message_state messageState,
-		    m.message_bin AS messageBin,
-		    DATE_FORMAT(m.create_datetime, '%Y-%m-%d %H:%i') createDatetime,
-		    DATE_FORMAT(m.update_datetime, '%Y-%m-%d %H:%i') updateDatetime
-		FROM 
-		    message m
-		JOIN 
-		    employee e ON m.sender_emp_no = e.emp_no
-		WHERE 
-		    m.recipient_emp_no = ${emp_no}  
-		ORDER BY 
-		    m.message_no ASC;
-			    
-</select>
+	<!-- 오자윤 : /employee/messageList 쪽지리스트 조회 -->
+	<select id="getMessageList" resultType="map"> 
+		    SELECT 
+			    m.message_no messageNo,
+			    m.sender_emp_no senderEmpNo,
+			    e.emp_name senderName,
+			    m.recipient_emp_no recipientEmpNo,
+			    m.message_title messageTitle,
+			    m.message_content messageContent,
+			    m.message_state messageState,
+			    m.message_bin messageBin,
+			    DATE_FORMAT(m.create_datetime, '%Y-%m-%d %H:%i') createDatetime,
+			    DATE_FORMAT(m.update_datetime, '%Y-%m-%d %H:%i') updateDatetime
+			FROM 
+			    message m
+			JOIN 
+			    employee e ON m.sender_emp_no = e.emp_no
+			WHERE 
+			    m.recipient_emp_no = ${emp_no}  
+			ORDER BY 
+			    m.message_no ASC;
+	</select>
+	
+	<!-- 오자윤 : /employee/messageList 쪽지 휴지통 이동 -->
+	<update id="updateMessage">
+	    UPDATE message
+	    SET message_bin = '1' 
+	    WHERE message_no = #{messageNo}
+	</update>
+	
+	<!-- 오자윤 : /employee/messageList 메시지 읽음 상태 변환 -->
+	<update id="updateMessageState">
+	    UPDATE message
+	    SET message_state = 'Y'
+	    WHERE message_no = #{messageNo}; 
+	</update>
 
 </mapper>
