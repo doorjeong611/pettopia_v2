@@ -71,44 +71,51 @@
                                 <!-- 보낸 사람 시작하는 부분 -->
                                     <div class="overflow-x-auto">
                                     	<br>
-			                               <td colspan="3">
-										 	<span class="text-slate-500 dark:text-zink-200" style="margin-right: 29px;">삭제</span>
-										    <span class="text-slate-500 dark:text-zink-200" style="margin: 10px;">읽음</span>
-										    <span class="text-slate-500 dark:text-zink-200" style="margin-left: 25px;">보낸 사람</span>
-										    <span class="text-slate-500 dark:text-zink-200" style="margin-left: 922px;">보낸 날짜</span>
-			                               </td>
                                         <!-- 테이블 시작 부분 -->
                                         <table class="w-full whitespace-nowrap">
+                                        	<tr>
+                                        		<td class="text-center">
+                                        			<span class="text-slate-500 dark:text-zink-200" style="margin-right: 29px;">삭제</span>
+                                        		</td>
+                                        		<td class="text-center">
+                                        			<span class="text-slate-500 dark:text-zink-200" style="margin-right: 29px;">읽음</span>
+                                        		</td>
+                                        		<td class="text-center">
+                                        			<span class="text-slate-500 dark:text-zink-200" style="margin-right: 29px;">보낸사람</span>
+                                        		</td>
+                                        		<td class="text-center">
+                                        			<span class="text-slate-500 dark:text-zink-200" style="margin-right: 29px;">제목</span>
+                                        		</td>
+                                        		<td class="text-center">
+                                        			<span class="text-slate-500 dark:text-zink-200" style="margin-right: 29px;">날짜</span>
+                                        		</td>
+                                        	</tr>
                                             <tbody class="elmLoader" id="mail-list">
                                                 <!-- 메일리스트 시작부분 -->
                                                  <c:forEach var="message" items="${messageList}">
     									<tr>
-								        <td class="px-3.5 py-2.5 border-y text-slate-500">
+								        <td class="text-center px-3.5 py-2.5 border-y text-slate-500">
 								            <input type="checkbox" class="itemCheckbox" />
 								        </td>
-								        <td class="px-3.5 py-2.5 border-y text-slate-500">
+								        <td class="text-center px-3.5 py-2.5 border-y text-slate-500">
 								                <div class="col-span-4 lg:col-span-2">
 								                    <a>${message.messageState}</a>
 								                </div>
-								            </div>
 								        </td>
-								        <td class="px-3.5 py-2.5 border-y text-slate-500">
+								        <td class="text-center px-3.5 py-2.5 border-y text-slate-500">
 								                <div class="col-span-12 lg:col-span-2">
 								                    <span>${message.senderName}</span> <!-- 보낸 사람 -->
 								                </div>
-								            </div>
 								        </td>
-								        <td class="px-3.5 py-2.5 border-y text-slate-500">
+								        <td class="text-center px-3.5 py-2.5 border-y text-slate-500">
 								                <div class="col-span-8 lg:col-span-10">
 								                    <span>${message.messageTitle}</span> <!-- 제목 -->
 								                </div>
-								            </div>
 								        </td>
-								        <td class="px-3.5 py-2.5 border-y text-slate-500">
+								        <td class="text-center px-3.5 py-2.5 border-y text-slate-500">
 								                <div class="col-span-8 lg:col-span-10">
 								                    <p>${message.createDatetime}</p> <!-- 날짜 -->
 								                </div>
-								            </div>
 								        </td>
 								    </tr>
 									</c:forEach>
