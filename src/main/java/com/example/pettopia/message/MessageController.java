@@ -63,4 +63,12 @@ public String getMethodName(HttpSession session, Model model) {
     return "message/messageList";
 }
 
+@GetMapping("message/messageNote")
+public String writeMessage() {
+	
+    return "message/messageNote";
+
 }
+}
+
+
