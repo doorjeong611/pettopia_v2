@@ -1,2 +1,4 @@
 /application-mail.properties
 /application-db.properties
+/application-mail.yml
+/application-db.yml
