@@ -59,11 +59,11 @@
 		                                                <img src="./assets/images/img-08.png" alt="" class="h-8">
 		                                            </div>
 		                                            <div class="grow">
-		                                                <h6 class="mb-1 text-15"><a href="apps-ecommerce-product-overview.html" class="transition-all duration-300 ease-linear hover:text-custom-500"><span>${roomList.roomName}</span>호</a></h6>
-		                                                <p class="text-slate-500 dark:text-zink-200">타입 : <span>${roomList.roomType}</span></p>
-		                                                <p class="text-slate-500 dark:text-zink-200">수용 인원 : <span>${roomList.roomCapacity}</span></p>
-		                                                <p class="text-slate-500 dark:text-zink-200">1박 당 가격 : <span>${roomList.pricePerNight}</span></p>
-		                                                <p class="text-slate-500 dark:text-zink-200">설명 : <span>${roomList.roomDesc}</span> </p>
+		                                                <h6 class="mb-1 text-15"><a href="${pageContext.request.contextPath}/room/getRoomOne?roomNo=${roomList.roomNo}" class="transition-all duration-300 ease-linear hover:text-custom-500"><span>${roomList.roomName}</span>호</a></h6>
+		                                                <p class="text-slate-500">타입 : <span>${roomList.roomType}</span></p>
+		                                                <p class="text-slate-500">수용 인원 : <span>${roomList.roomCapacity}</span></p>
+		                                                <p class="text-slate-500">1박 당 가격 : <span>${roomList.pricePerNight}</span></p>
+		                                                <p class="text-slate-500">설명 : <span>${roomList.roomDesc}</span> </p>
 		                                            </div>
 		                                        </div>
 		                                    </td>
