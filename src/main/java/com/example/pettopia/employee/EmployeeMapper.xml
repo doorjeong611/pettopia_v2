@@ -3,7 +3,7 @@
 <mapper namespace="com.example.pettopia.employee.EmployeeMapper">
 	
 	<!-- 로그인 -->
-	<select id="selectEmployeeInfo" parameterType="com.example.pettopia.vo.Employee" resultType="com.example.pettopia.vo.Employee">
+	<select id="selectEmployeeInfo" parameterType="String" resultType="com.example.pettopia.vo.Employee">
 		SELECT emp_no empNo
 			, emp_pw empPw
 			, emp_name empName
@@ -12,8 +12,9 @@
 			, is_team_leader isTeamLeader
 			, dept_code deptCode
 			, rank_no rankNo
+			, role_name roleName
 		FROM employee
-		WHERE emp_no = #{empNo} AND emp_pw = #{empPw}	
+		WHERE emp_no = #{empNo}	
 	
 	</select>
 

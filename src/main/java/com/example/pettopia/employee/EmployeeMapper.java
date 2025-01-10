@@ -8,7 +8,7 @@ import com.example.pettopia.vo.Employee;
 public interface EmployeeMapper {
 
 	// 로그인
-	Employee selectEmployeeInfo(Employee employee);
+	Employee selectEmployeeInfo(String empNo);
 	
 	
 }
