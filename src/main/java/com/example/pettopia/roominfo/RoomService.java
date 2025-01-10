@@ -1,6 +1,7 @@
 package com.example.pettopia.roominfo;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,4 +17,15 @@ public class RoomService {
     public List<RoomInfo> getRoomList() {
         return roomMapper.selectRoom();
     }
+    
+    // 상세보기
+    public Map<String, Object> selectRoomOne(Integer roomNo) {
+		return roomMapper.selectRoomOne(roomNo);
+	}
+    
+    // 룸 타입 ENUM 값 추출
+//    public List<String> getRoomTypes() {
+//    	List<String> enumList = roomMapper.selectRoomTypeEnum(); // "enum('S','D','ST','F')"
+//        return Arrays.asList(enumList.replace("'", "").split(","));
+//    }
 }

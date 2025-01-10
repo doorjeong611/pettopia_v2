@@ -14,6 +14,35 @@
 				update_datetime updateDatetime
 		FROM
 				room_info
+		
 	</select>
+	
+	<!-- 특정 객실 조회 -->
+	<select id="selectRoomOne" resultType="java.util.Map">
+		SELECT
+				room_no roomNo,
+				room_name roomName,
+				room_type roomType,
+				room_capacity roomCapacity,
+				room_desc roomDesc,
+				price_per_night pricePerNight,
+				create_datetime createDatetime,
+				update_datetime updateDatetime
+		FROM
+				room_info
+		WHERE
+				room_no = #{roomNo}
+	</select>
+	
+	<!-- 객실 타입 ENUM 값 가져오기 -->
+	<!-- <select id="selectRoomTypeEnum" resultType="String">
+	    SELECT 
+	    		SUBSTRING(COLUMN_TYPE, 6, LENGTH(COLUMN_TYPE) - 6)
+	    FROM 
+	    		INFORMATION_SCHEMA.COLUMNS
+	    WHERE 
+	    		TABLE_NAME = 'room_info' AND COLUMN_NAME = 'room_type';
+	</select> -->
+	
 
 </mapper>
