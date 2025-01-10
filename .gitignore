@@ -14,3 +14,6 @@ target/
 .sts4-cache
 .application-db.properties
 .application-mail.properties/
+.application-db.yml
+.application-mail.yml/
+
