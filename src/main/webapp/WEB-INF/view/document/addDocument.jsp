@@ -16,8 +16,8 @@
     <script src="${pageContext.request.contextPath}/assets/js/layout.js"></script>
     <!-- Tailwind CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tailwind2.css">
-    <script src="${pageContext.request.contextPath}/assets/libs/flatpickr/flatpickr.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="${pageContext.request.contextPath}/assets/libs/flatpickr/flatpickr.min.js"></script>
     
 </head>
 
@@ -51,6 +51,7 @@
                     	</li>
                     </ul>
                 </div>
+                
                 <div id="containerForm">
 				    <!-- 폼들이 동적으로 append 될 곳 -->
 				</div>
@@ -100,19 +101,22 @@
 									<!-- 초기 결재자 모달 -->
 									<div class="xl:col-span-4">
 										<label for="initApproverNo" class="inline-block mb-2 text-base font-medium">초기 결재자</label>
-									    <input type="text" name="initApproverNo" id="initApproverNo" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" value="" placeholder="수신 받을 직원을 선택하세요" readonly required>
+									    <input type="text" id="initApproverId" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" value="" placeholder="수신 받을 직원을 선택하세요" readonly required>
+										<input type="hidden" name="initApproverNo" id="initApproverNo" value="">
 									</div>
 									
 									<!-- 중간 결재자 모달 -->
 									<div class="xl:col-span-4">
 										<label for="midApproverNo" class="inline-block mb-2 text-base font-medium">중간 결재자</label>
-									    <input type="text" name="midApproverNo" id="midApproverNo" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" value="" placeholder="수신 받을 직원을 선택하세요" readonly required>
+									    <input type="text" id="midApproverId" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" value="" placeholder="수신 받을 직원을 선택하세요" readonly required>
+										<input type="hidden" name="midApproverNo" id="midApproverNo" value="">
 									</div>
 									
 									<!-- 최종 결재자 모달 -->
 									<div class="xl:col-span-4">
-										<label for="finalApproverNo" class="inline-block mb-2 text-base font-medium">최종 결재자</label>
-									    <input type="text" name="finalApproverNo" id="finalApproverNo" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" value="" placeholder="수신 받을 직원을 선택하세요" readonly required>
+										<label for="finalApproverNo" class="inline-block mb-2 text-base font-medium"> 최종 결재자</label>
+									    <input type="text" id="finalApproverId" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" value="" placeholder="수신 받을 직원을 선택하세요" readonly required>
+										<input type="hidden" name="finalApproverNo" id="finalApproverNo" value="">
 									</div>
 									
 									<!-- 결재 수신자 목록 모달 -->
@@ -132,11 +136,11 @@
 									            <input type="text" id="approverSearch" class="form-input w-full mb-4" placeholder="직원 검색">
 									            <ul id="approverList" class="mt-2">
 									                <!-- 예시 직원 목록 -->
-									                <li class="approver-item cursor-pointer p-3 hover:bg-gray-100" data-emp-no="202400007">202400007 / 이지민</li>
+									                <li class="approver-item cursor-pointer p-3 hover:bg-gray-100" data-emp-no="202400007">202400007 / 김동현</li>
 									                <li class="approver-item cursor-pointer p-3 hover:bg-gray-100" data-emp-no="202400008">202400008 / 박지민</li>
 									                <li class="approver-item cursor-pointer p-3 hover:bg-gray-100" data-emp-no="202400009">202400009 / 이영호</li>
-									                <li class="approver-item cursor-pointer p-3 hover:bg-gray-100" data-emp-no="2024000010">202400010 / 김지혜</li>
-									                <li class="approver-item cursor-pointer p-3 hover:bg-gray-100" data-emp-no="2024000011">202400011 / 홍길동</li>
+									                <li class="approver-item cursor-pointer p-3 hover:bg-gray-100" data-emp-no="202400010">202400010 / 김지혜</li>
+									                <li class="approver-item cursor-pointer p-3 hover:bg-gray-100" data-emp-no="202400011">202400011 / 홍길동</li>
 									            </ul>
 									        </div>
 									
@@ -155,6 +159,14 @@
 	                                    <div>
 	                                        <label for="docContent" class="inline-block mb-2 text-base font-medium">문서 내용</label>
 	                                        <textarea name="docContent" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" id="docContent" placeholder="문서 유형을 먼저 선택하세요" rows="10" readonly></textarea>
+	                                    </div>
+                                    </div>
+                                    
+                                    <!-- 문서 작성 -->
+									<div class="lg:col-span-2 xl:col-span-12">
+	                                    <div>
+	                                        <label for="docRemarks" class="inline-block mb-2 text-base font-medium">비고</label>
+	                                        <textarea name="docRemarks" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" id="docRemarks" placeholder="비고" rows="3"></textarea>
 	                                    </div>
                                     </div>
                                     
@@ -222,6 +234,7 @@
                                     	<label for="docWriterNo" class="inline-block mb-2 text-base font-medium">부서</label>
                                         <input type="text" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-200 placeholder:text-slate-400" value="${empDept.deptName}" disabled required>
                                     </div>
+                                    
                                     <div class="xl:col-span-2">
 									    <label for="writingDate" class="inline-block mb-2 text-base font-medium">작성일</label>
 									    <input type="text" id="writingDate" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-200 placeholder:text-slate-400" value="" disabled required>
@@ -232,28 +245,37 @@
 									<!-- 초기 결재자 모달 -->
 									<div class="xl:col-span-4">
 										<label for="initApproverNo" class="inline-block mb-2 text-base font-medium">초기 결재자</label>
-									    <input type="text" name="initApproverNo" id="initApproverNo" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" value="" placeholder="수신 받을 직원을 선택하세요" readonly required>
+									    <input type="text" id="initApproverId" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" value="" placeholder="수신 받을 직원을 선택하세요" readonly required>
+										<input type="hidden" name="initApproverNo" id="initApproverNo" value="">
 									</div>
 									
 									<!-- 중간 결재자 모달 -->
 									<div class="xl:col-span-4">
 										<label for="midApproverNo" class="inline-block mb-2 text-base font-medium">중간 결재자</label>
-									    <input type="text" name="midApproverNo" id="midApproverNo" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" value="" placeholder="수신 받을 직원을 선택하세요" readonly required>
+									    <input type="text" id="midApproverId" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" value="" placeholder="수신 받을 직원을 선택하세요" readonly required>
+										<input type="hidden" name="midApproverNo" id="midApproverNo" value="">
 									</div>
 									
 									<!-- 최종 결재자 모달 -->
 									<div class="xl:col-span-4">
-										<label for="finalApproverNo" class="inline-block mb-2 text-base font-medium">최종 결재자</label>
-									    <input type="text" name="finalApproverNo" id="finalApproverNo" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" value="" placeholder="수신 받을 직원을 선택하세요" readonly required>
+										<label for="finalApproverNo" class="inline-block mb-2 text-base font-medium"> 최종 결재자</label>
+									    <input type="text" id="finalApproverId" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" value="" placeholder="수신 받을 직원을 선택하세요" readonly required>
+										<input type="hidden" name="finalApproverNo" id="finalApproverNo" value="">
 									</div>
-									
-									
 									        
 							        <!-- 문서 작성 -->
-									<div id="documentDiv" class="lg:col-span-2 xl:col-span-12" style="display:block;">
+									<div class="lg:col-span-2 xl:col-span-12">
 	                                    <div>
 	                                        <label for="docContent" class="inline-block mb-2 text-base font-medium">문서 내용</label>
 	                                        <textarea name="docContent" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" id="docContent" placeholder="기안 내용을 입력하세요" rows="10"></textarea>
+	                                    </div>
+                                    </div>
+                                    
+                                    <!-- 문서 작성 -->
+									<div class="lg:col-span-2 xl:col-span-12">
+	                                    <div>
+	                                        <label for="docRemarks" class="inline-block mb-2 text-base font-medium">비고</label>
+	                                        <textarea name="docRemarks" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" id="docRemarks" placeholder="비고" rows="3"></textarea>
 	                                    </div>
                                     </div>
                                     
@@ -290,6 +312,7 @@
 	           <div id="V" class="vacation-form">
 	               <!-- 연차 신청서 관련 필드 추가 -->
 	               <div class="card">
+                   		<div class="card">
                    		<div class="card-body">
                        		<form id="formAddDocument" method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/document/addDocument">
                            		<div class="grid grid-cols-1 gap-4 lg:grid-cols-1 xl:grid-cols-12">
@@ -298,15 +321,153 @@
                                    		<select id="docType" name="docType" class="form-select border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 dark:text-zink-100 placeholder:text-slate-400 dark:placeholder:text-zink-200">
 			                            	<option value="F">유형을 선택하세요</option>
 			                            	<option value="D">* 기안서</option>
-		                            		<option value="V" selected>* 연차 신청서</option>
+		                            		<option value="V"selected>* 연차 신청서</option>
 			                            	<option value="M">* 비품 구매 신청서</option>
 			                            	<option value="R">* 사직서</option>
 	                                	</select>
                               		</div>
-                              		연차 신청서
+                                    <!-- 문서 유형에 맞는 폼 -->
+									<div class="xl:col-span-7">
+                                    	<label for="docTitle" class="inline-block mb-2 text-base font-medium">문서 제목</label>
+                                        <input type="text" id="docTitle" name="docTitle" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-200 placeholder:text-slate-400" placeholder="문서 제목을 입력하세요" required="">
+	                                </div><!--end col-->
+	                                
+	                                <div class="xl:col-span-3"></div>
+                                    
+                                    <div class="xl:col-span-4">
+                                        <label for="docWriterNo" class="inline-block mb-2 text-base font-medium">작성자</label>
+                                        <input type="hidden" name="docWriterNo" id="docWriterNo" value="${loginEmp.empNo}">
+                                        <input type="text" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-200 placeholder:text-slate-400" value="${loginEmp.empNo} / ${loginEmp.empName}" disabled required>
+                                    </div><!--end col-->
+	                                        
+                                    <div class="xl:col-span-2">
+                                    	<label for="docWriterNo" class="inline-block mb-2 text-base font-medium">부서</label>
+                                        <input type="text" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-200 placeholder:text-slate-400" value="${empDept.deptName}" disabled required>
+                                    </div>
+                                    
+                                    <div class="xl:col-span-2">
+									    <label for="writingDate" class="inline-block mb-2 text-base font-medium">작성일</label>
+									    <input type="text" id="writingDate" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-200 placeholder:text-slate-400" value="" disabled required>
+									</div>
+									
+                                    <div class="xl:col-span-4"></div>
+									
+									<!-- 초기 결재자 모달 -->
+									<div class="xl:col-span-4">
+										<label for="initApproverNo" class="inline-block mb-2 text-base font-medium">초기 결재자</label>
+									    <input type="text" id="initApproverId" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" value="" placeholder="수신 받을 직원을 선택하세요" readonly required>
+										<input type="hidden" name="initApproverNo" id="initApproverNo" value="">
+									</div>
+									
+									<!-- 중간 결재자 모달 -->
+									<div class="xl:col-span-4">
+										<label for="midApproverNo" class="inline-block mb-2 text-base font-medium">중간 결재자</label>
+									    <input type="text" id="midApproverId" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" value="" placeholder="수신 받을 직원을 선택하세요" readonly required>
+										<input type="hidden" name="midApproverNo" id="midApproverNo" value="">
+									</div>
+									
+									<!-- 최종 결재자 모달 -->
+									<div class="xl:col-span-4">
+										<label for="finalApproverNo" class="inline-block mb-2 text-base font-medium"> 최종 결재자</label>
+									    <input type="text" id="finalApproverId" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" value="" placeholder="수신 받을 직원을 선택하세요" readonly required>
+										<input type="hidden" name="finalApproverNo" id="finalApproverNo" value="">
+									</div>
+									
+									<!-- 대체 근무자 모달 -->
+									<div class="xl:col-span-3">
+										<label for="vacationBackup" class="inline-block mb-2 text-base font-medium"> 대체 근무자</label>
+									    <input type="text" id="vacationBackupId" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" value="" placeholder="대체 근무 직원을 선택하세요" readonly required>
+										<input type="hidden" name="vacationBackup" id="vacationBackup" value="">
+									</div>
+									
+									<div class="xl:col-span-1"></div>
+									
+									<div class="xl:col-span-3 radioDiv">
+								    	<label for="vacationType" class="inline-block mb-4 text-base font-medium">휴가 타입 선택</label>
+								        <div class="flex gap-4">
+								        	<div class="flex items-center gap-2">
+								                <input id="vacationTypeAL" name="vacationType" class="border rounded-full appearance-none cursor-pointer size-4 bg-slate-100 border-slate-200 dark:bg-zink-600 dark:border-zink-500 checked:bg-custom-500 checked:border-custom-500" type="radio" value="AL">
+								                <label for="vacationTypeAL" class="align-middle">연차</label>
+								            </div>
+								            <div class="flex items-center gap-2">
+								                <input id="vacationTypeHLa" name="vacationType" class="border rounded-full appearance-none cursor-pointer size-4 bg-slate-100 border-slate-200 dark:bg-zink-600 dark:border-zink-500 checked:bg-green-500 checked:border-green-500" type="radio" value="HLa">
+								                <label for="vacationTypeHLa" class="align-middle">반차(오전)</label>
+								            </div>
+								            <div class="flex items-center gap-2">
+								                <input id="vacationTypeHLp" name="vacationType" class="border rounded-full appearance-none cursor-pointer size-4 bg-slate-100 border-slate-200 dark:bg-zink-600 dark:border-zink-500 checked:bg-green-500 checked:border-green-500" type="radio" value="HLp">
+								                <label for="vacationTypeHLp" class="align-middle">반차(오후)</label>
+								            </div>
+								        </div>
+								    </div>
+							        
+									<!-- 연차 기간 -->
+							        <div id="ALDivStart">
+									    <div class="ALDiv xl:col-span-2 flex flex-col">
+									        <label for="startDate" class="inline-block mb-2 text-base font-medium">연차 시작 날짜 선택</label>
+				                            <input type="text" name="startDate" id="alStartDate" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400 flatpickr-input" data-provider="flatpickr" data-date-format="Y-m-d" data-default-date="16 Oct, 2023" readonly="readonly" placeholder="날짜를 선택하세요">
+									    </div>
+								    </div>
+								    
+									<div id="ALDivEnd">
+									    <div class="ALDiv xl:col-span-2 flex flex-col">
+									        <label for="endDate" class="inline-block mb-2 text-base font-medium">연차 종료 날짜 선택</label>
+				                            <input type="text" name="endDate" id="alEndDate" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400 flatpickr-input" data-provider="flatpickr" data-date-format="Y-m-d" data-default-date="16 Oct, 2023" readonly="readonly" placeholder="날짜를 선택하세요">
+									    </div>
+									</div>
+
+									
+									<!-- 반차 날짜 선택 -->
+									<div id="HLDivStart">
+									    <div class="HLDiv xl:col-span-2 flex flex-col">
+									        <label for="startDate" class="inline-block mb-2 text-base font-medium">반차 날짜 선택</label>
+				                            <input type="text" name="startDate" id="hlStartDate" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400 flatpickr-input" data-provider="flatpickr" data-date-format="Y-m-d" data-default-date="16 Oct, 2023" readonly="readonly" placeholder="날짜를 선택하세요">
+									    </div>
+								    </div>
+
+									        
+							        <!-- 문서 작성 -->
+									<div class="lg:col-span-2 xl:col-span-12">
+	                                    <div>
+	                                        <label for="docContent" class="inline-block mb-2 text-base font-medium">문서 내용</label>
+	                                        <textarea name="docContent" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" id="docContent" placeholder="휴가 사유를 입력하세요" rows="10"></textarea>
+	                                    </div>
+                                    </div>
+                                    
+                                    <!-- 비고 작성 -->
+									<div class="lg:col-span-2 xl:col-span-12">
+	                                    <div>
+	                                        <label for="docRemarks" class="inline-block mb-2 text-base font-medium">비고</label>
+	                                        <textarea name="docRemarks" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" id="docRemarks" placeholder="비고" rows="3"></textarea>
+	                                    </div>
+                                    </div>
+                                    
+                                    <!-- 파일 다운로드 -->
+                                    <div class="lg:col-span-2 xl:col-span-12">
+                                            <label for="fileUpload" class="inline-block mb-2 text-base font-medium">파일 업로드</label>
+                                            <div class="flex items-center justify-center bg-white border border-dashed rounded-md cursor-pointer dropzone border-slate-300 dropzone2 dz-clickable">
+                                                
+                                                <div class="w-full py-5 text-lg text-center dz-message needsclick">
+                                                    <div class="mb-3">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="upload-cloud" class="lucide lucide-upload-cloud block mx-auto size-12 text-slate-500 fill-slate-200"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"></path><path d="M12 12v9"></path><path d="m16 16-4-4-4 4"></path></svg>
+                                                    </div>
+
+                                                    <h5 class="mb-0 font-normal text-slate-500 dark:text-zink-200 text-15">Drag and drop your product file</h5>
+                                                </div>
+                                            </div>
+
+                                            <ul class="flex flex-wrap mb-0 gap-x-5" id="dropzone-preview2">
+                                                
+                                            </ul>
+                                      </div>
+                           		</div>
+                                <div class="flex justify-end gap-2 mt-4">
+                                	<button type="reset" class="text-red-500 bg-white btn hover:text-red-500 hover:bg-red-100 focus:text-red-500 focus:bg-red-100 active:text-red-500 active:bg-red-100 dark:bg-zink-700 dark:hover:bg-red-500/10 dark:focus:bg-red-500/10 dark:active:bg-red-500/10">리셋</button>
+                                    <button type="submit" class="bg-white text-custom-500 btn border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100">문서 작성</button>
+								    <button type="button" class="text-green-500 bg-white border-green-500 btn hover:text-white hover:bg-green-600 hover:border-green-600 focus:text-white focus:bg-green-600 focus:border-green-600 focus:ring focus:ring-green-100 active:text-white active:bg-green-600 active:border-green-600 active:ring active:ring-green-100">목록</button>
                             	</div>
                        	    </form>
                         </div>
+                   </div>
                    </div>
 	           </div>
 	           
@@ -327,7 +488,124 @@
 			                            	<option value="R">* 사직서</option>
 	                                	</select>
                               		</div>
-                              		비품구매서
+                              		<!-- 문서 유형에 맞는 폼 -->
+									<div class="xl:col-span-7">
+                                    	<label for="docTitle" class="inline-block mb-2 text-base font-medium">문서 제목</label>
+                                        <input type="text" id="docTitle" name="docTitle" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-200 placeholder:text-slate-400" placeholder="문서 제목을 입력하세요" required="">
+	                                </div><!--end col-->
+	                                
+	                                <div class="xl:col-span-3"></div>
+                                    
+                                    <div class="xl:col-span-4">
+                                        <label for="docWriterNo" class="inline-block mb-2 text-base font-medium">작성자</label>
+                                        <input type="hidden" name="docWriterNo" id="docWriterNo" value="${loginEmp.empNo}">
+                                        <input type="text" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-200 placeholder:text-slate-400" value="${loginEmp.empNo} / ${loginEmp.empName}" disabled required>
+                                    </div><!--end col-->
+	                                        
+                                    <div class="xl:col-span-2">
+                                    	<label for="docWriterNo" class="inline-block mb-2 text-base font-medium">부서</label>
+                                        <input type="text" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-200 placeholder:text-slate-400" value="${empDept.deptName}" disabled required>
+                                    </div>
+                                    
+                                    <div class="xl:col-span-2">
+									    <label for="writingDate" class="inline-block mb-2 text-base font-medium">작성일</label>
+									    <input type="text" id="writingDate" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-200 placeholder:text-slate-400" value="" disabled required>
+									</div>
+									
+                                    <div class="xl:col-span-4"></div>	
+									
+									<!-- 초기 결재자 모달 -->
+									<div class="xl:col-span-4">
+										<label for="initApproverNo" class="inline-block mb-2 text-base font-medium">초기 결재자</label>
+									    <input type="text" id="initApproverId" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" value="" placeholder="수신 받을 직원을 선택하세요" readonly required>
+										<input type="hidden" name="initApproverNo" id="initApproverNo" value="">
+									</div>
+									
+									<!-- 중간 결재자 모달 -->
+									<div class="xl:col-span-4">
+										<label for="midApproverNo" class="inline-block mb-2 text-base font-medium">중간 결재자</label>
+									    <input type="text" id="midApproverId" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" value="" placeholder="수신 받을 직원을 선택하세요" readonly required>
+										<input type="hidden" name="midApproverNo" id="midApproverNo" value="">
+									</div>
+									
+									<!-- 최종 결재자 모달 -->
+									<div class="xl:col-span-4">
+										<label for="finalApproverNo" class="inline-block mb-2 text-base font-medium"> 최종 결재자</label>
+									    <input type="text" id="finalApproverId" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" value="" placeholder="수신 받을 직원을 선택하세요" readonly required>
+										<input type="hidden" name="finalApproverNo" id="finalApproverNo" value="">
+									</div>
+									
+                           			<!-- 자재 신청서 문서 -->
+									<div id="materialDiv" class="lg:col-span-2 xl:col-span-12">
+										<div class="grid grid-cols-12 gap-4 mb-3">
+									        <!-- 신청 물품 -->
+									        <div class="xl:col-span-8 col-span-12">
+									            <label for="docPurpose" class="inline-block mb-2 text-base font-medium">비품 용도</label>
+									            <input type="text" id="docPurpose" name="docPurpose" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" placeholder="사용 목적을 입력하세요" required="">
+									        </div><!--end 신청 물품-->
+									        
+									        <div class="xl:col-span-4 col-span-12"></div><!--end 빈 공간-->
+									        
+									    </div><!--end grid-->
+										
+									    <div class="grid grid-cols-12 gap-4 mb-3">
+									        <!-- 신청 물품 -->
+									        <div class="xl:col-span-6 col-span-12">
+									            <label for="materialName" class="inline-block mb-2 text-base font-medium">비품 품목</label>
+									            <input type="text" id="materialName" name="materialName" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" placeholder="신청 물품을 입력하세요" required="">
+									        </div><!--end 신청 물품-->
+									        
+									        <!-- 가격 -->
+									        <div class="xl:col-span-2 col-span-12">
+									            <label for="docPrice" class="inline-block mb-2 text-base font-medium">단가</label>
+									            <input type="number" id="docPrice" name="docPrice" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" placeholder="가격을 입력하세요" min="0" required="">
+									        </div><!--end 가격-->
+									        
+									        <!-- 수량 -->
+									        <div class="xl:col-span-2 col-span-12">
+									            <label for="materialQuantity" class="inline-block mb-2 text-base font-medium">수량</label>
+									            <input type="number" id="materialQuantity" name="materialQuantity" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" placeholder="수량을 입력하세요" min="0" max="9999" required="">
+									        </div><!--end 수량-->
+									    </div><!--end grid-->
+									
+									    <!-- 자재 신청 사유 -->
+									    <div class="xl:col-span-12">
+									        <label for="docContent" class="inline-block mb-2 text-base font-medium">자재 신청 사유</label>
+									        <textarea name="docContent" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" id="docContent" placeholder="자재 신청 사유를 입력하세요" rows="10"></textarea>
+									    </div>
+									</div>
+									
+									<!-- 비고 작성 -->
+									<div class="lg:col-span-2 xl:col-span-12">
+	                                    <div>
+	                                        <label for="docRemarks" class="inline-block mb-2 text-base font-medium">비고</label>
+	                                        <textarea name="docRemarks" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" id="docRemarks" placeholder="비고" rows="3"></textarea>
+	                                    </div>
+                                    </div>
+                                    
+                                    <!-- 파일 다운로드 -->
+                                    <div class="lg:col-span-2 xl:col-span-12">
+                                           <label for="fileUpload" class="inline-block mb-2 text-base font-medium">파일 업로드</label>
+                                           <div class="flex items-center justify-center bg-white border border-dashed rounded-md cursor-pointer dropzone border-slate-300 dropzone2 dz-clickable">
+                                               
+                                               <div class="w-full py-5 text-lg text-center dz-message needsclick">
+                                                   <div class="mb-3">
+                                                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="upload-cloud" class="lucide lucide-upload-cloud block mx-auto size-12 text-slate-500 fill-slate-200"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"></path><path d="M12 12v9"></path><path d="m16 16-4-4-4 4"></path></svg>
+                                                   </div>
+
+                                                   <h5 class="mb-0 font-normal text-slate-500 dark:text-zink-200 text-15">Drag and drop your product file</h5>
+                                               </div>
+                                           </div>
+
+                                           <ul class="flex flex-wrap mb-0 gap-x-5" id="dropzone-preview2">
+                                               
+                                           </ul>
+                                     </div>
+                           		</div>
+                       	    	<div class="flex justify-end gap-2 mt-4">
+                                	<button type="reset" class="text-red-500 bg-white btn hover:text-red-500 hover:bg-red-100 focus:text-red-500 focus:bg-red-100 active:text-red-500 active:bg-red-100 dark:bg-zink-700 dark:hover:bg-red-500/10 dark:focus:bg-red-500/10 dark:active:bg-red-500/10">리셋</button>
+                                    <button type="submit" class="bg-white text-custom-500 btn border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100">문서 작성</button>
+								    <button type="button" class="text-green-500 bg-white border-green-500 btn hover:text-white hover:bg-green-600 hover:border-green-600 focus:text-white focus:bg-green-600 focus:border-green-600 focus:ring focus:ring-green-100 active:text-white active:bg-green-600 active:border-green-600 active:ring active:ring-green-100">목록</button>
                             	</div>
                        	    </form>
                         </div>
@@ -351,7 +629,113 @@
 			                            	<option value="R" selected>* 사직서</option>
 	                                	</select>
                               		</div>
-                              		사직서
+                              		<!-- 문서 유형에 맞는 폼 -->
+									<div class="xl:col-span-7">
+                                    	<label for="docTitle" class="inline-block mb-2 text-base font-medium">문서 제목</label>
+                                        <input type="text" id="docTitle" name="docTitle" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-200 placeholder:text-slate-400" placeholder="문서 제목을 입력하세요" required="">
+	                                </div><!--end col-->
+	                                
+	                                <div class="xl:col-span-3"></div>
+	                                
+	                                <div class="xl:col-span-4">
+                                        <label for="docWriterNo" class="inline-block mb-2 text-base font-medium">작성자</label>
+                                        <input type="hidden" name="docWriterNo" id="docWriterNo" value="${loginEmp.empNo}">
+                                        <input type="text" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-200 placeholder:text-slate-400" value="${loginEmp.empNo} / ${loginEmp.empName}" disabled required>
+                                    </div><!--end col-->
+	                                        
+                                    <div class="xl:col-span-2">
+                                    	<label for="docWriterNo" class="inline-block mb-2 text-base font-medium">부서</label>
+                                        <input type="text" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-200 placeholder:text-slate-400" value="${empDept.deptName}" disabled required>
+                                    </div>
+                                    
+                                    <div class="xl:col-span-2">
+									    <label for="writingDate" class="inline-block mb-2 text-base font-medium">작성일</label>
+									    <input type="text" id="writingDate" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-200 placeholder:text-slate-400" value="" disabled required>
+									</div>
+									
+                                    <div class="xl:col-span-4"></div>
+                                    
+                                    <!-- 초기 결재자 모달 -->
+									<div class="xl:col-span-4">
+										<label for="initApproverNo" class="inline-block mb-2 text-base font-medium">초기 결재자</label>
+									    <input type="text" id="initApproverId" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" value="" placeholder="수신 받을 직원을 선택하세요" readonly required>
+										<input type="hidden" name="initApproverNo" id="initApproverNo" value="">
+									</div>
+									
+									<!-- 중간 결재자 모달 -->
+									<div class="xl:col-span-4">
+										<label for="midApproverNo" class="inline-block mb-2 text-base font-medium">중간 결재자</label>
+									    <input type="text" id="midApproverId" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" value="" placeholder="수신 받을 직원을 선택하세요" readonly required>
+										<input type="hidden" name="midApproverNo" id="midApproverNo" value="">
+									</div>
+									
+									<!-- 최종 결재자 모달 -->
+									<div class="xl:col-span-4">
+										<label for="finalApproverNo" class="inline-block mb-2 text-base font-medium"> 최종 결재자</label>
+									    <input type="text" id="finalApproverId" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" value="" placeholder="수신 받을 직원을 선택하세요" readonly required>
+										<input type="hidden" name="finalApproverNo" id="finalApproverNo" value="">
+									</div>
+									
+									<!-- 사직서 문서 -->
+									<div id="resignationDiv" class="lg:col-span-2 xl:col-span-12">
+										<div class="grid grid-cols-12 gap-4 mb-3">
+											<!-- 사직 유형 선택 -->
+									        <div class="xl:col-span-3 radioDiv">
+										    	<label for="vacationType" class="inline-block mb-4 text-base font-medium">사직 유형 선택</label>
+										        <div class="flex gap-4">
+										        	<div class="flex items-center gap-2">
+										                <input id="resignationTypeV" name="resignationType" class="border rounded-full appearance-none cursor-pointer size-4 bg-slate-100 border-slate-200 checked:bg-custom-500 checked:border-custom-500" type="radio" value="V">
+										                <label for="resignationTypeV" class="align-middle">자발적 퇴사</label>
+										            </div>
+										            <div class="flex items-center gap-2">
+										                <input id="resignationTypeT" name="resignationType" class="border rounded-full appearance-none cursor-pointer size-4 bg-slate-100 border-slate-200 checked:bg-green-500 checked:border-green-500" type="radio" value="T">
+										                <label for="resignationTypeT" class="align-middle">정리 해고</label>
+										            </div>
+										        </div>
+										    </div>
+									        <div class="xl:col-span-4 col-span-12"></div><!--end 빈 공간-->
+									        
+									    </div><!--end grid-->
+										
+									
+									    <!-- 사직 사유 -->
+									    <div class="xl:col-span-12">
+									        <label for="docContent" class="inline-block mb-2 text-base font-medium">사직 사유</label>
+									        <textarea name="docContent" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" id="docContent" placeholder="사직 사유를 입력하세요" rows="10"></textarea>
+									    </div>
+									</div>
+									
+									<!-- 비고 작성 -->
+									<div class="lg:col-span-2 xl:col-span-12">
+	                                    <div>
+	                                        <label for="docRemarks" class="inline-block mb-2 text-base font-medium">비고</label>
+	                                        <textarea name="docRemarks" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" id="docRemarks" placeholder="비고" rows="3"></textarea>
+	                                    </div>
+                                    </div>
+                                    
+                                    <!-- 파일 다운로드 -->
+                                    <div class="lg:col-span-2 xl:col-span-12">
+                                           <label for="fileUpload" class="inline-block mb-2 text-base font-medium">파일 업로드</label>
+                                           <div class="flex items-center justify-center bg-white border border-dashed rounded-md cursor-pointer dropzone border-slate-300 dropzone2 dz-clickable">
+                                               
+                                               <div class="w-full py-5 text-lg text-center dz-message needsclick">
+                                                   <div class="mb-3">
+                                                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="upload-cloud" class="lucide lucide-upload-cloud block mx-auto size-12 text-slate-500 fill-slate-200"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"></path><path d="M12 12v9"></path><path d="m16 16-4-4-4 4"></path></svg>
+                                                   </div>
+
+                                                   <h5 class="mb-0 font-normal text-slate-500 dark:text-zink-200 text-15">Drag and drop your product file</h5>
+                                               </div>
+                                           </div>
+
+                                           <ul class="flex flex-wrap mb-0 gap-x-5" id="dropzone-preview2">
+                                               
+                                           </ul>
+                                     </div>
+                            	</div>
+                            	<div class="flex justify-end gap-2 mt-4">
+                                	<button type="reset" class="text-red-500 bg-white btn hover:text-red-500 hover:bg-red-100 focus:text-red-500 focus:bg-red-100 active:text-red-500 active:bg-red-100 dark:bg-zink-700 dark:hover:bg-red-500/10 dark:focus:bg-red-500/10 dark:active:bg-red-500/10">리셋</button>
+                                    <button type="submit" class="bg-white text-custom-500 btn border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100">문서 작성</button>
+								    <button type="button" class="text-green-500 bg-white border-green-500 btn hover:text-white hover:bg-green-600 hover:border-green-600 focus:text-white focus:bg-green-600 focus:border-green-600 focus:ring focus:ring-green-100 active:text-white active:bg-green-600 active:border-green-600 active:ring active:ring-green-100">목록</button>
                             	</div>
                        	    </form>
                         </div>
@@ -363,7 +747,7 @@
 				    <div class="w-screen lg:w-[55rem] bg-white shadow rounded-md flex flex-col h-full">
 				        <!-- Modal Header -->
 				        <div class="flex items-center justify-between p-4 bg-slate-100 border-b">
-				            <h5 class="text-16 mr-auto">결재 수신자 목록</h5> <!-- 제목 왼쪽 정렬을 위한 mr-auto 추가 -->
+				            <h4 class="text-16 mr-auto">결재 수신자 목록</h4> <!-- 제목 왼쪽 정렬을 위한 mr-auto 추가 -->
 				            <button id="closeModalHeader" type="button" class="text-gray-500 hover:text-gray-700">
 				                <i class="ri-close-line text-2xl"></i>
 				            </button>
@@ -371,15 +755,50 @@
 				        
 				        <!-- Modal Content -->
 				        <div class="max-h-[calc(theme('height.screen')_-_180px)] p-4 overflow-y-auto">
-				            <h5 class="mb-3 text-16">직원 검색</h5>
+				            <h4 class="mb-3 text-16">직원 검색</h4>
 				            <input type="text" id="approverSearch" class="form-input w-full mb-4" placeholder="직원 검색">
 				            <ul id="approverList" class="mt-2">
 				                <!-- 예시 직원 목록 -->
-				                <li class="approver-item cursor-pointer p-3 hover:bg-gray-100" data-emp-no="202400007">202400007 / 이지민</li>
+				                <li class="approver-item cursor-pointer p-3 hover:bg-gray-100" data-emp-no="202400007">202400007 / 김동현</li>
 				                <li class="approver-item cursor-pointer p-3 hover:bg-gray-100" data-emp-no="202400008">202400008 / 박지민</li>
 				                <li class="approver-item cursor-pointer p-3 hover:bg-gray-100" data-emp-no="202400009">202400009 / 이영호</li>
-				                <li class="approver-item cursor-pointer p-3 hover:bg-gray-100" data-emp-no="2024000010">202400010 / 김지혜</li>
-				                <li class="approver-item cursor-pointer p-3 hover:bg-gray-100" data-emp-no="2024000011">202400011 / 홍길동</li>
+				                <li class="approver-item cursor-pointer p-3 hover:bg-gray-100" data-emp-no="202400010">202400010 / 김지혜</li>
+				                <li class="approver-item cursor-pointer p-3 hover:bg-gray-100" data-emp-no="202400011">202400011 / 홍길동</li>
+				            </ul>
+				        </div>
+				
+				        <!-- Modal Footer -->
+				        <div class="flex items-center justify-end p-1 mt-auto border-t border-slate-200">
+				            <button id="closeModalFooter" type="button" class="text-red-500 bg-white btn hover:text-red-500 hover:bg-red-100 focus:text-red-500 focus:bg-red-100 active:text-red-500 active:bg-red-100">
+				                닫기
+				                <i class="align-baseline ltr:pl-1 ri-close-line"></i>
+				            </button>
+				        </div>
+				    </div>
+				</div>
+				
+				<!-- 대체 근무자 목록 모달 -->
+				<div id="vacationModal" modal-center="" class="fixed flex flex-col transition-all duration-300 ease-in-out left-2/4 z-drawer -translate-x-2/4 -translate-y-2/4 hidden">
+				    <div class="w-screen lg:w-[55rem] bg-white shadow rounded-md flex flex-col h-full">
+				        <!-- Modal Header -->
+				        <div class="flex items-center justify-between p-4 bg-slate-100 border-b">
+				            <h4 class="text-16 mr-auto">대체 근무자 목록</h4> <!-- 제목 왼쪽 정렬을 위한 mr-auto 추가 -->
+				            <button id="closeModalHeader" type="button" class="text-gray-500 hover:text-gray-700">
+				                <i class="ri-close-line text-2xl"></i>
+				            </button>
+				        </div>
+				        
+				        <!-- Modal Content -->
+				        <div class="max-h-[calc(theme('height.screen')_-_180px)] p-4 overflow-y-auto">
+				            <h4 class="mb-3 text-16">직원 검색</h4>
+				            <input type="text" id="backupSearch" class="form-input w-full mb-4" placeholder="직원 검색">
+				            <ul id="backupList" class="mt-2">
+				                <!-- 예시 직원 목록 -->
+				                <li class="backup-item cursor-pointer p-3 hover:bg-gray-100" data-emp-no="202400007">202400007 / 김동현</li>
+				                <li class="backup-item cursor-pointer p-3 hover:bg-gray-100" data-emp-no="202400008">202400008 / 박지민</li>
+				                <li class="backup-item cursor-pointer p-3 hover:bg-gray-100" data-emp-no="202400009">202400009 / 이영호</li>
+				                <li class="backup-item cursor-pointer p-3 hover:bg-gray-100" data-emp-no="202400010">202400010 / 김지혜</li>
+				                <li class="backup-item cursor-pointer p-3 hover:bg-gray-100" data-emp-no="202400011">202400011 / 홍길동</li>
 				            </ul>
 				        </div>
 				
@@ -413,6 +832,7 @@
 <script src="${pageContext.request.contextPath}/assets/libs/lucide/umd/lucide.js"></script>
 <script src="${pageContext.request.contextPath}/assets/js/tailwick.bundle.js"></script>
 <script src="${pageContext.request.contextPath}/assets/libs/dropzone/dropzone-min.js"></script>
+<script src="${pageContext.request.contextPath}/assets/libs/flatpickr/flatpickr.min.js"></script>
 <!--apexchart js-->
 <!-- <script src="${pageContext.request.contextPath}/assets/libs/apexcharts/apexcharts.min.js"></script>  -->
 
@@ -422,17 +842,14 @@
 <!-- App js -->
 <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
 
-<div class="fixed inset-0 bg-slate-900/40 dark:bg-zink-800/70 z-[1049] backdrop-overlay hidden" id="backDropDiv"></div>
-<script src="${pageContext.request.contextPath}/assets/libs/dropzone/dropzone-min.js"></script>
-<script src="${pageContext.request.contextPath}/assets/js/pages/form-file-upload.init.js"></script>
-<input type="file" multiple="multiple" class="dz-hidden-input" tabindex="-1" style="visibility: hidden; position: absolute; top: 0px; left: 0px; height: 0px; width: 0px;">
-
-
-
 <script>
 $(document).ready(function() {
+	
     // 페이지 로드 시 폼 내용들을 저장
     const documentTitle = $('h5.text-16');
+    const vacationTypeRadio = $('input[name="vacationType"]');
+    const loginEmpNo = $('#docWriterNo').val(); // 현재 로그인한 사원번호
+    console.log('로그인한 사원번호:', loginEmpNo); // 콘솔에 출력
     
     // 각 폼의 HTML 내용 저장
     var defualtFormHTML = $('#F').html();  // 기본 양식 HTML 추출
@@ -440,6 +857,10 @@ $(document).ready(function() {
     var vacationFormHTML = $('#V').html(); // 연차 신청서 HTML 추출
     var materialFormHTML = $('#M').html(); // 비품 구매 신청서 HTML 추출
     var resignationFormHTML = $('#R').html(); // 사직서 HTML 추출
+    var ALDivStartHTML = $('#ALDivStart').html(); // 연차 시작 날짜 HTML 추출
+    var ALDivEndHTML = $('#ALDivEnd').html(); // 연차 종료 날짜 HTML 추출
+    var HLDivStartHTML = $('#HLDivStart').html(); // 반차 시작 날짜 HTML 추출
+
 
     // 페이지 로드 시, 모든 div 제거하고 기본 양식만 띄움
     $('#F, #D, #V, #M ,#R').remove();  // #D div를 완전히 삭제
@@ -468,6 +889,7 @@ $(document).ready(function() {
             console.log("Appending vacation form HTML...");
             documentTitle.text('연차 신청서 문서 작성');
             $('#containerForm').append(vacationFormHTML); // 연차 신청서
+            $('#ALDivStart, #ALDivEnd, #HLDivStart').remove();
         } else if (selectedValue === "M") {
             console.log("Appending material form HTML...");
             documentTitle.text('비품 구매서 작성');
@@ -478,15 +900,84 @@ $(document).ready(function() {
             $('#containerForm').append(resignationFormHTML); // 사직서
         }
         
-        /// 모달창 관리
-        const $initApproverInput = $('#initApproverNo');
-        const $midApproverInput = $('#midApproverNo');
-        const $finalApproverInput = $('#finalApproverNo');
+        $(document).on('change', 'input[name="vacationType"]', function() {
+            let selectedValue = $(this).val(); // selectedValue를 let으로 선언
+            $('#ALDivStart, #ALDivEnd, #HLDivStart').remove();
+            let $radioDiv = $(this).closest('.radioDiv'); // $radioDiv를 let으로 선언
+
+            // 오늘 날짜를 가져오기
+            let today = new Date();
+            let todayFormatted = today.toISOString().split('T')[0]; // YYYY-MM-DD 형식
+
+            if (selectedValue === 'AL') {
+                $('.ALDiv, .HLDiv').remove();
+                $radioDiv.after(ALDivEndHTML);
+                $radioDiv.after(ALDivStartHTML);
+
+                // Flatpickr 초기화
+                let alStartPicker = flatpickr("#alStartDate", {
+                    dateFormat: "Y-m-d",
+                    minDate: todayFormatted, // 시작 날짜는 오늘보다 작을 수 없음
+                    onChange: function(selectedDates) {
+                        // 종료 날짜의 최소 날짜를 시작 날짜로 설정
+                        flatpickr("#alEndDate", {
+                            dateFormat: "Y-m-d",
+                            minDate: selectedDates[0] ? selectedDates[0] : todayFormatted, // 시작 날짜가 선택된 경우
+                        });
+                    }
+                });
+
+                flatpickr("#alEndDate", {
+                    dateFormat: "Y-m-d",
+                    minDate: todayFormatted, // 기본적으로 오늘 날짜
+                });
+            } else if (selectedValue === 'HLa' || selectedValue === 'HLp') {
+                $('.ALDiv, .HLDiv').remove();
+                $radioDiv.after(HLDivStartHTML);
+
+                let hlStartPicker = flatpickr("#hlStartDate", {
+                    dateFormat: "Y-m-d",
+                    minDate: todayFormatted, // 시작 날짜는 오늘보다 작을 수 없음
+                });
+            }
+        });
+
+        
+        // 모달창 관리
+        const $initApproverInput = $('#initApproverId');
+        const $midApproverInput = $('#midApproverId');
+        const $finalApproverInput = $('#finalApproverId');
+        const $vacationBackupInput = $('#vacationBackupId');
         const $approverModal = $('#approverModal');
+        const $vacationModal = $('#vacationModal');
         const $closeModalButton = $('#closeModalHeader, #closeModalFooter');
         const $approverList = $('#approverList');
+        const $backupList = $('#backupList');
 
         let currentInput = null;
+        
+        function openModal() {
+            $approverModal.removeClass('hidden').css('pointer-events', 'auto');
+        }
+        
+        function openVacationModal() {
+            $vacationModal.removeClass('hidden').css('pointer-events', 'auto');
+        }
+
+        function closeModal() {
+            $approverModal.addClass('hidden').css('pointer-events', 'none'); // 모달 숨기기
+            currentInput = null; // 모달이 닫힐 때 currentInput 초기화
+        }
+        
+        function closeVacationModal() {
+            $vacationModal.addClass('hidden').css('pointer-events', 'none'); // 모달 숨기기
+            currentInput = null; // 모달이 닫힐 때 currentInput 초기화
+        }
+        
+        $vacationBackupInput.on('click', function() {
+            currentInput = $vacationBackupInput;
+            openVacationModal();
+        });
 
         // 결재자 입력 필드 클릭 시 모달 열기
         $initApproverInput.on('click', function() {
@@ -517,50 +1008,91 @@ $(document).ready(function() {
         // 모달 창 닫기
         $closeModalButton.on('click', function() {
             closeModal();
+            closeVacationModal();
         });
 
         // ESC 키를 눌렀을 때 모달 닫기
         $(document).on('keydown', function(event) {
             if (event.key === 'Escape') {
                 closeModal();
+                closeVacationModal();
             }
         });
 
-        // 모달에서 직원 선택 시 해당 결재자 입력 필드에 값 채우기
+     	// 모달에서 직원 선택 시 해당 결재자 입력 필드에 값 채우기
         $approverList.on('click', '.approver-item', function() {
-            const selectedApproverId = $(this).data('emp-no');
-            const selectedApproverText = $(this).text();
-
-            // 중간 결재자와 초기 결재자 비교
-            if (currentInput === $midApproverInput && selectedApproverText === $initApproverInput.val()) {
-                alert("초기 결재자와 같은 직원입니다.");
-                return;
-            }
-
-            // 최종 결재자와 초기, 중간 결재자 비교
-            if (currentInput === $finalApproverInput &&
-                (selectedApproverText === $initApproverInput.val() || selectedApproverText === $midApproverInput.val())) {
-                alert("초기, 중간 결재자와 같은 직원입니다.");
-                return;
-            }
-
+            const selectedApproverId = $(this).data('emp-no'); // emp-no 가져오기
+            const selectedApproverText = $(this).text(); // 직원 이름 가져오기
+            
+         	// currentInput이 null이 아닐 때만 유효성 검사 진행
             if (currentInput) {
-                currentInput.val(selectedApproverText); // 선택한 결재자의 이름을 입력 필드에 설정
+            	
+            	if (selectedApproverId == loginEmpNo) {
+                    alert("본인은 결재자로 지정할 수 없습니다.");
+                    closeModal();
+                    return;
+                }
+            	
+                if (currentInput.is($midApproverInput) && (selectedApproverText === $initApproverInput.val())) {
+                    alert("중간 결재자는 초기 결재자와 달라야 합니다.");
+                    closeModal();
+                    return;
+                }
+
+                if (currentInput.is($finalApproverInput) && 
+                    (selectedApproverText === $initApproverInput.val() || selectedApproverText === $midApproverInput.val())) {
+                    alert("최종 결재자는 초기 및 중간 결재자와 달라야 합니다.");
+                    closeModal();
+                    return;
+                }
+            
+                if (currentInput.is($initApproverInput)) {
+                    $('#initApproverNo').val(selectedApproverId); // 사원번호만 설정
+                    console.log('초기 결재자 emp-no:', selectedApproverId);
+                } else if (currentInput.is($midApproverInput)) {
+                    $('#midApproverNo').val(selectedApproverId); // 사원번호만 설정
+                    console.log('중간 결재자 emp-no:', selectedApproverId);
+                } else if (currentInput.is($finalApproverInput)) {
+                    $('#finalApproverNo').val(selectedApproverId); // 사원번호만 설정
+                    console.log('최종 결재자 emp-no:', selectedApproverId);
+                }
+        
+                currentInput.val(selectedApproverText); // 사원번호와 이름 설정
+                console.log('입력 필드 값:', currentInput.val());
+
+                closeModal(); // 선택 후 모달 닫기
             }
-
-            currentInput.data('emp-no', selectedApproverId); // ID 저장
-
-            closeModal(); // 선택 후 모달 닫기
         });
 
-        function openModal() {
-            $approverModal.removeClass('hidden').css('pointer-events', 'auto');
-        }
+        
+     	// 모달에서 직원 선택 시 해당 결재자 입력 필드에 값 채우기
+        $backupList.on('click', '.backup-item', function() {
+            const selectedBackupId = $(this).data('emp-no');
+            const selectedBackupText = $(this).text();
+            console.log('현재 로그인', loginEmpNo);
+            console.log('대체 근무자', selectedBackupId);
 
-        function closeModal() {
-            $approverModal.addClass('hidden').css('pointer-events', 'none'); // 모달 숨기기
-            currentInput = null; // 모달이 닫힐 때 currentInput 초기화
-        }
+            // currentInput이 null이 아닐 때만 유효성 검사 진행
+		    if (currentInput) {
+		        if (currentInput.is($vacationBackupInput)) {
+		            // 현재 로그인한 사용자가 선택된 경우
+		            if (selectedBackupId == loginEmpNo) {
+		                alert("본인을 대체 근무자로 선택할 수 없습니다.");
+		                closeVacationModal();
+		                return; // 선택하지 않고 함수 종료
+		            }
+		            $('#vacationBackup').val(selectedBackupId); // 사원번호만 설정
+		            console.log('대체 근무자 emp-no:', selectedBackupId);
+		        }
+		        
+		        currentInput.val(selectedBackupText); // 사원번호와 이름 설정
+		        console.log('입력 필드 값:', currentInput.val());
+		
+		        closeVacationModal(); // 선택 후 모달 닫기
+		    }
+        });
+
+        
         
         var date = new Date();
         var year = date.getFullYear();
@@ -590,16 +1122,16 @@ $(document).ready(function() {
 	    $('#writingDate').val(formattedDate);
 	    
 	  	/// 모달창 관리
-        const $initApproverInput = $('#initApproverNo');
-        const $midApproverInput = $('#midApproverNo');
-        const $finalApproverInput = $('#finalApproverNo');
+        const $initApproverInput = $('#initApproverId');
+        const $midApproverInput = $('#midApproverId');
+        const $finalApproverInput = $('#finalApproverId');
         const $approverModal = $('#approverModal');
         const $closeModalButton = $('#closeModalHeader, #closeModalFooter');
         const $approverList = $('#approverList');
 
         let currentInput = null;
 
-        // 결재자 입력 필드 클릭 시 모달 열기
+     	// 결재자 입력 필드 클릭 시 모달 열기
         $initApproverInput.on('click', function() {
             currentInput = $initApproverInput;
             openModal();
@@ -637,29 +1169,47 @@ $(document).ready(function() {
             }
         });
 
-        // 모달에서 직원 선택 시 해당 결재자 입력 필드에 값 채우기
+     	// 모달에서 직원 선택 시 해당 결재자 입력 필드에 값 채우기
         $approverList.on('click', '.approver-item', function() {
-            const selectedApproverId = $(this).data('emp-no');
-            const selectedApproverText = $(this).text();
-
-            // 중간 결재자와 초기 결재자 비교
-            if (currentInput === $midApproverInput && selectedApproverText === $initApproverInput.val()) {
-                alert("초기 결재자와 같은 직원입니다.");
+            const selectedApproverId = $(this).data('emp-no'); // emp-no 가져오기
+            const selectedApproverText = $(this).text(); // 직원 이름 가져오기
+            let loginEmpNo = $('#docWriterNo').val(); // 현재 로그인한 사원번호
+            
+            if (selectedApproverId == loginEmpNo) {
+                alert("본인은 결재자로 지정할 수 없습니다.");
+                closeModal();
+                return;
+            }
+            
+         	// 기존 값과 비교하여 유효성 검사
+            if (currentInput.is($midApproverInput) && (selectedApproverText === $initApproverInput.val())) {
+                alert("중간 결재자는 초기 결재자와 달라야 합니다.");
+                closeModal();
                 return;
             }
 
-            // 최종 결재자와 초기, 중간 결재자 비교
-            if (currentInput === $finalApproverInput &&
+            if (currentInput.is($finalApproverInput) && 
                 (selectedApproverText === $initApproverInput.val() || selectedApproverText === $midApproverInput.val())) {
-                alert("초기, 중간 결재자와 같은 직원입니다.");
+                alert("최종 결재자는 초기 및 중간 결재자와 달라야 합니다.");
+                closeModal();
                 return;
             }
 
-            if (currentInput) {
-                currentInput.val(selectedApproverText); // 선택한 결재자의 이름을 입력 필드에 설정
+            // 히든 입력 필드에 사원번호만 설정
+            if (currentInput.is($initApproverInput)) {
+                $('#initApproverNo').val(selectedApproverId); // 사원번호만 설정
+                console.log('초기 결재자 emp-no:', selectedApproverId);
+            } else if (currentInput.is($midApproverInput)) {
+                $('#midApproverNo').val(selectedApproverId); // 사원번호만 설정
+                console.log('중간 결재자 emp-no:', selectedApproverId);
+            } else if (currentInput.is($finalApproverInput)) {
+                $('#finalApproverNo').val(selectedApproverId); // 사원번호만 설정
+                console.log('최종 결재자 emp-no:', selectedApproverId);
             }
 
-            currentInput.data('emp-no', selectedApproverId); // ID 저장
+            // 입력 필드에는 "사원번호 / 이름" 형식으로 설정
+            currentInput.val(selectedApproverText); // 사원번호와 이름 설정
+            console.log('입력 필드 값:', currentInput.val());
 
             closeModal(); // 선택 후 모달 닫기
         });
