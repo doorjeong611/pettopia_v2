@@ -23,8 +23,9 @@ public class EmpUserDetailsService implements UserDetailsService{
 	// DB에 접근하기 위해 연결해줘야 함. JPA == repository, mybatis == mapper 사용
 	@Autowired private EmployeeMapper employeeMapper;
 	
-	@Autowired private BCryptPasswordEncoder bCryptPasswordEncoder;
-
+	
+	
+	
 	@Override
 	public UserDetails loadUserByUsername(String empNo) throws UsernameNotFoundException {
 		
@@ -43,11 +44,7 @@ public class EmpUserDetailsService implements UserDetailsService{
 		return null; // 로그인 실패
 	}
 
-	// 비밀번호 
-	public boolean checkPassword(String rawPassword, String encodedPassword) {
-	    return bCryptPasswordEncoder.matches(rawPassword, encodedPassword);
-	}
-	
+
 	
 	
 }

@@ -31,7 +31,7 @@ public class SecurityConfig { // 이 클래스에 특정한 메서드를 만들�
 		// 특정 경로 요청시 open 조건 로직 작성 부분. 상단부터 하단으로 이동하며 동작하기 때문에 순서에 유의! -> authorizeHttpRequests()로 작성하며, 람다식으로 작성해야함
 		// anyRequest() : 위에서 처리하지 못한 경로, authenticated(): 로그인한 직원만 접근 가능
 		http.authorizeHttpRequests((auth) -> auth
-					.requestMatchers("/assets/**", "/loginForm", "/addEmployee", "/WEB-INF/view/login/**", "/common/petTopiaMain"  ).permitAll() // 로그인 구현후 addEmployee 지우기
+					.requestMatchers("/assets/**", "/**","/loginForm", "/addEmployee", "/WEB-INF/view/login/**", "/common/petTopiaMain"  ).permitAll() // 로그인 구현후 addEmployee 지우기
 					.requestMatchers("/admin").hasRole("ADMIN")
 					.anyRequest().authenticated()				
 				);
