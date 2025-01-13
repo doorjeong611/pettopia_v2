@@ -1,4 +1,4 @@
-package com.example.pettopia.common;
+package com.example.pettopia.dto;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -7,7 +7,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.example.pettopia.dto.EmpUserDetails;
 import com.example.pettopia.employee.EmployeeMapper;
 import com.example.pettopia.util.TeamColor;
 import com.example.pettopia.vo.Employee;

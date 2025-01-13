@@ -67,22 +67,95 @@ public class EmpUserDetails implements UserDetails {
 		return true; // 계정 활성화 여부
 	}
 	
-	public Integer getRankNo() {
-		return employee.getRankNo();
+	// 이름
+	public String getEmpName() {
+		return employee.getEmpName();
 	}
 	
-	public String getDeptCode() {
-		return employee.getDeptCode();
-	}
-	
+	// 이메일
 	public String getEmpEmail() {
 		return employee.getEmpEmail();
 	}
 	
+	// 생일
+	public String getEmpBirth() {
+		return employee.getEmpBirth();
+	}
+	
+	// 성별
+	public String getEmpGender() {
+		return employee.getEmpGender();
+	}
+	
+	// 전화번호
+	public String getEmpPhone() {
+		return employee.getEmpPhone();
+	}
+	
+	// 우편번호
+	public String getPosalCode() {
+		return employee.getPostalCode();
+	}
+	
+	// 기본주소
+	public String getBasicAddress() {
+		return employee.getBasicAddress();
+	}
+	
+	// 상세주소
+	public String getDetailAddress() {
+		return employee.getDetailAddress();
+	}
+	
+	// 직원 상태
+	public String getEmpStatus() {
+		return employee.getEmpStatus();
+	}
+	
+	// 팀장 여부
 	public String getIsTeamLeader() {
 		return employee.getIsTeamLeader();
-
 	}
+	
+	// 부서
+	public String getDeptCode() {
+		return employee.getDeptCode();
+	}
+	
+	// 직급
+	public Integer getRankNo() {
+		return employee.getRankNo();
+	}
+	
+	// 직원 권한
+	public String getRoleNameo() {
+		return employee.getRoleName();
+	}
+	
+	// 입사일
+	public String getHireDate() {
+		return employee.getHireDate();
+	}
+	
+	// 퇴사일
+	public String getResignationDate() {
+		return employee.getResignationDate();
+	}
+	
+	// 생성일시
+	public String getCreateDatetime() {
+		return employee.getCreateDatetime();
+	}
+	
+	// 수정일시
+	public String getUpdateDatetime() {
+		return employee.getUpdateDatetime();
+	}
+	
+	
+	
+	
+	
 	
 	
 	
