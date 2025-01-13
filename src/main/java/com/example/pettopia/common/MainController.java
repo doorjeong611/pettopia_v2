@@ -5,11 +5,13 @@ import java.time.LocalTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.example.pettopia.attendance.AttendanceSerivce;
+import com.example.pettopia.dto.EmpUserDetails;
 import com.example.pettopia.util.TeamColor;
 import com.example.pettopia.vo.Attendance;
 import com.example.pettopia.vo.Employee;
@@ -25,11 +27,13 @@ public class MainController {
 	
 	// 오자윤 : 출퇴근 기록 조회
 	@GetMapping("/common/petTopiaMain")
-	public String mainPage(Model model, Attendance attendance, HttpSession session) {
+	public String mainPage(Model model, Attendance attendance, Authentication auth) {
 		//세션 가져오기.
 //		Employee loginEmp = (Employee) session.getAttribute("loginEmp");
 //		String empNo = loginEmp.getEmpNo();
 //		attendance.setEmpNo(empNo);
+		
+
 		
 		// 현재 날짜 설정
 	    String currentDate = LocalDate.now().toString(); 
@@ -43,5 +47,14 @@ public class MainController {
 		
 		model.addAttribute("attendanceList", attendanceList);
 		return "common/petTopiaMain";
+		
+		
+		
+		
+		
+		
+		
+		
+		
 	}
 }
