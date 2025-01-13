@@ -25,7 +25,7 @@ logging:
         pettopia: DEBUG
     org:
       springframework:
-        security: DEBUG
-        crypto: DEBUG
-        authentication: DEBUG
+        security: OFF
+        crypto: OFF
+        authentication: OFF
 

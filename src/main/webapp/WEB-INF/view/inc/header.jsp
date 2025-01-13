@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
+<!-- 시큐리티 세션 사용을 위한 taglib -->
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<!-- 시큐리티 세션정보 접근 -->
+<sec:authorize access="isAuthenticated()"><sec:authentication property="principal" var="loginEmp"/></sec:authorize>
 
 
 <!DOCTYPE html>
@@ -175,8 +179,8 @@
                                         <span class="-top-1 ltr:-right-1 rtl:-left-1 absolute w-2.5 h-2.5 bg-green-400 border-2 border-white rounded-full dark:border-zink-600"></span>
                                     </div>
                                     <div>
-                                        <h6 class="mb-1 text-15">카리나</h6>
-                                        <p class="text-slate-500 dark:text-zink-300">CEO</p>
+                                        <h6 class="mb-1 text-15">${loginEmp.username }</h6>
+                                        <p class="text-slate-500 dark:text-zink-300">${loginEmp.deptCode }</p>
                                     </div>
                                 </a>
                                 <ul>
@@ -189,7 +193,7 @@
                                         </a>
                                     </li>
                                     <li class="pt-2 mt-2 border-t border-slate-200 dark:border-zink-500">
-                                        <a class="block ltr:pr-4 rtl:pl-4 py-1.5 text-base font-medium transition-all duration-200 ease-linear text-red-600 dropdown-item hover:text-custom-500 focus:text-custom-500 dark:text-zink-200 dark:hover:text-custom-500 dark:focus:text-custom-500" href="auth-logout-basic.html"><i data-lucide="log-out" class="inline-block size-4 ltr:mr-2 rtl:ml-2"></i> Log Out</a>
+                                        <a class="block ltr:pr-4 rtl:pl-4 py-1.5 text-base font-medium transition-all duration-200 ease-linear text-red-600 dropdown-item hover:text-custom-500 focus:text-custom-500 dark:text-zink-200 dark:hover:text-custom-500 dark:focus:text-custom-500" href="${pageContext.request.contextPath }/logout"><i data-lucide="log-out" class="inline-block size-4 ltr:mr-2 rtl:ml-2"></i> Log Out</a>
                                     </li>
                                 </ul>
                             </div>
