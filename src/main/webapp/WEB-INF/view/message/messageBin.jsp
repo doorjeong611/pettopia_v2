@@ -38,7 +38,7 @@
             <div class="container-fluid group-data-[content=boxed]:max-w-boxed mx-auto">
                 <div class="flex flex-col gap-2 py-4 md:flex-row md:items-center print:hidden">
                     <div class="grow">
-                        <h5 class="text-16">쪽지보관함</h5>
+                        <h5 class="text-16">휴지통</h5>
                     </div>
                     <ul class="flex items-center gap-2 text-sm font-normal shrink-0">
                         <li class="relative before:content-['\ea54'] before:font-remix ltr:before:-right-1 rtl:before:-left-1  before:absolute before:text-[18px] before:-top-[3px] ltr:pr-4 rtl:pl-4 before:text-slate-400 dark:text-zink-200">
@@ -88,7 +88,7 @@
                                        <table class="w-full whitespace-nowrap">
 							    		<tr>
 								        	<td style="padding: 10px;">
-									            <span class="text-slate-500 dark:text-zink-200 deleteMessages" style="margin-right: 20px; cursor: pointer;">삭제</span>
+									            <span class="text-slate-500 dark:text-zink-200 deleteMessages" style="margin-right: 20px; cursor: pointer;">영구삭제</span>
 									            <span class="text-slate-500 dark:text-zink-200" style="margin-right: 24px;">읽음</span>
 									            <span class="text-slate-500 dark:text-zink-200" style="margin-right: 50px;">보낸사람</span>
 									            <span class="text-slate-500 dark:text-zink-200" style="margin-right: 0px;"></span>
@@ -105,7 +105,7 @@
 								                	<input style="margin-left: 8px;" type="checkbox" class="moveToBin" name="messageNo" value="${message.messageNo}" /> 
 								                    <span style="margin-left: 37px; display: inline-block;">${message.messageState}</span>
 								                    <span style="margin-left: 37px; display: inline-block; width: 300px;">${message.senderName}</span> <!-- 보낸 사람 -->
-								                  	<a href="${pageContext.request.contextPath}/message/messageOne?messageNo=${message.messageNo}" style="margin-left: 50px; display: inline-block; width: 300px;">${message.messageTitle}</a> <!-- 제목 -->
+								                    <span style="margin-left: 50px; display: inline-block; width: 300px;">${message.messageTitle}</span> <!-- 제목 -->
 								                   <span style="margin-left: 395px; display: inline-block; width: 150px;">${message.createDatetime}</span> <!-- 날짜 -->
 								                </td>
 								            </tr>

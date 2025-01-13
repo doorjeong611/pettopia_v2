@@ -12,6 +12,9 @@ import com.example.pettopia.vo.Message;
 @Mapper
 public interface MessageMapper {
 	
+	// 오자윤 : /employee/messageOne 쪽지 상세보기
+	Map<String, Object>getMessageById(String messageNo);
+	
 	// 오자윤 : /employee/messageList 쪽지리스트
 	List<Map<String, Object>>getMessageList(String empNo);
 	
