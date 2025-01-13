@@ -79,7 +79,7 @@
                                     </div><!--end col-->
                                 </div><!--end grid-->
                             </div>
-                <div class="!pt-0 card-body flex-grow overflow-y-auto">
+             				<div class="!pt-0 card-body flex-grow overflow-y-auto">
                                 <!-- 보낸 사람 시작하는 부분 -->
                                     <div class="overflow-x-auto">
                                     	<br>
@@ -116,6 +116,7 @@
 								</form>
                              </div>
                           </div>
+                          <!-- 페이지네이션 -->
                           <div class="flex flex-col items-center gap-4 px-4 mt-4 md:flex-row" id="pagination-element">
                         <div class="grow">
                             <p> Results</p>
@@ -155,6 +156,7 @@
                     </div>
                       </div><div class="simplebar-placeholder" style="width: 1176px; height: 93px;"></div></div><div class="simplebar-track simplebar-horizontal" style="visibility: hidden;"><div class="simplebar-scrollbar" style="width: 0px; display: none;"></div></div><div class="simplebar-track simplebar-vertical" style="visibility: hidden;"><div class="simplebar-scrollbar" style="height: 0px; display: none;"></div></div></div>
                   
+                  
                 
             </div>
             <!-- container-fluid -->
@@ -171,6 +173,7 @@
 <!-- End Main Content -->
 <c:import url="/WEB-INF/view/inc/customizerButton.jsp"></c:import>
 
+<!-- 공통 스크립트 -->
 <script src='${pageContext.request.contextPath}/assets/libs/choices.js/public/assets/scripts/choices.min.js'></script>
 <script src="${pageContext.request.contextPath}/assets/libs/@popperjs/core/umd/popper.min.js"></script>
 <script src="${pageContext.request.contextPath}/assets/libs/tippy.js/tippy-bundle.umd.min.js"></script>
@@ -179,17 +182,17 @@
 <script src="${pageContext.request.contextPath}/assets/libs/lucide/umd/lucide.js"></script>
 <script src="${pageContext.request.contextPath}/assets/js/tailwick.bundle.js"></script>
 <script src="${pageContext.request.contextPath}/assets/libs/lucide/umd/lucide.js"></script>
-<script src="${pageContext.request.contextPath}assets/libs/sweetalert2/sweetalert2.min.js"></script>
+<script src="${pageContext.request.contextPath}/assets/libs/sweetalert2/sweetalert2.min.js"></script>
 
 <!-- list js -->
 <script src="${pageContext.request.contextPath}/assets/libs/list.js/list.min.js"></script>
 <script src="${pageContext.request.contextPath}/assets/libs/list.pagination.js/list.pagination.min.js"></script>
 <script src="${pageContext.request.contextPath}/assets/js/pages/apps-hr-employee.init.js"></script>
 
-<!--apexchart js-->
+<!-- apexchart js -->
 <script src="${pageContext.request.contextPath}/assets/libs/apexcharts/apexcharts.min.js"></script>
 
-<!--dashboard ecommerce init js-->
+<!-- dashboard ecommerce init js -->
 <script src="${pageContext.request.contextPath}/assets/js/pages/dashboards-ecommerce.init.js"></script>
 
 <!-- App js -->

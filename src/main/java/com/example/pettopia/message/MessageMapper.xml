@@ -2,6 +2,27 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.pettopia.message.MessageMapper">
 
+	<!-- 오자윤 : /employee/messageNote (모달)직원 조회 -->
+	<select id="getEmployeeList" parameterType="String" resultType="map">
+		SELECT 
+		    d.division_name divisionName,
+		    dep.dept_name deptName,     
+		    r.rank_name rankName,      
+		    e.emp_no empNo,         
+		    e.emp_name empName      
+		FROM 
+		    employee e
+		JOIN 
+		    `rank` r ON e.rank_no = r.rank_no    
+		JOIN 
+		    department dep ON e.dept_code = dep.dept_code 
+		JOIN 
+		    division d ON dep.division_code = d.division_code 
+		WHERE 
+		    e.emp_status = #{empStatus};  <!-- 재직상태 직원 -->     
+
+	</select>
+	
 	<!-- 오자윤 : /employee/messageList 쪽지리스트 조회 -->
 	<select id="getMessageById" parameterType="String" resultType="map">
 	    SELECT 
@@ -12,7 +33,7 @@
 	        m.message_title messageTitle,
 	        m.message_content messageContent,
 	        m.message_state messageState,
-	        m.message_bin AS messageBin,
+	        m.message_bin messageBin,
 	        DATE_FORMAT(m.create_datetime, '%Y-%m-%d %H:%i') createDatetime,
 	        DATE_FORMAT(m.update_datetime, '%Y-%m-%d %H:%i') updateDatetime
 	    FROM 
@@ -41,7 +62,7 @@
 			JOIN 
 			    employee e ON m.sender_emp_no = e.emp_no
 			WHERE 
-			    m.recipient_emp_no = ${emp_no}  
+			    m.recipient_emp_no = #{empNo}  
 			ORDER BY 
 			    m.message_no ASC;
 	</select>

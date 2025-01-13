@@ -4,16 +4,16 @@
 
 <!-- 오자윤 : /employee/attendanceList 직원 상태 카운트 -->
 <select id="countEmployeeStatus" resultType="Map">
-SELECT 
-    COUNT(CASE WHEN attendance_status = 'P' THEN 1 END) AS 'P',  -- 출근
-    COUNT(CASE WHEN attendance_status = 'L' THEN 1 END) AS 'L',  -- 지각
-    COUNT(CASE WHEN attendance_status = 'A' THEN 1 END) AS 'A',  -- 결근
-    COUNT(CASE WHEN attendance_status = 'V' THEN 1 END) AS 'V',  -- 연차
-    COUNT(CASE WHEN attendance_status = 'H' THEN 1 END) AS 'H'   -- 반차
-FROM 
-    attendance
-WHERE 
-    attendance_date = CURDATE();
+	SELECT 
+	    COUNT(CASE WHEN attendance_status = 'P' THEN 1 END) AS 'P',  -- 출근
+	    COUNT(CASE WHEN attendance_status = 'L' THEN 1 END) AS 'L',  -- 지각
+	    COUNT(CASE WHEN attendance_status = 'A' THEN 1 END) AS 'A',  -- 결근
+	    COUNT(CASE WHEN attendance_status = 'V' THEN 1 END) AS 'V',  -- 연차
+	    COUNT(CASE WHEN attendance_status = 'H' THEN 1 END) AS 'H'   -- 반차
+	FROM 
+	    attendance
+	WHERE 
+	    attendance_date = CURDATE();
 </select>
 
 <!-- 오자윤 : /employee/attendance 근태리스트 -->
