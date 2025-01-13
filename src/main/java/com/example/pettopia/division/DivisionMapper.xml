@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.pettopia.division.DivisionMapper">
+
+	<!-- 부서 목록 : 직원 등록시 소속 부서 선택시 사용 -->
+	<select id="selectDivisionList" resultType="com.example.pettopia.vo.Division">
+		SELECT division_code AS divisionCode
+				, division_name AS divisionName
+		FROM division
+	</select>
+
+
+</mapper>

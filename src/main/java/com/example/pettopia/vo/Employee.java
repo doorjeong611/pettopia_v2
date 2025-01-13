@@ -19,6 +19,7 @@ public class Employee {
 	private String isTeamLeader;
 	private String deptCode; // FK
 	private Integer rankNo; // FK
+	private String roleName;
 	private String hireDate;
 	private String resignationDate;
 	private String createDatetime;

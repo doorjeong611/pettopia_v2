@@ -27,9 +27,9 @@ public class MainController {
 	@GetMapping("/common/petTopiaMain")
 	public String mainPage(Model model, Attendance attendance, HttpSession session) {
 		//세션 가져오기.
-		Employee loginEmp = (Employee) session.getAttribute("loginEmp");
-		String empNo = loginEmp.getEmpNo();
-		attendance.setEmpNo(empNo);
+//		Employee loginEmp = (Employee) session.getAttribute("loginEmp");
+//		String empNo = loginEmp.getEmpNo();
+//		attendance.setEmpNo(empNo);
 		
 		// 현재 날짜 설정
 	    String currentDate = LocalDate.now().toString(); 
