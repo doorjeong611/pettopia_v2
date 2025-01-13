@@ -18,5 +18,28 @@
 	
 	</select>
 
+	<!-- addEmployee : 직원 중복 가입 방지 -->
+	<select id="selectExistEmployee" parameterType="String" resultType="int" >
+		SELECT COUNT(*) AS existEmp
+		FROM employee
+		WHERE emp_no LIKE #{empNo}
+	</select>
+
+	<!-- addEmployee : 직원 정보 등록 -->
+	<insert id="insertEmployeeInfo" parameterType="com.example.pettopia.vo.Employee">
+	
+		<selectKey resultType="String" keyProperty="empNo" order="AFTER">
+			SELECT LAST_INSERT_ID()									
+		</selectKey>
+		INSERT into employee(emp_no, emp_name, emp_pw, emp_email, emp_birth, emp_gender, emp_phone
+									, postal_code, basic_address, detail_address, is_team_leader, dept_code
+									, rank_no, role_name, hire_date, resignation_date, create_datetime, update_datetime)
+		VALUES(#{empNo}, #{empName}, #{empPw}, #{empEmail}, #{empBirth}, #{empGender}, #{empPhone}
+				, #{postalCode}, #{basicAddress}, #{detailAddress},  #{isTeamLeader}, #{deptCode}
+				, #{rankNo}, #{roleName}, #{hireDate}, #{resignationDate}, now(), now() )
+	</insert>
+
+
+
 
 </mapper>

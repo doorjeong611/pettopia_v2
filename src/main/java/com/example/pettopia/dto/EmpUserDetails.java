@@ -18,8 +18,7 @@ public class EmpUserDetails implements UserDetails{
 	public EmpUserDetails(Employee employee) {
 		this.employee = employee;
 	}
-	
-	
+
 	
 	
 	// role
@@ -82,16 +81,19 @@ public class EmpUserDetails implements UserDetails{
 		return true;
 	}
 
-
-
-
 	@Override
 	public boolean isEnabled() {
 		// TODO Auto-generated method stub
 		return true;
 	} 
 	
+	public Integer getRankNo() {
+		return employee.getRankNo();
+	}
 	
+	public String getRoleName() {
+		return employee.getRoleName();
+	}
 	
 	
 	

@@ -21,13 +21,8 @@ public class SecurityConfig { // 이 클래스에 특정한 메서드를 만들�
 	
 	}
 	
-//	@Bean
-//	public PasswordEncoder passwordEncoder() {
-//		return NoOpPasswordEncoder.getInstance();
-//	}
 	
-	
-	// 로그인 성공시 이동을 위한 Handler
+
 	
 	
 	@Bean // Bean에 등록시 자동으로 필터에 security 설정을 custom으로 진행 가능
@@ -36,7 +31,7 @@ public class SecurityConfig { // 이 클래스에 특정한 메서드를 만들�
 		// 특정 경로 요청시 open 조건 로직 작성 부분. 상단부터 하단으로 이동하며 동작하기 때문에 순서에 유의! -> authorizeHttpRequests()로 작성하며, 람다식으로 작성해야함
 		// anyRequest() : 위에서 처리하지 못한 경로, authenticated(): 로그인한 직원만 접근 가능
 		http.authorizeHttpRequests((auth) -> auth
-					.requestMatchers("/assets/**", "/login", "/WEB-INF/view/common/**"  ).permitAll()
+					.requestMatchers("/assets/**", "/loginForm", "/addEmployee", "/WEB-INF/view/login/**", "/common/petTopiaMain"  ).permitAll() // 로그인 구현후 addEmployee 지우기
 					.requestMatchers("/admin").hasRole("ADMIN")
 					.anyRequest().authenticated()				
 				);
@@ -47,11 +42,10 @@ public class SecurityConfig { // 이 클래스에 특정한 메서드를 만들�
 		http.csrf((auth) -> auth.disable());
 		
 		// 로그인
-		http.formLogin((auth) -> auth.loginPage("/login")
+		http.formLogin((auth) -> auth.loginPage("/loginForm")
 					.usernameParameter("empNo") // 기본으로 username을 사용하지만 해당 프로젝트에서는 empNo로 로그인을 진행하므로 변경해줌
 					.loginProcessingUrl("/login")
-					.defaultSuccessUrl("/common/petTopiaMain")
-					.failureUrl("/login?error=true")
+					.defaultSuccessUrl("/common/petTopiaMain", true)
 					.permitAll()
 				);
 		

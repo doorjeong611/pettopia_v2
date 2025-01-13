@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.pettopia.employeefile.EmployeeFileMapper">
+
+	<!-- addEmployee : 직원 프로필 사진 등록 -->
+	<insert id="insertEmployeeProfile">
+		INSERT INTO employee_file(emp_no, file_purpose, origin_file_name, file_name, file_ext, file_type, create_datetime, update_datetime)
+		VALUES (#{empNo}, #{filePurpose}, #{originFileName}, #{fileName}, #{fileExt}, #{fileType}, now(), now())
+	</insert>
+
+
+</mapper>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.pettopia.rank.RankMapper">
+	
+	<!-- 직급 목록 : 직원 등록시 직급 선택 -->
+	<select id="selectRankList" resultType="com.example.pettopia.vo.Rank">
+		SELECT rank_no AS rankNo
+				, rank_name AS rankName
+		FROM `rank`
+	</select>
+	
+	
+</mapper>

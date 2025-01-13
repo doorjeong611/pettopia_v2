@@ -22,4 +22,7 @@ logging:
   level:
     com:
       example:
-        pettopia: debug
+        pettopia: DEBUG
+    org:
+      springframework:
+        security: DEBUG

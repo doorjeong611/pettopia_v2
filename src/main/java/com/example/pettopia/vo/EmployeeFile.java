@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class EmployeeFile {
 	private Integer empFileNo; // PK
-	private Integer empNo; // FK
+	private String empNo; // FK
 	private String filePurpose;
 	private String originFileName;
 	private String fileName;

@@ -22,9 +22,9 @@ public class LoginController {
 	@Autowired EmployeeService employeeService;
 	
 
-	@GetMapping("/login")
+	@GetMapping("/loginForm")
 	public String login() {
-		return "common/login";
+		return "login/login";
 	}
 	
 	
