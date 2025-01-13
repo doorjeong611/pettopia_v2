@@ -3,6 +3,27 @@
 <mapper namespace="com.example.pettopia.message.MessageMapper">
 
 	<!-- 오자윤 : /employee/messageList 쪽지리스트 조회 -->
+	<select id="getMessageById" parameterType="String" resultType="map">
+	    SELECT 
+	        m.message_no messageNo,
+	        m.sender_emp_no senderEmpNo,
+	        e.emp_name senderName,
+	        m.recipient_emp_no recipientEmpNo,
+	        m.message_title messageTitle,
+	        m.message_content messageContent,
+	        m.message_state messageState,
+	        m.message_bin AS messageBin,
+	        DATE_FORMAT(m.create_datetime, '%Y-%m-%d %H:%i') createDatetime,
+	        DATE_FORMAT(m.update_datetime, '%Y-%m-%d %H:%i') updateDatetime
+	    FROM 
+	        message m
+	    JOIN 
+	        employee e ON m.sender_emp_no = e.emp_no
+	    WHERE 
+	        m.message_no = #{messageNo}; <!-- 메시지 번호로 필터링 -->
+	</select>
+
+	<!-- 오자윤 : /employee/messageList 쪽지리스트 조회 -->
 	<select id="getMessageList" resultType="map"> 
 		    SELECT 
 			    m.message_no messageNo,
