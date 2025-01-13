@@ -10,6 +10,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class MessageService {
 	@Autowired MessageMapper messageMapper;
+	
+	// 오자윤 : /employee/messageNote (모달)직원 조회 -->
+	public List<Map<String, Object>> getEmployeeList(String empStatus) {
+		return messageMapper.getEmployeeList(empStatus);
+	}
+	
 	// 오자윤 : /employee/messageList 쪽지리스트
 	public Map<String, Object> getMessageById(String messageNo) {
 	    return messageMapper.getMessageById(messageNo); // 새로운 메서드

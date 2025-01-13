@@ -2,14 +2,15 @@ package com.example.pettopia.attendance;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
+import com.example.pettopia.dto.EmpUserDetails;
 import com.example.pettopia.util.TeamColor;
 import com.example.pettopia.vo.Attendance;
 import com.example.pettopia.vo.Employee;
@@ -19,7 +20,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 
@@ -31,14 +31,15 @@ public class AttendanceController {
 	
 	// 오자윤 : /common/petTopiaMain 출근등록
 	@PostMapping("/employee/attendanceOn")
-		// 세션 empNo 가져오기
-		public String attendanceOn(Model model, HttpSession session, Attendance attendance) {
-		Employee loginEmp = (Employee) session.getAttribute("loginEmp");
-		log.debug(TeamColor.OJY + "loginEmp------>" + loginEmp + TeamColor.RESET);
-		String empNo = loginEmp.getEmpNo();
-		log.debug(TeamColor.OJY + "empNo------>" + empNo + TeamColor.RESET);
-		attendance.setEmpNo(empNo);
+	public String attendanceOn(Model model, HttpSession session, Attendance attendance, Authentication auth) {
 		
+		// Security 회원정보 empNo 가져오기
+		EmpUserDetails empUserDetails = (EmpUserDetails)auth.getPrincipal();
+	    String empNo = empUserDetails.getUsername(); // 또는 empUserDetails.getEmpNo() 사용 가능
+	    String empEmail = empUserDetails.getEmpEmail();
+
+	    log.debug(TeamColor.OJY + "empNo------>" + empNo + TeamColor.RESET);
+	    attendance.setEmpNo(empNo);
 		// 현재 날짜 및 시간 설정
 	    String currentDate = LocalDate.now().toString(); 
 	    String currentTime = LocalTime.now().toString(); 
@@ -92,14 +93,13 @@ public class AttendanceController {
 	
 	// 오자윤 : /common/petTopiaMain 퇴근등록
     @PostMapping("/employee/attendanceOff")
-    public String attendanceOff(Model model, HttpSession session, Attendance attendance) {
-    	// 세션 empNo 가져오기
-    	Employee loginEmp = (Employee) session.getAttribute("loginEmp");
-    	log.debug(TeamColor.OJY + "loginEmp------> " + loginEmp + TeamColor.RESET);
-		String empNo = loginEmp.getEmpNo();
-		log.debug(TeamColor.OJY + "empNo------> " + loginEmp + TeamColor.RESET);
-		attendance.setEmpNo(empNo);
-		
+    public String attendanceOff(Model model, HttpSession session, Attendance attendance, Authentication auth) {
+        // Security를 통해 empNo 가져오기
+        EmpUserDetails empUserDetails = (EmpUserDetails) auth.getPrincipal();
+        String empNo = empUserDetails.getUsername(); // 또는 empUserDetails.getEmpNo() 사용 가능
+        log.debug(TeamColor.OJY + "empNo------>" + empNo + TeamColor.RESET);
+        attendance.setEmpNo(empNo);
+    	
     	// 퇴근 시간 설정
         String currentTime = LocalTime.now().toString(); 
         attendance.setClockOutTime(currentTime);

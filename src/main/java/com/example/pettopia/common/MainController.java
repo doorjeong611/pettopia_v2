@@ -28,12 +28,11 @@ public class MainController {
 	// 오자윤 : 출퇴근 기록 조회
 	@GetMapping("/common/petTopiaMain")
 	public String mainPage(Model model, Attendance attendance, Authentication auth) {
-		//세션 가져오기.
-//		Employee loginEmp = (Employee) session.getAttribute("loginEmp");
-//		String empNo = loginEmp.getEmpNo();
-//		attendance.setEmpNo(empNo);
-		
 
+		// security 회원정보 가져오기.
+		EmpUserDetails empUserDetails = (EmpUserDetails) auth.getPrincipal();
+		String empNo = empUserDetails.getUsername();
+		attendance.setEmpNo(empNo);
 		
 		// 현재 날짜 설정
 	    String currentDate = LocalDate.now().toString(); 
