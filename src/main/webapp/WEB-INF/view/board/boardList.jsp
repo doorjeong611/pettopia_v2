@@ -1,6 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<!-- 시큐리티 세션 사용을 위한 taglib %@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>-->
 
+<!-- 시큐리티 세션정보 접근 -->
+<!-- 
+<sec:authorize access="isAuthenticated()"><sec:authentication property="principal" var=""/></sec:authorize>
+ -->
 <!DOCTYPE html>
 <html lang="en" class="light scroll-smooth group" data-layout="vertical" data-sidebar="light" data-sidebar-size="lg" data-mode="light" data-topbar="light" data-skin="default" data-navbar="sticky" data-content="fluid" dir="ltr">
 
@@ -181,6 +186,8 @@ $(document).ready(function(){
 		$('#formCategory').submit();
 	})
 })
+
+
 </script>
 
 </body>
