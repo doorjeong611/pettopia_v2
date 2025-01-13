@@ -2,19 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.pettopia.board.BoardMapper">
 	
-	
+	<!-- 공지사항 리스트 : 부서 목록 -->
+	<select id="selectDivisionList" resultType="com.example.pettopia.vo.Division">
+		SELECT division_code divisionCode
+				, division_name divisionName
+		FROM division
+	</select>
 	
 	<!-- 게시글 작성 쿼리 /board/addBoard 작업자 : 이준호 -->
 	<insert id="insertBoard" parameterType="com.example.pettopia.vo.Board">
 		INSERT INTO board(
 			board_title,
-			division_no,
+			division_code,
 			board_content,
 			board_header,
 			create_datetime
 		) VALUES (
 			#{boardTitle},
-			#{divisionNo},
+			#{divisionCode},
 			#{boardContent},
 			#{boardHeader},
 			NOW()

@@ -6,10 +6,15 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.example.pettopia.vo.Board;
+import com.example.pettopia.vo.Division;
 
 @Mapper
 public interface BoardMapper {
-
+	
+	
+// 공지사항 리스트 : 부서 목록 작업자 : 김문정
+	List<Division> selectDivisionList();
+	
 //	게시글 작성 /board/addBoard 작업자 : 이준호	
 	Integer insertBoard (Board board);
 	

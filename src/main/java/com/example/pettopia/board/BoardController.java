@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
 import com.example.pettopia.vo.Board;
+import com.example.pettopia.vo.Division;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -22,10 +23,31 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class BoardController {
 	@Autowired BoardService boardService;
 	
+	@PostMapping("/board/addBoard")
+	public String addBoard(Board board) {
+		boardService.insertBoard(board);
+		
+		
+		return "redirect:/board/boardList";
+	}
 	// 게시글 작성 구현 /board/addBoard/ 작업자 : 이준호
 	@GetMapping("/board/addBoard")
-	public String addBoard() {
+	public String addBoard(Model model,
+							@RequestParam(required = false) String divisionCode,
+							 @RequestParam(value = "category", defaultValue = "ALL") String boardCategory) {
+	
 		
+		List<Division> divisionList = boardService.getDivisionList();
+		
+		Map<String, Object> categoryByAddBoard = new HashMap<>();
+		
+		
+		
+		categoryByAddBoard.put("division", divisionCode);
+		categoryByAddBoard.put("divisionList", divisionList);
+		
+		model.addAttribute("division", categoryByAddBoard);
+		model.addAttribute("CurrentdivisionCode", divisionCode);
 		return "board/addBoard";
 	}
 	
@@ -48,13 +70,7 @@ public class BoardController {
 	    model.addAttribute("boardList", boardList);
 	    model.addAttribute("boardCategory", boardCategory);
 
-	    // AJAX 요청인지 확인
-	    if ("XMLHttpRequest".equals(request.getHeader("X-Requested-With"))) {
-	        // AJAX 요청일 경우, boardListFragment.jsp 파일을 반환
-	        return "board/boardListFragment";  // boardListFragment.jsp 파일을 반환
-	    }
-
-	    // 일반 요청일 경우, 전체 페이지 반환
+	 
 	    return "board/boardList";  // 전체 페이지 뷰 반환
 	}
 	

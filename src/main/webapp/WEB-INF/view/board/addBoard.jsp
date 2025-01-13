@@ -13,6 +13,8 @@
     <!-- CKEditor5 -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/boardStyle.css">
 	<link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/44.1.0/ckeditor5.css" crossorigin>
+    <!-- bootStrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <!-- App favicon -->
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/assets/images/pettopia_favicon.ico">
     <!-- Layout config Js -->
@@ -21,10 +23,12 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tailwind2.css">
 </head>
 
-<body class="text-base bg-body-bg text-body font-public dark:text-zink-100 dark:bg-zink-800 group-data-[skin=bordered]:bg-body-bordered group-data-[skin=bordered]:dark:bg-zink-700">
 <style>
-.ck-word-count__words {display:none;}
+	.ck.ck-editor {max-width:80%; position: static;}
+	.ck-editor__editable {min-height:500px;}
+	
 </style>
+<body class="text-base bg-body-bg text-body font-public dark:text-zink-100 dark:bg-zink-800 group-data-[skin=bordered]:bg-body-bordered group-data-[skin=bordered]:dark:bg-zink-700">
 <div class="group-data-[sidebar-size=sm]:min-h-sm group-data-[sidebar-size=sm]:relative">
     
 	<!-- Left Sidebar Start -->
@@ -59,13 +63,41 @@
 
                 <div class="card" >
                 	 <div class="card-body">
-                	 <!-- CKEditor5 Start -->
-	               <div class="main-container">
-					 <div class="editor-container editor-container_classic-editor editor-container_include-word-count" id="editor-container">
-						<div class="editor-container__editor"><div id="editor"></div></div>
-						<div class="editor_container__word-count" id="editor-word-count "></div>
-					 </div>
-				   </div>
+                	 <form method="post" action="${pageContext.request.contextPath}/board/addBoard" class="formBoard">
+                	 	  <input type="hidden" id="boardContentHidden" name="boardContent" value="">
+                		 <!-- CKEditor5 Start -->
+			               <div class=" main-container">
+			               	<div class="col-sm-6 d-flex justify-content-center">
+			               		
+		               			<select name="divisionCode" id="division">
+									<option value="">없음</option>
+									<c:forEach var="dvs" items="${division.divisionList}" >
+										<option value="${dvs.divisionCode }" >${dvs.divisionCode }</option>
+									</c:forEach>
+								</select>
+			               		
+	                	 		<select name="addBoardCategory" class="form-select" id="boardCategory">
+										<option value="SG" ${boardCategory == 'SG' ? 'selected' : ''}>건의사항</option>
+										<option value="DS" ${boardCategory == 'DS' ? 'selected' : ''}>토론</option>
+										<option value="CT" ${boardCategory == 'CT' ? 'selected' : ''}>잡답</option>
+										<option value="IN" ${boardCategory == 'IN' ? 'selected' : ''}>정보</option>
+										<option value="QA" ${boardCategory == 'QA' ? 'selected' : ''}>질문</option>
+										<option value="CP" ${boardCategory == 'CP' ? 'selected' : ''}>칭찬</option>
+	                	 		</select>
+							</div>
+							<div class="title-container ">
+								<input type="text" placeholder="제목을 입력해주세요" name="boardTitle">
+							</div>
+							 <div class="editor-container editor-container_document-editor editor-container_include-style" id="editor-container">
+								<div class="editor-container__toolbar" id="editor-toolbar"></div>
+								<div class="editor-container__editor-wrapper">
+									<div class="editor-container__editor" ><div id="editor" name="boardContent"></div></div>
+								</div>
+							</div>
+						   </div>
+						   
+						   <button>작성하기</button>
+				   </form>
 				<!-- CKEditor5 End -->
                 	 </div>
                 </div>
