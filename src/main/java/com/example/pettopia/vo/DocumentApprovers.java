@@ -5,7 +5,8 @@ import lombok.Data;
 @Data
 public class DocumentApprovers {
 	
-	private Integer docNo; // PK
+	private Integer docApproversNo; // PK
+	private Integer docNo; // FK 
 	private String initApproverNo; // FK
 	private String initApproverStatus;
 	private String initApproverDatetime;

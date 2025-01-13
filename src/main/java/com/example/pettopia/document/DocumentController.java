@@ -6,13 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.example.pettopia.util.TeamColor;
 import com.example.pettopia.vo.Document;
+import com.example.pettopia.vo.DocumentApprovers;
 import com.example.pettopia.vo.Employee;
 
 import jakarta.servlet.http.HttpSession;
@@ -27,7 +25,7 @@ public class DocumentController {
 	@Autowired DocumentService documentService;
 	
 	// addDocument Form
-	@GetMapping("document/addDocument")
+	@GetMapping("/document/addDocument")
 	public String addDocument(Model model, HttpSession session) {
 		
 		Employee loginEmp = (Employee) session.getAttribute("loginEmp");
@@ -42,12 +40,12 @@ public class DocumentController {
 	}
 	
 	// addDocument Action
-	@PostMapping("document/addDocument")
-	public String addDocument(Model model, Document document) {
+	@PostMapping("/document/addDocument")
+	public String addDocument(Model model, Document document, DocumentApprovers documentApprovers) {
 		
 		log.debug(TeamColor.KDH + "document : " + document.toString() + TeamColor.RESET);
 		
-		int insertDocRow = documentService.addDocument(document);
+		int insertDocRow = documentService.addDocument(document, documentApprovers);
 		
 		return "redirect:/document/documentList";
 	}

@@ -16,7 +16,7 @@
     <script src="${pageContext.request.contextPath}/assets/js/layout.js"></script>
     <!-- Tailwind CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tailwind2.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
 </head>
 
 <body class="text-base bg-body-bg text-body font-public dark:text-zink-100 dark:bg-zink-800 group-data-[skin=bordered]:bg-body-bordered group-data-[skin=bordered]:dark:bg-zink-700">
@@ -37,13 +37,26 @@
         <div class="group-data-[sidebar-size=lg]:ltr:md:ml-vertical-menu group-data-[sidebar-size=lg]:rtl:md:mr-vertical-menu group-data-[sidebar-size=md]:ltr:ml-vertical-menu-md group-data-[sidebar-size=md]:rtl:mr-vertical-menu-md group-data-[sidebar-size=sm]:ltr:ml-vertical-menu-sm group-data-[sidebar-size=sm]:rtl:mr-vertical-menu-sm pt-[calc(theme('spacing.header')_*_1)] pb-[calc(theme('spacing.header')_*_0.8)] px-4 group-data-[navbar=bordered]:pt-[calc(theme('spacing.header')_*_1.3)] group-data-[navbar=hidden]:pt-0 group-data-[layout=horizontal]:mx-auto group-data-[layout=horizontal]:max-w-screen-2xl group-data-[layout=horizontal]:px-0 group-data-[layout=horizontal]:group-data-[sidebar-size=lg]:ltr:md:ml-auto group-data-[layout=horizontal]:group-data-[sidebar-size=lg]:rtl:md:mr-auto group-data-[layout=horizontal]:md:pt-[calc(theme('spacing.header')_*_1.6)] group-data-[layout=horizontal]:px-3 group-data-[layout=horizontal]:group-data-[navbar=hidden]:pt-[calc(theme('spacing.header')_*_0.9)]">
             <div class="container-fluid group-data-[content=boxed]:max-w-boxed mx-auto">
                 <div class="flex flex-col gap-2 py-4 md:flex-row md:items-center print:hidden">
+                    <div class="grow">
+                        <h5 class="text-16">쪽지보관함</h5>
+                    </div>
+                    <ul class="flex items-center gap-2 text-sm font-normal shrink-0">
+                        <li class="relative before:content-['\ea54'] before:font-remix ltr:before:-right-1 rtl:before:-left-1  before:absolute before:text-[18px] before:-top-[3px] ltr:pr-4 rtl:pl-4 before:text-slate-400 dark:text-zink-200">
+                            <a href="#!" class="text-slate-400 dark:text-zink-200">메인 화면</a>
+                            
+                        </li>
+                        <li class="text-slate-700 dark:text-zink-100">
+                            템플릿
+                        </li>
+                    </ul>
                 </div>
-
-			<!-- Main content -->
-		  <div class="col-span-12 lg:col-span-9 2xl:col-span-10 grow card">
+                <!-- Main content -->
+                <div class="col-span-12 lg:col-span-9 2xl:col-span-10 grow card">
                         <div id="emailList" class="block">
                             <div class="card-body flex flex-col" style="overflow: visible;">
-                               <p class="mb-2 text-slate-500 dark:text-zink-200">받은메일함</p>
+                               <p class="mb-2 text-slate-500 dark:text-zink-200">
+								    <a href="${pageContext.request.contextPath}/message/messageNote" class="text-blue-500 hover:underline">쪽지쓰기</a>
+								</p>
 	                             <div class="grid items-center grid-cols-1 gap-4 2xl:grid-cols-12">
                                     <div class="2xl:col-span-5">
                                         <div class="flex flex-wrap items-center gap-3 divide-x rtl:divide-x-reverse divide-slate-200 dark:divide-zink-500">
@@ -66,8 +79,7 @@
                                     </div><!--end col-->
                                 </div><!--end grid-->
                             </div>
-                            <div class="simplebar-content flex flex-col h-full">
-   								 <div class="!pt-0 card-body flex-grow overflow-y-auto">
+                <div class="!pt-0 card-body flex-grow overflow-y-auto">
                                 <!-- 보낸 사람 시작하는 부분 -->
                                     <div class="overflow-x-auto">
                                     	<br>
@@ -90,27 +102,65 @@
 								            <tr>
 								                <td class="px-3.5 py-2.5 border-y text-slate-500" style="padding: 10px;">
 								                    <input type="hidden" class="messageNo" value="${message.messageNo}" />
-								                	<input type="checkbox" class="moveToBin" name="messageNo" value="${message.messageNo}" /> 
-								                    <span style="margin-left: 34px;">${message.messageState}</span>
-								                    <span style="margin-left: 37px;">${message.senderName}</span> <!-- 보낸 사람 -->
-								                    <span style="margin-left: 100px;">${message.messageTitle}</span> <!-- 제목 -->
-								                   <span style="margin-left: 830px;">${message.createDatetime}</span> <!-- 날짜 -->
+								                	<input style="margin-left: 8px;" type="checkbox" class="moveToBin" name="messageNo" value="${message.messageNo}" /> 
+								                    <span style="margin-left: 37px; display: inline-block;">${message.messageState}</span>
+								                    <span style="margin-left: 37px; display: inline-block; width: 300px;">${message.senderName}</span> <!-- 보낸 사람 -->
+								                    <span style="margin-left: 50px; display: inline-block; width: 300px;">${message.messageTitle}</span> <!-- 제목 -->
+								                   <span style="margin-left: 395px; display: inline-block; width: 150px;">${message.createDatetime}</span> <!-- 날짜 -->
 								                </td>
 								            </tr>
 								            </c:if>
 								        </c:forEach>
 								    </tbody>
 								</table>
-                                        <!-- 메일리스트 끝나는 부분 -->
-                              </div>
+								</form>
+                             </div>
                           </div>
-                      </div></div></div></div><div class="simplebar-placeholder" style="width: 1176px; height: 93px;"></div></div><div class="simplebar-track simplebar-horizontal" style="visibility: hidden;"><div class="simplebar-scrollbar" style="width: 0px; display: none;"></div></div><div class="simplebar-track simplebar-vertical" style="visibility: hidden;"><div class="simplebar-scrollbar" style="height: 0px; display: none;"></div></div></div>
-                  </div>
+                          <div class="flex flex-col items-center gap-4 px-4 mt-4 md:flex-row" id="pagination-element">
+                        <div class="grow">
+                            <p> Results</p>
+                        </div>
 
-              </div>
+                        <div class="col-sm-auto mt-sm-0">
+                            <div class="flex flex-col items-center gap-5 mb-5 md:flex-row" id="paginationItems">
+                    <div class="grow">
+                        <p class="text-slate-500 dark:text-zink-200">Showing <b>8</b> of <b>44</b> Results</p>
+                    </div>
+                    <ul class="flex flex-wrap items-center gap-2">
+                        <li>
+                            <a href="#!" class="inline-flex items-center justify-center bg-white dark:bg-zink-700 size-8 transition-all duration-150 ease-linear border border-slate-200 dark:border-zink-500 rounded text-slate-500 dark:text-zink-200 hover:text-custom-500 dark:hover:text-custom-500 hover:bg-custom-50 dark:hover:bg-custom-500/10 focus:bg-custom-50 dark:focus:bg-custom-500/10 focus:text-custom-500 dark:focus:text-custom-500 [&amp;.active]:text-custom-50 dark:[&amp;.active]:text-custom-50 [&amp;.active]:bg-custom-500 dark:[&amp;.active]:bg-custom-500 [&amp;.active]:border-custom-500 dark:[&amp;.active]:border-custom-500 [&amp;.disabled]:text-slate-400 dark:[&amp;.disabled]:text-zink-300 [&amp;.disabled]:cursor-auto"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="chevron-left" class="lucide lucide-chevron-left size-4 rtl:rotate-180"><path d="m15 18-6-6 6-6"></path></svg></a>
+                        </li>
+                        <li>
+                            <a href="#!" class="inline-flex items-center justify-center bg-white dark:bg-zink-700 size-8 transition-all duration-150 ease-linear border border-slate-200 dark:border-zink-500 rounded text-slate-500 dark:text-zink-200 hover:text-custom-500 dark:hover:text-custom-500 hover:bg-custom-50 dark:hover:bg-custom-500/10 focus:bg-custom-50 dark:focus:bg-custom-500/10 focus:text-custom-500 dark:focus:text-custom-500 [&amp;.active]:text-custom-50 dark:[&amp;.active]:text-custom-50 [&amp;.active]:bg-custom-500 dark:[&amp;.active]:bg-custom-500 [&amp;.active]:border-custom-500 dark:[&amp;.active]:border-custom-500 [&amp;.disabled]:text-slate-400 dark:[&amp;.disabled]:text-zink-300 [&amp;.disabled]:cursor-auto">1</a>
+                        </li>
+                        <li>
+                            <a href="#!" class="inline-flex items-center justify-center bg-white dark:bg-zink-700 size-8 transition-all duration-150 ease-linear border border-slate-200 dark:border-zink-500 rounded text-slate-500 dark:text-zink-200 hover:text-custom-500 dark:hover:text-custom-500 hover:bg-custom-50 dark:hover:bg-custom-500/10 focus:bg-custom-50 dark:focus:bg-custom-500/10 focus:text-custom-500 dark:focus:text-custom-500 [&amp;.active]:text-custom-50 dark:[&amp;.active]:text-custom-50 [&amp;.active]:bg-custom-500 dark:[&amp;.active]:bg-custom-500 [&amp;.active]:border-custom-500 dark:[&amp;.active]:border-custom-500 [&amp;.disabled]:text-slate-400 dark:[&amp;.disabled]:text-zink-300 [&amp;.disabled]:cursor-auto">2</a>
+                        </li>
+                        <li>
+                            <a href="#!" class="inline-flex items-center justify-center bg-white dark:bg-zink-700 size-8 transition-all duration-150 ease-linear border border-slate-200 dark:border-zink-500 rounded text-slate-500 dark:text-zink-200 hover:text-custom-500 dark:hover:text-custom-500 hover:bg-custom-50 dark:hover:bg-custom-500/10 focus:bg-custom-50 dark:focus:bg-custom-500/10 focus:text-custom-500 dark:focus:text-custom-500 [&amp;.active]:text-custom-50 dark:[&amp;.active]:text-custom-50 [&amp;.active]:bg-custom-500 dark:[&amp;.active]:bg-custom-500 [&amp;.active]:border-custom-500 dark:[&amp;.active]:border-custom-500 [&amp;.disabled]:text-slate-400 dark:[&amp;.disabled]:text-zink-300 [&amp;.disabled]:cursor-auto active">3</a>
+                        </li>
+                        <li>
+                            <a href="#!" class="inline-flex items-center justify-center bg-white dark:bg-zink-700 size-8 transition-all duration-150 ease-linear border border-slate-200 dark:border-zink-500 rounded text-slate-500 dark:text-zink-200 hover:text-custom-500 dark:hover:text-custom-500 hover:bg-custom-50 dark:hover:bg-custom-500/10 focus:bg-custom-50 dark:focus:bg-custom-500/10 focus:text-custom-500 dark:focus:text-custom-500 [&amp;.active]:text-custom-50 dark:[&amp;.active]:text-custom-50 [&amp;.active]:bg-custom-500 dark:[&amp;.active]:bg-custom-500 [&amp;.active]:border-custom-500 dark:[&amp;.active]:border-custom-500 [&amp;.disabled]:text-slate-400 dark:[&amp;.disabled]:text-zink-300 [&amp;.disabled]:cursor-auto">4</a>
+                        </li>
+                        <li>
+                            <a href="#!" class="inline-flex items-center justify-center bg-white dark:bg-zink-700 size-8 transition-all duration-150 ease-linear border border-slate-200 dark:border-zink-500 rounded text-slate-500 dark:text-zink-200 hover:text-custom-500 dark:hover:text-custom-500 hover:bg-custom-50 dark:hover:bg-custom-500/10 focus:bg-custom-50 dark:focus:bg-custom-500/10 focus:text-custom-500 dark:focus:text-custom-500 [&amp;.active]:text-custom-50 dark:[&amp;.active]:text-custom-50 [&amp;.active]:bg-custom-500 dark:[&amp;.active]:bg-custom-500 [&amp;.active]:border-custom-500 dark:[&amp;.active]:border-custom-500 [&amp;.disabled]:text-slate-400 dark:[&amp;.disabled]:text-zink-300 [&amp;.disabled]:cursor-auto">5</a>
+                        </li>
+                        <li>
+                            <a href="#!" class="inline-flex items-center justify-center bg-white dark:bg-zink-700 size-8 transition-all duration-150 ease-linear border border-slate-200 dark:border-zink-500 rounded text-slate-500 dark:text-zink-200 hover:text-custom-500 dark:hover:text-custom-500 hover:bg-custom-50 dark:hover:bg-custom-500/10 focus:bg-custom-50 dark:focus:bg-custom-500/10 focus:text-custom-500 dark:focus:text-custom-500 [&amp;.active]:text-custom-50 dark:[&amp;.active]:text-custom-50 [&amp;.active]:bg-custom-500 dark:[&amp;.active]:bg-custom-500 [&amp;.active]:border-custom-500 dark:[&amp;.active]:border-custom-500 [&amp;.disabled]:text-slate-400 dark:[&amp;.disabled]:text-zink-300 [&amp;.disabled]:cursor-auto"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="chevron-right" class="lucide lucide-chevron-right size-4 rtl:rotate-180"><path d="m9 18 6-6-6-6"></path></svg></a>
+                        </li>
+                    </ul>
+                </div>
+
+                        </div>
+                    </div>
+                      </div><div class="simplebar-placeholder" style="width: 1176px; height: 93px;"></div></div><div class="simplebar-track simplebar-horizontal" style="visibility: hidden;"><div class="simplebar-scrollbar" style="width: 0px; display: none;"></div></div><div class="simplebar-track simplebar-vertical" style="visibility: hidden;"><div class="simplebar-scrollbar" style="height: 0px; display: none;"></div></div></div>
+                  
+                
+            </div>
             <!-- container-fluid -->
+        </div>
         <!-- End Page-content -->
-		
+
 		<!-- Start Footer -->
         <footer class="ltr:md:left-vertical-menu rtl:md:right-vertical-menu group-data-[sidebar-size=md]:ltr:md:left-vertical-menu-md group-data-[sidebar-size=md]:rtl:md:right-vertical-menu-md group-data-[sidebar-size=sm]:ltr:md:left-vertical-menu-sm group-data-[sidebar-size=sm]:rtl:md:right-vertical-menu-sm absolute right-0 bottom-0 px-4 h-14 group-data-[layout=horizontal]:ltr:left-0  group-data-[layout=horizontal]:rtl:right-0 left-0 border-t py-3 flex items-center dark:border-zink-600">
         	<c:import url="/WEB-INF/view/inc/footer.jsp"></c:import>    
@@ -128,6 +178,14 @@
 <script src="${pageContext.request.contextPath}/assets/libs/prismjs/prism.js"></script>
 <script src="${pageContext.request.contextPath}/assets/libs/lucide/umd/lucide.js"></script>
 <script src="${pageContext.request.contextPath}/assets/js/tailwick.bundle.js"></script>
+<script src="${pageContext.request.contextPath}/assets/libs/lucide/umd/lucide.js"></script>
+<script src="${pageContext.request.contextPath}assets/libs/sweetalert2/sweetalert2.min.js"></script>
+
+<!-- list js -->
+<script src="${pageContext.request.contextPath}/assets/libs/list.js/list.min.js"></script>
+<script src="${pageContext.request.contextPath}/assets/libs/list.pagination.js/list.pagination.min.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/pages/apps-hr-employee.init.js"></script>
+
 <!--apexchart js-->
 <script src="${pageContext.request.contextPath}/assets/libs/apexcharts/apexcharts.min.js"></script>
 

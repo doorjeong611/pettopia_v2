@@ -7,8 +7,8 @@
 		<selectKey resultType="Integer" keyProperty="docNo" order="AFTER">
 			SELECT LAST_INSERT_ID()
 		</selectKey>
-		INSERT INTO document(doc_title, doc_writer_no, doc_content, doc_type, approver_emp_no, vacation_type, vacation_start_date, vacation_end_date, material_list, material_quantity) 
-		VALUES(#{docTitle}, #{docWriterNo}, #{docContent}, #{docType}, #{approverEmpNo}, #{vacationType}, #{vacationStartDate}, #{vacationEndDate}, #{materialList}, #{materialQuantity})
+		INSERT INTO document(doc_title, doc_writer_no, doc_content, doc_type, doc_purpose, doc_price, doc_remarks, vacation_type, vacation_backup, material_name, material_quantity, resignation_type, start_date, end_date) 
+		VALUES(#{docTitle}, #{docWriterNo}, #{docContent}, #{docType}, #{docPurpose}, #{docPrice}, #{docRemarks}, #{vacationType}, #{vacationBackup}, #{materialName}, #{materialQuantity}, #{resignationType}, #{startDate}, #{endDate})
 	</insert>
 	
 	<!-- selectEmployeeDept : 직원 부서 조회 -->
@@ -18,4 +18,14 @@
 		INNER JOIN division dv ON d.division_code = dv.division_code
 		WHERE e.emp_no = #{empNo}
 	</select>
+	
+	<!-- insertDocumentApprovers : 문서 결재자 추가 -->
+	<insert id="insertDocumentApprovers" parameterType="com.example.pettopia.vo.DocumentApprovers">
+		INSERT INTO document_approvers(doc_no, init_approver_no, init_approval_status, init_approval_datetime, init_reject_reason
+									 , mid_approver_no, mid_approval_status, mid_approval_datetime, mid_reject_reason
+									 , final_approver_no, final_approval_status, final_approval_datetime, final_reject_reason)
+		VALUES(#{docNo}, #{initApproverNo}, #{initApproverStatus}, #{initApproverDatetime}, #{initRejectReson}
+			 , #{midApproverNo}, #{midApproverStatus}, #{midApproverDatetime}, #{midRejectReson}
+			 , #{finalApproverNo}, #{finalApproverStatus}, #{finalApproverDatetime}, #{finalRejectReson});
+	</insert>
 </mapper>

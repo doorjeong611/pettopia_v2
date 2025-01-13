@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.pettopia.board.BoardMapper">
-
+	
+	
+	
 	<!-- 게시글 작성 쿼리 /board/addBoard 작업자 : 이준호 -->
 	<insert id="insertBoard" parameterType="com.example.pettopia.vo.Board">
 		INSERT INTO board(
@@ -21,59 +23,66 @@
 	
 	<!-- 게시판 리스트 쿼리 /board/getBoardList 작업자 : 이준호 -->
 	<select id="selectBoardList" parameterType="Map" resultType="Map">
-	    SELECT
-	        ROW_NUMBER() OVER(ORDER BY b.create_datetime) AS boardNum,
-	        b.board_no,
-	        b.board_title boardTitle,
-	        COUNT(bc.comment_no) AS commentCnt,
-	       		CASE
-			        WHEN b.board_header = 'IN' THEN '정보'
-			        WHEN b.board_header = 'SG' THEN '건의사항'
-			        WHEN b.board_header = 'DS' THEN '토론'
-			        WHEN b.board_header = 'CT' THEN '잡담'
-			        WHEN b.board_header = 'QA' THEN '질문'
-			        WHEN b.board_header = 'CP' THEN '칭찬'
-			        ELSE b.board_header
-  				END AS boardHeader,
-	        b.board_like boardLike,
-	        b.board_view boardView,
-	        DATE_FORMAT(b.create_datetime, '%y-%m-%d') AS createDate
-	    FROM
-	        board b
-	    LEFT JOIN
-	        board_comment bc ON b.board_no = bc.board_no
-		    <where>
-		        <!-- 전체 카테고리 확인 -->
-		        <if test="boardCategory == 'ALL'">
-		            AND b.board_header IN ('IN', 'SG', 'DS', 'CT', 'QA', 'CP')
-		        </if>
-		        <if test="boardCategory == 'IN'">
-		            AND b.board_header = '정보'
-		        </if>
-		        <if test="boardCategory == 'SG'">
-		            AND b.board_header = '건의사항'
-		        </if>
-		        <if test="boardCategory == 'DS'">
-		            AND b.board_header = '토론'
-		        </if>
-		        <if test="boardCategory == 'CT'">
-		            AND b.board_header = '잡담'
-		        </if>
-		        <if test="boardCategory == 'QA'">
-		            AND b.board_header = '질문'
-		        </if>
-		        <if test="boardCategory == 'CP'">
-		            AND b.board_header = '칭찬'
-		        </if>
-		    </where>
-	    GROUP BY
-	        b.board_no
-	    ORDER BY
-	        boardNum DESC
-	    LIMIT 
-			#{beginRow}, #{rowPerPage}
-	</select>
+    SELECT
+        ROW_NUMBER() OVER(ORDER BY b.create_datetime) AS boardNum,
+        b.board_no,
+        b.board_title AS boardTitle,
+        COUNT(bc.comment_no) AS commentCnt,
+        CASE
+            WHEN b.board_header = 'IN' THEN '정보'
+            WHEN b.board_header = 'SG' THEN '건의사항'
+            WHEN b.board_header = 'DS' THEN '토론'
+            WHEN b.board_header = 'CT' THEN '잡담'
+            WHEN b.board_header = 'QA' THEN '질문'
+            WHEN b.board_header = 'CP' THEN '칭찬'
+            ELSE b.board_header
+        END AS boardHeader,
+        b.board_like AS boardLike,
+        b.board_view AS boardView,
+        DATE_FORMAT(b.create_datetime, '%y-%m-%d') AS createDate
+    FROM
+        board b
+    LEFT JOIN
+        board_comment bc ON b.board_no = bc.board_no
+    <where>
+        <!-- 전체 카테고리 확인 -->
+        <if test="boardCategory == 'ALL'">
+            AND b.board_header IN ('IN', 'SG', 'DS', 'CT', 'QA', 'CP')
+        </if>
+        <if test="boardCategory != 'ALL'">
+            AND b.board_header = #{boardCategory}
+        </if>
+    </where>
+    GROUP BY
+        b.board_no
+    ORDER BY
+        boardNum DESC
+</select>
+
 	
+	
+	
+	<!-- 카테고리 분류 -->
+	
+	<!-- 조회수 증가 /board/boardList 작업자 : 이준호 -->
+	<update id="updateBoard" parameterType="com.example.pettopia.vo.Board" >
+		UPDATE board
+		<set>
+			<if test="boardTitle != null and boardTitle != '' ">
+				board_title = #{boardTitle},
+			</if>
+			<if test="boardContent != null and boardContent != '' ">
+				board_content = #{boardContent},
+			</if>
+			<if test="updateDatetime != null and updateDatetime != '' ">
+				update_datetime = now()
+			</if>
+			board_view = board_view + 1,	
+		</set>
+		
+		WHERE board_no = #{boardNo} 
+	</update>
+		
 	<!-- 게시글 삭제 쿼리 /board/removeBoard 작업자 : 이준호 -->
 	<delete id="deleteBoard" parameterType="Map">
 		DELETE 

@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.pettopia.vo.RoomImg;
 import com.example.pettopia.vo.RoomInfo;
 
 @Service
@@ -16,6 +17,11 @@ public class RoomService {
 	// 전체 객실 리스트 조회
     public List<RoomInfo> getRoomList() {
         return roomMapper.selectRoom();
+    }
+    
+    // 전체 객실 이미지 조회
+    public List<RoomImg> roomImgService() {
+        return roomMapper.selectRoomImg();
     }
     
     // 상세보기

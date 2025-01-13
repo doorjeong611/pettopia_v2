@@ -17,6 +17,22 @@
 		
 	</select>
 	
+	<!-- 전체 객실 이미지 조회 -->
+	<select id="selectRoomImg" resultType="com.example.pettopia.vo.RoomImg">
+		SELECT
+				room_img_no roomImgNo,
+				room_no roomNo,
+				origin_file_name originFileName,
+				file_name fileName,
+				file_ext fileExt,
+				file_type fileType,
+				create_datetime createDatetime,
+				update_datetime updateDatetime
+		FROM
+				room_img
+		
+	</select>
+	
 	<!-- 특정 객실 조회 -->
 	<select id="selectRoomOne" resultType="java.util.Map">
 		SELECT
