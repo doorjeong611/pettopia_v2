@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<!-- 시큐리티 세션 사용을 위한 taglib -->
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<!-- 시큐리티 세션정보 접근 -->
+<sec:authorize access="isAuthenticated()"><sec:authentication property="principal" var="loginEmp"/></sec:authorize>
 
 <!DOCTYPE html>
 <html lang="en" class="light scroll-smooth group" data-layout="vertical" data-sidebar="light" data-sidebar-size="lg" data-mode="light" data-topbar="light" data-skin="default" data-navbar="sticky" data-content="fluid" dir="ltr">
@@ -83,8 +87,8 @@
                                     
                                     <div class="xl:col-span-4">
                                         <label for="docWriterNo" class="inline-block mb-2 text-base font-medium">작성자</label>
-                                        <input type="hidden" name="docWriterNo" id="docWriterNo" value="${loginEmp.empNo}">
-                                        <input type="text" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-200 placeholder:text-slate-400" value="${loginEmp.empNo} / ${loginEmp.empName}" disabled required>
+                                        <input type="hidden" name="docWriterNo" id="docWriterNo" value="${empNo}">
+                                        <input type="text" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-200 placeholder:text-slate-400" value="${empNo} / ${empName}" disabled required>
                                     </div><!--end col-->
 	                                        
                                     <div class="xl:col-span-2">
@@ -226,8 +230,8 @@
                                     
                                     <div class="xl:col-span-4">
                                         <label for="docWriterNo" class="inline-block mb-2 text-base font-medium">작성자</label>
-                                        <input type="hidden" name="docWriterNo" id="docWriterNo" value="${loginEmp.empNo}">
-                                        <input type="text" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-200 placeholder:text-slate-400" value="${loginEmp.empNo} / ${loginEmp.empName}" disabled required>
+                                        <input type="hidden" name="docWriterNo" id="docWriterNo" value="${empNo}">
+                                        <input type="text" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-200 placeholder:text-slate-400" value="${empNo} / ${empName}" disabled required>
                                     </div><!--end col-->
 	                                        
                                     <div class="xl:col-span-2">
@@ -336,8 +340,8 @@
                                     
                                     <div class="xl:col-span-4">
                                         <label for="docWriterNo" class="inline-block mb-2 text-base font-medium">작성자</label>
-                                        <input type="hidden" name="docWriterNo" id="docWriterNo" value="${loginEmp.empNo}">
-                                        <input type="text" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-200 placeholder:text-slate-400" value="${loginEmp.empNo} / ${loginEmp.empName}" disabled required>
+                                        <input type="hidden" name="docWriterNo" id="docWriterNo" value="${empNo}">
+                                        <input type="text" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-200 placeholder:text-slate-400" value="${empNo} / ${empName}" disabled required>
                                     </div><!--end col-->
 	                                        
                                     <div class="xl:col-span-2">
@@ -498,8 +502,8 @@
                                     
                                     <div class="xl:col-span-4">
                                         <label for="docWriterNo" class="inline-block mb-2 text-base font-medium">작성자</label>
-                                        <input type="hidden" name="docWriterNo" id="docWriterNo" value="${loginEmp.empNo}">
-                                        <input type="text" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-200 placeholder:text-slate-400" value="${loginEmp.empNo} / ${loginEmp.empName}" disabled required>
+                                        <input type="hidden" name="docWriterNo" id="docWriterNo" value="${empNo}">
+                                        <input type="text" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-200 placeholder:text-slate-400" value="${empNo} / ${empName}" disabled required>
                                     </div><!--end col-->
 	                                        
                                     <div class="xl:col-span-2">
@@ -639,8 +643,8 @@
 	                                
 	                                <div class="xl:col-span-4">
                                         <label for="docWriterNo" class="inline-block mb-2 text-base font-medium">작성자</label>
-                                        <input type="hidden" name="docWriterNo" id="docWriterNo" value="${loginEmp.empNo}">
-                                        <input type="text" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-200 placeholder:text-slate-400" value="${loginEmp.empNo} / ${loginEmp.empName}" disabled required>
+                                        <input type="hidden" name="docWriterNo" id="docWriterNo" value="${empNo}">
+                                        <input type="text" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-200 placeholder:text-slate-400" value="${empNo} / ${empName}" disabled required>
                                     </div><!--end col-->
 	                                        
                                     <div class="xl:col-span-2">
