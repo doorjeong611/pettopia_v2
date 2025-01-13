@@ -25,7 +25,9 @@
 
 <style>
 	.ck.ck-editor {max-width:80%; position: static;}
-	.ck-editor__editable {min-height:500px;}
+	.editor-container_document-editor .editor-container__editor .ck.ck-editor__editable {
+		min-height:150mm;
+	}
 	
 </style>
 <body class="text-base bg-body-bg text-body font-public dark:text-zink-100 dark:bg-zink-800 group-data-[skin=bordered]:bg-body-bordered group-data-[skin=bordered]:dark:bg-zink-700">
@@ -64,7 +66,7 @@
                 <div class="card" >
                 	 <div class="card-body">
                 	 <form method="post" action="${pageContext.request.contextPath}/board/addBoard" class="formBoard">
-                	 	  <input type="hidden" id="boardContentHidden" name="boardContent" value="">
+                	 	
                 		 <!-- CKEditor5 Start -->
 			               <div class=" main-container">
 			               	<div class="col-sm-6 d-flex justify-content-center">
@@ -76,7 +78,7 @@
 									</c:forEach>
 								</select>
 			               		
-	                	 		<select name="addBoardCategory" class="form-select" id="boardCategory">
+	                	 		<select name="category" class="form-select" id="boardCategory">
 										<option value="SG" ${boardCategory == 'SG' ? 'selected' : ''}>건의사항</option>
 										<option value="DS" ${boardCategory == 'DS' ? 'selected' : ''}>토론</option>
 										<option value="CT" ${boardCategory == 'CT' ? 'selected' : ''}>잡답</option>
@@ -91,11 +93,11 @@
 							 <div class="editor-container editor-container_document-editor editor-container_include-style" id="editor-container">
 								<div class="editor-container__toolbar" id="editor-toolbar"></div>
 								<div class="editor-container__editor-wrapper">
-									<div class="editor-container__editor" ><div id="editor" name="boardContent"></div></div>
+									<div class="editor-container__editor" ><div id="editor"></div></div>
 								</div>
 							</div>
 						   </div>
-						   
+						   <textarea name="boardContent" style="display:none;"></textarea>
 						   <button>작성하기</button>
 				   </form>
 				<!-- CKEditor5 End -->
@@ -121,7 +123,25 @@
 	<script src="https://cdn.ckeditor.com/ckeditor5/44.1.0/translations/ko.umd.js" crossorigin></script>
 	<script src="${pageContext.request.contextPath}/assets/js/boardScript.js"></script>
 <!-- CKeditor5 -->
+<script>
+//CKEditor 초기화
+ClassicEditor
+    .create(document.querySelector('#editor'), {
+        language: 'ko'
+    })
+    .then(editor => {
+        window.editor = editor;  // CKEditor 인스턴스를 글로벌 변수로 저장
+    })
+    .catch(error => {
+        console.error(error);
+    });
 
+// 폼 제출 시 CKEditor 내용을 textarea에 반영
+document.querySelector('.formBoard').addEventListener('submit', function(event) {
+    const content = window.editor.getData();  // CKEditor에서 작성한 내용
+    document.querySelector('textarea[name="boardContent"]').value = content;  // textarea에 저장
+});
+</script>
 <script src='${pageContext.request.contextPath}/assets/libs/choices.js/public/assets/scripts/choices.min.js'></script>
 <script src="${pageContext.request.contextPath}/assets/libs/@popperjs/core/umd/popper.min.js"></script>
 <script src="${pageContext.request.contextPath}/assets/libs/tippy.js/tippy-bundle.umd.min.js"></script>

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
@@ -24,18 +25,27 @@ public class BoardController {
 	@Autowired BoardService boardService;
 	
 	@PostMapping("/board/addBoard")
-	public String addBoard(Board board) {
-		boardService.insertBoard(board);
+	public String addBoard(Board board,
+			@RequestParam(value = "category", defaultValue = "ALL") String boardCategory) {
 		
+		List<Division> divisionList = boardService.getDivisionList();
+		boardService.insertBoard(board);
+		Map<String, Object> categoryByAddBoard = new HashMap<>();
+		categoryByAddBoard.put("divisionList", divisionList);
 		
 		return "redirect:/board/boardList";
 	}
+	// 수정 필요
+	
 	// 게시글 작성 구현 /board/addBoard/ 작업자 : 이준호
 	@GetMapping("/board/addBoard")
 	public String addBoard(Model model,
 							@RequestParam(required = false) String divisionCode,
-							 @RequestParam(value = "category", defaultValue = "ALL") String boardCategory) {
-	
+							 @RequestParam(value = "category", defaultValue = "ALL") String boardCategory
+							 ) {
+		
+		
+		
 		
 		List<Division> divisionList = boardService.getDivisionList();
 		
