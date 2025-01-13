@@ -65,26 +65,32 @@
                     <div class="card-body">
                     	
                     
-                  			
+                  			   <div class="ltr:lg:text-right rtl:lg:text-left">
+                                    <a href="${pageContext.request.contextPath}/board/addBoard" type="button" class="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20"><i data-lucide="plus" class="inline-block size-4"></i> <span class="align-middle">글쓰기</span></a>
+                                </div>
                   		
                   		<div id="boardListContainer">	
                         	<form action="${pageContext.request.contextPath}/board/boardList" method="get" id="formCategory">
-							<select name="category" id="boardCategory">
-								<option value="ALL" ${boardCategory == 'ALL' ? 'selected' : ''}>전체</option>
-								<option value="SG" ${boardCategory == 'SG' ? 'selected' : ''}>건의사항</option>
-								<option value="DS" ${boardCategory == 'DS' ? 'selected' : ''}>토론</option>
-								<option value="CT" ${boardCategory == 'CT' ? 'selected' : ''}>잡답</option>
-								<option value="IN" ${boardCategory == 'IN' ? 'selected' : ''}>정보</option>
-								<option value="QA" ${boardCategory == 'QA' ? 'selected' : ''}>질문</option>
-								<option value="CP" ${boardCategory == 'CP' ? 'selected' : ''}>칭찬</option>
-							</select>
-						</form>
+								
+								
+								
+								
+								<select name="category" id="boardCategory">
+									<option value="ALL" ${boardCategory == 'ALL' ? 'selected' : ''}>전체</option>
+									<option value="SG" ${boardCategory == 'SG' ? 'selected' : ''}>건의사항</option>
+									<option value="DS" ${boardCategory == 'DS' ? 'selected' : ''}>토론</option>
+									<option value="CT" ${boardCategory == 'CT' ? 'selected' : ''}>잡답</option>
+									<option value="IN" ${boardCategory == 'IN' ? 'selected' : ''}>정보</option>
+									<option value="QA" ${boardCategory == 'QA' ? 'selected' : ''}>질문</option>
+									<option value="CP" ${boardCategory == 'CP' ? 'selected' : ''}>칭찬</option>
+								</select>
+								
+							</form>
                         <table id="basic_tables" class="display stripe group" style="width:100%">
                             <thead>
                                 <tr>
 	                         		<th class="text-center ltr:!text-left rtl:!text-right">번호</th>
 	                                <th class="text-center" >제목</th>
-								    <th class="text-center" >카테고리</th>
 								    <th class="text-center" >조회수</th>
 								    <th class="text-center" >추천</th>
 								    <th class="text-center" >작성일</th>
@@ -97,8 +103,7 @@
                             	 <c:if test="${bl.commentCnt==0}">
                             	 	<tr>
                                         <td class="text-center">${bl.boardNum}</td>
-                                        <td class="text-center"><a href="#">${bl.boardTitle}</a></td>
-                                        <td class="text-center">${bl.boardHeader}</td>
+                                        <td class="text-center"><a href="#">[${bl.boardHeader}]&nbsp;${bl.boardTitle}</a></td>
                                         <td class="text-center">${bl.boardView}</td>
                                         <td class="text-center">${bl.boardLike}</td>
                                         <td class="text-center" >${bl.createDate}</td>
@@ -108,8 +113,7 @@
                             	 <c:if test="${bl.commentCnt!=0}">
                             	 	<tr>
                                         <td class="text-center">${bl.boardNum}</td>
-                                        <td class="text-center"><a href="#">${bl.boardTitle}&nbsp;[${bl.commentCnt}]</a></td>
-                                        <td class="text-center">${bl.boardHeader}</td>
+                                        <td class="text-center"><a href="#">[${bl.boardHeader}]&nbsp;${bl.boardTitle}&nbsp;[${bl.commentCnt}]</a></td>
                                         <td class="text-center">${bl.boardView}</td>
                                         <td class="text-center">${bl.boardLike}</td>
                                         <td class="text-center" >${bl.createDate}</td>
@@ -172,25 +176,11 @@
 <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
 
 <script>
-$(document).ready(function() {
-    // select 항목에서 값이 변경될 때
-    $('#boardCategory').change(function() {
-        var category = $(this).val();  // 선택된 카테고리 값
-
-        $.ajax({
-            url: "${pageContext.request.contextPath}/board/boardList",  // 서버로 보낼 URL
-            type: 'GET',  // HTTP 요청 방식
-            data: { category: category },  // 서버로 보낼 데이터 (카테고리 값)
-            success: function(response) {
-                // 서버에서 응답받은 데이터를 테이블에 동적으로 삽입
-                $('#boardListContainer').html(response);  // 테이블을 업데이트할 영역
-            },
-            error: function() {
-                alert('데이터를 불러오는 데 실패했습니다.');
-            }
-        });
-    });
-});
+$(document).ready(function(){
+	$('#boardCategory').change(function(){
+		$('#formCategory').submit();
+	})
+})
 </script>
 
 </body>
