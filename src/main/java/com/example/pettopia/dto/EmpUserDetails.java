@@ -75,6 +75,15 @@ public class EmpUserDetails implements UserDetails {
 		return employee.getDeptCode();
 	}
 	
+	public String getEmpEmail() {
+		return employee.getEmpEmail();
+	}
+	
+	public String getIsTeamLeader() {
+		return employee.getIsTeamLeader();
+
+	}
+	
 	
 	
 }
