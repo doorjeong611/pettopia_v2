@@ -358,7 +358,7 @@ $(document).ready(function() {
 	/* 상위부부서를 <select >선택하면 하위 팀 선택하는 <select>rest 사용하기 */
 	$
 			.ajax({
-				url : '/pettopia/common/divisionList',
+				url : '/pettopia/rest/divisionList',
 				method : 'GET'
 			})
 			.done(
@@ -389,7 +389,7 @@ $(document).ready(function() {
 
 						$.ajax(
 								{
-								url : '/pettopia/common/departmentList/'+ $('#divisionSelect').val(),
+								url : '/pettopia/rest/departmentList/'+ $('#divisionSelect').val(),
 								method : 'GET'
 										})
 								.done(
@@ -421,7 +421,7 @@ $(document).ready(function() {
 	$('#departSelect').change(function() {
 
 			$.ajax({
-						url : '/pettopia/common/rankList',
+						url : '/pettopia/rest/rankList',
 						method : 'GET'
 					})
 					.done(
@@ -445,16 +445,16 @@ $(document).ready(function() {
 																	+ '</option>');
 												});
 							}).fail(function() {
-						alert('팀 호출 실패');
+						alert('직급 호출 실패');
 				});
 		});
 
 
 	/* 직원번호 중복 검사 */
 	$('#btnExistEmp').click(function(){
-		console.log('/pettopia/common/existEmp/' + $('#employeeId').val());
+		console.log('/pettopia/rest/existEmp/' + $('#employeeId').val());
 		$.ajax({
-			url: '/pettopia/common/existEmp/' + $('#employeeId').val()
+			url: '/pettopia/rest/existEmp/' + $('#employeeId').val()
 			, method:'GET'
 		})
 		.done(function(result){

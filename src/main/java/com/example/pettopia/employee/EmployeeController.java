@@ -26,8 +26,7 @@ public class EmployeeController {
 	@Autowired EmployeeService employeeService;
 	
 
-//	@GetMapping("/admin/addEmployee") 로그인 정상적으로되면 다시 되돌리기... addEmployee.jsp도 employee 폴더로 옮기기
-	@GetMapping("/addEmployee")
+	@GetMapping("/admin/addEmployee")
 	public String addEmployee() {
 		log.debug(TeamColor.KMJ+"[EmployeeController - GET addEmployee()]");
 		
