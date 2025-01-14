@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.pettopia.roominfo.RoomMapper">
+<!-- 객실 등록 -->
+ <insert id="insertRoomInfo" parameterType="com.example.pettopia.vo.RoomInfo">
+        INSERT INTO room_info (room_name, room_type, room_capacity, price_per_night, room_desc, create_datetime, update_datetime)
+        VALUES (#{roomName}, #{roomType}, #{roomCapacity}, #{pricePerNight}, #{roomDesc}, NOW(), NOW())
+    </insert>
+
+    <insert id="insertRoomImg" parameterType="com.example.pettopia.vo.RoomImg">
+        INSERT INTO room_img (room_no, origin_file_name, file_name, file_ext, file_type, create_datetime, update_datetime)
+        VALUES (#{roomNo}, #{originFileName}, #{fileName}, #{fileExt}, #{fileType}, NOW(), NOW())
+    </insert>
 <!-- 전체 객실 조회 -->
 	<select id="selectRoom" resultType="com.example.pettopia.vo.RoomInfo">
 		SELECT

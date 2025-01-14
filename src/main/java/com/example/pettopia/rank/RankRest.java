@@ -21,7 +21,7 @@ public class RankRest {
 	@Autowired RankService rankService;
 	
 	// 직급 목록 : 직원 등록시 직급 선택
-	@GetMapping("/common/rankList")
+	@GetMapping("/rest/rankList")
 	public List<Rank> getrankList() {
 		log.debug(TeamColor.KMJ + "RankRest - getRankList()");
 		log.debug(TeamColor.KMJ + "RankList : " + rankService.getRankList().toString() +TeamColor.RESET);

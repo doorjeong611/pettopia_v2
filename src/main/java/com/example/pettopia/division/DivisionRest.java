@@ -18,7 +18,7 @@ public class DivisionRest {
 	@Autowired DivisionService divisionSerivce;
 	
 	// 부서 목록 : 직원 등록시 소속 부서 선택시 사용
-	@GetMapping("/common/divisionList")
+	@GetMapping("/rest/divisionList")
 	public List<Division> getDivisionList() {
 		
 		log.debug(TeamColor.KMJ + "DivisionRest - getDivisionLIst()");

@@ -19,7 +19,7 @@ public class DepartmentRest {
 	@Autowired DepartmentService departmentService; 
 	
 	// 팀 목록 조회 : 직원 등록시 소속 팀 선택 시 사용
-	@GetMapping("/common/departmentList/{divisionCode}")
+	@GetMapping("/rest/departmentList/{divisionCode}")
 	public List<Department> getDepartmentList(@PathVariable String divisionCode) {
 		
 		log.debug(TeamColor.KMJ + "DepartmentRest - getDepartmentList()");
