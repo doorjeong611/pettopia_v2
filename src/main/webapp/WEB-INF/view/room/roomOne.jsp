@@ -58,13 +58,6 @@
                                     <input type="text"  class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="1박 당 가격을 입력하세요" value="${roomOne.pricePerNight}">
                                 </div>
                                 <div class="mb-4">
-                                    <label class="inline-block mb-2 text-base font-medium">객실 상태 <span class="text-red-500">*</span></label>
-                                    <select class="form-select border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" id="stateInput" required="">
-                                        <option selected="" disabled="" value="">Choose...</option>
-                                        <option>Name</option>
-                                    </select>
-                                </div>
-                                <div class="mb-4">
                                     <label class="inline-block mb-2 text-base font-medium">객실 설명 <span class="text-red-500">*</span></label>
                                    <textarea class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="객실 설명을 입력하세요">${roomOne.roomDesc}</textarea>
                                    

@@ -13,15 +13,21 @@
 	<insert id="insertBoard" parameterType="com.example.pettopia.vo.Board">
 		INSERT INTO board(
 			board_title,
+			board_writer_no,
 			division_code,
 			board_content,
 			board_header,
+			board_like,
+			board_view,
 			create_datetime
 		) VALUES (
 			#{boardTitle},
+			#{boardWriterNo},
 			#{divisionCode},
 			#{boardContent},
 			#{boardHeader},
+			0,
+			0,
 			NOW()
 		)
 	</insert>

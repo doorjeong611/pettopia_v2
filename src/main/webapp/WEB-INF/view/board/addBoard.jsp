@@ -121,27 +121,10 @@
 <c:import url="/WEB-INF/view/inc/customizerButton.jsp"></c:import>
 	<script src="https://cdn.ckeditor.com/ckeditor5/44.1.0/ckeditor5.umd.js" crossorigin></script>
 	<script src="https://cdn.ckeditor.com/ckeditor5/44.1.0/translations/ko.umd.js" crossorigin></script>
+	<script src="https://cdn.ckeditor.com/ckeditor5/44.1.0/classic/ckeditor.js"></script>
 	<script src="${pageContext.request.contextPath}/assets/js/boardScript.js"></script>
 <!-- CKeditor5 -->
-<script>
-//CKEditor 초기화
-ClassicEditor
-    .create(document.querySelector('#editor'), {
-        language: 'ko'
-    })
-    .then(editor => {
-        window.editor = editor;  // CKEditor 인스턴스를 글로벌 변수로 저장
-    })
-    .catch(error => {
-        console.error(error);
-    });
 
-// 폼 제출 시 CKEditor 내용을 textarea에 반영
-document.querySelector('.formBoard').addEventListener('submit', function(event) {
-    const content = window.editor.getData();  // CKEditor에서 작성한 내용
-    document.querySelector('textarea[name="boardContent"]').value = content;  // textarea에 저장
-});
-</script>
 <script src='${pageContext.request.contextPath}/assets/libs/choices.js/public/assets/scripts/choices.min.js'></script>
 <script src="${pageContext.request.contextPath}/assets/libs/@popperjs/core/umd/popper.min.js"></script>
 <script src="${pageContext.request.contextPath}/assets/libs/tippy.js/tippy-bundle.umd.min.js"></script>
