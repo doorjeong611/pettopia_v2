@@ -28,4 +28,34 @@
 			 , #{midApproverNo}, #{midApproverStatus}, #{midApproverDatetime}, #{midRejectReson}
 			 , #{finalApproverNo}, #{finalApproverStatus}, #{finalApproverDatetime}, #{finalRejectReson});
 	</insert>
+	
+	<!-- selectDivisionList : 상위부서 조회(문서) -->
+	<select id="selectDivisionListByDocument" resultType="com.example.pettopia.vo.Division">
+		SELECT division_code divisionCode, division_name divisionName FROM division;
+	</select>
+	
+	<!-- selectDivisionListByDocument : 팀 조회(문서) -->
+	<select id="selectDeptListByDocument" parameterType="String" resultType="com.example.pettopia.vo.Department">
+		SELECT dept_code deptCode, division_code divisionCode, dept_name deptName
+		FROM department 
+		WHERE division_code = #{divisionCode}
+	</select>
+	
+	<!-- selectEmployeeListByDocument : 직원 조회(문서) -->
+	<select id="selectEmpListByDocument" parameterType="String" resultType="Map">
+		SELECT e.emp_no empNo, e.emp_name empName, e.dept_code deptCode, de.dept_name deptName, di.division_name divisionName, r.rank_name rankName
+		FROM employee e 
+		INNER JOIN `rank` r ON e.rank_no = r.rank_no
+		INNER JOIN department de ON e.dept_code = de.dept_code
+		INNER JOIN division di ON de.division_code = di.division_code
+		WHERE e.dept_code = #{deptCode}
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
 </mapper>

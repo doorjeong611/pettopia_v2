@@ -1,9 +1,12 @@
 package com.example.pettopia.document;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.example.pettopia.vo.Department;
+import com.example.pettopia.vo.Division;
 import com.example.pettopia.vo.Document;
 import com.example.pettopia.vo.DocumentApprovers;
 
@@ -18,5 +21,14 @@ public interface DocumentMapper {
 	
 	// addDocument → 문서 작성할 때 결재자 지정
 	Integer insertDocumentApprovers(DocumentApprovers documentApprovers);
+	
+	// addDocument → 결재자 지정할 때 상위 부서 조회
+	List<Division> selectDivisionListByDocument();
+	
+	// addDocument → 결재자 지정할 때 팀 조회
+	List<Department> selectDeptListByDocument(String divisionCode);
+	
+	// addDocument → 결재자 지정할 때 직원 조회
+	List<Map<String, Object>> selectEmpListByDocument(String deptCode);
 
 }

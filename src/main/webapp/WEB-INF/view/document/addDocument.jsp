@@ -134,18 +134,34 @@
 									            </button>
 									        </div>
 									        
+									        <div class="max-h-[calc(theme('height.screen')_-_180px)] p-4 overflow-y-auto">
+											    <h5 class="mb-3 text-16">부서 조회</h5>
+											    
+											    <!-- Flexbox로 나란히 배치 -->
+											    <div class="flex space-x-4"> <!-- space-x-4는 항목 간에 여백을 추가 -->
+											        <!-- Division Select -->
+											        <select id="division" class="form-select border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500" style="margin-right: 15px;">
+											            <option value="">부서 선택</option>
+											        </select>
+											        
+											        <!-- Dept Select -->
+											        <select id="dept" class="form-select border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500">
+											            <option value="">팀 선택</option>
+											        </select>
+											    </div>
+											    
+											    <br><hr>
+											</div>
+									        
+									         
 									        <!-- Modal Content -->
 									        <div class="max-h-[calc(theme('height.screen')_-_180px)] p-4 overflow-y-auto">
 									            <h5 class="mb-3 text-16">직원 검색</h5>
 									            <input type="text" id="approverSearch" class="form-input w-full mb-4" placeholder="직원 검색">
-									            <ul id="approverList" class="mt-2">
-									                <!-- 예시 직원 목록 -->
-									                <li class="approver-item cursor-pointer p-3 hover:bg-gray-100" data-emp-no="202400007">202400007 / 김동현</li>
-									                <li class="approver-item cursor-pointer p-3 hover:bg-gray-100" data-emp-no="202400008">202400008 / 박지민</li>
-									                <li class="approver-item cursor-pointer p-3 hover:bg-gray-100" data-emp-no="202400009">202400009 / 이영호</li>
-									                <li class="approver-item cursor-pointer p-3 hover:bg-gray-100" data-emp-no="202400010">202400010 / 김지혜</li>
-									                <li class="approver-item cursor-pointer p-3 hover:bg-gray-100" data-emp-no="202400011">202400011 / 홍길동</li>
-									            </ul>
+									            <hr>
+									            <ul id="approverList" class="mt-2 max-h-[300px] overflow-y-auto">
+												    <!-- 예시 직원 목록 -->
+												</ul>
 									        </div>
 									
 									        <!-- Modal Footer -->
@@ -745,30 +761,46 @@
                         </div>
                    </div>
 	            </div>
-            <!-- container-fluid -->
+            	<!-- container-fluid -->
 	            <!-- 결재 수신자 목록 모달 -->
 				<div id="approverModal" modal-center="" class="fixed flex flex-col transition-all duration-300 ease-in-out left-2/4 z-drawer -translate-x-2/4 -translate-y-2/4 hidden">
 				    <div class="w-screen lg:w-[55rem] bg-white shadow rounded-md flex flex-col h-full">
 				        <!-- Modal Header -->
 				        <div class="flex items-center justify-between p-4 bg-slate-100 border-b">
-				            <h4 class="text-16 mr-auto">결재 수신자 목록</h4> <!-- 제목 왼쪽 정렬을 위한 mr-auto 추가 -->
+				            <h5 class="text-16 mr-auto">결재 수신자 목록</h5> <!-- 제목 왼쪽 정렬을 위한 mr-auto 추가 -->
 				            <button id="closeModalHeader" type="button" class="text-gray-500 hover:text-gray-700">
 				                <i class="ri-close-line text-2xl"></i>
 				            </button>
 				        </div>
 				        
+				        <div class="max-h-[calc(theme('height.screen')_-_180px)] p-4 overflow-y-auto">
+						    <h5 class="mb-3 text-16">부서 조회</h5>
+						    
+						    <!-- Flexbox로 나란히 배치 -->
+						    <div class="flex space-x-4"> <!-- space-x-4는 항목 간에 여백을 추가 -->
+						        <!-- Division Select -->
+						        <select id="division" class="form-select border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500" style="margin-right: 15px;">
+						            <option value="">부서 선택</option>
+						        </select>
+						        
+						        <!-- Dept Select -->
+						        <select id="dept" class="form-select border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500">
+						            <option value="">팀 선택</option>
+						        </select>
+						    </div>
+						    
+						    <br><hr>
+						</div>
+				        
+				         
 				        <!-- Modal Content -->
 				        <div class="max-h-[calc(theme('height.screen')_-_180px)] p-4 overflow-y-auto">
-				            <h4 class="mb-3 text-16">직원 검색</h4>
+				            <h5 class="mb-3 text-16">직원 검색</h5>
 				            <input type="text" id="approverSearch" class="form-input w-full mb-4" placeholder="직원 검색">
-				            <ul id="approverList" class="mt-2">
-				                <!-- 예시 직원 목록 -->
-				                <li class="approver-item cursor-pointer p-3 hover:bg-gray-100" data-emp-no="202400007">202400007 / 김동현</li>
-				                <li class="approver-item cursor-pointer p-3 hover:bg-gray-100" data-emp-no="202400008">202400008 / 박지민</li>
-				                <li class="approver-item cursor-pointer p-3 hover:bg-gray-100" data-emp-no="202400009">202400009 / 이영호</li>
-				                <li class="approver-item cursor-pointer p-3 hover:bg-gray-100" data-emp-no="202400010">202400010 / 김지혜</li>
-				                <li class="approver-item cursor-pointer p-3 hover:bg-gray-100" data-emp-no="202400011">202400011 / 홍길동</li>
-				            </ul>
+				            <hr>
+				            <ul id="approverList" class="mt-2 max-h-[300px] overflow-y-auto">
+							    <!-- 예시 직원 목록 -->
+							</ul>
 				        </div>
 				
 				        <!-- Modal Footer -->
@@ -825,6 +857,8 @@
         <!-- End Footer -->
     </div>
 </div>
+<!-- ContextPath -->
+<div id="contextPath" data-context-path="${pageContext.request.contextPath}"></div>
 <!-- End Main Content -->
 <c:import url="/WEB-INF/view/inc/customizerButton.jsp"></c:import>
 
@@ -847,269 +881,340 @@
 <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
 
 <script>
-$(document).ready(function() {
-	
-    // 페이지 로드 시 폼 내용들을 저장
-    const documentTitle = $('h5.text-16');
-    const vacationTypeRadio = $('input[name="vacationType"]');
-    const loginEmpNo = $('#docWriterNo').val(); // 현재 로그인한 사원번호
-    console.log('로그인한 사원번호:', loginEmpNo); // 콘솔에 출력
-    
-    // 각 폼의 HTML 내용 저장
-    var defualtFormHTML = $('#F').html();  // 기본 양식 HTML 추출
-    var draftFormHTML = $('#D').html();    // 기안서 HTML 추출
-    var vacationFormHTML = $('#V').html(); // 연차 신청서 HTML 추출
-    var materialFormHTML = $('#M').html(); // 비품 구매 신청서 HTML 추출
-    var resignationFormHTML = $('#R').html(); // 사직서 HTML 추출
-    var ALDivStartHTML = $('#ALDivStart').html(); // 연차 시작 날짜 HTML 추출
-    var ALDivEndHTML = $('#ALDivEnd').html(); // 연차 종료 날짜 HTML 추출
-    var HLDivStartHTML = $('#HLDivStart').html(); // 반차 시작 날짜 HTML 추출
-
-
-    // 페이지 로드 시, 모든 div 제거하고 기본 양식만 띄움
-    $('#F, #D, #V, #M ,#R').remove();  // #D div를 완전히 삭제
-    $('#containerForm').append(defualtFormHTML);
-    
-    // 첫 번째 select 값 변경 시 div 요소를 append하고 나머지 div는 삭제
-    $(document).on('change', '#docType', function() {
-        // 선택된 value 값
-        var selectedValue = $(this).val();
-        
-        var selectedDocType = $('#selectedDocType').val(selectedValue);
-
-        // #containerForm의 내용을 비운 후, 선택된 value에 맞는 div를 append
-        $('#containerForm').children().remove();  // 기존 자식 요소들을 모두 삭제
-        
-        // 선택된 value에 따라 div를 append
-        if (selectedValue === "F") {
-            console.log("Appending default form HTML...");
-            documentTitle.text('문서 작성');
-            $('#containerForm').append(defualtFormHTML); // 기본 양식
-        } else if (selectedValue === "D") {
-            console.log("Appending draft form HTML...");
-            documentTitle.text('기안 문서 작성');
-            $('#containerForm').append(draftFormHTML); // 기안서
-        } else if (selectedValue === "V") {
-            console.log("Appending vacation form HTML...");
-            documentTitle.text('연차 신청서 문서 작성');
-            $('#containerForm').append(vacationFormHTML); // 연차 신청서
-            $('#ALDivStart, #ALDivEnd, #HLDivStart').remove();
-        } else if (selectedValue === "M") {
-            console.log("Appending material form HTML...");
-            documentTitle.text('비품 구매서 작성');
-            $('#containerForm').append(materialFormHTML); // 비품 구매 신청서
-        } else if (selectedValue === "R") {
-            console.log("Appending resignation form HTML...");
-            documentTitle.text('사직서 작성');
-            $('#containerForm').append(resignationFormHTML); // 사직서
-        }
-        
-        $(document).on('change', 'input[name="vacationType"]', function() {
-            let selectedValue = $(this).val(); // selectedValue를 let으로 선언
-            $('#ALDivStart, #ALDivEnd, #HLDivStart').remove();
-            let $radioDiv = $(this).closest('.radioDiv'); // $radioDiv를 let으로 선언
-
-            // 오늘 날짜를 가져오기
-            let today = new Date();
-            let todayFormatted = today.toISOString().split('T')[0]; // YYYY-MM-DD 형식
-
-            if (selectedValue === 'AL') {
-                $('.ALDiv, .HLDiv').remove();
-                $radioDiv.after(ALDivEndHTML);
-                $radioDiv.after(ALDivStartHTML);
-
-                // Flatpickr 초기화
-                let alStartPicker = flatpickr("#alStartDate", {
-                    dateFormat: "Y-m-d",
-                    minDate: todayFormatted, // 시작 날짜는 오늘보다 작을 수 없음
-                    onChange: function(selectedDates) {
-                        // 종료 날짜의 최소 날짜를 시작 날짜로 설정
-                        flatpickr("#alEndDate", {
-                            dateFormat: "Y-m-d",
-                            minDate: selectedDates[0] ? selectedDates[0] : todayFormatted, // 시작 날짜가 선택된 경우
-                        });
-                    }
-                });
-
-                flatpickr("#alEndDate", {
-                    dateFormat: "Y-m-d",
-                    minDate: todayFormatted, // 기본적으로 오늘 날짜
-                });
-            } else if (selectedValue === 'HLa' || selectedValue === 'HLp') {
-                $('.ALDiv, .HLDiv').remove();
-                $radioDiv.after(HLDivStartHTML);
-
-                let hlStartPicker = flatpickr("#hlStartDate", {
-                    dateFormat: "Y-m-d",
-                    minDate: todayFormatted, // 시작 날짜는 오늘보다 작을 수 없음
-                });
-            }
-        });
-
-        
-        // 모달창 관리
-        const $initApproverInput = $('#initApproverId');
-        const $midApproverInput = $('#midApproverId');
-        const $finalApproverInput = $('#finalApproverId');
-        const $vacationBackupInput = $('#vacationBackupId');
-        const $approverModal = $('#approverModal');
-        const $vacationModal = $('#vacationModal');
-        const $closeModalButton = $('#closeModalHeader, #closeModalFooter');
-        const $approverList = $('#approverList');
-        const $backupList = $('#backupList');
-
-        let currentInput = null;
-        
-        function openModal() {
-            $approverModal.removeClass('hidden').css('pointer-events', 'auto');
-        }
-        
-        function openVacationModal() {
-            $vacationModal.removeClass('hidden').css('pointer-events', 'auto');
-        }
-
-        function closeModal() {
-            $approverModal.addClass('hidden').css('pointer-events', 'none'); // 모달 숨기기
-            currentInput = null; // 모달이 닫힐 때 currentInput 초기화
-        }
-        
-        function closeVacationModal() {
-            $vacationModal.addClass('hidden').css('pointer-events', 'none'); // 모달 숨기기
-            currentInput = null; // 모달이 닫힐 때 currentInput 초기화
-        }
-        
-        $vacationBackupInput.on('click', function() {
-            currentInput = $vacationBackupInput;
-            openVacationModal();
-        });
-
-        // 결재자 입력 필드 클릭 시 모달 열기
-        $initApproverInput.on('click', function() {
-            currentInput = $initApproverInput;
-            openModal();
-        });
-
-        $midApproverInput.on('click', function() {
-            // 초기 결재자가 선택되었는지 확인
-            if (!$initApproverInput.val()) {
-                alert("초기 결재자를 먼저 선택하세요.");
-                return;
-            }
-            currentInput = $midApproverInput;
-            openModal();
-        });
-
-        $finalApproverInput.on('click', function() {
-            // 중간 결재자가 선택되었는지 확인
-            if (!$midApproverInput.val()) {
-                alert("중간 결재자를 먼저 선택하세요.");
-                return;
-            }
-            currentInput = $finalApproverInput;
-            openModal();
-        });
-
-        // 모달 창 닫기
-        $closeModalButton.on('click', function() {
-            closeModal();
-            closeVacationModal();
-        });
-
-        // ESC 키를 눌렀을 때 모달 닫기
-        $(document).on('keydown', function(event) {
-            if (event.key === 'Escape') {
-                closeModal();
-                closeVacationModal();
-            }
-        });
-
-     	// 모달에서 직원 선택 시 해당 결재자 입력 필드에 값 채우기
-        $approverList.on('click', '.approver-item', function() {
-            const selectedApproverId = $(this).data('emp-no'); // emp-no 가져오기
-            const selectedApproverText = $(this).text(); // 직원 이름 가져오기
-            
-         	// currentInput이 null이 아닐 때만 유효성 검사 진행
-            if (currentInput) {
-            	
-            	if (selectedApproverId == loginEmpNo) {
-                    alert("본인은 결재자로 지정할 수 없습니다.");
-                    closeModal();
-                    return;
-                }
-            	
-                if (currentInput.is($midApproverInput) && (selectedApproverText === $initApproverInput.val())) {
-                    alert("중간 결재자는 초기 결재자와 달라야 합니다.");
-                    closeModal();
-                    return;
-                }
-
-                if (currentInput.is($finalApproverInput) && 
-                    (selectedApproverText === $initApproverInput.val() || selectedApproverText === $midApproverInput.val())) {
-                    alert("최종 결재자는 초기 및 중간 결재자와 달라야 합니다.");
-                    closeModal();
-                    return;
-                }
-            
-                if (currentInput.is($initApproverInput)) {
-                    $('#initApproverNo').val(selectedApproverId); // 사원번호만 설정
-                    console.log('초기 결재자 emp-no:', selectedApproverId);
-                } else if (currentInput.is($midApproverInput)) {
-                    $('#midApproverNo').val(selectedApproverId); // 사원번호만 설정
-                    console.log('중간 결재자 emp-no:', selectedApproverId);
-                } else if (currentInput.is($finalApproverInput)) {
-                    $('#finalApproverNo').val(selectedApproverId); // 사원번호만 설정
-                    console.log('최종 결재자 emp-no:', selectedApproverId);
-                }
-        
-                currentInput.val(selectedApproverText); // 사원번호와 이름 설정
-                console.log('입력 필드 값:', currentInput.val());
-
-                closeModal(); // 선택 후 모달 닫기
-            }
-        });
-
-        
-     	// 모달에서 직원 선택 시 해당 결재자 입력 필드에 값 채우기
-        $backupList.on('click', '.backup-item', function() {
-            const selectedBackupId = $(this).data('emp-no');
-            const selectedBackupText = $(this).text();
-            console.log('현재 로그인', loginEmpNo);
-            console.log('대체 근무자', selectedBackupId);
-
-            // currentInput이 null이 아닐 때만 유효성 검사 진행
-		    if (currentInput) {
-		        if (currentInput.is($vacationBackupInput)) {
-		            // 현재 로그인한 사용자가 선택된 경우
-		            if (selectedBackupId == loginEmpNo) {
-		                alert("본인을 대체 근무자로 선택할 수 없습니다.");
-		                closeVacationModal();
-		                return; // 선택하지 않고 함수 종료
-		            }
-		            $('#vacationBackup').val(selectedBackupId); // 사원번호만 설정
-		            console.log('대체 근무자 emp-no:', selectedBackupId);
-		        }
-		        
-		        currentInput.val(selectedBackupText); // 사원번호와 이름 설정
-		        console.log('입력 필드 값:', currentInput.val());
+	$(document).ready(function() {
 		
-		        closeVacationModal(); // 선택 후 모달 닫기
-		    }
-        });
-
+		// 부서 목록을 가져오는 AJAX 요청 (외부 함수로 분리)
+        function loadDivisionList() {
+            $.ajax({
+                method: "get",
+                url: "/pettopia/divisionListByDocument",
+            }).done(function(result) {
+                $('#division').empty();
+                $('#division').append('<option value="">부서 선택</option>');
+                $(result).each(function(index, item) {
+                    $('#division').append('<option value="' + item.divisionCode + '">' + item.divisionName + '</option>');
+                });
+                
+             	// 부서 목록 변경 시, 모달 안의 값도 초기화
+                $('#approverList').empty(); // 결재자 목록 초기화
+                $('#division').val('');
+                $('#dept').val('');
+            }).fail(function() {
+                alert('부서 조회 실패');
+            });
         
+	        // division값이 변경되면 팀 목록 갱신
+	        $(document).on('change', '#division', function() {
+	            $.ajax({
+	                method: "get",
+	                url: "/pettopia/deptListByDocument/" + $('#division').val(),
+	            }).done(function(result) {
+	                $('#dept').empty();
+	                $('#dept').append('<option value="">팀 선택</option>');
+	                $(result).each(function(index, item) {
+	                    $('#dept').append('<option value="' + item.deptCode + '">' + item.deptName + '</option>');
+	                });
+	            }).fail(function() {
+	                alert('팀 조회 실패');
+	            });
+	        });
+	        
+	        // dept값이 변경되면 직원 목록 갱신
+	        $(document).on('change', '#dept', function() {
+	            $.ajax({
+	                method: "get",
+	                url: "/pettopia/empListByDocument/" + $('#dept').val(),
+	            }).done(function(result) {
+	                $('#approverList').empty();
+	                $(result).each(function(index, item) {
+	                    $('#approverList').append('<li class="approver-item cursor-pointer p-3 hover:bg-gray-100" data-emp-no="' + item.empNo + '">' + item.divisionName + ' / ' + item.deptName + ' / ' + item.rankName + ' / ' + item.empNo + ' / ' + item.empName + '</li>');
+	                });
+	            }).fail(function() {
+	                alert('직원 조회 실패');
+	            });
+	        });
         
-        var date = new Date();
-        var year = date.getFullYear();
-        var month = ("0" + (1 + date.getMonth())).slice(-2);
-        var day = ("0" + date.getDate()).slice(-2);
+		}
+	
+	    // 페이지 로드 시 폼 내용들을 저장
+	    const documentTitle = $('h5.text-16');
+	    const vacationTypeRadio = $('input[name="vacationType"]');
+	    const loginEmpNo = $('#docWriterNo').val(); // 현재 로그인한 사원번호
+	    console.log('로그인한 사원번호:', loginEmpNo); // 콘솔에 출력
+	    
+	    // 각 폼의 HTML 내용 저장
+	    var defualtFormHTML = $('#F').html();  // 기본 양식 HTML 추출
+	    var draftFormHTML = $('#D').html();    // 기안서 HTML 추출
+	    var vacationFormHTML = $('#V').html(); // 연차 신청서 HTML 추출
+	    var materialFormHTML = $('#M').html(); // 비품 구매 신청서 HTML 추출
+	    var resignationFormHTML = $('#R').html(); // 사직서 HTML 추출
+	    var ALDivStartHTML = $('#ALDivStart').html(); // 연차 시작 날짜 HTML 추출
+	    var ALDivEndHTML = $('#ALDivEnd').html(); // 연차 종료 날짜 HTML 추출
+	    var HLDivStartHTML = $('#HLDivStart').html(); // 반차 시작 날짜 HTML 추출
+	
+	    // 페이지 로드 시, 모든 div 제거하고 기본 양식만 띄움
+	    $('#F, #D, #V, #M ,#R').remove();  // #D div를 완전히 삭제
+	    $('#containerForm').append(defualtFormHTML);
+	    
+	    
+	    // 첫 번째 select 값 변경 시 div 요소를 append하고 나머지 div는 삭제
+	    $(document).on('change', '#docType', function() {
+	        // 선택된 value 값
+	        var selectedValue = $(this).val();
+	        
+	        var selectedDocType = $('#selectedDocType').val(selectedValue);
+	
+	        // #containerForm의 내용을 비운 후, 선택된 value에 맞는 div를 append
+	        $('#containerForm').children().remove();  // 기존 자식 요소들을 모두 삭제
+	        
+	        // 선택된 value에 따라 div를 append
+	        if (selectedValue === "F") {
+	            console.log("Appending default form HTML...");
+	            documentTitle.text('문서 작성');
+	            $('#containerForm').append(defualtFormHTML); // 기본 양식
+	        } else if (selectedValue === "D") {
+	            console.log("Appending draft form HTML...");
+	            documentTitle.text('기안 문서 작성');
+	            $('#containerForm').append(draftFormHTML); // 기안서
+	        } else if (selectedValue === "V") {
+	            console.log("Appending vacation form HTML...");
+	            documentTitle.text('연차 신청서 문서 작성');
+	            $('#containerForm').append(vacationFormHTML); // 연차 신청서
+	            $('#ALDivStart, #ALDivEnd, #HLDivStart').remove();
+	        } else if (selectedValue === "M") {
+	            console.log("Appending material form HTML...");
+	            documentTitle.text('비품 구매서 작성');
+	            $('#containerForm').append(materialFormHTML); // 비품 구매 신청서
+	        } else if (selectedValue === "R") {
+	            console.log("Appending resignation form HTML...");
+	            documentTitle.text('사직서 작성');
+	            $('#containerForm').append(resignationFormHTML); // 사직서
+	        }
+	        
+	    	// 문서 유형 변경 후, 부서 목록 다시 요청
+            loadDivisionList();
+	        
+	        $(document).on('change', 'input[name="vacationType"]', function() {
+	            let selectedValue = $(this).val(); // selectedValue를 let으로 선언
+	            $('#ALDivStart, #ALDivEnd, #HLDivStart').remove();
+	            let $radioDiv = $(this).closest('.radioDiv'); // $radioDiv를 let으로 선언
+	
+	            // 오늘 날짜를 가져오기
+	            let today = new Date();
+	            let todayFormatted = today.toISOString().split('T')[0]; // YYYY-MM-DD 형식
+	
+	            if (selectedValue === 'AL') {
+	                $('.ALDiv, .HLDiv').remove();
+	                $radioDiv.after(ALDivEndHTML);
+	                $radioDiv.after(ALDivStartHTML);
+	
+	                // Flatpickr 초기화
+	                let alStartPicker = flatpickr("#alStartDate", {
+	                    dateFormat: "Y-m-d",
+	                    minDate: todayFormatted, // 시작 날짜는 오늘보다 작을 수 없음
+	                    onChange: function(selectedDates) {
+	                        // 종료 날짜의 최소 날짜를 시작 날짜로 설정
+	                        flatpickr("#alEndDate", {
+	                            dateFormat: "Y-m-d",
+	                            minDate: selectedDates[0] ? selectedDates[0] : todayFormatted, // 시작 날짜가 선택된 경우
+	                        });
+	                    }
+	                });
+	
+	                flatpickr("#alEndDate", {
+	                    dateFormat: "Y-m-d",
+	                    minDate: todayFormatted, // 기본적으로 오늘 날짜
+	                });
+	            } else if (selectedValue === 'HLa' || selectedValue === 'HLp') {
+	                $('.ALDiv, .HLDiv').remove();
+	                $radioDiv.after(HLDivStartHTML);
+	
+	                let hlStartPicker = flatpickr("#hlStartDate", {
+	                    dateFormat: "Y-m-d",
+	                    minDate: todayFormatted, // 시작 날짜는 오늘보다 작을 수 없음
+	                });
+	            }
+	            
+	        });
+	        
+	        // 모달창 관리
+	        const $initApproverInput = $('#initApproverId');
+	        const $midApproverInput = $('#midApproverId');
+	        const $finalApproverInput = $('#finalApproverId');
+	        const $vacationBackupInput = $('#vacationBackupId');
+	        const $approverModal = $('#approverModal');
+	        const $vacationModal = $('#vacationModal');
+	        const $closeModalButton = $('#closeModalHeader, #closeModalFooter');
+	        const $approverList = $('#approverList');
+	        const $backupList = $('#backupList');
+	
+	        let currentInput = null;
+	        
+	        function openModal() {
+	            $approverModal.removeClass('hidden').css('pointer-events', 'auto');
+	        }
+	        
+	        function openVacationModal() {
+	            $vacationModal.removeClass('hidden').css('pointer-events', 'auto');
+	        }
+	
+	        function closeModal() {
+	            $approverModal.addClass('hidden').css('pointer-events', 'none'); // 모달 숨기기
+	            currentInput = null; // 모달이 닫힐 때 currentInput 초기화
+	        }
+	        
+	        function closeVacationModal() {
+	            $vacationModal.addClass('hidden').css('pointer-events', 'none'); // 모달 숨기기
+	            currentInput = null; // 모달이 닫힐 때 currentInput 초기화
+	        }
+	        
+	        if (!$approverModal.hasClass('hidden')) {
+	            closeModal();  // 결재자 모달 닫기
+	        }
 
-        const formattedDate = year + '-' + month + '-' + day;
-        console.log('Formatted Date:', formattedDate); // debug
-
-        $('#writingDate').val(formattedDate);
-    });
-    
-});
+	        if (!$vacationModal.hasClass('hidden')) {
+	            closeVacationModal();  // 연차 모달 닫기
+	        }
+	        
+	        $vacationBackupInput.on('click', function() {
+	            currentInput = $vacationBackupInput;
+	            openVacationModal();
+	        });
+	
+	        // 결재자 입력 필드 클릭 시 모달 열기
+	        $initApproverInput.on('click', function() {
+	            currentInput = $initApproverInput;
+	            openModal();
+	        });
+	
+	        $midApproverInput.on('click', function() {
+	            // 초기 결재자가 선택되었는지 확인
+	            if (!$initApproverInput.val()) {
+	                alert("초기 결재자를 먼저 선택하세요.");
+	                return;
+	            }
+	            currentInput = $midApproverInput;
+	            openModal();
+	        });
+	
+	        $finalApproverInput.on('click', function() {
+	            // 중간 결재자가 선택되었는지 확인
+	            if (!$midApproverInput.val()) {
+	                alert("중간 결재자를 먼저 선택하세요.");
+	                return;
+	            }
+	            currentInput = $finalApproverInput;
+	            openModal();
+	        });
+	
+	        // 모달 창 닫기
+	        $closeModalButton.on('click', function() {
+	            closeModal();
+	            closeVacationModal();
+	        });
+	
+	        // ESC 키를 눌렀을 때 모달 닫기
+	        $(document).on('keydown', function(event) {
+	            if (event.key === 'Escape') {
+	                closeModal();
+	                closeVacationModal();
+	            }
+	        });
+	
+	        // 모달에서 직원 선택 시 해당 결재자 입력 필드에 값 채우기
+	        $approverList.on('click', '.approver-item', function() {
+	            const selectedApproverId = $(this).data('emp-no'); // emp-no 가져오기
+	            const selectedApproverText = $(this).text(); // 직원 이름 가져오기
+	         	// 문자열을 '/' 기준으로 분리
+	        	const parts = selectedApproverText.split(' / ');
+	            // 마지막 3개 항목만 가져오기
+	            const lastThreeParts = parts.slice(-3).join(' / ');
+	            
+	            let loginEmpNo = $('#docWriterNo').val(); // 현재 로그인한 사원번호
+	            
+	         // currentInput이 null이 아닌지 확인
+	            if (currentInput !== null) { // null이 아닌 경우에만 아래 코드를 실행
+	            	if (selectedApproverId == loginEmpNo) {
+		                alert("본인은 결재자로 지정할 수 없습니다.");
+		                closeModal();
+		                return;
+		            }
+		            
+		         	// 기존 값과 비교하여 유효성 검사
+		            if (currentInput.is($midApproverInput) && (lastThreeParts === $initApproverInput.val())) {
+		                alert("중간 결재자는 초기 결재자와 달라야 합니다.");
+		                closeModal();
+		                return;
+		            }
+		
+		            if (currentInput.is($finalApproverInput) && 
+		                (lastThreeParts === $initApproverInput.val() || lastThreeParts === $midApproverInput.val())) {
+		                alert("최종 결재자는 초기 및 중간 결재자와 달라야 합니다.");
+		                closeModal();
+		                return;
+		            }
+		
+		            // 히든 입력 필드에 사원번호만 설정
+		            if (currentInput.is($initApproverInput)) {
+		                $('#initApproverNo').val(selectedApproverId); // 사원번호만 설정
+		                console.log('초기 결재자 emp-no:', selectedApproverId);
+		            } else if (currentInput.is($midApproverInput)) {
+		                $('#midApproverNo').val(selectedApproverId); // 사원번호만 설정
+		                console.log('중간 결재자 emp-no:', selectedApproverId);
+		            } else if (currentInput.is($finalApproverInput)) {
+		                $('#finalApproverNo').val(selectedApproverId); // 사원번호만 설정
+		                console.log('최종 결재자 emp-no:', selectedApproverId);
+		            }
+		
+		            // 입력 필드에는 "사원번호 / 이름" 형식으로 설정
+		            currentInput.val(lastThreeParts); // 사원번호와 이름 설정
+		            console.log('입력 필드 값:', currentInput.val(lastThreeParts));
+		
+		            closeModal(); // 선택 후 모달 닫기
+	            }
+	            
+	        });
+	
+	        
+	     	// 모달에서 직원 선택 시 해당 결재자 입력 필드에 값 채우기
+	        $backupList.on('click', '.backup-item', function() {
+	            const selectedBackupId = $(this).data('emp-no');
+	            const selectedBackupText = $(this).text();
+	            console.log('현재 로그인', loginEmpNo);
+	            console.log('대체 근무자', selectedBackupId);
+	
+	            // currentInput이 null이 아닐 때만 유효성 검사 진행
+			    if (currentInput) {
+			        if (currentInput.is($vacationBackupInput)) {
+			            // 현재 로그인한 사용자가 선택된 경우
+			            if (selectedBackupId == loginEmpNo) {
+			                alert("본인을 대체 근무자로 선택할 수 없습니다.");
+			                closeVacationModal();
+			                return; // 선택하지 않고 함수 종료
+			            }
+			            $('#vacationBackup').val(selectedBackupId); // 사원번호만 설정
+			            console.log('대체 근무자 emp-no:', selectedBackupId);
+			        }
+			        
+			        currentInput.val(selectedBackupText); // 사원번호와 이름 설정
+			        console.log('입력 필드 값:', currentInput.val());
+			
+			        closeVacationModal(); // 선택 후 모달 닫기
+			    }
+	        });
+	
+	        var date = new Date();
+	        var year = date.getFullYear();
+	        var month = ("0" + (1 + date.getMonth())).slice(-2);
+	        var day = ("0" + date.getDate()).slice(-2);
+	
+	        const formattedDate = year + '-' + month + '-' + day;
+	        console.log('Formatted Date:', formattedDate); // debug
+	
+	        $('#writingDate').val(formattedDate);
+	    });
+	    
+	});
 
 </script>
 
@@ -1125,7 +1230,7 @@ $(document).ready(function() {
 	
 	    $('#writingDate').val(formattedDate);
 	    
-	  	/// 모달창 관리
+	  	// 모달창 관리
         const $initApproverInput = $('#initApproverId');
         const $midApproverInput = $('#midApproverId');
         const $finalApproverInput = $('#finalApproverId');
@@ -1177,6 +1282,11 @@ $(document).ready(function() {
         $approverList.on('click', '.approver-item', function() {
             const selectedApproverId = $(this).data('emp-no'); // emp-no 가져오기
             const selectedApproverText = $(this).text(); // 직원 이름 가져오기
+         	// 문자열을 '/' 기준으로 분리
+        	const parts = selectedApproverText.split(' / ');
+            // 마지막 3개 항목만 가져오기
+            const lastThreeParts = parts.slice(-3).join(' / ');
+            
             let loginEmpNo = $('#docWriterNo').val(); // 현재 로그인한 사원번호
             
             if (selectedApproverId == loginEmpNo) {
@@ -1186,14 +1296,14 @@ $(document).ready(function() {
             }
             
          	// 기존 값과 비교하여 유효성 검사
-            if (currentInput.is($midApproverInput) && (selectedApproverText === $initApproverInput.val())) {
+            if (currentInput.is($midApproverInput) && (lastThreeParts === $initApproverInput.val())) {
                 alert("중간 결재자는 초기 결재자와 달라야 합니다.");
                 closeModal();
                 return;
             }
 
             if (currentInput.is($finalApproverInput) && 
-                (selectedApproverText === $initApproverInput.val() || selectedApproverText === $midApproverInput.val())) {
+                (lastThreeParts === $initApproverInput.val() || lastThreeParts === $midApproverInput.val())) {
                 alert("최종 결재자는 초기 및 중간 결재자와 달라야 합니다.");
                 closeModal();
                 return;
@@ -1212,8 +1322,8 @@ $(document).ready(function() {
             }
 
             // 입력 필드에는 "사원번호 / 이름" 형식으로 설정
-            currentInput.val(selectedApproverText); // 사원번호와 이름 설정
-            console.log('입력 필드 값:', currentInput.val());
+            currentInput.val(lastThreeParts); // 사원번호와 이름 설정
+            console.log('입력 필드 값:', currentInput.val(lastThreeParts));
 
             closeModal(); // 선택 후 모달 닫기
         });
@@ -1227,8 +1337,68 @@ $(document).ready(function() {
             currentInput = null; // 모달이 닫힐 때 currentInput 초기화
         }
         
+        var contextPath = $('#contextPath').data('context-path');
+    	
+    	// 부서 목록을 가져오는 AJAX 요청
+    	$.ajax({
+    	    method: "get",
+    	    url: contextPath + "/divisionListByDocument",
+    	}).done(function(result) {
+    	    // JQuery foreach 반복문
+    		$('#division').empty();
+    		$('#division').append('<option value="">부서 선택</option>');
+    	    $(result).each(function(index, item) {
+    	        $('#division').append('<option value="' + item.divisionCode + '">' + item.divisionName + '</option>')
+    	    });
+    	})
+    	.fail(function() {
+    	    alert('부서 조회 실패');
+    	});
+    	
+    	// division값이 변경되면 팀 목록 갱신
+    	$('#division').change(function() {
+    	    console.log('division값이 변경되었습니다: ', $('#division').val());  // 값 확인
+    	    $.ajax({
+    	        method: "get",
+    	        url: contextPath + "/deptListByDocument/" + $('#division').val(),
+    	    })
+    	    .done(function(result) {
+    	        console.log('팀 조회 결과: ', result);  // 응답 확인
+    	        $('#dept').empty();
+    	        $('#dept').append('<option value="">팀 선택</option>');
+    	
+    	        $(result).each(function(index, item) {
+    	            $('#dept').append('<option value="' + item.deptCode + '">' + item.deptName + '</option>');
+    	        });
+    	    })
+    	    .fail(function() {
+    	        alert('팀 조회 실패');
+    	    });
+    	});
+    	
+    	// dept값이 변경되면 직원 목록 갱신
+    	$('#dept').change(function() {
+    	    console.log('dept값이 변경되었습니다: ', $('#dept').val());  // 값 확인
+    	    $.ajax({
+    	        method: "get",
+    	        url: contextPath + "/empListByDocument/" + $('#dept').val(),
+    	    })
+    	    .done(function(result) {
+    	        console.log('직원 조회 결과: ', result);  // 응답 확인
+    	        $('#approverList').empty();
+    	
+    	        $(result).each(function(index, item) {
+    	            $('#approverList').append('<li class="approver-item cursor-pointer p-3 hover:bg-gray-100" data-emp-no="' + item.empNo + '">' + item.divisionName + ' / ' + item.deptName + ' / ' + item.rankName + ' / ' + item.empNo + ' / ' + item.empName + '</li>');
+    	        });
+    	    })
+    	    .fail(function() {
+    	        alert('직원 조회 실패');
+    	    });
+    	});
+        
 	});
 </script>
+
 
 </body>
 

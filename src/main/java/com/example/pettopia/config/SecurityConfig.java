@@ -35,11 +35,11 @@ public class SecurityConfig {
 			            );
         
         http.logout(auth -> auth
-                .logoutUrl("/logout") // 로그아웃 요청 경로
+                .logoutUrl("/logout") 			// 로그아웃 요청 경로
                 .logoutSuccessUrl("/loginForm") // 로그아웃 성공 후 리다이렉트 경로
-                .invalidateHttpSession(true) // 세션 무효화
-                .deleteCookies("JSESSIONID") // 쿠키 삭제
-                .permitAll() // 로그아웃 요청 허용
+                .invalidateHttpSession(true) 	// 세션 무효화
+                .deleteCookies("JSESSIONID") 	// 쿠키 삭제
+                .permitAll() 					// 로그아웃 요청 허용
         );
         
         // 접근 거부 핸들러 설정
@@ -49,6 +49,14 @@ public class SecurityConfig {
                     })
         );
         
+        http.rememberMe(rememberMe -> 
+	        rememberMe
+	        .key("pettopiaCookie")					 // 쿠키 서명을 위한 고유 키
+	        .tokenValiditySeconds(7 * 24 * 60 * 60) // 14일 동안 유지
+	        .rememberMeParameter("remember-me") 	 // 클라이언트에서 전달하는 파라미터 이름
+	    );
+       
+
         
 		return http.build();
 	}

@@ -1,5 +1,6 @@
 package com.example.pettopia.document;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.pettopia.util.TeamColor;
+import com.example.pettopia.vo.Department;
+import com.example.pettopia.vo.Division;
 import com.example.pettopia.vo.Document;
 import com.example.pettopia.vo.DocumentApprovers;
 
@@ -35,6 +38,25 @@ public class DocumentService {
 	public Map<String, Object> getEmployeeDept(String empNo) {
 		return documentMapper.selectEmployeeDept(empNo);
 	}
+	
+	// addDocument → 결재자 지정할 때 상위 부서 조회
+	public List<Division> getDivisionListByDocument(){
+		return documentMapper.selectDivisionListByDocument();
+	}
+	
+	// addDocument → 결재자 지정할 때 팀 조회
+	public List<Department> getDeptListByDocument(String divisionCode) {
+		return documentMapper.selectDeptListByDocument(divisionCode);
+	}
+	
+	// addDocument → 결재자 지정할 때 직원 조회
+	public List<Map<String, Object>> getEmpListByDocument(String deptCode) {
+		return documentMapper.selectEmpListByDocument(deptCode);
+	}
+	
+	
+	
+	
 	
 
 }
