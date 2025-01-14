@@ -32,6 +32,14 @@
 <!-- kakaoMap -->
 <script
 	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	
+
+<!-- Flatpickr CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+<!-- Flatpickr JS -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>	
+	
 
 <script>
 	/* 카카오맵 주소 api  */
@@ -136,7 +144,7 @@
 						</ul>
 					</div>
 					<!-- Main content -->
-					<form action="${pageContext.request.contextPath}/addEmployee" class="create-form" method="post" enctype="multipart/form-data">
+					<form action="${pageContext.request.contextPath}/admin/addEmployee" class="create-form" method="post" enctype="multipart/form-data" id="addEmployeeForm">
 						<div class="xl:col-span-9">
 							<div class="card">
 								<div class="card-body">
@@ -145,29 +153,27 @@
 
 
 						<!-- 이 부분은 뭔지.. 확인하기 -->
-										<input type="hidden" value="" name="id" id="id"> <input
-											type="hidden" value="add" name="action" id="action">
+										<input type="hidden" value="" name="id" id="id"> 
+										<input type="hidden" value="add" name="action" id="action">
 										<input type="hidden" id="id-field">
 
 										<div id="alert-error-msg"
-											class="hidden px-4 py-3 text-sm text-red-500 border border-transparent rounded-md bg-red-50 dark:bg-red-500/20"></div>
+											class="hidden px-4 py-3 text-sm text-red-500 border border-transparent rounded-md bg-red-50 dark:bg-red-500/20">
+										</div>
 										<!-- border 스타일 지우기! -->
 										<div class="grid grid-cols-1 gap-4 xl:grid-cols-12"
 											style="border: 1px solid red;">
 
 											<!-- 직원 사진 등록 -->
 											<!-- <div class="xl:col-span-12" style="border: 1px solid green;"> -->
-											<div
-												class="relative mx-auto mb-4 rounded-full shadow-md size-24 bg-slate-100 profile-user dark:bg-zink-500">
-												<img
-													src="data:image/jpeg;base64,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"
+											<div class="relative mx-auto mb-4 rounded-full shadow-md size-24 bg-slate-100 profile-user dark:bg-zink-500">
+												<img id="profileImg"
+													src="${pageContext.request.contextPath }/assets/images/placeholder/placeholder.png"
 													alt=""
-													class="object-cover w-full h-full rounded-full user-profile-image">
+													class="object-cover w-15 h-15 rounded-full user-profile-image">
 												<div
 													class="absolute bottom-0 flex items-center justify-center rounded-full size-8 ltr:right-0 rtl:left-0 profile-photo-edit">
-													<input id="profile-img-file-input"
-														name="employeeFile" type="file"
-														class="hidden profile-img-file-input"> 
+												<input id="profile-img-file-input" name="employeeFile" type="file" class="hidden profile-img-file-input" accept="image/*"> 
 														<label for="profile-img-file-input"
 														class="flex items-center justify-center bg-white rounded-full shadow-lg cursor-pointer size-8 dark:bg-zink-600 profile-photo-edit">
 														<i data-lucide="image-plus"
@@ -182,34 +188,28 @@
 												class="inline-block mb-2 text-base font-medium">직원 번호</label> 
 												<input type="number" name="empNo" id="employeeId"
 												class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
-												value="">
+												value="" required>
 												<button type="button" id="btnExistEmp" class="text-red-500 bg-white btn hover:text-red-500 hover:bg-red-100 focus:text-red-500 focus:bg-red-100 active:text-red-500 active:bg-red-100 dark:bg-zink-600 dark:hover:bg-red-500/10 dark:focus:bg-red-500/10 dark:active:bg-red-500/10">중복검사</button>
 										</div>
 
 										<div class="xl:col-span-4" style="border: 1px solid skyblue;">
 											<label for="employeeInput"
-												class="inline-block mb-2 text-base font-medium">이름</label> <input
+												class="inline-block mb-2 text-base font-medium">이름</label>
+											<input
 												type="text" name="empName" id="employeeInput"
 												class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
-												placeholder="Employee name">
+												placeholder="성명" required>
 										</div>
 
-										<div class="xl:col-span-4" style="border: 1px solid skyblue;">
-											<label for="employeeId"
-												class="inline-block mb-2 text-base font-medium">비밀번호</label>
-											<input type="text" name="empPw" id="employeePw"
-												class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
-												value="">
-										</div>
 
 										<!-- 날짜 선택시 Flatpickr 한국어 로컬 설정하기 -->
 										<div class="xl:col-span-4" style="border: 1px solid bule;">
 											<label for="joiningDateInput"
 												class="inline-block mb-2 text-base font-medium">생년월일</label>
-											<input type="text" name="empBirth" id="joiningDateInput"
+											<input type="text" name="empBirth" id="joiningDateInput1"
 												class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
 												placeholder="Select date" data-provider="flatpickr"
-												data-date-format="Y-m-d">
+												data-date-format="Y-m-d" >
 										</div>
 										<div class="xl:col-span-4" style="border: 1px solid bule;">
 											<label for="emailInput"
@@ -221,45 +221,51 @@
 										<div class="xl:col-span-4" style="border: 1px solid bule;">
 											<label for="phoneNumberInput"
 												class="inline-block mb-2 text-base font-medium">연락처</label>
-											<select type="text" name="empPhoneF" id="phoneNumberInput"
+											<select type="text" name="empPhoneF" 
 												class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
 												required>
 												<option value="010">010</option>
 												<option value="011">011</option>
-											</select> - <input type="text" name="empPhoneM" id="phoneNumberInput"
+											</select>
+											 - 
+											<input type="number" name="empPhoneM" id="phoneNumberInput1"
 												class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
-												placeholder="Enter phone number" required> - <input
-												type="text" name="empPhoneL" id="phoneNumberInput"
+												placeholder="Enter phone number" required>
+											 - 
+											<input
+												type="number" name="empPhoneL" id="phoneNumberInput2"
 												class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
 												placeholder="Enter phone number" required>
 										</div>
 										<div class="xl:col-span-4" style="border: 1px solid bule;">
 											<label for="phoneNumberInput"
-												class="inline-block mb-2 text-base font-medium">성별</label> <label>
+												class="inline-block mb-2 text-base font-medium">성별
+											</label> 
+											<label>
 												<input type="radio" name="empGender"
-												class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
-												placeholder="Enter phone number" value="M" required>
-												남성
-											</label> <label> <input type="radio" name="empGender"
-												class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
-												placeholder="Enter phone number" value="F" required>
-												여성
+													class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
+													placeholder="Enter phone number" value="M" required>
+													남성
+											</label> 
+											<label>
+												<input type="radio" name="empGender"
+													class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
+													placeholder="Enter phone number" value="F" required>
+													여성
 											</label>
 										</div>
 										<!-- 카카오맵 API를 이용하여 주소 입력하기 -->
 										<div class="xl:col-span-12" style="border: 1px solid green;">
-											<label for="locationInput"
-												class="inline-block mb-2 text-base font-medium">주소</label>
+											<label for="locationInput" class="inline-block mb-2 text-base font-medium">주소</label>
 										</div>
 										<div style="border: 1px solid green;">
-											<input type="text" name="postalCode" id="sample6_postcode"
-												placeholder="우편번호"> <input type="button"
-												onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
-											<input type="text" name="basicAddress" id="sample6_address"
-												placeholder="주소"><br> <input type="text"
-												name="detailAddress" id="sample6_detailAddress"
-												placeholder="상세주소"> <input type="text" name="dong"
-												id="sample6_extraAddress" placeholder="참고항목">
+											<input type="text" name="postalCode" id="sample6_postcode" placeholder="우편번호" required>  
+											<input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기" >
+											<br>
+											<input type="text" name="basicAddress" id="sample6_address" placeholder="주소" required>
+											<br> 
+											<input type="text" name="detailAddress" id="sample6_detailAddress" placeholder="상세주소" required> 
+											<input type="text" name="dong" id="sample6_extraAddress" placeholder="동" required>
 										</div>
 
 										<!-- 끝 : 카카오맵 API를 이용하여 주소 입력하기 -->
@@ -279,7 +285,7 @@
 												class="inline-block mb-2 text-base font-medium">부서</label> <select
 												class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
 												name="divisionCode" id="divisionSelect">
-												<option value="divisionCode">부서 선택</option>
+												<option value="">부서 선택</option>
 											</select> <select
 												class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
 												name="deptCode" id="departSelect">
@@ -287,7 +293,7 @@
 											</select> <select
 												class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
 												name="rankNo" id="rankSelect">
-												<option value="rankNo">직급 선택</option>
+												<option value="">직급 선택</option>
 											</select>
 										</div>
 									</div>
@@ -464,7 +470,7 @@ $(document).ready(function() {
 			
 		    /* 직원번호가 공백이 아니고 9자리 이상인지 확인 */
 		    if(empNo.trim() == "" || empNo.length != 9) {
-		        alert("직원 번호는 9자리로 통일해주세요.");
+		        alert("직원 번호는 9자리만 설정 가능합니다.");
 		        return; 
 		    }
 
@@ -492,6 +498,151 @@ $(document).ready(function() {
 			alert('중복 검사 실패');
 		});
 	});
+	
+	
+	
+	flatpickr("#joiningDateInput1", {
+	    dateFormat: "Y-m-d", /*  날짜 형식  */
+	    maxDate: new Date(), /*  오늘 날짜까지만 선택 가능 */
+	});
+	
+	
+	
+	
+	/*  제출 전 유효성 검사 */
+	$('#addNew').click(function(event) {
+		
+		/* 프로필 사진 첨부 여부 */
+	    if ($('#profile-img-file-input')[0].files.length === 0) {
+	        alert('프로필 이미지를 첨부해 주세요.');
+	        event.preventDefault(); /* 폼 제출 막기 */
+	        return;
+	    }
+
+
+		/*  직원 번호와 중복 검사 결과 확인 */
+	    var empNo = $('#employeeId').val();
+	    var checkEmpNo = $('#employeeId').prop('readonly'); /*  중복 검사후 readonly로 바뀌는지 확인 */
+	    
+	    if( !empNo.trim() || !checkEmpNo){
+	    	alert('직원 번호 중복 검사를 진행하세요.');
+	    	event.preventDefault(); /*  폼 제출 막기 */
+	    	return;
+	    }
+	    
+	    /*  이름 유효성 검사 */
+	   const nameTest = /^[a-zA-Z가-힣]+$/;
+	   if($('#employeeInput').val() == null || $('#employeeInput').val() == ''){
+			alert('직원 이름을 입력하세요.');
+			$('#employeeInput').focus();
+			event.preventDefault(); /*  폼 제출 막기 */
+	    	return;
+			
+		}else if(nameTest.test($('#employeeInput').val()) == false){ /* 이름 정규식 검사 */
+			alert('이름에 숫자, 특수문자는 입력할 수 없습니다.');
+			$('#employeeInput').focus();
+			event.preventDefault(); /*  폼 제출 막기 */
+	    	return;
+		}
+	   
+		/*  생년월일 */
+	   const empBirth = document.querySelector("#joiningDateInput1").value;
+       
+	   /*  오늘 날짜 이상은 선택하지 못하도록 하기 */
+	   const today = new Date();
+	   const selectedDate = new Date(empBirth);
+	   
+       if (!empBirth.trim()) {
+           alert("날짜를 선택해주세요.");
+           document.querySelector("#joiningDateInput1").focus();
+           event.preventDefault(); /*  폼 제출 막기 */
+           return;
+       }
+       
+       if(selectedDate > today){
+    	   alert("잘못된 생년월일입니다. 다시 선택해주세요.");
+           document.querySelector("#joiningDateInput1").focus();
+           event.preventDefault(); /*  폼 제출 막기 */
+           return;
+       }
+
+	    
+       /*  이메일 유효성 검사 */
+	   const emailTest = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/; 
+	    
+	   if($('#emailInput').val() == null || $('#emailInput').val() == '' ){
+			alert('이메일을 입력하세요.');
+			$('#emailInput').focus();
+			event.preventDefault(); /*  폼 제출 막기 */
+	    	return;
+			
+		}else if(emailTest.test($('#emailInput').val()) == false){ /* 이메일 정규식 검사 */
+			alert('이메일형식이 올바르지 않습니다.');
+			$('#emailInput').focus();
+			event.preventDefault(); /*  폼 제출 막기 */
+	    	return;
+		}
+	   
+		/*  연락처 유효성 검사  */
+	   if(($('#phoneNumberInput1').val() == '' || $('#phoneNumberInput1').val().length != 4) || ($('#phoneNumberInput2').val() == '' || $('#phoneNumberInput2').val().length != 4)){
+		   alert('잘못된 연락처 입니다. 다시 입력해주세요.');
+		   $('#phoneNumberInput1').focus();
+		   event.preventDefault(); /*  폼 제출 막기 */
+		   return;
+	   }
+	   
+	   /* 입사일 */
+	   const hireDate = document.querySelector("#joiningDateInput").value;
+	   
+       if (!hireDate.trim()) {
+           alert("날짜를 선택해주세요.");
+           document.querySelector("#joiningDateInput").focus();
+           event.preventDefault(); /*  폼 제출 막기 */
+           return;
+       }
+       
+       /* 부서, 팀, 직급 선택 */
+	    if ($('#divisionSelect').val() == "" ) {
+	        alert('부서를 선택하세요.');
+	        $('#divisionSelect').focus();
+	        event.preventDefault(); /*  폼 제출 막기 */
+	        return;
+	    }
+	
+	    if ($('#departSelect').val() == "") {
+	        alert('팀을 선택하세요.');
+	        $('#departSelect').focus();
+	        event.preventDefault(); /*  폼 제출 막기 */
+	        return;
+	    }
+	
+	    if ($('#rankSelect').val() == "" ) {
+	        alert('직급을 선택하세요.');
+	        $('#rankSelect').focus();
+	        event.preventDefault(); /*  폼 제출 막기 */
+	        return;
+	    }
+	       
+		$('#addEmployeeForm').submit()    /* 모두 통과시 제출 */
+	});
+	
+	
+	/* 파일 선택 시 프로필 이미지 변경 */
+    document.getElementById('profile-img-file-input').addEventListener('change', function(event) {
+        const file = event.target.files[0]; 
+        
+        /* 파일이 선택되면 */
+        if (file) {
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                
+                document.getElementById('profileImg').src = e.target.result; /* 첨부한 파일로 이미지 바꾸기 */
+            };
+            
+            reader.readAsDataURL(file);
+        }
+    });
 
 
 });
