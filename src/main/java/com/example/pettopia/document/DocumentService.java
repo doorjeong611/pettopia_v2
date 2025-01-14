@@ -54,6 +54,11 @@ public class DocumentService {
 		return documentMapper.selectEmpListByDocument(deptCode);
 	}
 	
+	// addDocument → 결재자 지정할 때 직원 검색
+	public List<Map<String, Object>> getEmpSearchByDocument(String empName) {
+		return documentMapper.selectEmpSearchByDocument(empName);
+	}
+	
 	
 	
 	
