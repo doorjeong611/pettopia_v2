@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.pettopia.util.TeamColor;
@@ -18,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
+@Transactional
 public class RoomService {
 	@Autowired
     private RoomMapper roomMapper;
@@ -41,6 +43,13 @@ public class RoomService {
     public int addRoomInfo(RoomInfo roomInfo) {
     	return roomMapper.insertRoomInfo(roomInfo);
     }
+    
+ // 객실 이미지 등록
+    public int addRoomImg(RoomImg roomImg) {
+        return roomMapper.insertRoomImg(roomImg);
+    }
+    
+    
     // 객실 등록 (이미지 갖고 오려다 실패한 버전)
 //    public void addRoom(RoomInfo roomInfo, String path) {
 //        int row1 = roomMapper.insertRoom(roomInfo);

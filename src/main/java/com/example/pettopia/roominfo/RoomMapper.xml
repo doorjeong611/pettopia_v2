@@ -3,11 +3,15 @@
 <mapper namespace="com.example.pettopia.roominfo.RoomMapper">
 <!-- 객실 등록 -->
  <insert id="insertRoomInfo" parameterType="com.example.pettopia.vo.RoomInfo">
+ 		<selectKey resultType="Integer" keyProperty="roomNo" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
         INSERT INTO room_info (room_name, room_type, room_capacity, price_per_night, room_desc, create_datetime, update_datetime)
         VALUES (#{roomName}, #{roomType}, #{roomCapacity}, #{pricePerNight}, #{roomDesc}, NOW(), NOW())
     </insert>
 
-    <insert id="insertRoomImg" parameterType="com.example.pettopia.vo.RoomImg">
+	<!-- 객실 이미지 등록 -->
+ 	<insert id="insertRoomImg" parameterType="com.example.pettopia.vo.RoomImg">
         INSERT INTO room_img (room_no, origin_file_name, file_name, file_ext, file_type, create_datetime, update_datetime)
         VALUES (#{roomNo}, #{originFileName}, #{fileName}, #{fileExt}, #{fileType}, NOW(), NOW())
     </insert>

@@ -7,6 +7,4 @@
 		INSERT INTO employee_file(emp_no, file_purpose, origin_file_name, file_name, file_ext, file_type, create_datetime, update_datetime)
 		VALUES (#{empNo}, #{filePurpose}, #{originFileName}, #{fileName}, #{fileExt}, #{fileType}, now(), now())
 	</insert>
-
-
 </mapper>

@@ -44,6 +44,8 @@
                <div class="card">
                     <div class="card-body">
                         <form id="formAddRoom" method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/room/addRoom">
+                            
+                            
                             <div class="grid grid-cols-1 gap-x-5 md:grid-cols-2 xl:grid-cols-3">
                                 <div class="mb-4">
                                     <label class="inline-block mb-2 text-base font-medium"> 타입 <span class="text-red-500">*</span></label>
@@ -61,7 +63,7 @@
                                     <label class="inline-block mb-2 text-base font-medium">1박 당 가격<span class="text-red-500">*</span></label>
                                     <input type="text" id="pricePerNight" name="pricePerNight" class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="1박 당 가격을 입력하세요">
                                 </div>
-                               <!--  <div class="mb-4">
+                               <!-- <!--  <div class="mb-4">
                                     <label class="inline-block mb-2 text-base font-medium">객실 상태 <span class="text-red-500">*</span></label>
                                     <select class="form-select border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200">
                                         <option selected="" disabled="" value="">Choose...</option>
@@ -73,9 +75,13 @@
                                    <textarea id="roomDesc" name="roomDesc" class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="객실 설명을 입력하세요"></textarea>
                                 </div>
                             </div>
-                            <!-- <div class="flex items-center justify-center border rounded-md cursor-pointer bg-slate-100 dropzone border-slate-200 dark:bg-zink-600 dark:border-zink-500">
+                            
+                            
+                            
+                            
+                            <div class="flex items-center justify-center border rounded-md cursor-pointer bg-slate-100 dropzone border-slate-200 dark:bg-zink-600 dark:border-zink-500">
 	                            <div class="fallback">
-	                                <input name="roomFiles" type="file" multiple="multiple">
+	                                <input name="roomImg" type="file">
 	                            </div>
 	                            <div class="w-full py-5 text-lg text-center dz-message needsclick">
 	                                <div class="mb-3">
@@ -84,11 +90,11 @@
 	
 	                                <h5 class="mb-0 font-normal text-slate-500 text-15">Drag and drop your files or <a href="#!">browse</a> your files</h5>
 	                            </div>
-                        	</div> -->
-						<div>
+                        	</div>
+						<!-- <div>
 	                        <ul class="mb-0" id="dropzone-preview">
 	                            <li class="mt-2" id="dropzone-preview-list">
-	                                <!-- This is used as the file preview template -->
+	                                This is used as the file preview template
 	                                <div class="border rounded border-slate-200 dark:border-zink-500">
 	                                    <div class="flex p-2">
 	                                        <div class="shrink-0 me-3">
@@ -110,10 +116,10 @@
 	                                </div>
 	                            </li>
 	                        </ul>
-                        </div>
+                        </div> -->
                         <div class="flex justify-end gap-2">
                             <button type="button" class="text-red-500 bg-white btn hover:text-red-500 hover:bg-red-100 focus:text-red-500 focus:bg-red-100 active:text-red-500 active:bg-red-100 dark:bg-zink-700 dark:hover:bg-red-500/10 dark:focus:bg-red-500/10 dark:active:bg-red-500/10"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="x" class="lucide lucide-x inline-block size-4"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg> <span class="align-middle">Cancel</span></button>
-                            <button type="submit" class="text-white transition-all duration-200 ease-linear btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100">Submit</button>
+                            <button type="submit" class="text-white transition-all duration-200 ease-linear btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100">등록</button>
                         </div>
                     </form>
                     </div>
