@@ -36,8 +36,18 @@ public class RoomController {
 		}
 		
 		// 객실 등록 처리
-	    
-		
+	    @PostMapping("/room/addRoom")
+	    public String addRoom(@ModelAttribute RoomInfo roomInfo, RedirectAttributes redirectAttributes) {
+	        try {
+	        	roomService.addRoomInfo(roomInfo);
+	        	log.debug(TeamColor.WJ + "roomInfo =======> " + roomInfo + TeamColor.RESET);
+	            redirectAttributes.addFlashAttribute("successMessage", "객실이 성공적으로 등록되었습니다!");
+	        } catch (Exception e) {
+	            redirectAttributes.addFlashAttribute("errorMessage", "객실 등록 중 오류가 발생했습니다.");
+	        }
+	        return "redirect:/room/getRoomList";
+	    }
+
 		
 		// 객실 상세보기
 //		@GetMapping("/room/getRoomOne")
