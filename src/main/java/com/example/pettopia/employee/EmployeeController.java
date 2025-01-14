@@ -93,6 +93,10 @@ public class EmployeeController {
 		return "common/changePassword";
 	}
 	
+	@GetMapping("/employeeList")
+	public String getMethodName() {
+		return "employee/employeeList";
+	}
 	
 	
 	
