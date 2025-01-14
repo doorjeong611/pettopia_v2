@@ -26,6 +26,7 @@ public interface RoomMapper {
 	// 객실 등록
 	 int insertRoomInfo(RoomInfo roomInfo);
 	 
+	// 객실 이미지 등록
 	 int insertRoomImg(RoomImg roomImg);
 
 }
