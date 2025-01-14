@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +19,8 @@ import com.example.pettopia.vo.Employee;
 import com.example.pettopia.vo.EmployeeFile;
 import com.example.pettopia.vo.EmployeeForm;
 
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -27,41 +31,14 @@ public class EmployeeService {
 	@Autowired EmployeeMapper employeeMapper;
 	@Autowired EmployeeFileMapper employeeFileMapper;
 	
+	@Autowired JavaMailSender javaMailSender;
+	
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 	
 	
-	// 로그인
-//	public Map<String, Object> getEmployeeInfo(Employee employee) {
-//		
-//		log.debug(TeamColor.KMJ+"[EmployeeService - getEmployeeInfo]");
-//		log.debug(TeamColor.KMJ+ "empNo : " + employee.getEmpNo());
-//		log.debug(TeamColor.KMJ+ "password : " + employee.getEmpPw());
-//		
-//		Employee loginEmp = employeeMapper.selectEmployeeInfo(employee);
-//		
-//		boolean loginFlag = false;
-//		Map<String, Object> login = new HashMap<>();
-//
-//		
-//		// 로그인 성공 
-//		if(loginEmp != null && !loginEmp.getEmpStatus().equals("R")) { // 사번과 비밀번호가 db 정보와 일치하고 퇴사자가 아닌 직원
-//			log.debug(TeamColor.KMJ+ "loginEmp.getEmpStatus() : " + loginEmp.getEmpStatus() + TeamColor.RESET);
-//			loginFlag = true;
-//			login.put("loginEmp", loginEmp); // 로그인 성공한 사원의 정보 담기
-//			login.put("loginFlag", loginFlag);
-//			
-//			return login;
-//		}
-//		
-//		// 로그인 실패
-//		login.put("loginFlag", loginFlag);
-//		
-//		return login;
-//		
-//				
-//	}
+	
 	
 	// addEmployee : 중복 직원 검증
 	public Boolean getExistEmployee(String empNo) {
@@ -87,15 +64,19 @@ public class EmployeeService {
 	
 	
 	// addEmployee : 직원 등록
-	public void addEmployee(EmployeeForm employeeForm, String path) {
+	public boolean addEmployee(EmployeeForm employeeForm, String path) {
 		log.debug(TeamColor.KMJ + "EmployeeService - addEmployee() " );
 		
 		// employee 테이블 직원 등록
 		Employee employee = new Employee();
 		employee.setEmpNo(employeeForm.getEmpNo());
 		log.debug(TeamColor.KMJ + "employeeForm.getEmpNo() " + employeeForm.getEmpNo());
+		log.debug(TeamColor.KMJ + "employeeForm.getEmpPw() " + employeeForm.getEmpPw());
 		
 		employee.setEmpPw(bCryptPasswordEncoder.encode(employeeForm.getEmpPw()));
+		log.debug(TeamColor.KMJ + "bCryptPasswordEncoder 후 비밀번호 : " + employee.getEmpPw());
+		
+		// 이름, 이메일, 생년월일, 성별
 		employee.setEmpName(employeeForm.getEmpName());
 		employee.setEmpEmail(employeeForm.getEmpEmail());
 		employee.setEmpBirth(employeeForm.getEmpBirth());
@@ -147,6 +128,9 @@ public class EmployeeService {
 		String empNo = employeeForm.getEmpNo();
 		
 		log.debug(TeamColor.KMJ + "empNo :" + empNo);
+		log.debug(TeamColor.KMJ + "resultRow :" + resultRow);
+		
+		int fileResultRow = 0;
 		
 		
 		// 직원 정보 등록 성공시
@@ -174,7 +158,8 @@ public class EmployeeService {
 			employeeFile.setFilePurpose(filePurpose);
 			employeeFile.setFileType(empFile.getContentType());
 			
-			int fileResultRow = employeeFileMapper.insertEmployeeProfile(employeeFile);
+			fileResultRow = employeeFileMapper.insertEmployeeProfile(employeeFile);
+			log.debug(TeamColor.KMJ + "fileResultRow :" + fileResultRow);
 			
 			if(fileResultRow == 1) {
 				// 물리적 파일 저장하기
@@ -188,10 +173,73 @@ public class EmployeeService {
 
 		}
 		
-		
+		if(resultRow == 1 && fileResultRow == 1) { // 직원 등록 성공 == true
+			return true;
+		}else{
+			return false;						   // 직원 등록 실패 == false
+		}
 		
 		
 	}
 	
+	
+	// 직원 등록 성공시 메일 전송
+	
+	public boolean sendMailEmployeeInfo(Employee employee) {
+	  
+		String empNo = employee.getEmpNo();
+		String empName = employee.getEmpName();
+		String empPw = employee.getEmpPw();
+		String empEmail = employee.getEmpEmail();
+		
+		
+		String subject = "PetTopia Co. 펫토피아 신규 사원 공지";
+		String htmlContent = "<html>" +
+			    "<body style='font-family: Arial, sans-serif; color: #333;'>" +
+			    "<div style='max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f4f4f9; border-radius: 8px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);'>" +
+			    "<h1 style='color: #f15b2a; text-align: center;'>입사를 진심으로 축하드립니다, " + empName + "님!</h1>" +
+			    "<p style='font-size: 16px; line-height: 1.6;'>안녕하세요, " + empName + "님!</p>" +
+			    "<p style='font-size: 16px; line-height: 1.6;'>귀하의 사원 번호는 <b>" + empNo + "</b>입니다.</p>" +
+			    "<p style='font-size: 16px; line-height: 1.6;'>임시 비밀번호는 <b>" + empPw + "</b>입니다.</p>" +
+			    "<p style='font-size: 16px; line-height: 1.6;'>아래의 버튼을 클릭하여 비밀번호를 변경해주세요.</p>" +
+			    "<p style='text-align: center;'>" +
+			    "<form action='http://localhost/pettopia/changePassword' method='post'>" +
+			    "<input type='submit' value='비밀번호 변경하기' style='display: inline-block; padding: 15px 30px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px; font-size: 18px; font-weight: bold; text-align: center; border: none;'>" +
+			    "<input type='hidden' name='empNo' value='" + empNo + "'>" +
+			    "<input type='hidden' name='empPw' value='" + empPw + "'>" +
+			    "</form>" +
+			    "</p>" +
+			    "<p style='font-size: 14px; text-align: center; color: #666;'>이 이메일은 자동으로 발송된 시스템 메시지입니다.</p>" +
+			    "</div>" +
+			    "</body>" +
+			    "</html>";
 
-}
+	  
+	  
+		 MimeMessage message = javaMailSender.createMimeMessage();
+	        try {
+	            MimeMessageHelper helper = new MimeMessageHelper(message, true); 
+	            helper.setTo(empEmail);
+	            helper.setSubject(subject);
+	            helper.setFrom("pettopia.corp@gmail.com");
+	            helper.setText(htmlContent, true); 
+
+	            javaMailSender.send(message);
+
+	            log.debug("메일 전송 성공!");
+	            return true;
+
+	        } catch (Exception e) {
+	        	log.debug("메일 전송 실패!");
+	        	e.printStackTrace();
+	        	 return false;
+	        }
+	        
+	        
+	       
+	  }
+	 
+	
+	
+
+}// employeeService
