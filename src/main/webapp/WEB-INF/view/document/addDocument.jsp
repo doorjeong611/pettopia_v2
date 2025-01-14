@@ -134,18 +134,34 @@
 									            </button>
 									        </div>
 									        
+									        <div class="max-h-[calc(theme('height.screen')_-_180px)] p-4 overflow-y-auto">
+											    <h5 class="mb-3 text-16">부서 조회</h5>
+											    
+											    <!-- Flexbox로 나란히 배치 -->
+											    <div class="flex space-x-4"> <!-- space-x-4는 항목 간에 여백을 추가 -->
+											        <!-- Division Select -->
+											        <select id="division" class="form-select border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500" style="margin-right: 15px;">
+											            <option value="">부서 선택</option>
+											        </select>
+											        
+											        <!-- Dept Select -->
+											        <select id="dept" class="form-select border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500">
+											            <option value="">팀 선택</option>
+											        </select>
+											    </div>
+											    
+											    <br><hr>
+											</div>
+									        
+									         
 									        <!-- Modal Content -->
 									        <div class="max-h-[calc(theme('height.screen')_-_180px)] p-4 overflow-y-auto">
 									            <h5 class="mb-3 text-16">직원 검색</h5>
 									            <input type="text" id="approverSearch" class="form-input w-full mb-4" placeholder="직원 검색">
-									            <ul id="approverList" class="mt-2">
-									                <!-- 예시 직원 목록 -->
-									                <li class="approver-item cursor-pointer p-3 hover:bg-gray-100" data-emp-no="202400007">202400007 / 김동현</li>
-									                <li class="approver-item cursor-pointer p-3 hover:bg-gray-100" data-emp-no="202400008">202400008 / 박지민</li>
-									                <li class="approver-item cursor-pointer p-3 hover:bg-gray-100" data-emp-no="202400009">202400009 / 이영호</li>
-									                <li class="approver-item cursor-pointer p-3 hover:bg-gray-100" data-emp-no="202400010">202400010 / 김지혜</li>
-									                <li class="approver-item cursor-pointer p-3 hover:bg-gray-100" data-emp-no="202400011">202400011 / 홍길동</li>
-									            </ul>
+									            <hr>
+									            <ul id="approverList" class="mt-2 max-h-[300px] overflow-y-auto">
+												    <!-- 예시 직원 목록 -->
+												</ul>
 									        </div>
 									
 									        <!-- Modal Footer -->
@@ -751,7 +767,7 @@
 				    <div class="w-screen lg:w-[55rem] bg-white shadow rounded-md flex flex-col h-full">
 				        <!-- Modal Header -->
 				        <div class="flex items-center justify-between p-4 bg-slate-100 border-b">
-				            <h4 class="text-16 mr-auto">결재 수신자 목록</h4> <!-- 제목 왼쪽 정렬을 위한 mr-auto 추가 -->
+				            <h4 class="text-16 mr-auto">결재 수신자 목록</h4>
 				            <button id="closeModalHeader" type="button" class="text-gray-500 hover:text-gray-700">
 				                <i class="ri-close-line text-2xl"></i>
 				            </button>
@@ -763,11 +779,6 @@
 				            <input type="text" id="approverSearch" class="form-input w-full mb-4" placeholder="직원 검색">
 				            <ul id="approverList" class="mt-2">
 				                <!-- 예시 직원 목록 -->
-				                <li class="approver-item cursor-pointer p-3 hover:bg-gray-100" data-emp-no="202400007">202400007 / 김동현</li>
-				                <li class="approver-item cursor-pointer p-3 hover:bg-gray-100" data-emp-no="202400008">202400008 / 박지민</li>
-				                <li class="approver-item cursor-pointer p-3 hover:bg-gray-100" data-emp-no="202400009">202400009 / 이영호</li>
-				                <li class="approver-item cursor-pointer p-3 hover:bg-gray-100" data-emp-no="202400010">202400010 / 김지혜</li>
-				                <li class="approver-item cursor-pointer p-3 hover:bg-gray-100" data-emp-no="202400011">202400011 / 홍길동</li>
 				            </ul>
 				        </div>
 				
@@ -825,6 +836,8 @@
         <!-- End Footer -->
     </div>
 </div>
+<!-- ContextPath -->
+<div id="contextPath" data-context-path="${pageContext.request.contextPath}"></div>
 <!-- End Main Content -->
 <c:import url="/WEB-INF/view/inc/customizerButton.jsp"></c:import>
 
@@ -1061,8 +1074,8 @@ $(document).ready(function() {
                     console.log('최종 결재자 emp-no:', selectedApproverId);
                 }
         
-                currentInput.val(selectedApproverText); // 사원번호와 이름 설정
-                console.log('입력 필드 값:', currentInput.val());
+                currentInput.val(lastThreeParts); // 사원번호와 이름 설정
+                console.log('입력 필드 값:', currentInput.val(selectedApproverText));
 
                 closeModal(); // 선택 후 모달 닫기
             }
@@ -1177,6 +1190,11 @@ $(document).ready(function() {
         $approverList.on('click', '.approver-item', function() {
             const selectedApproverId = $(this).data('emp-no'); // emp-no 가져오기
             const selectedApproverText = $(this).text(); // 직원 이름 가져오기
+         	// 문자열을 '/' 기준으로 분리
+        	const parts = selectedApproverText.split(' / ');
+            // 마지막 3개 항목만 가져오기
+            const lastThreeParts = parts.slice(-3).join(' / ');
+            
             let loginEmpNo = $('#docWriterNo').val(); // 현재 로그인한 사원번호
             
             if (selectedApproverId == loginEmpNo) {
@@ -1212,8 +1230,8 @@ $(document).ready(function() {
             }
 
             // 입력 필드에는 "사원번호 / 이름" 형식으로 설정
-            currentInput.val(selectedApproverText); // 사원번호와 이름 설정
-            console.log('입력 필드 값:', currentInput.val());
+            currentInput.val(lastThreeParts); // 사원번호와 이름 설정
+            console.log('입력 필드 값:', currentInput.val(lastThreeParts));
 
             closeModal(); // 선택 후 모달 닫기
         });
@@ -1228,6 +1246,67 @@ $(document).ready(function() {
         }
         
 	});
+</script>
+
+<script>
+$(document).ready(function() {
+	var contextPath = $('#contextPath').data('context-path');
+	
+	$.ajax({
+ 		method: "get",
+		url: contextPath + "/divisionListByDocument",
+	}).done(function(result) {
+		// JQuery foreach 반복문
+		$(result).each(function(index, item) {
+			$('#division').append('<option value="' + item.divisionCode + '">' + item.divisionName + '</option>')
+		});
+	})
+	.fail(function(){
+		alert('부서 조회 실패');
+	});
+	
+	// division값이 변경되면
+	$('#division').change(function(){
+	    console.log('division값이 변경되었습니다: ', $('#division').val());  // 값 확인
+	    $.ajax({
+	        method: "get",
+	        url: contextPath + "/deptListByDocument/" + $('#division').val(),
+	    })
+	    .done(function(result){
+	        console.log('팀 조회 결과: ', result);  // 응답 확인
+	        $('#dept').empty();
+	        $('#dept').append('<option value="">팀 선택</option>');
+	        
+	        $(result).each(function(index, item){
+	            $('#dept').append('<option value="' + item.deptCode + '">' + item.deptName + '</option>');
+	        });
+	    })
+	    .fail(function(){
+	        alert('팀 조회 실패');
+    });
+});
+	
+	// dept값이 변경되면
+	$('#dept').change(function(){
+		// console.log('dept값이 변경');
+		$.ajax({
+			method: "get",
+			url: contextPath + "/empListByDocument/" + $('#dept').val(),
+		})
+		.done(function(result){
+			// emp 리셋
+			$('#approverList').empty();
+			
+			$(result).each(function(index, item){
+				$('#approverList').append('<li class="approver-item cursor-pointer p-3 hover:bg-gray-100" data-emp-no="' + item.empNo + '">' + item.divisionName + ' / ' + item.deptName + ' / ' + item.rankName + ' / ' + item.empNo + ' / ' + item.empName + '</li>');
+			});		
+		})
+		.fail(function(){
+			alert('직원 조회 실패');
+		});
+	});
+	
+});
 </script>
 
 </body>
