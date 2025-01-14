@@ -19,6 +19,11 @@
     
     <!-- Tailwind CSS -->
     
+    
+    <!-- Jquery -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    
+    
 
   <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tailwind2.css">
 </head>
@@ -95,7 +100,7 @@
                     </div>
                     <div>
                         <div class="flex items-center gap-2">
-                            <input id="checkboxDefault1" class="border rounded-sm appearance-none size-4 bg-slate-100 border-slate-200 dark:bg-zink-600 dark:border-zink-500 checked:bg-custom-500 checked:border-custom-500 dark:checked:bg-custom-500 dark:checked:border-custom-500 checked:disabled:bg-custom-400 checked:disabled:border-custom-400" type="checkbox" value="">
+                            <input type="checkbox" name="remember-me" id="checkboxDefault1" class="border rounded-sm appearance-none size-4 bg-slate-100 border-slate-200 dark:bg-zink-600 dark:border-zink-500 checked:bg-custom-500 checked:border-custom-500 dark:checked:bg-custom-500 dark:checked:border-custom-500 checked:disabled:bg-custom-400 checked:disabled:border-custom-400" value="">
                             <label for="checkboxDefault1" class="inline-block text-base font-medium align-middle cursor-pointer">사번 기억하기</label>
                         </div>
                         <div id="remember-error" class="hidden mt-1 text-sm text-red-500">Please check the "Remember me" before submitting the form.</div>
@@ -118,6 +123,35 @@
     <script src="${pageContext.request.contextPath}/assets/libs/lucide/umd/lucide.js"></script>
     <script src="${pageContext.request.contextPath}/assets/js/tailwick.bundle.js"></script>
    <!--  <script src="${pageContext.request.contextPath}/assets/js/pages/auth-login.init.js"></script> --> <!-- 아이디, 비밀번호 유효성 검사 js -->
+
+<script>
+
+/* 페이지가 로드되고 localStorage에 empNo가 있다면 로그인폼에 넣고 체크박스에 체크하기 */
+window.onload = function() {
+    const rememberedEmpNo = localStorage.getItem("rememberEmpNo");
+    if (rememberedEmpNo) {
+        document.getElementById("username").value = rememberedEmpNo;
+        document.getElementById("checkboxDefault1").checked = true;
+    }
+}
+
+
+/* 페이지가 로드되고 체크박스에 체크가 되어있다면 로그인 시 localStorage에 empNo 저장하기. */
+document.getElementById("signInForm").addEventListener("submit", function(event) {
+    const empNo = document.getElementById("username").value;
+    const rememberMe = document.getElementById("checkboxDefault1").checked;
+    console.log('empNo' + empNo);
+    if (rememberMe) {
+        localStorage.setItem("rememberEmpNo", empNo); // 사번을 로컬스토리지에 저장
+    } else {
+        localStorage.removeItem("rememberEmpNo"); // 체크 해제 시 로컬스토리지에서 사번 삭제
+    }
+});
+
+</script>
+
+
+
 
 </body>
 
