@@ -80,7 +80,7 @@
 								
 								
 								
-								<select name="category" id="boardCategory">
+								<select name="category" class="form-select" id="boardCategory">
 									<option value="ALL" ${boardCategory == 'ALL' ? 'selected' : ''}>전체</option>
 									<option value="SG" ${boardCategory == 'SG' ? 'selected' : ''}>건의사항</option>
 									<option value="DS" ${boardCategory == 'DS' ? 'selected' : ''}>토론</option>
