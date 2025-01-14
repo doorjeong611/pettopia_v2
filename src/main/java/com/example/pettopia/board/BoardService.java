@@ -36,8 +36,8 @@ public class BoardService {
 		}
 
 // 게시글 작성
-	public void insertBoard(Board board) {
-		boardMapper.insertBoard(board);
+	public Integer insertBoard(Board board) {
+		return boardMapper.insertBoard(board);
 	}
 	
 //	게시글 댓글 통합 삭제 /board/removeBoard 작업자 : 이준호 
