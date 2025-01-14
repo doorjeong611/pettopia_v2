@@ -124,7 +124,7 @@
 									</div>
 									
 									<!-- 결재 수신자 목록 모달 -->
-									<div id="approverModal" modal-center="" class="fixed flex flex-col transition-all duration-300 ease-in-out left-2/4 z-drawer -translate-x-2/4 -translate-y-2/4 hidden">
+									<div id="approverModal" modal-center="" class="defaultModal fixed flex flex-col transition-all duration-300 ease-in-out left-2/4 z-drawer -translate-x-2/4 -translate-y-2/4 hidden">
 									    <div class="w-screen lg:w-[55rem] bg-white shadow rounded-md flex flex-col h-full">
 									        <!-- Modal Header -->
 									        <div class="flex items-center justify-between p-4 bg-slate-100 border-b">
@@ -155,9 +155,14 @@
 									        
 									         
 									        <!-- Modal Content -->
-									        <div class="max-h-[calc(theme('height.screen')_-_180px)] p-4 overflow-y-auto">
+									        <div class="max-h-[calc(theme('height.screen')_-_180px)] p-4 pt-1 overflow-y-auto" style="max-height: 400px;">
 									            <h5 class="mb-3 text-16">직원 검색</h5>
-									            <input type="text" id="approverSearch" class="form-input w-full mb-4" placeholder="직원 검색">
+									            <div class="flex items-center mb-4">
+												    <input type="text" id="approverSearch" value="" class="form-input mr-2" style="width: 26rem;" placeholder="직원 검색">
+												    <button id="searchButton" type="button" class="bg-white text-custom-500 btn border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100">
+												        검색
+												    </button>
+												</div>
 									            <hr>
 									            <ul id="approverList" class="mt-2 max-h-[300px] overflow-y-auto">
 												    <!-- 예시 직원 목록 -->
@@ -247,17 +252,17 @@
                                     <div class="xl:col-span-4">
                                         <label for="docWriterNo" class="inline-block mb-2 text-base font-medium">작성자</label>
                                         <input type="hidden" name="docWriterNo" id="docWriterNo" value="${empNo}">
-                                        <input type="text" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-200 placeholder:text-slate-400" value="${empNo} / ${empName}" disabled required>
+                                        <input type="text" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-200 placeholder:text-slate-400" value="${empNo} / ${empName}" disabled required="">
                                     </div><!--end col-->
 	                                        
                                     <div class="xl:col-span-2">
                                     	<label for="docWriterNo" class="inline-block mb-2 text-base font-medium">부서</label>
-                                        <input type="text" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-200 placeholder:text-slate-400" value="${empDept.deptName}" disabled required>
+                                        <input type="text" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-200 placeholder:text-slate-400" value="${empDept.deptName}" disabled required="">
                                     </div>
                                     
                                     <div class="xl:col-span-2">
 									    <label for="writingDate" class="inline-block mb-2 text-base font-medium">작성일</label>
-									    <input type="text" id="writingDate" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-200 placeholder:text-slate-400" value="" disabled required>
+									    <input type="text" id="writingDate" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-200 placeholder:text-slate-400" value="" disabled required="">
 									</div>
 									
                                     <div class="xl:col-span-4"></div>
@@ -265,29 +270,29 @@
 									<!-- 초기 결재자 모달 -->
 									<div class="xl:col-span-4">
 										<label for="initApproverNo" class="inline-block mb-2 text-base font-medium">초기 결재자</label>
-									    <input type="text" id="initApproverId" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" value="" placeholder="수신 받을 직원을 선택하세요" readonly required>
-										<input type="hidden" name="initApproverNo" id="initApproverNo" value="">
+									    <input type="text" id="initApproverId" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" value="" placeholder="수신 받을 직원을 선택하세요" readonly required="">
+										<input type="hidden" name="initApproverNo" id="initApproverNo" value="" required="">
 									</div>
 									
 									<!-- 중간 결재자 모달 -->
 									<div class="xl:col-span-4">
 										<label for="midApproverNo" class="inline-block mb-2 text-base font-medium">중간 결재자</label>
-									    <input type="text" id="midApproverId" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" value="" placeholder="수신 받을 직원을 선택하세요" readonly required>
-										<input type="hidden" name="midApproverNo" id="midApproverNo" value="">
+									    <input type="text" id="midApproverId" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" value="" placeholder="수신 받을 직원을 선택하세요" readonly required="">
+										<input type="hidden" name="midApproverNo" id="midApproverNo" value="" required="">
 									</div>
 									
 									<!-- 최종 결재자 모달 -->
 									<div class="xl:col-span-4">
 										<label for="finalApproverNo" class="inline-block mb-2 text-base font-medium"> 최종 결재자</label>
-									    <input type="text" id="finalApproverId" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" value="" placeholder="수신 받을 직원을 선택하세요" readonly required>
-										<input type="hidden" name="finalApproverNo" id="finalApproverNo" value="">
+									    <input type="text" id="finalApproverId" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" value="" placeholder="수신 받을 직원을 선택하세요" readonly required="">
+										<input type="hidden" name="finalApproverNo" id="finalApproverNo" value="" required="">
 									</div>
 									        
 							        <!-- 문서 작성 -->
 									<div class="lg:col-span-2 xl:col-span-12">
 	                                    <div>
 	                                        <label for="docContent" class="inline-block mb-2 text-base font-medium">문서 내용</label>
-	                                        <textarea name="docContent" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" id="docContent" placeholder="기안 내용을 입력하세요" rows="10"></textarea>
+	                                        <textarea name="docContent" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" id="docContent" placeholder="기안 내용을 입력하세요" rows="10" required=""></textarea>
 	                                    </div>
                                     </div>
                                     
@@ -763,18 +768,18 @@
 	            </div>
             	<!-- container-fluid -->
 	            <!-- 결재 수신자 목록 모달 -->
-				<div id="approverModal" modal-center="" class="fixed flex flex-col transition-all duration-300 ease-in-out left-2/4 z-drawer -translate-x-2/4 -translate-y-2/4 hidden">
+				<div id="approverModal" modal-center="" class="approvalModal fixed flex flex-col transition-all duration-300 ease-in-out left-2/4 z-drawer -translate-x-2/4 -translate-y-2/4 hidden">
 				    <div class="w-screen lg:w-[55rem] bg-white shadow rounded-md flex flex-col h-full">
 				        <!-- Modal Header -->
 				        <div class="flex items-center justify-between p-4 bg-slate-100 border-b">
-				            <h5 class="text-16 mr-auto">결재 수신자 목록</h5> <!-- 제목 왼쪽 정렬을 위한 mr-auto 추가 -->
+				            <h4 class="text-16 mr-auto">결재 수신자 목록</h4> <!-- 제목 왼쪽 정렬을 위한 mr-auto 추가 -->
 				            <button id="closeModalHeader" type="button" class="text-gray-500 hover:text-gray-700">
 				                <i class="ri-close-line text-2xl"></i>
 				            </button>
 				        </div>
 				        
 				        <div class="max-h-[calc(theme('height.screen')_-_180px)] p-4 overflow-y-auto">
-						    <h5 class="mb-3 text-16">부서 조회</h5>
+						    <h4 class="mb-3 text-16">부서 조회</h4>
 						    
 						    <!-- Flexbox로 나란히 배치 -->
 						    <div class="flex space-x-4"> <!-- space-x-4는 항목 간에 여백을 추가 -->
@@ -795,8 +800,13 @@
 				         
 				        <!-- Modal Content -->
 				        <div class="max-h-[calc(theme('height.screen')_-_180px)] p-4 overflow-y-auto">
-				            <h5 class="mb-3 text-16">직원 검색</h5>
-				            <input type="text" id="approverSearch" class="form-input w-full mb-4" placeholder="직원 검색">
+				            <h4 class="mb-3 text-16">직원 검색</h4>
+				            <div class="flex items-center mb-4">
+							    <input type="text" id="approverSearch" value="" class="form-input mr-2" style="width: 26rem;" placeholder="직원 검색">
+							    <button id="searchButton" type="button" class="bg-white text-custom-500 btn border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100">
+							        검색
+							    </button>
+							</div>
 				            <hr>
 				            <ul id="approverList" class="mt-2 max-h-[300px] overflow-y-auto">
 							    <!-- 예시 직원 목록 -->
@@ -824,18 +834,38 @@
 				            </button>
 				        </div>
 				        
+				        <div class="max-h-[calc(theme('height.screen')_-_180px)] p-4 overflow-y-auto">
+						    <h5 class="mb-3 text-16">부서 조회</h5>
+						    
+						    <!-- Flexbox로 나란히 배치 -->
+						    <div class="flex space-x-4"> <!-- space-x-4는 항목 간에 여백을 추가 -->
+						        <!-- Division Select -->
+						        <select id="divisionBackup" class="form-select border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500" style="margin-right: 15px;">
+						            <option value="">부서 선택</option>
+						        </select>
+						        
+						        <!-- Dept Select -->
+						        <select id="deptBackup" class="form-select border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500">
+						            <option value="">팀 선택</option>
+						        </select>
+						    </div>
+						    
+						    <br><hr>
+						</div>
+				        
 				        <!-- Modal Content -->
 				        <div class="max-h-[calc(theme('height.screen')_-_180px)] p-4 overflow-y-auto">
 				            <h4 class="mb-3 text-16">직원 검색</h4>
-				            <input type="text" id="backupSearch" class="form-input w-full mb-4" placeholder="직원 검색">
-				            <ul id="backupList" class="mt-2">
-				                <!-- 예시 직원 목록 -->
-				                <li class="backup-item cursor-pointer p-3 hover:bg-gray-100" data-emp-no="202400007">202400007 / 김동현</li>
-				                <li class="backup-item cursor-pointer p-3 hover:bg-gray-100" data-emp-no="202400008">202400008 / 박지민</li>
-				                <li class="backup-item cursor-pointer p-3 hover:bg-gray-100" data-emp-no="202400009">202400009 / 이영호</li>
-				                <li class="backup-item cursor-pointer p-3 hover:bg-gray-100" data-emp-no="202400010">202400010 / 김지혜</li>
-				                <li class="backup-item cursor-pointer p-3 hover:bg-gray-100" data-emp-no="202400011">202400011 / 홍길동</li>
-				            </ul>
+				            <div class="flex items-center mb-4">
+							    <input type="text" id="backupSearch" value="" class="form-input mr-2" style="width: 26rem;" placeholder="직원 검색">
+							    <button id="searchBackupBtn" type="button" class="bg-white text-custom-500 btn border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100">
+							        검색
+							    </button>
+							</div>
+							<hr>
+				            <ul id="backupList" class="mt-2 max-h-[300px] overflow-y-auto">
+							    <!-- 예시 직원 목록 -->
+							</ul>
 				        </div>
 				
 				        <!-- Modal Footer -->
@@ -847,6 +877,7 @@
 				        </div>
 				   </div>
 				</div>
+				
         	</div>
 		</div>
         <!-- End Page-content -->
@@ -885,6 +916,52 @@
 		
 		// 부서 목록을 가져오는 AJAX 요청 (외부 함수로 분리)
         function loadDivisionList() {
+			
+        	$('#searchButton').on('click', function() {
+                var searchEmp = $('#approverSearch').val(); // 검색어 가져오기
+                console.log(searchEmp);
+
+                // 부서 목록을 가져오는 AJAX 요청
+                $.ajax({
+                    method: "get",
+                    url: "/pettopia/getEmpSearchByDocument/" + encodeURIComponent(searchEmp), // 쿼리 파라미터로 수정
+                }).done(function(result) {
+                    $('#division').empty();
+                    $('#division').append('<option value="">부서 선택</option>');
+                    $('#dept').empty();
+        	        $('#dept').append('<option value="">팀 선택</option>');
+                    $('#approverList').empty();
+                    
+                    if (result && result.length > 0) {
+                        $(result).each(function(index, item) {
+                            $('#approverList').append('<li class="approver-item cursor-pointer p-2 hover:bg-gray-100" data-emp-no="' + item.empNo + '">' + item.divisionName + ' / ' + item.deptName + ' / ' + item.rankName + ' / ' + item.empNo + ' / ' + item.empName + '</li>');
+                        });
+                    } else {
+                        $('#approverList').append('<li class="p-2 text-gray-500">검색 결과가 없습니다.</li>'); // 결과가 없을 때 메시지 추가
+                    }
+                    
+                 // 부서 목록을 가져오는 AJAX 요청
+                	$.ajax({
+                	    method: "get",
+                	    url: "/pettopia/divisionListByDocument",
+                	}).done(function(result) {
+                	    // JQuery foreach 반복문
+                		$('#division').empty();
+                		$('#division').append('<option value="">부서 선택</option>');
+                	    $(result).each(function(index, item) {
+                	        $('#division').append('<option value="' + item.divisionCode + '">' + item.divisionName + '</option>')
+                	    });
+                	})
+                	.fail(function() {
+                	    alert('부서 조회 실패');
+                	});
+                 
+                })
+                .fail(function() {
+                    alert('직원 검색 실패');
+                });
+            });
+			
             $.ajax({
                 method: "get",
                 url: "/pettopia/divisionListByDocument",
@@ -963,6 +1040,8 @@
 	        var selectedValue = $(this).val();
 	        
 	        var selectedDocType = $('#selectedDocType').val(selectedValue);
+	        
+	        $('.approvalModal').addClass('hidden').css('pointer-events', 'none');
 	
 	        // #containerForm의 내용을 비운 후, 선택된 value에 맞는 div를 append
 	        $('#containerForm').children().remove();  // 기존 자식 요소들을 모두 삭제
@@ -1051,11 +1130,116 @@
 	        let currentInput = null;
 	        
 	        function openModal() {
+	            if (!$vacationModal.hasClass('hidden')) {
+	                // 만약 결재 수신자 목록 모달이 열려 있다면 닫기
+	                $vacationModal.addClass('hidden').css('pointer-events', 'none');
+	            }
+	            // 결재 수신자 목록 모달 열기
 	            $approverModal.removeClass('hidden').css('pointer-events', 'auto');
 	        }
-	        
+
 	        function openVacationModal() {
+	            if (!$approverModal.hasClass('hidden')) {
+	                // 만약 대체 근무자 목록 모달이 열려 있다면 닫기
+	                $approverModal.addClass('hidden').css('pointer-events', 'none');
+	            }
+	            // 대체 근무자 목록 모달 열기
 	            $vacationModal.removeClass('hidden').css('pointer-events', 'auto');
+	            
+	            $('#searchBackupBtn').on('click', function() {
+	                var searchBackup = $('#backupSearch').val(); // 검색어 가져오기
+	                console.log(searchBackup);
+
+	                // 부서 목록을 가져오는 AJAX 요청
+	                $.ajax({
+	                    method: "get",
+	                    url: "/pettopia/getEmpSearchByDocument/" + encodeURIComponent(searchBackup), // 쿼리 파라미터로 수정
+	                }).done(function(result) {
+	                    $('#divisionBackup').empty();
+	                    $('#divisionBackup').append('<option value="">부서 선택</option>');
+	                    $('#deptBackup').empty();
+	        	        $('#deptBackup').append('<option value="">팀 선택</option>');
+	                    $('#backupList').empty();
+	                    console.log('값 가져옴');
+	                    if (result && result.length > 0) {
+	                        $(result).each(function(index, item) {
+	                            $('#backupList').append('<li class="backup-item cursor-pointer p-2 hover:bg-gray-100" data-emp-no="' + item.empNo + '">' + item.divisionName + ' / ' + item.deptName + ' / ' + item.rankName + ' / ' + item.empNo + ' / ' + item.empName + '</li>');
+	                        });
+	                    } else {
+	                        $('#backupList').append('<li class="p-2 text-gray-500">검색 결과가 없습니다.</li>'); // 결과가 없을 때 메시지 추가
+	                    }
+	                    
+	                 // 부서 목록을 가져오는 AJAX 요청
+	                	$.ajax({
+	                	    method: "get",
+	                	    url: "/pettopia/divisionListByDocument",
+	                	}).done(function(result) {
+	                	    // JQuery foreach 반복문
+	                		$('#divisionBackup').empty();
+	                		$('#divisionBackup').append('<option value="">부서 선택</option>');
+	                	    $(result).each(function(index, item) {
+	                	        $('#divisionBackup').append('<option value="' + item.divisionCode + '">' + item.divisionName + '</option>')
+	                	    });
+	                	})
+	                	.fail(function() {
+	                	    alert('부서 조회 실패');
+	                	});
+	                 
+	                })
+	                .fail(function() {
+	                    alert('직원 검색 실패');
+	                });
+	            });
+				
+	            $.ajax({
+	                method: "get",
+	                url: "/pettopia/divisionListByDocument",
+	            }).done(function(result) {
+	                $('#divisionBackup').empty();
+	                $('#divisionBackup').append('<option value="">부서 선택</option>');
+	                $(result).each(function(index, item) {
+	                    $('#divisionBackup').append('<option value="' + item.divisionCode + '">' + item.divisionName + '</option>');
+	                });
+	                
+	             	// 부서 목록 변경 시, 모달 안의 값도 초기화
+	                $('#backupList').empty(); // 결재자 목록 초기화
+	                $('#divisionBackup').val('');
+	                $('#deptBackup').val('');
+	                $('#backupSearch').val('');
+	            }).fail(function() {
+	                alert('부서 조회 실패');
+	            });
+	            
+	         	// division값이 변경되면 팀 목록 갱신
+		        $(document).on('change', '#divisionBackup', function() {
+		            $.ajax({
+		                method: "get",
+		                url: "/pettopia/deptListByDocument/" + $('#divisionBackup').val(),
+		            }).done(function(result) {
+		                $('#deptBackup').empty();
+		                $('#deptBackup').append('<option value="">팀 선택</option>');
+		                $(result).each(function(index, item) {
+		                    $('#deptBackup').append('<option value="' + item.deptCode + '">' + item.deptName + '</option>');
+		                });
+		            }).fail(function() {
+		                alert('팀 조회 실패');
+		            });
+		        });
+		        
+		        // dept값이 변경되면 직원 목록 갱신
+		        $(document).on('change', '#deptBackup', function() {
+		            $.ajax({
+		                method: "get",
+		                url: "/pettopia/empListByDocument/" + $('#deptBackup').val(),
+		            }).done(function(result) {
+		                $('#backupList').empty();
+		                $(result).each(function(index, item) {
+		                    $('#backupList').append('<li class="backup-item cursor-pointer p-3 hover:bg-gray-100" data-emp-no="' + item.empNo + '">' + item.divisionName + ' / ' + item.deptName + ' / ' + item.rankName + ' / ' + item.empNo + ' / ' + item.empName + '</li>');
+		                });
+		            }).fail(function() {
+		                alert('직원 조회 실패');
+		            });
+		        });
 	        }
 	
 	        function closeModal() {
@@ -1182,6 +1366,11 @@
 	            const selectedBackupText = $(this).text();
 	            console.log('현재 로그인', loginEmpNo);
 	            console.log('대체 근무자', selectedBackupId);
+	            
+	         // 문자열을 '/' 기준으로 분리
+	        	const partsBackup = selectedBackupText.split(' / ');
+	            // 마지막 3개 항목만 가져오기
+	            const lastThreePartsBackup = partsBackup.slice(-3).join(' / ');
 	
 	            // currentInput이 null이 아닐 때만 유효성 검사 진행
 			    if (currentInput) {
@@ -1196,8 +1385,8 @@
 			            console.log('대체 근무자 emp-no:', selectedBackupId);
 			        }
 			        
-			        currentInput.val(selectedBackupText); // 사원번호와 이름 설정
-			        console.log('입력 필드 값:', currentInput.val());
+			        currentInput.val(lastThreePartsBackup); // 사원번호와 이름 설정
+			        console.log('입력 필드 값:', currentInput.val(lastThreePartsBackup));
 			
 			        closeVacationModal(); // 선택 후 모달 닫기
 			    }
@@ -1338,6 +1527,51 @@
         }
         
         var contextPath = $('#contextPath').data('context-path');
+        
+        $('#searchButton').on('click', function() {
+            var searchEmp = $('#approverSearch').val(); // 검색어 가져오기
+            console.log(searchEmp);
+
+            // 부서 목록을 가져오는 AJAX 요청
+            $.ajax({
+                method: "get",
+                url: contextPath + "/getEmpSearchByDocument/" + encodeURIComponent(searchEmp),
+            }).done(function(result) {
+                $('#division').empty();
+                $('#division').append('<option value="">부서 선택</option>');
+                $('#dept').empty();
+    	        $('#dept').append('<option value="">팀 선택</option>');
+                $('#approverList').empty();
+                
+                if (result && result.length > 0) {
+                    $(result).each(function(index, item) {
+                        $('#approverList').append('<li class="approver-item cursor-pointer p-2 hover:bg-gray-100" data-emp-no="' + item.empNo + '">' + item.divisionName + ' / ' + item.deptName + ' / ' + item.rankName + ' / ' + item.empNo + ' / ' + item.empName + '</li>');
+                    });
+                } else {
+                    $('#approverList').append('<li class="p-2 text-gray-500">검색 결과가 없습니다.</li>'); // 결과가 없을 때 메시지 추가
+                }
+                
+             // 부서 목록을 가져오는 AJAX 요청
+            	$.ajax({
+            	    method: "get",
+            	    url: contextPath + "/divisionListByDocument",
+            	}).done(function(result) {
+            	    // JQuery foreach 반복문
+            		$('#division').empty();
+            		$('#division').append('<option value="">부서 선택</option>');
+            	    $(result).each(function(index, item) {
+            	        $('#division').append('<option value="' + item.divisionCode + '">' + item.divisionName + '</option>')
+            	    });
+            	})
+            	.fail(function() {
+            	    alert('부서 조회 실패');
+            	});
+             
+            })
+            .fail(function() {
+                alert('직원 검색 실패');
+            });
+        });
     	
     	// 부서 목록을 가져오는 AJAX 요청
     	$.ajax({
@@ -1388,7 +1622,7 @@
     	        $('#approverList').empty();
     	
     	        $(result).each(function(index, item) {
-    	            $('#approverList').append('<li class="approver-item cursor-pointer p-3 hover:bg-gray-100" data-emp-no="' + item.empNo + '">' + item.divisionName + ' / ' + item.deptName + ' / ' + item.rankName + ' / ' + item.empNo + ' / ' + item.empName + '</li>');
+    	            $('#approverList').append('<li class="approver-item cursor-pointer p-2 hover:bg-gray-100" data-emp-no="' + item.empNo + '">' + item.divisionName + ' / ' + item.deptName + ' / ' + item.rankName + ' / ' + item.empNo + ' / ' + item.empName + '</li>');
     	        });
     	    })
     	    .fail(function() {

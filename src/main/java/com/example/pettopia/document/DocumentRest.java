@@ -31,4 +31,9 @@ public class DocumentRest {
 		return documentService.getEmpListByDocument(deptCode);
 	}
 	
+	@GetMapping("/getEmpSearchByDocument/{empName}")
+	public List<Map<String, Object>> getEmpSearchByDocument(@PathVariable String empName) {
+		return documentService.getEmpSearchByDocument(empName);
+	}
+	
 }
