@@ -22,5 +22,10 @@ public interface RoomMapper {
 	
 	// room_type ENUM 값 추출
 	// List<String> selectRoomTypeEnum(); 
+	
+	// 객실 등록
+	 int insertRoomInfo(RoomInfo roomInfo);
+	 
+	 int insertRoomImg(RoomImg roomImg);
 
 }
