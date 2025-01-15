@@ -94,6 +94,14 @@
 					</c:forEach>
 					
 						 <script>
+							 /* 로그인시 empStatus -> 'T'라면 비밀번호 변경 alert */
+							var changePwMsg = "${changePwMsg}";
+			               	if(changePwMsg != null){
+			               		alert(changePwMsg);
+			               	}
+						 
+						 
+						 
 			                function checkAttendance(event, action) {
 			                	event.preventDefault(); // 기본 동작 방지
 			                	
@@ -118,6 +126,8 @@
 			                    event.target.submit(); // 유효성 통과 시 폼 제출
 			                    return true; 
 			                }
+			                
+
 			            </script>	
 					 </div>
             <!-- container-fluid -->

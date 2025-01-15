@@ -28,6 +28,18 @@ public class MainController {
 	// 오자윤 : 출퇴근 기록 조회
 	@GetMapping("/common/petTopiaMain")
 	public String mainPage(Model model, Attendance attendance, Authentication auth) {
+		
+		// login -> empStatus가 'T'라면 비밀번호 변경 alert 띄우기. -> 비밀번호 변경하면 'E'로 수정 하기
+		EmpUserDetails emp = (EmpUserDetails)auth.getPrincipal();
+		String empStatus = emp.getEmpStatus();
+		log.debug(TeamColor.OJY + "empStatus------> " + empStatus + TeamColor.RESET);
+		
+		if(empStatus != null && empStatus.equals("T")) {
+			String changePwMsg = "비밀번호를 수정하세요!";
+			
+			model.addAttribute("changePwMsg", changePwMsg);
+		}
+		
 
 		// security 회원정보 가져오기.
 		EmpUserDetails empUserDetails = (EmpUserDetails) auth.getPrincipal();
