@@ -108,7 +108,11 @@
                     <div class="mt-10">
                         <button type="submit" class="w-full text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20">로그인</button>
                     </div>
-        
+        			
+        			<!-- 임시 비밀번호 발급받기 버튼 -->
+        			<div class="mt-10">
+                       <a href="#"> <button type="button" class="w-full text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20">비밀번호 찾기</button></a>
+                    </div>
                    
                 </form>
             </div>
