@@ -28,5 +28,8 @@ public interface RoomMapper {
 	 
 	// 객실 이미지 등록
 	 int insertRoomImg(RoomImg roomImg);
+	 
+	// 전체 객실 및 이미지 조회 (추가된 메서드)
+	List<Map<String, Object>> selectRoomWithImages();
 
 }

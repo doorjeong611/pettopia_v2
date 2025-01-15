@@ -62,19 +62,21 @@
 	                    <div class="overflow-x-auto">
 	                        <table class="w-full">
 	                            <tbody>
-	                            	<c:forEach var="roomList" items="${roomList}">
+	                            	<c:forEach var="room" items="${roomListImg}">
 		                                <tr>
 		                                    <td class="px-3.5 py-4 border-b border-dashed first:pl-0 last:pr-0 border-slate-200 dark:border-zink-500">
 		                                        <div class="flex items-center gap-3">
 		                                            <div class="flex items-center justify-center rounded-md size-12 bg-slate-100 shrink-0">
-		                                                 <img src="${pageContext.request.contextPath}/upload/${room.roomImages[0].fileName}" alt="${room.roomImages[0].originFileName}" class="h-8">
+		                                                 <img src="${pageContext.request.contextPath}/upload/${room.fileName}" 
+								                             alt="${room.originFileName}" 
+								                             class="h-8">
 		                                            </div>
 		                                            <div class="grow">
-		                                                <h6 class="mb-1 text-15"><a href="${pageContext.request.contextPath}/room/getRoomOne?roomNo=${roomList.roomNo}" class="transition-all duration-300 ease-linear hover:text-custom-500"><span>${roomList.roomName}</span>호</a></h6>
-		                                                <p class="text-slate-500">타입 : <span>${roomList.roomType}</span></p>
-		                                                <p class="text-slate-500">수용 인원 : <span>${roomList.roomCapacity}</span></p>
-		                                                <p class="text-slate-500">1박 당 가격 : <span>${roomList.pricePerNight}</span></p>
-		                                                <p class="te3xt-slate-500">설명 : <span>${roomList.roomDesc}</span> </p>
+		                                                <h6 class="mb-1 text-15"><a href="${pageContext.request.contextPath}/room/getRoomOne?roomNo=${room.roomNo}" class="transition-all duration-300 ease-linear hover:text-custom-500"><span>${room.roomName}</span>호</a></h6>
+		                                                <p class="text-slate-500">타입 : <span>${room.roomType}</span></p>
+		                                                <p class="text-slate-500">수용 인원 : <span>${room.roomCapacity}</span></p>
+		                                                <p class="text-slate-500">1박 당 가격 : <span>${room.pricePerNight}</span></p>
+		                                                <p class="te3xt-slate-500">설명 : <span>${room.roomDesc}</span> </p>
 		                                            </div>
 		                                        </div>
 		                                    </td>

@@ -96,16 +96,12 @@ public class RoomController {
 		}
 
 		
-		// 객실 전체 조회 (목록)
-	 	@GetMapping("/room/getRoomList")
-	    public String getRoomList(Model model) {
-	        List<RoomInfo> roomList = roomService.getRoomList();
-	        List<RoomImg> roomImages = roomService.roomImgService(); // 모든 RoomImg 가져오기
-	        log.debug(TeamColor.WJ+ "roomList =======> " + roomList.toString() + TeamColor.RESET);
-	        log.debug(TeamColor.WJ+ "roomImages =======> " + roomImages.toString() + TeamColor.RESET);
-	        model.addAttribute("roomList", roomList);
-	        model.addAttribute("roomImges", roomImages);
-	        return "room/roomList";
-	    }
+		// Controller
+		@GetMapping("/room/getRoomList")
+		public String getRoomList(Model model) {
+		    List<Map<String, Object>> roomListImg = roomService.getRoomListWithImages(); 
+		    model.addAttribute("roomListImg", roomListImg); 
+		    return "room/roomList"; 
+		}
 	
 }
