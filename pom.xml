@@ -116,8 +116,13 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-mail</artifactId>
 		</dependency>
-	   
-	   
+		<!--jsoup-->
+		 <dependency>
+	        <groupId>org.jsoup</groupId>
+	        <artifactId>jsoup</artifactId>
+	        <version>1.16.1</version>
+	    </dependency>
+
 	   
    </dependencies>
 

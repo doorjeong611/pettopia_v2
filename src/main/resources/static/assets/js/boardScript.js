@@ -1,9 +1,8 @@
 const {
-	DecoupledEditor,
+	ClassicEditor,
 	Alignment,
 	Autoformat,
 	AutoImage,
-	AutoLink,
 	Autosave,
 	BlockQuote,
 	Bold,
@@ -12,20 +11,25 @@ const {
 	Code,
 	CodeBlock,
 	Essentials,
-	FindAndReplace,
 	FontBackgroundColor,
 	FontColor,
 	FontFamily,
 	FontSize,
+	FullPage,
 	GeneralHtmlSupport,
 	Heading,
+	Highlight,
 	HorizontalLine,
+	HtmlComment,
+	HtmlEmbed,
 	ImageBlock,
+	ImageCaption,
 	ImageInline,
 	ImageInsert,
 	ImageInsertViaUrl,
 	ImageResize,
 	ImageStyle,
+	ImageTextAlternative,
 	ImageToolbar,
 	ImageUpload,
 	Indent,
@@ -33,18 +37,14 @@ const {
 	Italic,
 	Link,
 	LinkImage,
+	List,
+	ListProperties,
 	Markdown,
-	MediaEmbed,
 	Paragraph,
 	RemoveFormat,
+	ShowBlocks,
 	SimpleUploadAdapter,
-	SpecialCharacters,
-	SpecialCharactersArrows,
-	SpecialCharactersCurrency,
-	SpecialCharactersEssentials,
-	SpecialCharactersLatin,
-	SpecialCharactersMathematical,
-	SpecialCharactersText,
+	SourceEditing,
 	Strikethrough,
 	Style,
 	Subscript,
@@ -57,7 +57,9 @@ const {
 	TableToolbar,
 	TextPartLanguage,
 	TextTransformation,
-	Underline
+	TodoList,
+	Underline,
+	WordCount
 } = window.CKEDITOR;
 
 const LICENSE_KEY =
@@ -66,7 +68,8 @@ const LICENSE_KEY =
 const editorConfig = {
 	toolbar: {
 		items: [
-			'findAndReplace',
+			'sourceEditing',
+			'showBlocks',
 			'textPartLanguage',
 			'|',
 			'heading',
@@ -86,18 +89,21 @@ const editorConfig = {
 			'code',
 			'removeFormat',
 			'|',
-			'specialCharacters',
 			'horizontalLine',
 			'link',
 			'bookmark',
 			'insertImage',
-			'mediaEmbed',
 			'insertTable',
+			'highlight',
 			'blockQuote',
 			'codeBlock',
+			'htmlEmbed',
 			'|',
 			'alignment',
 			'|',
+			'bulletedList',
+			'numberedList',
+			'todoList',
 			'outdent',
 			'indent'
 		],
@@ -107,7 +113,6 @@ const editorConfig = {
 		Alignment,
 		Autoformat,
 		AutoImage,
-		AutoLink,
 		Autosave,
 		BlockQuote,
 		Bold,
@@ -116,20 +121,25 @@ const editorConfig = {
 		Code,
 		CodeBlock,
 		Essentials,
-		FindAndReplace,
 		FontBackgroundColor,
 		FontColor,
 		FontFamily,
 		FontSize,
+		FullPage,
 		GeneralHtmlSupport,
 		Heading,
+		Highlight,
 		HorizontalLine,
+		HtmlComment,
+		HtmlEmbed,
 		ImageBlock,
+		ImageCaption,
 		ImageInline,
 		ImageInsert,
 		ImageInsertViaUrl,
 		ImageResize,
 		ImageStyle,
+		ImageTextAlternative,
 		ImageToolbar,
 		ImageUpload,
 		Indent,
@@ -137,18 +147,14 @@ const editorConfig = {
 		Italic,
 		Link,
 		LinkImage,
+		List,
+		ListProperties,
 		Markdown,
-		MediaEmbed,
 		Paragraph,
 		RemoveFormat,
+		ShowBlocks,
 		SimpleUploadAdapter,
-		SpecialCharacters,
-		SpecialCharactersArrows,
-		SpecialCharactersCurrency,
-		SpecialCharactersEssentials,
-		SpecialCharactersLatin,
-		SpecialCharactersMathematical,
-		SpecialCharactersText,
+		SourceEditing,
 		Strikethrough,
 		Style,
 		Subscript,
@@ -161,7 +167,9 @@ const editorConfig = {
 		TableToolbar,
 		TextPartLanguage,
 		TextTransformation,
-		Underline
+		TodoList,
+		Underline,
+		WordCount
 	],
 	fontFamily: {
 		supportAllValues: true
@@ -226,10 +234,19 @@ const editorConfig = {
 		]
 	},
 	image: {
-		toolbar: ['imageTextAlternative', '|', 'imageStyle:inline', 'imageStyle:wrapText', 'imageStyle:breakText', '|', 'resizeImage']
+		toolbar: [
+			'toggleImageCaption',
+			'imageTextAlternative',
+			'|',
+			'imageStyle:inline',
+			'imageStyle:wrapText',
+			'imageStyle:breakText',
+			'|',
+			'resizeImage'
+		]
 	},
 	initialData:
-		'<h2>제목을 입력해주세요.</h2>',
+		'내용을 입력해주세요.',
 	licenseKey: LICENSE_KEY,
 	link: {
 		addTargetToExternalLinks: true,
@@ -242,6 +259,13 @@ const editorConfig = {
 					download: 'file'
 				}
 			}
+		}
+	},
+	list: {
+		properties: {
+			styles: true,
+			startIndex: true,
+			reversed: true
 		}
 	},
 	placeholder: 'Type or paste your content here!',
@@ -299,8 +323,9 @@ const editorConfig = {
 	}
 };
 
-DecoupledEditor.create(document.querySelector('#editor'), editorConfig).then(editor => {
-	document.querySelector('#editor-toolbar').appendChild(editor.ui.view.toolbar.element);
+ClassicEditor.create(document.querySelector('#editor'), editorConfig).then(editor => {
+	const wordCount = editor.plugins.get('WordCount');
+	document.querySelector('#editor-word-count').appendChild(wordCount.wordCountContainer);
 
 	return editor;
 });

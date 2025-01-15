@@ -49,7 +49,13 @@
                             <div class="grid grid-cols-1 gap-x-5 md:grid-cols-2 xl:grid-cols-3">
                                 <div class="mb-4">
                                     <label class="inline-block mb-2 text-base font-medium"> 타입 <span class="text-red-500">*</span></label>
-                                    <input type="text" id="roomType" name="roomType" class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="타입 선택">
+                                    <select id="roomType" name="roomType" class="form-select border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200">
+								        <option value="">타입 선택</option>
+								        <option value="S">S</option>
+								        <option value="D">D</option>
+								        <option value="ST">ST</option>
+								        <option value="F">F</option>
+   									 </select>
                                 </div>
                                 <div class="mb-4">
                                     <label class="inline-block mb-2 text-base font-medium"> 객실 이름 <span class="text-red-500">*</span></label>
@@ -75,13 +81,10 @@
                                    <textarea id="roomDesc" name="roomDesc" class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="객실 설명을 입력하세요"></textarea>
                                 </div>
                             </div>
-                            
-                            
-                            
-                            
-                            <div class="flex items-center justify-center border rounded-md cursor-pointer bg-slate-100 dropzone border-slate-200 dark:bg-zink-600 dark:border-zink-500">
+                            <input name="roomImg" type="file">
+                            <!-- <div class="flex items-center justify-center border rounded-md cursor-pointer bg-slate-100 dropzone border-slate-200 dark:bg-zink-600 dark:border-zink-500">
 	                            <div class="fallback">
-	                                <input name="roomImg" type="file">
+	                                
 	                            </div>
 	                            <div class="w-full py-5 text-lg text-center dz-message needsclick">
 	                                <div class="mb-3">
@@ -90,7 +93,7 @@
 	
 	                                <h5 class="mb-0 font-normal text-slate-500 text-15">Drag and drop your files or <a href="#!">browse</a> your files</h5>
 	                            </div>
-                        	</div>
+                        	</div> -->
 						<!-- <div>
 	                        <ul class="mb-0" id="dropzone-preview">
 	                            <li class="mt-2" id="dropzone-preview-list">

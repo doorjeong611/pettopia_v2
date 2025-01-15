@@ -24,9 +24,8 @@
 </head>
 
 <style>
-	.ck.ck-editor {max-width:80%; position: static;}
-	.editor-container_document-editor .editor-container__editor .ck.ck-editor__editable {
-		min-height:150mm;
+	.ck-editor__editable_inline {
+		height: 500px;
 	}
 	
 </style>
@@ -64,42 +63,50 @@
                 
 
                 <div class="card" >
-                	 <div class="card-body">
-                	 <form method="post" action="${pageContext.request.contextPath}/board/addBoard" class="formBoard">
-                	 	
-                		 <!-- CKEditor5 Start -->
-			               <div class=" main-container">
-			               	<div class="col-sm-6 d-flex justify-content-center">
-			               		
-		               			<select name="divisionCode" id="division">
-									<option value="">없음</option>
-									<c:forEach var="dvs" items="${division.divisionList}" >
-										<option value="${dvs.divisionCode }" >${dvs.divisionCode }</option>
-									</c:forEach>
-								</select>
-			               		
-	                	 		<select name="category" class="form-select" id="boardCategory">
-										<option value="SG" ${boardCategory == 'SG' ? 'selected' : ''}>건의사항</option>
-										<option value="DS" ${boardCategory == 'DS' ? 'selected' : ''}>토론</option>
-										<option value="CT" ${boardCategory == 'CT' ? 'selected' : ''}>잡답</option>
-										<option value="IN" ${boardCategory == 'IN' ? 'selected' : ''}>정보</option>
-										<option value="QA" ${boardCategory == 'QA' ? 'selected' : ''}>질문</option>
-										<option value="CP" ${boardCategory == 'CP' ? 'selected' : ''}>칭찬</option>
-	                	 		</select>
-							</div>
-							<div class="title-container ">
-								<input type="text" placeholder="제목을 입력해주세요" name="boardTitle">
-							</div>
-							 <div class="editor-container editor-container_document-editor editor-container_include-style" id="editor-container">
-								<div class="editor-container__toolbar" id="editor-toolbar"></div>
-								<div class="editor-container__editor-wrapper">
-									<div class="editor-container__editor" ><div id="editor"></div></div>
-								</div>
-							</div>
-						   </div>
-						   <textarea name="boardContent" style="display:none;"></textarea>
-						   <button>작성하기</button>
-				   </form>
+                	 <div class="card-body" >
+	                	                        <form method="post" action="${pageContext.request.contextPath}/board/addBoard" class="formBoard">
+                            <!-- CKEditor5 Start -->
+                            <div class="main-container">
+                                <div class="col-sm-6 d-flex justify-content-center">
+                                    <select name="divisionCode" id="division">
+                                        <option value="">없음</option>
+                                        <c:forEach var="dvs" items="${division.divisionList}">
+                                            <option value="${dvs.divisionCode}">${dvs.divisionCode}</option>
+                                        </c:forEach>
+                                    </select>
+                                    <select name="category" class="form-select" id="boardCategory">
+                                        <option value="SG" ${boardCategory == 'SG' ? 'selected' : ''}>건의사항</option>
+                                        <option value="DS" ${boardCategory == 'DS' ? 'selected' : ''}>토론</option>
+                                        <option value="CT" ${boardCategory == 'CT' ? 'selected' : ''}>잡답</option>
+                                        <option value="IN" ${boardCategory == 'IN' ? 'selected' : ''}>정보</option>
+                                        <option value="QA" ${boardCategory == 'QA' ? 'selected' : ''}>질문</option>
+                                        <option value="CP" ${boardCategory == 'CP' ? 'selected' : ''}>칭찬</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="title-container">
+                                    <input type="text" placeholder="제목을 입력해주세요" name="boardTitle">
+                                </div>
+
+                                <!-- CKEditor5 -->
+                                <div class="editor-container editor-container_classic-editor" id="editor-container">
+                                    <div class="editor-container__editor">
+                                        <textarea name="content" id="editor"></textarea>
+                                    </div>
+                                    <div class="editor_container__word-count" id="editor-word-count"></div>
+                                </div>
+
+                                <script>
+                                    ClassicEditor
+                                        .create(document.querySelector('#editor'))
+                                        .catch(error => {
+                                            console.error(error);
+                                        });
+                                </script>
+                            </div>
+
+                            <button type="submit">작성하기</button>
+                        </form>
 				<!-- CKEditor5 End -->
                 	 </div>
                 </div>
@@ -114,14 +121,15 @@
         <footer class="ltr:md:left-vertical-menu rtl:md:right-vertical-menu group-data-[sidebar-size=md]:ltr:md:left-vertical-menu-md group-data-[sidebar-size=md]:rtl:md:right-vertical-menu-md group-data-[sidebar-size=sm]:ltr:md:left-vertical-menu-sm group-data-[sidebar-size=sm]:rtl:md:right-vertical-menu-sm absolute right-0 bottom-0 px-4 h-14 group-data-[layout=horizontal]:ltr:left-0  group-data-[layout=horizontal]:rtl:right-0 left-0 border-t py-3 flex items-center dark:border-zink-600">
         	<c:import url="/WEB-INF/view/inc/footer.jsp"></c:import>    
         </footer>
+        
         <!-- End Footer -->
+ 
     </div>
 </div>
 <!-- End Main Content -->
 <c:import url="/WEB-INF/view/inc/customizerButton.jsp"></c:import>
 	<script src="https://cdn.ckeditor.com/ckeditor5/44.1.0/ckeditor5.umd.js" crossorigin></script>
 	<script src="https://cdn.ckeditor.com/ckeditor5/44.1.0/translations/ko.umd.js" crossorigin></script>
-	<script src="https://cdn.ckeditor.com/ckeditor5/44.1.0/classic/ckeditor.js"></script>
 	<script src="${pageContext.request.contextPath}/assets/js/boardScript.js"></script>
 <!-- CKeditor5 -->
 

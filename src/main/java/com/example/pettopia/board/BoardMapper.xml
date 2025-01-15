@@ -34,9 +34,10 @@
 	
 	<!-- 게시판 리스트 쿼리 /board/getBoardList 작업자 : 이준호 -->
 	<select id="selectBoardList" parameterType="Map" resultType="Map">
-    SELECT
+ SELECT
         ROW_NUMBER() OVER(ORDER BY b.create_datetime) AS boardNum,
-        b.board_no,
+        b.board_no AS boardNo,
+        b.board_writer_no AS boardWriterNo,
         b.board_title AS boardTitle,
         COUNT(bc.comment_no) AS commentCnt,
         CASE
