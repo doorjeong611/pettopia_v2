@@ -21,7 +21,7 @@ if (checkAll) {
     });
 }
 
-var perPage = 5;
+var perPage = 10;
 var editlist = false;
 
 //Table
@@ -38,8 +38,8 @@ var options = {
     pagination: true,
     plugins: [
         ListPagination({
-            left: 2,
-            right: 2
+            left: 1,
+            right: 1
         })
     ]
 };

@@ -50,7 +50,7 @@
                 </div>
                 <!-- Main content -->
                 
-                <div class="card" id="customerList">
+                <div class="card" id="documentList">
                     <div class="card-body">
                         <div class="grid grid-cols-1 gap-5 mb-5 xl:grid-cols-2">
                             <div>
@@ -81,23 +81,8 @@
                                         <th class="sort px-1 py-2.5 font-semibold border-b border-slate-200 ltr:text-center" style="width: 100px;" data-sort="updateDatetime">작성일</th>
                                     </tr>
                                 </thead>
-                                <tbody class="list form-check-all"><tr>
-                                        <th class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500" scope="row">
-                                            <input class="border rounded-sm appearance-none cursor-pointer size-4 bg-slate-100 border-slate-200 dark:bg-zink-600 dark:border-zink-500 checked:bg-custom-500 checked:border-custom-500 dark:checked:bg-custom-500 dark:checked:border-custom-500 checked:disabled:bg-custom-400 checked:disabled:border-custom-400" type="checkbox" name="chk_child">
-                                        </th>
-                                        <td class="px-1 py-2.5 border-y border-slate-200 dark:border-zink-500 text-center docNo" style="display:none;"><a href="javascript:void(0);" class="fw-medium link-primary id">1</a></td>
-                                        <td class="px-1 py-2.5 border-y border-slate-200 dark:border-zink-500 text-center docNo" style="width: 50px;">1</td>
-                                        <td class="px-1 py-2.5 border-y border-slate-200 dark:border-zink-500 text-center docTitle">결재 문서 기안 제목 테스트</td>
-                                        <td class="px-1 py-2.5 border-y border-slate-200 dark:border-zink-500 text-center docType">기안서</td>
-                                        <td class="px-1 py-2.5 border-y border-slate-200 dark:border-zink-500 text-center docWriterName">김동현 / 인사팀</td>
-                                        <td class="px-1 py-2.5 border-y border-slate-200 dark:border-zink-500 text-center approvalStatus">
-                                        	<span class="px-2.5 py-0.5 inline-block text-xs font-medium rounded border bg-green-100 border-transparent text-green-500 text-uppercase">
-                                        		대기
-                                        	</span>
-                                        </td>
-                                        <td class="px-1 py-2.5 border-y border-slate-200 dark:border-zink-500 text-center initApproversName">송혜교 / 전략팀</td>
-                                        <td class="px-1 py-2.5 border-y border-slate-200 dark:border-zink-500 text-center updateDatetime">06 Apr, 2021</td>
-                                    </tr>
+                                <tbody class="list form-check-all" id="documentBody">
+                                	
                             	</tbody>
                             </table>
                             <div class="noresult" style="display: none">
@@ -155,7 +140,7 @@
 <!-- Sweet Alerts js -->
 <script src="${pageContext.request.contextPath}/assets/libs/sweetalert2/sweetalert2.min.js"></script>
 <!-- listjs init -->
-<script src="${pageContext.request.contextPath}/assets/js/pages/listjs.init.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/pages/document-listjs.init.js"></script>
 
 <!--dashboard ecommerce init js-->
 <script src="${pageContext.request.contextPath}/assets/js/pages/dashboards-ecommerce.init.js"></script>
@@ -164,22 +149,62 @@
 <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
 
 <script>
-	$.ajax({
-	    method: "get",
-	    url: "/pettopia/getDocumnetList",
-	    data: { 
-	        empNo: 'empNoValue',
-	        docType: 'docTypeValue'
-	    },
-	})
-	.done(function(result) {
-	
-	    $(result).each(function(index, item) {
-	    });
-	})
-	.fail(function() {
-		alert('결재문서 조회 실패')
-	});
+$.ajax({
+    method: "get",
+    url: "/pettopia/getDocumnetList",
+    data: { 
+        empNo: 'empNo', 
+        docType: 'docType'
+    },
+})
+.done(function(result) {
+    console.log(result); // 결과를 콘솔에 출력하여 확인
+
+    // 결과가 정상적으로 반환되면, documentBody에 테이블 행을 추가
+    if (result && result.length > 0) {
+        // 각 문서 항목에 대해 반복
+        $(result).each(function(index, item) {
+            console.log(item); // 각 문서 항목을 콘솔에 출력하여 확인
+
+            // 테이블 행을 생성
+            var newRow = $('<tr></tr>');
+
+            // 체크박스 열 추가
+            newRow.append('<th class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500" scope="row">' +
+                '<input class="border rounded-sm appearance-none cursor-pointer size-4 bg-slate-100 border-slate-200 checked:bg-custom-500 checked:border-custom-500 checked:disabled:bg-custom-400 checked:disabled:border-custom-400" type="checkbox" name="chk_child"></th>');
+
+            // 문서 번호, 제목, 작성자 등 추가
+            newRow.append('<td class="px-1 py-2.5 border-y border-slate-200 dark:border-zink-500 text-center docNo" style="display:none;"><a href="javascript:void(0);" class="fw-medium link-primary id">' + item.docNo + '</a></td>');
+            newRow.append('<td class="px-1 py-2.5 border-y border-slate-200 dark:border-zink-500 text-center docNo" style="width: 50px;">' + item.docNo + '</td>');
+            newRow.append('<td class="px-1 py-2.5 border-y border-slate-200 dark:border-zink-500 text-center docTitle">' + item.docTitle + '</td>');
+            newRow.append('<td class="px-1 py-2.5 border-y border-slate-200 dark:border-zink-500 text-center docType">' + (item.docType === 'D' ? '기안서' : '연차 신청서') + '</td>');
+            newRow.append('<td class="px-1 py-2.5 border-y border-slate-200 dark:border-zink-500 text-center docWriterName">' + item.docWriterName + ' / ' + item.writerDeptName + '</td>');
+
+            // 결재 상태 (P: 대기, V: 완료 등)
+            var approvalStatus = item.approvalStatus === 'P' ? '대기' : '완료';
+            newRow.append('<td class="px-1 py-2.5 border-y border-slate-200 dark:border-zink-500 text-center approvalStatus">' +
+                '<span class="px-2.5 py-0.5 inline-block text-xs font-medium rounded border bg-green-100 border-transparent text-green-500 text-uppercase">' +
+                approvalStatus + '</span></td>');
+
+            // 결재자 이름
+            newRow.append('<td class="px-1 py-2.5 border-y border-slate-200 dark:border-zink-500 text-center initApproversName">' + item.initApproversName + '</td>');
+
+            // 업데이트 날짜
+            newRow.append('<td class="px-1 py-2.5 border-y border-slate-200 dark:border-zink-500 text-center updateDatetime">' + new Date(item.updateDatetime).toLocaleString() + '</td>');
+
+            // #documentBody에 새로운 행 추가
+            $('#documentBody').append(newRow);
+        });
+    } else {
+        // 만약 데이터가 없다면 "No Result" 메시지 표시
+        $(".noresult").show();
+    }
+})
+.fail(function() {
+    alert('결재문서 조회 실패');
+});
+
+
 </script>
 
 </body>
