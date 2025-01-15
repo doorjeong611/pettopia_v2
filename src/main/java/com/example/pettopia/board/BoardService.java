@@ -23,7 +23,7 @@ public class BoardService {
 	@Autowired BoardMapper boardMapper;
 	@Autowired CommentMapper commentMapper;
 	
-// 부서 번호 카테고리 작업자 : 김문정
+// 부서 번호 카테고리 작업자 : 이준호
 	public List<Division> getDivisionList(){
 			
 			// log.debug(TeamColor.KMJ+"[NoticeService - getDivisionList]");
