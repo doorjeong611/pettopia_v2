@@ -5,7 +5,8 @@ Website: https://themesdesign.in/
 Contact: Themesdesign@gmail.com
 File: Form file upload Js File
 */
-// Dropzone 초기화
+// Dropzone 초기화'
+/*
 var dropzonePreviewNode = document.querySelector("#dropzone-preview-list");
 if (dropzonePreviewNode) {
     var previewTemplate = dropzonePreviewNode.parentNode.innerHTML;
@@ -27,7 +28,7 @@ if (dropzonePreviewNode) {
             console.error("Error uploading:", response);
         }
     });
-}
+}*/
 
 
 
