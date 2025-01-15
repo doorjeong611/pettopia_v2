@@ -72,22 +72,52 @@ public class MessageController {
         return "message/messageNote"; 
     }
 
-    // 오자윤 : /message/messageNote/employees 모달창, 직원목록 AJAX로 가져옴
-    @GetMapping("message/messageNote/employees")
-    public ResponseEntity<List<Map<String, Object>>> getEmployees(@RequestParam(value = "empStatus", defaultValue = "E") String empStatus) {
-    	
-        List<Map<String, Object>> employeeList = messageService.getEmployeeList(empStatus);
-        log.debug(TeamColor.OJY + "employeeList------>" + employeeList + TeamColor.RESET);
-        return ResponseEntity.ok(employeeList); // 직원 목록을 JSON 형태로 반환
-    }
-    
-	// 오자윤 : /employee/messageNote 휴지통 페이지
+	// 오자윤 : /employee/messageBin 휴지통 페이지
 	@GetMapping("message/messageBin")
-	public String messageBin(Model model) {
+	public String messageBin(Authentication auth, Model model) {
+		// 시큐리티 empNo 가져오기
+		EmpUserDetails empUserDetails = (EmpUserDetails)auth.getPrincipal();
+		log.debug(TeamColor.OJY + "empUserDetails------>" + empUserDetails + TeamColor.RESET);
+		String empNo = empUserDetails.getUsername();
+	
+		// 쪽지 목록 조회
+		List<Map<String, Object>> messageList = messageService.getMessageList(empNo);
+		model.addAttribute("messageList", messageList);
+		log.debug(TeamColor.OJY + "messageList------>" + messageList + TeamColor.RESET);
 		
 		return "message/messageBin";
-		
 	}
+	
+	// 오자윤 : /employee/messageBin 휴지통 영구삭제 -->
+	@PostMapping("message/messageDelete")
+	public String messageBin(@RequestParam List<Integer> messageNo, Authentication auth, Model model) {
+		
+		// 시큐리티 empNo 가져오기
+		EmpUserDetails empUserDetails = (EmpUserDetails)auth.getPrincipal();
+		log.debug(TeamColor.OJY + "empUserDetails------>" + empUserDetails + TeamColor.RESET);
+		String empNo = empUserDetails.getUsername();
+		
+		// 휴지통 영구삭제
+		messageService.deleteMessage(messageNo);
+		log.debug(TeamColor.OJY + "messageNo------>" + messageNo + TeamColor.RESET);
+		
+		// 쪽지 목록 조회
+		List<Map<String, Object>> messageList = messageService.getMessageList(empNo);
+		model.addAttribute("messageList", messageList);
+		return "redirect:/message/messageBin";
+	}
+	
+	// 오자윤 : /employee/messageBin 메시지 보관함 복구 -->
+	@PostMapping("message/messageRestore")
+	public String messageRestore(@RequestParam List<Long> messageNo) {
+		log.debug(TeamColor.OJY + "messageNo------>" + messageNo + TeamColor.RESET);
+		 
+		// 쪽지보관함 복원 
+		messageService.restoreMessage(messageNo);
+		
+		return "message/messageBin";
+	}
+	
 	
 	// 오자윤 : /employee/messageOne 쪽지 상세보기 페이지
 	@GetMapping("message/messageOne")

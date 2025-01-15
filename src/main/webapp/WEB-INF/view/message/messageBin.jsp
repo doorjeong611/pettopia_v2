@@ -42,7 +42,7 @@
                     </div>
                     <ul class="flex items-center gap-2 text-sm font-normal shrink-0">
                         <li class="relative before:content-['\ea54'] before:font-remix ltr:before:-right-1 rtl:before:-left-1  before:absolute before:text-[18px] before:-top-[3px] ltr:pr-4 rtl:pl-4 before:text-slate-400 dark:text-zink-200">
-                            <a href="#!" class="text-slate-400 dark:text-zink-200">메인 화면</a>
+                            <a href="#!" class="text-slate-400 dark:text-zink-200">휴지통</a>
                             
                         </li>
                         <li class="text-slate-700 dark:text-zink-100">
@@ -56,6 +56,10 @@
                             <div class="card-body flex flex-col" style="overflow: visible;">
                                <p class="mb-2 text-slate-500 dark:text-zink-200">
 								    <a href="${pageContext.request.contextPath}/message/messageNote" class="text-blue-500 hover:underline">쪽지쓰기</a>
+								    <span class="mx-2 border-l border-slate-300 dark:border-zink-500 h-5"></span> <!-- 흐릿한 선 -->
+								    <form action="${pageContext.request.contextPath}/message/messageRestore" method="post" style="display:inline;">
+                                      <!-- 작성 예정 -->
+                                        </form>
 								</p>
 	                             <div class="grid items-center grid-cols-1 gap-4 2xl:grid-cols-12">
                                     <div class="2xl:col-span-5">
@@ -73,18 +77,17 @@
                                     <div class="flex items-center gap-2 2xl:col-span-4 2xl:col-start-9">
                                         <div class="relative grow">
                                             <input type="text" id="searchResultList" value="" class="ltr:pl-8 rtl:pr-8 search form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="메일 검색" autocomplete="off">
-                                            
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="search" class="lucide lucide-search inline-block size-4 absolute ltr:left-2.5 rtl:right-2.5 top-2.5 text-slate-500 dark:text-zink-200 fill-slate-100 dark:fill-zink-600"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
                                         </div>
                                     </div><!--end col-->
                                 </div><!--end grid-->
                             </div>
-                <div class="!pt-0 card-body flex-grow overflow-y-auto">
+                			<div class="!pt-0 card-body flex-grow overflow-y-auto">
                                 <!-- 보낸 사람 시작하는 부분 -->
                                     <div class="overflow-x-auto">
                                     	<br>
                                         <!-- 테이블 시작 부분 -->
-                                       <form action="${pageContext.request.contextPath}/message/messageBin" method="post">
+                                       <form id="messageForm" action="${pageContext.request.contextPath}/message/messageDelete" method="post">
                                        <table class="w-full whitespace-nowrap">
 							    		<tr>
 								        	<td style="padding: 10px;">
@@ -92,22 +95,22 @@
 									            <span class="text-slate-500 dark:text-zink-200" style="margin-right: 24px;">읽음</span>
 									            <span class="text-slate-500 dark:text-zink-200" style="margin-right: 50px;">보낸사람</span>
 									            <span class="text-slate-500 dark:text-zink-200" style="margin-right: 0px;"></span>
-							           	 		<span class="text-slate-500 dark:text-zink-200" style="margin-left: 1000px;">날짜</span>
+							           	 		<span class="text-slate-500 dark:text-zink-200" style="margin-left: 980px;">날짜</span>
 								        	</td>
 								    	</tr>
 							   		    <tbody class="elmLoader" id="mail-list">
 								        <!-- 메일리스트 시작부분 -->
 								        <c:forEach var="message" items="${messageList}">
-								        <c:if test="${message.messageBin == 0}">
+								        <c:if test="${message.messageBin == '1'}">
 								            <tr>
-								                <td class="px-3.5 py-2.5 border-y text-slate-500" style="padding: 10px;">
-								                    <input type="hidden" class="messageNo" value="${message.messageNo}" />
-								                	<input style="margin-left: 8px;" type="checkbox" class="moveToBin" name="messageNo" value="${message.messageNo}" /> 
-								                    <span style="margin-left: 37px; display: inline-block;">${message.messageState}</span>
-								                    <span style="margin-left: 37px; display: inline-block; width: 300px;">${message.senderName}</span> <!-- 보낸 사람 -->
-								                    <span style="margin-left: 50px; display: inline-block; width: 300px;">${message.messageTitle}</span> <!-- 제목 -->
-								                   <span style="margin-left: 395px; display: inline-block; width: 150px;">${message.createDatetime}</span> <!-- 날짜 -->
-								                </td>
+								              <td class="px-3.5 py-2.5 border-y text-slate-500" style="padding: 10px;">
+								                <input type="hidden" class="messageNo" value="${message.messageNo}" />
+											    <input style="margin-left: 19px;"  type="checkbox" class="deleteMessage" name="messageNo" value="${message.messageNo}" /> 
+											    <span style="margin-left: 48px; display: inline-block;">${message.messageState}</span>
+											    <span style="margin-left: 38px; display: inline-block; width: 300px;">${message.senderName}</span> <!-- 보낸 사람 -->
+											    <a href="${pageContext.request.contextPath}/message/messageOne?messageNo=${message.messageNo}" style="margin-left: 38px; display: inline-block; width: 300px;">${message.messageTitle}</a>
+											    <span style="margin-left: 395px; display: inline-block; width: 150px;">${message.createDatetime}</span> <!-- 날짜 -->
+											</td>
 								            </tr>
 								            </c:if>
 								        </c:forEach>
@@ -199,18 +202,19 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     document.querySelector('.deleteMessages').addEventListener('click', function() {
-        const checkboxes = document.querySelectorAll('.moveToBin:checked'); // 체크된 체크박스 선택
+        const checkboxes = document.querySelectorAll('input[name="messageNo"]:checked'); // 체크된 체크박스 선택
 
         if (checkboxes.length === 0) {
-            alert('삭제할 메시지를 선택하세요.'); // 선택된 메시지가 없을 경우 사용자에게 알림
-            return;
+            alert('삭제할 쪽지를 선택하세요.'); // 선택된 메시지가 없을 경우 사용자에게 알림
+            return; // 체크된 메시지가 없으면 함수 종료
         }
 
         // 확인 대화상자
-        if (confirm('선택한 메시지를 삭제하시겠습니까?')) {
-            document.querySelector('form').submit(); // 폼 제출
+        if (confirm('선택한 쪽지를 영구 삭제 하시겠습니까?')) {
+        	 document.getElementById('messageForm').submit(); // 폼 
         }
     });
 });
+
 </script>
 </html>

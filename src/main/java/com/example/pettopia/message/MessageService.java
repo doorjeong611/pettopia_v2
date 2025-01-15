@@ -1,5 +1,6 @@
 package com.example.pettopia.message;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +11,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class MessageService {
 	@Autowired MessageMapper messageMapper;
+	
+	// 오자윤 : /employee/messageBin 쪽지보관함으로 복구하기
+	public Integer restoreMessage(List<Long> messageNo) {
+		return messageMapper.restoreMessage(messageNo);
+	}
+	
+	// 오자윤 : /employee/messageBin 휴지통 영구삭제 -->
+	public Integer deleteMessage(List<Integer> messageNo) {
+		return messageMapper.deleteMessage(messageNo);
+	}
 	
 	// 오자윤 : /employee/messageNote (모달)직원 조회 -->
 	public List<Map<String, Object>> getEmployeeList(String empStatus) {
