@@ -104,34 +104,36 @@
                             </thead>
                             <tbody>
                             
-                            	 <c:forEach var="bl" items="${boardList}">
-                            	 <c:if test="${bl.commentCnt==0}">
-                            	 	<tr>
-                                        <td class="text-center">${bl.boardNum}</td>
-                                        <td class="text-center"><a href="#">[${bl.boardHeader}]&nbsp;${bl.boardTitle}</a></td>
-                                        <td class="text-center">${bl.boardView}</td>
-                                        <td class="text-center">${bl.boardLike}</td>
-                                        <td class="text-center" >${bl.createDate}</td>
-                                    	<td class="text-center"><a href="#">삭제</a></td>
-                                 	</tr>
-                            	 </c:if>
-                            	 <c:if test="${bl.commentCnt!=0}">
-                            	 	<tr>
-                                        <td class="text-center">${bl.boardNum}</td>
-                                        <td class="text-center"><a href="#">[${bl.boardHeader}]&nbsp;${bl.boardTitle}&nbsp;[${bl.commentCnt}]</a></td>
-                                        <td class="text-center">${bl.boardView}</td>
-                                        <td class="text-center">${bl.boardLike}</td>
-                                        <td class="text-center" >${bl.createDate}</td>
-                                    	<td class="text-center"><a href="#">삭제</a></td>
-                                 	</tr>
-                            	 </c:if>
-                            	 </c:forEach>
+	                           <c:forEach var="bl" items="${boardList}">
+								    <tr>
+								        <td class="text-center">${bl.boardNum}</td>
+								        <td class="text-center">
+								            <a href="#">[${bl.boardHeader}]&nbsp;${bl.boardTitle}</a>
+								            <!-- 댓글 수가 0이 아니면 댓글 수 표시 -->
+								            <c:if test="${bl.commentCnt != 0}">
+								                &nbsp;[${bl.commentCnt}]
+								            </c:if>
+								        </td>
+								        <td class="text-center">${bl.boardView}</td>
+								        <td class="text-center">${bl.boardLike}</td>
+								        <td class="text-center">${bl.createDate}</td>
+								        
+								        <!-- 로그인한 사용자(empNo)와 게시물 작성자(bl.boardWriterNo)가 같은 경우에만 삭제 버튼 표시 -->
+								        <c:if test="${bl.boardWriterNo == empNo}">
+								            <td class="text-center"><a href="${pageContext.request.contextPath}/board/removeBoard?boardNo=${bl.boardNo}">삭제</a></td>
+								        </c:if>
+								        
+								        <!-- 작성자가 아닌 경우 빈 칸 표시 -->
+								        <c:if test="${bl.boardWriterNo != empNo}">
+								            <td class="text-center">&nbsp;</td>
+								        </c:if>
+								    </tr>
+								</c:forEach>
 							</tbody>
                         </table>
                     </div>
                 </div>
-               </div>	  
-                   
+               </div>	 
                 </div>
        		</div>
             </div>
