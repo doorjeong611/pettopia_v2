@@ -59,6 +59,11 @@ public class DocumentService {
 		return documentMapper.selectEmpSearchByDocument(empName);
 	}
 	
+	// documentList → 결재 문서 리스트 조회
+	public List<Map<String, Object>> getDocumnetList(String empNo, String docType) {
+		return documentMapper.selectDocumentList(empNo, docType);
+	}
+	
 	
 	
 	

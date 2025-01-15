@@ -33,5 +33,8 @@ public interface DocumentMapper {
 	
 	// addDocument → 결재자 지정할 때 직원 검색
 	List<Map<String, Object>> selectEmpSearchByDocument(String empName);
+	
+	// documentList → 문서 리스트 조회
+	List<Map<String, Object>> selectDocumentList(String empNo, String docType);
 
 }
