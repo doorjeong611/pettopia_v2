@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.pettopia.vo.Department;
@@ -35,5 +36,12 @@ public class DocumentRest {
 	public List<Map<String, Object>> getEmpSearchByDocument(@PathVariable String empName) {
 		return documentService.getEmpSearchByDocument(empName);
 	}
+	
+	@GetMapping("/getDocumnetList")
+	public List<Map<String, Object>> getDocumnetList(@RequestParam(required = false) String empNo, 
+													 @RequestParam(required = false) String docType) {
+		return documentService.getDocumnetList(empNo, docType);
+	}
+	
 	
 }

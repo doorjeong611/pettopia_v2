@@ -15,6 +15,8 @@ import com.example.pettopia.vo.Document;
 import com.example.pettopia.vo.DocumentApprovers;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 
@@ -54,6 +56,13 @@ public class DocumentController {
 		
 		return "redirect:/document/documentList";
 	}
+	
+	// documentList Form
+	@GetMapping("/document/documentList")
+	public String getDocumentList() {
+		return "document/documentList";
+	}
+	
 	
 
 }
