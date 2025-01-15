@@ -1,6 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.pettopia.roominfo.RoomMapper">
+<!-- 전체 객실 및 이미지 조회 -->
+<select id="selectRoomWithImages" resultType="java.util.Map">
+    SELECT 
+        ri.room_no AS roomNo,
+        ri.room_name AS roomName,
+        ri.room_type AS roomType,
+        ri.room_capacity AS roomCapacity,
+        ri.room_desc AS roomDesc,
+        ri.price_per_night AS pricePerNight,
+        ri.create_datetime AS createDatetime,
+        ri.update_datetime AS updateDatetime,
+        rimg.file_name AS fileName,
+        rimg.file_ext AS fileExt
+    FROM 
+        room_info ri
+    LEFT JOIN 
+        room_img rimg
+    ON 
+        ri.room_no = rimg.room_no
+</select>
 <!-- 객실 등록 -->
  <insert id="insertRoomInfo" parameterType="com.example.pettopia.vo.RoomInfo">
  		<selectKey resultType="Integer" keyProperty="roomNo" order="AFTER">

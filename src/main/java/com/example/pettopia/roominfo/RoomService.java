@@ -93,6 +93,10 @@ public class RoomService {
         return fileName.substring(dotIndex + 1);
     }
     
+    public List<Map<String, Object>> getRoomListWithImages() {
+        return roomMapper.selectRoomWithImages();
+    }
+    
     
     // 객실 등록 (이미지 갖고 오려다 실패한 버전)
 //    public void addRoom(RoomInfo roomInfo, String path) {
