@@ -35,44 +35,24 @@ public class RoomController {
 			return "room/addRoom";
 		}
 
-		@PostMapping("/room/addRoom")
-		public String addRoom(@ModelAttribute RoomInfo roomInfo,
-		                      @RequestParam("roomImg") MultipartFile roomImg,
-		                      RedirectAttributes redirectAttributes) {
-			log.debug(TeamColor.WJ + "addRoom 호출됨 " + TeamColor.RESET);
-		    try {
-		        // 객실 정보 등록
-		        int insertRoomRow = roomService.addRoomInfo(roomInfo); // 방 등록 후 방 번호 반환
-		        log.debug(TeamColor.WJ + "insertRoomRow =======> " + insertRoomRow + TeamColor.RESET);
-		        log.debug(TeamColor.WJ + "roomNo =======> " + roomInfo.getRoomNo() + TeamColor.RESET);
-		        
-		        // 이미지 처리
-		        if (!roomImg.isEmpty()) {
-		            RoomImg roomImage = new RoomImg();
-		            roomImage.setRoomNo(roomInfo.getRoomNo()); // 등록된 방 번호 설정
-		            log.debug(TeamColor.WJ + "roomImgNo =======> " + roomImage.getRoomNo() + TeamColor.RESET);
-		            roomImage.setOriginFileName(roomImg.getOriginalFilename());
-		            roomImage.setFileName(roomImg.getOriginalFilename()); // 저장할 파일명 설정
-		            roomImage.setFileExt(getFileExtension(roomImg.getOriginalFilename()));
-		            roomImage.setFileType(roomImg.getContentType());
+		// 객실 등록 처리
+	    @PostMapping("/room/addRoom")
+	    public String addRoom(@ModelAttribute RoomInfo roomInfo,
+	                          @RequestParam("roomImg") MultipartFile roomImg,
+	                          HttpSession session,
+	                          RedirectAttributes redirectAttributes) {
+	        log.debug(TeamColor.WJ + "addRoom 호출됨 " + TeamColor.RESET);
+	        try {
+	            String uploadPath = session.getServletContext().getRealPath("/upload/"); // 파일 저장 경로
+	            roomService.addRoomWithImage(roomInfo, roomImg, uploadPath); // 서비스 호출
 
-		            // 이미지 등록
-		            roomService.addRoomImg(roomImage);
-		        }
-
-		        redirectAttributes.addFlashAttribute("successMessage", "객실이 성공적으로 등록되었습니다!");
-		    } catch (Exception e) {
-		        redirectAttributes.addFlashAttribute("errorMessage", "객실 등록 중 오류가 발생했습니다.");
-		        log.error("Error occurred during room registration: ", e);
-		    }
-		    return "redirect:/room/getRoomList";
-		}
-
-
-		// 파일 확장자를 가져오는 메서드
-		private String getFileExtension(String fileName) {
-		    return fileName.substring(fileName.lastIndexOf('.') + 1);
-		}
+	            redirectAttributes.addFlashAttribute("successMessage", "객실이 성공적으로 등록되었습니다!");
+	        } catch (Exception e) {
+	            redirectAttributes.addFlashAttribute("errorMessage", "객실 등록 중 오류가 발생했습니다.");
+	            log.error("Error occurred during room registration: ", e);
+	        }
+	        return "redirect:/room/getRoomList";
+	    }
 		
 		// 객실 등록 처리 (text만 저장 가능)
 //	    @PostMapping("/room/addRoom")

@@ -49,6 +49,50 @@ public class RoomService {
         return roomMapper.insertRoomImg(roomImg);
     }
     
+ // 객실 정보와 이미지를 등록하는 서비스 메서드
+    public void addRoomWithImage(RoomInfo roomInfo, MultipartFile roomImg, String uploadPath) throws Exception {
+        // 1. 객실 정보 등록
+        int roomInsertResult = addRoomInfo(roomInfo); // DB에 객실 정보 저장
+        if (roomInsertResult == 0) {
+            throw new RuntimeException("객실 등록 실패");
+        }
+        log.debug(TeamColor.WJ + "RoomNo ========> " + roomInfo.getRoomNo() + TeamColor.RESET);
+
+        // 2. 이미지 처리
+        if (roomImg != null && !roomImg.isEmpty()) {
+            RoomImg roomImage = new RoomImg();
+            roomImage.setRoomNo(roomInfo.getRoomNo()); // 등록된 객실 번호 설정
+            roomImage.setOriginFileName(roomImg.getOriginalFilename());
+
+            // 고유 파일명 생성
+            String fileName = UUID.randomUUID().toString() + "." + getFileExtension(roomImg.getOriginalFilename());
+            roomImage.setFileName(fileName);
+            roomImage.setFileExt(getFileExtension(roomImg.getOriginalFilename()));
+            roomImage.setFileType(roomImg.getContentType());
+
+            // 이미지 정보 DB 저장
+            int imgInsertResult = addRoomImg(roomImage);
+            if (imgInsertResult == 0) {
+                throw new RuntimeException("이미지 등록 실패");
+            }
+            log.debug(TeamColor.WJ + "FileName ========> " + roomImage.getFileName() + TeamColor.RESET);
+
+            // 실제 파일 저장
+            File saveFile = new File(uploadPath, fileName);
+            roomImg.transferTo(saveFile);
+            log.debug(TeamColor.WJ + "Path ========> " + saveFile.getAbsolutePath() + TeamColor.RESET);
+        }
+    }
+
+    // 파일 확장자 추출 메서드
+    private String getFileExtension(String fileName) {
+        int dotIndex = fileName.lastIndexOf('.');
+        if (dotIndex == -1) {
+            return ""; // 확장자가 없는 경우
+        }
+        return fileName.substring(dotIndex + 1);
+    }
+    
     
     // 객실 등록 (이미지 갖고 오려다 실패한 버전)
 //    public void addRoom(RoomInfo roomInfo, String path) {
