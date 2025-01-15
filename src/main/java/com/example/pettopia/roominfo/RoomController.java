@@ -42,6 +42,7 @@ public class RoomController {
 	                          HttpSession session,
 	                          RedirectAttributes redirectAttributes) {
 	        log.debug(TeamColor.WJ + "addRoom 호출됨 " + TeamColor.RESET);
+	        log.debug(TeamColor.WJ + "roomType 길이 =======>" + roomInfo.getRoomType().length() + TeamColor.RESET); 
 	        try {
 	            String uploadPath = session.getServletContext().getRealPath("/upload/"); // 파일 저장 경로
 	            roomService.addRoomWithImage(roomInfo, roomImg, uploadPath); // 서비스 호출
@@ -66,17 +67,6 @@ public class RoomController {
 //	        }
 //	        return "redirect:/room/getRoomList";
 //	    }
-
-		
-		// 객실 상세보기
-//		@GetMapping("/room/getRoomOne")
-//	    public String getRoomOne(Model model, Integer roomNo) {
-//			Map<String, Object> roomOne = roomService.selectRoom(roomNo);
-//	        log.debug(TeamColor.WJ+ "roomNo =======> " + roomNo.toString() + TeamColor.RESET);
-//	        
-//	        model.addAttribute("roomOne", roomOne);
-//	        return "room/roomOne";
-//	    }
 		
 		// 객실 상세보기
 		@GetMapping("/room/getRoomOne")
@@ -88,7 +78,7 @@ public class RoomController {
 		    Map<String, Object> roomOne = roomService.selectRoomOne(roomNo);
 
 		    // roomOne 데이터 확인
-		    log.debug("roomOne =======> " + roomOne);
+		    log.debug(TeamColor.WJ + "roomOne =======> " + roomOne + TeamColor.RESET);
 
 		    // 모델에 데이터 추가
 		    model.addAttribute("roomOne", roomOne);
@@ -96,7 +86,7 @@ public class RoomController {
 		}
 
 		
-		// Controller
+		// 객실 리스트에 이미지 뿌려주기
 		@GetMapping("/room/getRoomList")
 		public String getRoomList(Model model) {
 		    List<Map<String, Object>> roomListImg = roomService.getRoomListWithImages(); 
