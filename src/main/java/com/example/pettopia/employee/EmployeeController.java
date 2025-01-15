@@ -1,6 +1,7 @@
 package com.example.pettopia.employee;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,7 +84,7 @@ public class EmployeeController {
 	}
 	
 
-	
+	// 메일로 보낼 비밀번호 변경 경로 -> 시큐리티 적용으로 바로 로그인으로 연결되므로 변경하기
 	@PostMapping("/changePassword")
 	public String changePassword(@RequestParam String empNo, @RequestParam String empPw, Model model) {
 		
@@ -93,8 +94,18 @@ public class EmployeeController {
 		return "common/changePassword";
 	}
 	
+	// 직원 목록
 	@GetMapping("/employeeList")
-	public String getMethodName() {
+	public String employeeList(Model model) {
+		
+		log.debug(TeamColor.KMJ+"[EmployeeController - Get employeeList()]");
+		
+		// 직원 목록 가져오기
+		List<Map<String, Object>> empList = employeeService.getEmployeeList();
+		log.debug(TeamColor.KMJ + "empList [0]" + empList.get(0).toString());
+		
+		model.addAttribute("empList", empList);
+		
 		return "employee/employeeList";
 	}
 	

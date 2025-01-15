@@ -7,7 +7,7 @@ Contact: Themesdesign@gmail.com
 File: apps hr employee init js
 */
 
-
+// 이미지 첨부시 미리 보기
 if (document.querySelector("#profile-img-file-input")) {
     document.querySelector("#profile-img-file-input").addEventListener("change", function () {
         var preview = document.querySelector(".user-profile-image");

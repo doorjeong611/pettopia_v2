@@ -3,6 +3,7 @@ package com.example.pettopia.common;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,7 +24,14 @@ public class LoginController {
 	
 
 	@GetMapping("/loginForm")
-	public String login() {
+	public String login(Authentication authentication) {
+		
+		if (authentication != null && authentication.isAuthenticated()) {
+            // 이미 로그인된 사용자가 로그인 페이지로 접근하려고 하면 홈 페이지로 리다이렉트
+            return "redirect:/common/petTopiaMain";
+        }
+		
+		
 		return "login/login";
 	}
 	

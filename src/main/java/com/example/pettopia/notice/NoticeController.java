@@ -57,44 +57,44 @@ public class NoticeController {
 		log.debug(TeamColor.KMJ+ "divisionList : " + divisionList.toString());
 		
 		// 부서명 수정
-		for(int i=0; i<divisionList.size(); i++) {
-			String divisionNames = divisionList.get(i).getDivisionName();
-			
-			int dIndex = divisionNames.indexOf("부서"); // 부서명까지만 자르기 위해 '부서'의 위치 index 찾기.
-			
-			if(dIndex != -1){ // 전체 공지 제외
-				String dName = divisionNames.substring(0, dIndex);
-//				log.debug(TeamColor.KMJ + "부서명 : " + dName);
-				divisionList.get(i).setDivisionName(dName);
-				
-			}
-			
-		}
+//		for(int i=0; i<divisionList.size(); i++) {
+//			String divisionNames = divisionList.get(i).getDivisionName();
+//			
+//			int dIndex = divisionNames.indexOf("부서"); // 부서명까지만 자르기 위해 '부서'의 위치 index 찾기.
+//			
+//			if(dIndex != -1){ // 전체 공지 제외
+//				String dName = divisionNames.substring(0, dIndex);
+////				log.debug(TeamColor.KMJ + "부서명 : " + dName);
+//				divisionList.get(i).setDivisionName(dName);
+//				
+//			}
+//			
+//		}
 
 		// 전체 공지사항 가져오기
 		List<Map<String, Object>> noticeList = noticeService.getNoticeList(paramMap);
 		log.debug(TeamColor.KMJ+ "noticeList : " + noticeList.toString() + TeamColor.RESET);
 		
 		// 부서 이름 수정 : 부서명 [부서(부서 영어명)]부분 삭제하기.
-		List<String> divisionNames = new ArrayList<>(); 
-		for(int i=0; i<noticeList.size(); i++) {
-			divisionNames.add((String)noticeList.get(i).get("divisionName"));
-//			log.debug((String)noticeList.get(i).get("divisionName"));
-		}		
-		
-		for(int i=0; i<divisionNames.size(); i++) {
-			
-			int dIndex = divisionNames.get(i).indexOf("부서"); // 부서명까지만 자르기 위해 '부서'의 위치 index 찾기.
-			
-			if(dIndex != -1){ // 전체 공지 제외
-				String dName = divisionNames.get(i).substring(0, dIndex);
-//				log.debug(TeamColor.KMJ + dName);
-				noticeList.get(i).put("divisionName", dName);
-				
-			}
-			
-		}
-		log.debug(TeamColor.KMJ+ "noticeList 부서명 수정 후 : " + noticeList.toString() + TeamColor.RESET);
+//		List<String> divisionNames = new ArrayList<>(); 
+//		for(int i=0; i<noticeList.size(); i++) {
+//			divisionNames.add((String)noticeList.get(i).get("divisionName"));
+////			log.debug((String)noticeList.get(i).get("divisionName"));
+//		}		
+//		
+//		for(int i=0; i<divisionNames.size(); i++) {
+//			
+//			int dIndex = divisionNames.get(i).indexOf("부서"); // 부서명까지만 자르기 위해 '부서'의 위치 index 찾기.
+//			
+//			if(dIndex != -1){ // 전체 공지 제외
+//				String dName = divisionNames.get(i).substring(0, dIndex);
+////				log.debug(TeamColor.KMJ + dName);
+//				noticeList.get(i).put("divisionName", dName);
+//				
+//			}
+//			
+//		}
+//		log.debug(TeamColor.KMJ+ "noticeList 부서명 수정 후 : " + noticeList.toString() + TeamColor.RESET);
 
 		Map<String, Object> noList = new HashMap<>();
 		noList.put("divisionList", divisionList);
@@ -131,15 +131,15 @@ public class NoticeController {
 		log.debug(TeamColor.KMJ+ "noticeOne : " + noticeOne.toString());
 		
 		// 부서 이름 수정
-		if(noticeOne.get("divisionName") != null) {
-			String dName = (String) noticeOne.get("divisionName");
-			int dIndex = dName.indexOf("(");
-			dName = dName.substring(0, dIndex);
-			log.debug(TeamColor.KMJ+ "부서 이름 : " + dName + TeamColor.RESET);
-			
-			noticeOne.put("divisionName", dName);
-			log.debug(TeamColor.KMJ+ "부서 이름 수정 후  : " + noticeOne.toString() + TeamColor.RESET);
-		}
+//		if(noticeOne.get("divisionName") != null) {
+//			String dName = (String) noticeOne.get("divisionName");
+//			int dIndex = dName.indexOf("(");
+//			dName = dName.substring(0, dIndex);
+//			log.debug(TeamColor.KMJ+ "부서 이름 : " + dName + TeamColor.RESET);
+//			
+//			noticeOne.put("divisionName", dName);
+//			log.debug(TeamColor.KMJ+ "부서 이름 수정 후  : " + noticeOne.toString() + TeamColor.RESET);
+//		}
 		model.addAttribute("noticeOne", noticeOne);		
 		return "notice/noticeOne";
 	}
