@@ -2,6 +2,23 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.pettopia.message.MessageMapper">
 
+	<!-- 오자윤 : /employee/messageBin 휴지통-> 쪽지보관함으로 복구하기 -->
+	<update id="restoreMessage" parameterType="Integer">
+	    UPDATE message
+	    SET messageBin = '0'
+	    WHERE message_no = #{messageNo}
+	</update>
+	
+	<!-- 오자윤 : /employee/messageBin 휴지통 영구삭제 -->
+	<delete id="deleteMessage" parameterType="java.util.List">
+	    DELETE FROM message
+	    WHERE message_no IN
+	    <foreach item="item" collection="list" open="(" separator="," close=")">
+	        #{item}
+	    </foreach>
+	</delete>
+
+
 	<!-- 오자윤 : /employee/messageNote (모달)직원 조회 -->
 	<select id="getEmployeeList" parameterType="String" resultType="map">
 		SELECT 

@@ -10,12 +10,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta content="Minimal Admin & Dashboard Template" name="description">
     <meta content="Themesdesign" name="author">
+    <!-- ckeditor5  -->
+    <script src="https://cdn.ckeditor.com/ckeditor5/38.0.1/classic/ckeditor.js"></script>
     <!-- App favicon -->
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/assets/images/pettopia_favicon.ico">
     <!-- Layout config Js -->
     <script src="${pageContext.request.contextPath}/assets/js/layout.js"></script>
     <!-- Tailwind CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tailwind2.css">
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body class="text-base bg-body-bg text-body font-public dark:text-zink-100 dark:bg-zink-800 group-data-[skin=bordered]:bg-body-bordered group-data-[skin=bordered]:dark:bg-zink-700">
@@ -55,8 +59,8 @@
 							<div class="mb-4">
 							    <span class="font-semibold">받는사람 :</span>
 							    <input type="text" class="text-slate-500 border-b-0 focus:outline-none focus:ring focus:ring-slate-200 dark:bg-zink-700 dark:border-zink-600 dark:text-zink-200" placeholder=" 이름을 입력하세요." readonly/>
-							    <button type="button" id="searchRecipientBtn" class="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20">
-							    	검색
+							    <button type="button" id="openModalBtn" class="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20">
+							    	직원검색
 							    </button>
 							</div>
 							<div class="mb-2 pb-2">
@@ -86,7 +90,7 @@
                 </div>
                 
 				<!-- 모달창 HTML -->
-				<div id="recipientModal" class="fixed inset-0 z-50 hidden bg-gray-800 bg-opacity-50 flex items-center justify-center">
+				<div id="recipientModal" class="fixed inset-0 z-50 bg-gray-800 hidden bg-opacity-50 flex items-center justify-center">
 				    <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-2xl">
 				        <div class="flex justify-between items-center mb-4">
 				            <h2 class="text-lg font-semibold">직원 검색</h2>
@@ -100,68 +104,20 @@
 				        <!-- 선택 박스 -->
 				        <div class="flex space-x-4 mb-4">
 				            <div class="flex-grow">
-				                <label class="block mb-1">부서 선택</label>
 				                <select id="departmentSelect" class="border border-gray-300 rounded w-full p-2">
 				                    <option value="">---부서 선택---</option>
-				                    <option value="부서3">경영진</option>
-				                    <option value="부서4">마케팅부서</option>
-				                    <option value="부서1">인사부서</option>
-				                    <option value="부서2">재무부서</option>
-				                    <option value="부서5">IT부서</option>
-				                    <option value="부서6">법무부서</option>
-				                    <option value="부서7">영업부서</option>
-				                    <option value="부서8">CS부서</option>
 				                </select>
 				            </div>
 				
 				            <div class="flex-grow">
-				                <label class="block mb-1">팀 선택</label>
 				                <select id="teamSelect" class="border border-gray-300 rounded w-full p-2">
-				                    <option value="">---팀 선택---</option>
-				                    <option value="팀1">인사팀</option>
-				                    <option value="팀2">교육팀</option>
-				                    <option value="팀3">채용팀</option>
-				                    <option value="팀4">급여/복리후생팀</option>
-				                    <option value="팀5">인재관리팀</option>
-				                    <option value="팀6">회계팀</option>
-				                    <option value="팀7">재무분석팀</option>
-				                    <option value="팀8">예산관리팀</option>
-				                    <option value="팀9">자산관리팀</option>
-				                    <option value="팀10">전략기획팀</option>
-				                    <option value="팀11">조직발전팀</option>
-				                    <option value="팀12">프로젝트관리팀</option>
-				                    <option value="팀13">비즈니스개발팀</option>
-				                    <option value="팀14">마케팅팀</option>
-				                    <option value="팀15">디지털마케팅팀</option>
-				                    <option value="팀16">프로모션팀</option>
-				                    <option value="팀17">브랜드전략팀</option>
-				                    <option value="팀18">시장조사팀</option>
-				                    <option value="팀19">국내영업팀</option>
-				                    <option value="팀20">해외영업팀</option>
-				                    <option value="팀21">고객지원팀</option>
-				                    <option value="팀22">고객만족도팀</option>
-				                    <option value="팀23">개발팀</option>
-				                    <option value="팀24">사용자지원팀</option>
-				                    <option value="팀25">네트워크관리팀</option>
-				                    <option value="팀26">보안팀</option>
-				                    <option value="팀27">법무팀</option>
-				                    <option value="팀28">컴플라이언스팀</option>
-				                    <option value="팀29">계약관리팀</option>
-				                    <option value="팀30">분쟁해결팀</option>
+				                	<option value="">---팀 선택---</option>
 				                </select>
 				            </div>
 				
 				            <div class="flex-grow">
-				                <label class="block mb-1">직급 선택</label>
 				                <select id="positionSelect" class="border border-gray-300 rounded w-full p-2">
 				                    <option value="">---직급 선택---</option>
-				                    <option value="사원">사원</option>
-				                    <option value="대리">대리</option>
-				                    <option value="대리">과장</option>
-				                    <option value="대리">차장</option>
-				                    <option value="대리">부사</option>
-				                    <option value="팀장">이사</option>
-				                    <option value="팀장">사장</option>
 				                </select>
 				            </div>
 				        </div>
@@ -173,38 +129,21 @@
 				        </div>
 						
 						<div class="flex justify-end mb-4">
-							<button id="searchButton" class="bg-blue-500 hover:bg-blue-700 text-white rounded p-2" onclick="filterEmployees()">검색</button>
+							<button id="searchButton" class="bg-blue-500 hover:bg-blue-700 text-black rounded p-2" onclick="filterEmployees()">검색</button>
 						</div>
+						
+						<!-- 선택된 직원 이름 표시 -->
+				        <div id="selectedEmployee" class="mb-4">
+				            선택된 직원: <span id="selectedEmployeeName">없음</span>
+				        </div>
+						
 				        <!-- 직원 리스트 테이블 -->
 				        <div class="overflow-x-auto">
-				            <table class="min-w-full border border-slate-200 w-full"> <!-- 테이블 너비를 w-full로 설정 -->
-				                <thead>
-				                    <tr>
-				                        <th class="border-b text-center px-4 py-2">부서</th>
-				                        <th class="border-b text-center px-4 py-2">팀</th>
-				                        <th class="border-b text-center px-4 py-2">직급</th>
-				                        <th class="border-b text-center px-4 py-2">사원번호</th>
-				                        <th class="border-b text-center px-4 py-2">사원명</th>
-				                        <th class="border-b text-center px-4 py-2">선택</th>
-				                    </tr>
-				                </thead>
-				                <tbody id="recipientTableBody">
-				                    <!-- 검색 결과 항목이 여기에 추가됩니다. -->
-				                </tbody>
-				            </table>
+			                <ul id="recipientTableBody">
+			                    <!-- 예시 직원 목록 -->
+			                </ul> 
 				        </div>
 				
-				        <!-- 페이지네이션 -->
-				        <div class="flex justify-between items-center mt-4">
-				            <div id="pagination" class="flex space-x-2">
-				                <!-- 페이지 버튼이 여기에 추가됩니다. -->
-				            </div>
-				        </div>
-				
-				        <div class="flex justify-between mt-4">
-				            <button id="confirmBtn" class="bg-blue-500 text-white rounded px-4 py-2">확인</button>
-				            <button id="cancelBtn" class="bg-gray-300 text-gray-700 rounded px-4 py-2">취소</button>
-				        </div>
 				    </div>
 				</div>
 				
@@ -242,115 +181,23 @@
 
 <!-- 받는사람 모달 -->
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const searchRecipientBtn = document.getElementById('searchRecipientBtn');
-    const recipientModal = document.getElementById('recipientModal');
-    const closeModalBtn = document.getElementById('closeModalBtn');
-    const recipientSearchInput = document.getElementById('recipientSearchInput');
-    const recipientTableBody = document.getElementById('recipientTableBody');
-    const selectedEmployee = document.getElementById('selectedEmployee');
+	//모달창 열기
+	function openModal() {
+	    const modal = document.getElementById('recipientModal');
+	    modal.classList.remove('hidden'); // hidden 클래스를 제거하여 모달을 보이도록 설정
+	}
+	
+	// 모달창 닫기
+	function closeModal() {
+	    const modal = document.getElementById('recipientModal');
+	    modal.classList.add('hidden'); // hidden 클래스를 추가하여 모달을 숨기도록 설정
+	}
+	
+	// 모달을 열기 위한 버튼 클릭 이벤트
+	document.getElementById('openModalBtn').addEventListener('click', openModal);
+	document.getElementById('closeModalBtn').addEventListener('click', closeModal);
 
-    let employees = []; // 전체 직원 목록
-    let filteredEmployees = []; // 필터링된 직원 목록
-    let currentPage = 1; // 현재 페이지
-    const itemsPerPage = 5; // 페이지당 항목 수
-
-    searchRecipientBtn.addEventListener('click', function() {
-        recipientModal.classList.remove('hidden');
-        recipientSearchInput.value = ''; // 검색 입력 초기화
-        recipientTableBody.innerHTML = ''; // 이전 검색 결과 초기화
-        fetchEmployees(); // 직원 목록을 가져오는 함수 호출
-    });
-
-    closeModalBtn.addEventListener('click', function() {
-        recipientModal.classList.add('hidden');
-    });
-
-    // 직원 목록을 AJAX로 가져오기
-    function fetchEmployees() {
-        const empStatus = 'E'; // 재직 중인 직원 상태
-        fetch(`/message/messageNote/employees?empStatus=${empStatus}`) // API 경로
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json(); // JSON 형식으로 변환
-            })
-            .then(data => {
-                employees = data; // 전체 직원 목록 저장
-                filteredEmployees = employees; // 필터링 초기화
-                populateRecipientTable(filteredEmployees); // 전체 직원 목록으로 초기화
-                setupPagination(filteredEmployees); // 페이지 초기화
-            })
-            .catch(error => {
-                console.error('There was a problem with the fetch operation:', error);
-            });
-    }
-
-    // 수신자 목록을 테이블에 표시
-    function populateRecipientTable(employees) {
-        recipientTableBody.innerHTML = ''; // 이전 결과 초기화
-
-        employees.forEach(function(employee) {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td class="border-b text-center px-4 py-2">${employee.department || '-'}</td>
-                <td class="border-b text-center px-4 py-2">${employee.team || '-'}</td>
-                <td class="border-b text-center px-4 py-2">${employee.rank || '-'}</td>
-                <td class="border-b text-center px-4 py-2">${employee.empNo}</td>
-                <td class="border-b text-center px-4 py-2">${employee.empName}</td>
-                <td class="border-b text-center px-4 py-2">
-                    <button class="select-button bg-blue-500 text-white rounded px-2 py-1" data-employee="${employee.empNo}">선택</button>
-                </td>
-            `;
-            recipientTableBody.appendChild(row);
-
-            // 선택 버튼 클릭 시 행동
-            row.querySelector('.select-button').addEventListener('click', function() {
-                selectedEmployee.textContent = employee.empName; // 선택된 직원 이름 설정
-                recipientModal.classList.add('hidden'); // 모달 닫기
-            });
-        });
-    }
-
-    // 페이지 설정
-    function setupPagination(employees) {
-        const totalPages = Math.ceil(employees.length / itemsPerPage);
-        const paginationContainer = document.getElementById('pagination');
-        paginationContainer.innerHTML = ''; // 이전 페이지 버튼 초기화
-
-        for (let i = 1; i <= totalPages; i++) {
-            const pageBtn = document.createElement('button');
-            pageBtn.textContent = i;
-            pageBtn.className = 'pagination-btn';
-            pageBtn.addEventListener('click', function() {
-                currentPage = i;
-                const start = (currentPage - 1) * itemsPerPage;
-                const end = start + itemsPerPage;
-                const paginatedEmployees = employees.slice(start, end);
-                populateRecipientTable(paginatedEmployees); // 페이지 내용 업데이트
-            });
-            paginationContainer.appendChild(pageBtn);
-        }
-    }
-
-    // 필터링 기능
-    recipientSearchInput.addEventListener('input', filterEmployees);
-
-    function filterEmployees() {
-        const query = recipientSearchInput.value.toLowerCase();
-        filteredEmployees = employees.filter(employee => 
-            employee.empName.toLowerCase().includes(query)
-        );
-        setupPagination(filteredEmployees); // 페이징 초기화
-        const start = (currentPage - 1) * itemsPerPage;
-        const end = start + itemsPerPage;
-        const paginatedEmployees = filteredEmployees.slice(start, end);
-        populateRecipientTable(paginatedEmployees); // 필터링된 목록 업데이트
-    }
-});
 </script>
-
 </body>
 
 </html>

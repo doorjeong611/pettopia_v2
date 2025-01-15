@@ -211,7 +211,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // 확인 대화상자
         if (confirm('선택한 메시지를 삭제하시겠습니까?')) {
-            document.querySelector('form').submit(); // 폼 제출
+            document.querySelector('form').submit(); // 폼 
         }
     });
 });
