@@ -2,6 +2,7 @@ package com.example.pettopia.employee;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -184,9 +185,9 @@ public class EmployeeService {
 	
 	
 	// 직원 등록 성공시 메일 전송
-	
 	public boolean sendMailEmployeeInfo(Employee employee) {
-	  
+		log.debug(TeamColor.KMJ + "EmployeeService - sendMailEmployeeInfo() " );
+		
 		String empNo = employee.getEmpNo();
 		String empName = employee.getEmpName();
 		String empPw = employee.getEmpPw();
@@ -214,8 +215,6 @@ public class EmployeeService {
 			    "</body>" +
 			    "</html>";
 
-	  
-	  
 		 MimeMessage message = javaMailSender.createMimeMessage();
 	        try {
 	            MimeMessageHelper helper = new MimeMessageHelper(message, true); 
@@ -233,13 +232,20 @@ public class EmployeeService {
 	        	log.debug("메일 전송 실패!");
 	        	e.printStackTrace();
 	        	 return false;
-	        }
-	        
-	        
+	        }     
 	       
 	  }
 	 
-	
+	// 직원 목록 조회
+	public List<Map<String, Object>> getEmployeeList(){
+		log.debug(TeamColor.KMJ + "EmployeeService - getEmployeeList() " );
+		
+		List<Map<String, Object>> empList =  employeeMapper.selectEmployeeList();
+		log.debug(TeamColor.KMJ + "empList [0]" + empList.get(0).toString());
+		
+		
+		return empList;
+	}
 	
 
 }// employeeService
