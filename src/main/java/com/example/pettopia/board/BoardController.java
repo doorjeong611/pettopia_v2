@@ -29,6 +29,26 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class BoardController {
 	@Autowired BoardService boardService;
 	
+	
+	@GetMapping("/board/getBoardOne")
+	public String getBoardOne(Model model,
+								Board board,
+								@RequestParam Integer boardNo) {
+	    Map<String, Object> map = new HashMap<>();
+	    
+	    // 조회수 증가
+	    int successViewByBoard = boardService.addBoardView(board);
+	    
+	    if(successViewByBoard != 1) {
+	    	return "redirect:/board/boardList";
+	    }
+	    
+		// boardNo 값 모델에 추가
+		model.addAttribute("boardNo",boardNo);
+		
+		return "board/boardOne";
+	}
+	
 	@PostMapping("/board/addBoard")
 	public String addBoard(Model model,
 	        Board board,
