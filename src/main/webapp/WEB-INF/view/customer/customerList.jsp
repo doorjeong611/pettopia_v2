@@ -84,7 +84,7 @@
                                 </table>
                             </div>
                         </div>
-                    </div>ㅋㅋ
+                    </div>
         	</div>
         </div>
         <!-- End Page-content -->
