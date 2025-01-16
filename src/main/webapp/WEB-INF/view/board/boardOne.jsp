@@ -1,11 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<!-- 시큐리티 세션 사용을 위한 taglib %@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>-->
 
-<!-- 시큐리티 세션정보 접근 -->
-<!-- 
-<sec:authorize access="isAuthenticated()"><sec:authentication property="principal" var=""/></sec:authorize>
- -->
 <!DOCTYPE html>
 <html lang="en" class="light scroll-smooth group" data-layout="vertical" data-sidebar="light" data-sidebar-size="lg" data-mode="light" data-topbar="light" data-skin="default" data-navbar="sticky" data-content="fluid" dir="ltr">
 
@@ -21,13 +16,8 @@
     <script src="${pageContext.request.contextPath}/assets/js/layout.js"></script>
     <!-- Tailwind CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tailwind2.css">
-	<!--  -->
-	
 </head>
-<style>
-	.editor-container_classic-editor .editor-container__editor {    min-width: 795px; max-width:1280px;}
-	
-</style>
+
 <body class="text-base bg-body-bg text-body font-public dark:text-zink-100 dark:bg-zink-800 group-data-[skin=bordered]:bg-body-bordered group-data-[skin=bordered]:dark:bg-zink-700">
 <div class="group-data-[sidebar-size=sm]:min-h-sm group-data-[sidebar-size=sm]:relative">
     
@@ -47,97 +37,46 @@
             <div class="container-fluid group-data-[content=boxed]:max-w-boxed mx-auto">
                 <div class="flex flex-col gap-2 py-4 md:flex-row md:items-center print:hidden">
                     <div class="grow">
-                        <h5 class="text-16">사내 게시판</h5>
+                        <h5 class="text-16">게시글 상세페이지</h5>
                     </div>
                     
                     <ul class="flex items-center gap-2 text-sm font-normal shrink-0">
                         <li class="relative before:content-['\ea54'] before:font-remix ltr:before:-right-1 rtl:before:-left-1  before:absolute before:text-[18px] before:-top-[3px] ltr:pr-4 rtl:pl-4 before:text-slate-400 dark:text-zink-200">
-                            <a href="#!" class="text-slate-400 dark:text-zink-200">사내 게시판</a>
+                            <a href="${pageContext.request.contextPath}/board/boardList" class="text-slate-400 dark:text-zink-200">사내 게시판</a>
+                        </li>
+                        <li class="relative before:content-['\ea54'] before:font-remix ltr:before:-right-1 rtl:before:-left-1  before:absolute before:text-[18px] before:-top-[3px] ltr:pr-4 rtl:pl-4 before:text-slate-400 dark:text-zink-200">
+                            <a href="${pageContext.request.contextPath}/board/boardList" class="text-slate-400 dark:text-zink-200">게시판 리스트</a>
                         </li>
                         <li class="text-slate-700 dark:text-zink-100">
-                            게시판 리스트
+                            게시글&nbsp;No.${boardNo}
                         </li>
                     </ul>
-                    
-                    
                 </div>
                 <!-- Main content -->
+                  
                 
-                <div>
-        	
-           		
-                   
-                     
-                    <div class="card">
-                    <div class="card-body">
                     	
+                    		
+                    		
+                   		<!-- 드랍파일 스타트-->
+			                   <div class="relative min-h-screen group-data-[sidebar-size=sm]:min-h-sm">
+
+               
+                <div class="card">
+                    <div class="card-body">
                     
-                  			   <div class="ltr:lg:text-right rtl:lg:text-left">
-                                    <a href="${pageContext.request.contextPath}/board/addBoard" type="button" class="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20"><i data-lucide="plus" class="inline-block size-4"></i> <span class="align-middle">글쓰기</span></a>
-                                </div>
-                  		
-                  		<div id="boardListContainer">	
-                        	<form action="${pageContext.request.contextPath}/board/boardList" method="get" id="formCategory">
-								
-								
-								
-								
-								<select name="category" class="form-select" id="boardCategory">
-									<option value="ALL" ${boardCategory == 'ALL' ? 'selected' : ''}>전체</option>
-									<option value="SG" ${boardCategory == 'SG' ? 'selected' : ''}>건의사항</option>
-									<option value="DS" ${boardCategory == 'DS' ? 'selected' : ''}>토론</option>
-									<option value="CT" ${boardCategory == 'CT' ? 'selected' : ''}>잡답</option>
-									<option value="IN" ${boardCategory == 'IN' ? 'selected' : ''}>정보</option>
-									<option value="QA" ${boardCategory == 'QA' ? 'selected' : ''}>질문</option>
-									<option value="CP" ${boardCategory == 'CP' ? 'selected' : ''}>칭찬</option>
-								</select>
-								
-							</form>
-                        <table id="basic_tables" class="display stripe group" style="width:100%">
-                            <thead>
-                                <tr>
-	                         		<th class="text-center ltr:!text-left rtl:!text-right">번호</th>
-	                                <th class="text-center" >제목</th>
-								    <th class="text-center" >조회수</th>
-								    <th class="text-center" >추천</th>
-								    <th class="text-center" >작성일</th>
-								    <th class=""></th>   
-                                </tr>
-                            </thead>
-                            <tbody>
-                            
-	                           <c:forEach var="bl" items="${boardList}">
-								    <tr>
-								        <td class="text-center">${bl.boardNum}</td>
-								        <td class="text-center">
-								            <a href="${pageContext.request.contextPath}/board/getBoardOne?boardNo=${bl.boardNo}">[${bl.boardHeader}]&nbsp;${bl.boardTitle}</a>
-								            <!-- 댓글 수가 0이 아니면 댓글 수 표시 -->
-								            <c:if test="${bl.commentCnt != 0}">
-								                &nbsp;[${bl.commentCnt}]
-								            </c:if>
-								        </td>
-								        <td class="text-center">${bl.boardView}</td>
-								        <td class="text-center">${bl.boardLike}</td>
-								        <td class="text-center">${bl.createDate}</td>
-								        
-								        <!-- 로그인한 사용자(empNo)와 게시물 작성자(bl.boardWriterNo)가 같은 경우에만 삭제 버튼 표시 -->
-								        <c:if test="${bl.boardWriterNo == empNo}">
-								            <td class="text-center"><a href="${pageContext.request.contextPath}/board/removeBoard?boardNo=${bl.boardNo}">삭제</a></td>
-								        </c:if>
-								        
-								        <!-- 작성자가 아닌 경우 빈 칸 표시 -->
-								        <c:if test="${bl.boardWriterNo != empNo}">
-								            <td class="text-center">&nbsp;</td>
-								        </c:if>
-								    </tr>
-								</c:forEach>
-							</tbody>
-                        </table>
+                    
                     </div>
-                </div>
-               </div>	 
-                </div>
-       		</div>
+                </div><!--end card-->
+
+                
+
+</div>
+		                    	</div><!-- 드랍파일 엔드 -->
+		                    	
+                    	</div>
+                    </div>
+                
             </div>
             <!-- container-fluid -->
         </div>
@@ -151,22 +90,7 @@
     </div>
 </div>
 <!-- End Main Content -->
-
 <c:import url="/WEB-INF/view/inc/customizerButton.jsp"></c:import>
-
-
-<script src="${pageContext.request.contextPath}/assets/js/datatables/jquery-3.7.0.js"></script>
-<script src="${pageContext.request.contextPath}/assets/js/datatables/data-tables.min.js"></script>
-<script src="${pageContext.request.contextPath}/assets/js/datatables/data-tables.tailwindcss.min.js"></script>
-<!--buttons dataTables-->
-<script src="${pageContext.request.contextPath}/assets/js/datatables/datatables.buttons.min.js"></script>
-<script src="${pageContext.request.contextPath}/assets/js/datatables/jszip.min.js"></script>
-<script src="${pageContext.request.contextPath}/assets/js/datatables/pdfmake.min.js"></script>
-<script src="${pageContext.request.contextPath}/assets/js/datatables/buttons.html5.min.js"></script>
-<script src="${pageContext.request.contextPath}/assets/js/datatables/buttons.print.min.js"></script>
-
-<script src="${pageContext.request.contextPath}/assets/js/datatables/datatables.init.js"></script>
-
 
 <script src='${pageContext.request.contextPath}/assets/libs/choices.js/public/assets/scripts/choices.min.js'></script>
 <script src="${pageContext.request.contextPath}/assets/libs/@popperjs/core/umd/popper.min.js"></script>
@@ -175,6 +99,8 @@
 <script src="${pageContext.request.contextPath}/assets/libs/prismjs/prism.js"></script>
 <script src="${pageContext.request.contextPath}/assets/libs/lucide/umd/lucide.js"></script>
 <script src="${pageContext.request.contextPath}/assets/js/tailwick.bundle.js"></script>
+<script src="${pageContext.request.contextPath}/assets/libs/dropzone/dropzone-min.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/pages/form-file-upload.init.js"></script>
 <!--apexchart js-->
 <script src="${pageContext.request.contextPath}/assets/libs/apexcharts/apexcharts.min.js"></script>
 
@@ -183,25 +109,6 @@
 
 <!-- App js -->
 <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
-
-<script>
-$(document).ready(function(){
-	$('#boardCategory').change(function(){
-		$('#formCategory').submit();
-	});
-	
-	if ($.fn.dataTable.isDataTable('#basic_tables')) {
-	    $('#basic_tables').DataTable().destroy();
-	}
-
-	// DataTable 초기화
-	const table = new DataTable('#basic_tables', {
-	    order: [[0, 'desc']] // 첫 번째 열을 내림차순으로 기본 설정
-	});
-	
-});
-
-</script>
 
 </body>
 

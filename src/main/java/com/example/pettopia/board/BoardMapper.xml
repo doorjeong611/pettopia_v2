@@ -74,7 +74,11 @@
 	
 	
 	
-	<!-- 카테고리 분류 -->
+	<!-- 작성글 셀렉트 쿼리 -->
+	
+	<select id="selectBoardByBoardOne" parameterType="map">
+		
+	</select>
 	
 	<!-- 조회수 증가 /board/boardList 작업자 : 이준호 -->
 	<update id="updateBoard" parameterType="com.example.pettopia.vo.Board" >
