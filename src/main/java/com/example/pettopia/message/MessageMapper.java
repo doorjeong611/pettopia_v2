@@ -5,9 +5,22 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.example.pettopia.vo.Department;
+import com.example.pettopia.vo.Division;
+import com.example.pettopia.vo.Rank;
+
 
 @Mapper
 public interface MessageMapper {
+	
+	// 오자윤 : /employee/messageNote 직급검색 (쪽지쓰기 모달창) -->
+	List<Rank> selectRankNameInModal(Rank rank);
+	
+	// 오자윤 : /employee/messageNote 팀 검색 (쪽지쓰기 모달창) -->
+	List<Department> selectDeparmentNameInModal(String divisionCode);
+	
+	// 오자윤 : /employee/messageNote 부서검색 (쪽지쓰기 모달창) -->
+	List<Division> selectDivisionNameInModal ();
 	
 	// 오자윤 : /employee/messageBin 쪽지보관함으로 복구하기
 	Integer restoreMessage(List<Long> messageNo);

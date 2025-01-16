@@ -67,7 +67,7 @@
 							 <div class="flex justify-end gap-2 mt-5">
 								<a href="${pageContext.request.contextPath}/message/messageNote" class="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20">
 								    <i class="ri-mail-send-line inline-block mr-1" style="font-size: 1.05rem;"></i> <!-- 크기 조정 -->
-								    <span class="align-middle">전송하기</span>
+								    <span class="align-middle">답장하기</span>
 								</a>
  								<a href="${pageContext.request.contextPath}/message/messageList" class="text-slate-500 btn bg-slate-200 border-slate-200 hover:text-slate-600 hover:bg-slate-300 hover:border-slate-300 focus:text-slate-600 focus:bg-slate-300 focus:border-slate-300 focus:ring focus:ring-slate-100 active:text-slate-600 active:bg-slate-300 active:border-slate-300 active:ring active:ring-slate-100 dark:bg-zink-600 dark:hover:bg-zink-500 dark:border-zink-600 dark:hover:border-zink-500 dark:text-zink-200 dark:ring-zink-400/50">
 								    <i class="ri-mail-line inline-block mr-1" style="font-size: 1.05rem;"></i> <!-- 크기 조정 -->
