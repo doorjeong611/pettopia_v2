@@ -56,7 +56,57 @@
                 </div>
                 <!-- Main content -->
                 <div id="employeeTable"></div>
+<script>
 
+window.onload = function() {
+    fetch('/pettopia/rest/employeeList')  // Java 서버에서 데이터를 가져옵니다.
+        .then(response => response.json())
+        .then(data => {
+            // 데이터를 수정하여 'empStatus'가 'T'일 경우 '임시'로 변경
+            const modifiedData = data.map(emp => {
+                return {
+                    ...emp,
+                    empName : '<a href="${pageContext.request.contextPath}/getEmployeeOne?empNo='+emp.empNo+'" class="flex items-center gap-3"><div div="" class="w-6 h-6 rounded-full shrink-0 bg-slate-100 dark:bg-zink-600">'
+                    			+'<img src="${pageContext.request.contextPath}/employeeFile/' + emp.fileName + '" class="h-6 rounded-full">'
+                    			+'</div> <h6 class="grow">'+ emp.empName +'</h6> </a>',
+                    empStatus: emp.empStatus === 'T' ? '임시' : emp.empStatus,
+                    division: '<strong>'+emp.divisionName+'</strong>'+ ' / ' + emp.deptName, 
+                    rankName : emp.isTeamLeader === 'H'? emp.rankName + '('+ emp.isTeamLeader + ')' : emp.rankName,
+                };
+            });
+
+            // Grid.js에 데이터를 전달
+            new gridjs.Grid({
+                columns: ["사번", "이름", "이메일", "재직상태", "소속부서", "직급", "입사일"],
+                data: modifiedData.map(emp => [
+                    emp.empNo,
+                    gridjs.html(emp.empName),
+                    emp.empEmail,
+                    emp.empStatus,  // 수정된 empStatus 값 사용
+                    gridjs.html(emp.division),  // 결합된 division 값 사용
+                    emp.rankName,
+                    emp.hireDate,
+                ]),
+                pagination: true,
+                search: true,
+                style: {
+                    th: {
+                        background: '#f8f9fa',
+                        color: '#495057',
+                        
+                    },
+                    td: {
+                        padding: '0.75rem',
+                        borderBottom: '1px solid #e0e0e0',
+                        
+                    },
+                }
+            }).render(document.getElementById("employeeTable"));
+        });
+}
+
+
+</script>
 			    
                 
             </div>
@@ -95,20 +145,5 @@
 <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
 
 </body>
-<script>
-    window.onload = function() {
-        fetch('/pettopia/rest/employeeList')  // Java 서버에서 데이터를 가져옵니다.
-            .then(response => response.json())
-            .then(data => {
-                new gridjs.Grid({
-                    columns: ['Employee No', 'Name', 'Email', 'Status', 'Division', 'Rank', 'Hire Date'],
-                    data: data.map(emp => [emp.empNo, emp.empName, emp.empEmail, emp.empStatus, emp.divisionName, emp.rankName, emp.hireDate]),
-                    pagination: true,
-                    search: true,
-                    sort: true,
-                    resizable: true
-                }).render(document.getElementById("employeeTable"));
-            });
-    }
-</script>
+
 </html>

@@ -101,7 +101,7 @@
 	
 </script>
 
-
+ 
 
 </head>
 
@@ -188,8 +188,8 @@
 												class="inline-block mb-2 text-base font-medium">직원 번호</label> 
 												<input type="number" name="empNo" id="employeeId"
 												class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
-												value="" required>
-												<button type="button" id="btnExistEmp" class="text-red-500 bg-white btn hover:text-red-500 hover:bg-red-100 focus:text-red-500 focus:bg-red-100 active:text-red-500 active:bg-red-100 dark:bg-zink-600 dark:hover:bg-red-500/10 dark:focus:bg-red-500/10 dark:active:bg-red-500/10">중복검사</button>
+												value="${inputEmpNo}" readOnly>
+												
 										</div>
 
 										<div class="xl:col-span-4" style="border: 1px solid skyblue;">
@@ -295,6 +295,7 @@
 												name="rankNo" id="rankSelect">
 												<option value="">직급 선택</option>
 											</select>
+		  					
 										</div>
 									</div>
 									<div class="flex justify-end gap-2 mt-4">
@@ -312,11 +313,20 @@
 				</div>
 				</form>
 				<!--end add Employee-->
-
 			</div>
 			<!-- container-fluid -->
 		</div>
 		<!-- End Page-content -->
+
+		<!-- loading overlay -->
+ 		<div id="loading-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 9999; align-items: center; justify-content: center;">
+		  	<div class="inline-flex rounded-full opacity-75 size-6 animate-bounce bg-slate-400 " style="animation-delay: 0s; margin-right: 10px;"></div>
+		  	<div class="inline-flex rounded-full opacity-75 size-6 animate-bounce bg-slate-400 " style="animation-delay: 1.5s; margin-right: 10px;"></div> 
+		  	<div class="inline-flex rounded-full opacity-75 size-6 animate-bounce bg-slate-400 " style="animation-delay: 2s; margin-right: 10px;"></div> 
+		</div>
+
+
+
 
 		<!-- Start Footer -->
 		<footer
@@ -345,12 +355,9 @@
 	<script
 		src="${pageContext.request.contextPath}/assets/js/tailwick.bundle.js"></script>
 	<!--apexchart js-->
-	<script
-		src="${pageContext.request.contextPath}/assets/libs/apexcharts/apexcharts.min.js"></script>
-
+	<%-- <script src="${pageContext.request.contextPath}/assets/libs/apexcharts/apexcharts.min.js"></script> --%>
 	<!--dashboard ecommerce init js-->
-	<script
-		src="${pageContext.request.contextPath}/assets/js/pages/dashboards-ecommerce.init.js"></script>
+	<%-- <script src="${pageContext.request.contextPath}/assets/js/pages/dashboards-ecommerce.init.js"></script> --%>
 
 	<!-- App js -->
 	<script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
@@ -456,48 +463,7 @@ $(document).ready(function() {
 		});
 
 
-	/* 직원번호 중복 검사 */
-	$('#btnExistEmp').click(function(){
-		console.log('/pettopia/rest/existEmp/' + $('#employeeId').val());
-		$.ajax({
-			url: '/pettopia/rest/existEmp/' + $('#employeeId').val()
-			, method:'GET'
-		})
-		.done(function(result){
-			
-			/* 유효성 검사 */
-			var empNo = $('#employeeId').val();			
-			
-		    /* 직원번호가 공백이 아니고 9자리 이상인지 확인 */
-		    if(empNo.trim() == "" || empNo.length != 9) {
-		        alert("직원 번호는 9자리만 설정 가능합니다.");
-		        return; 
-		    }
-
-			
-			if(result){ /* true == 등록 가능한 사번 */
-				$('#employeeId').attr('readonly', true); /* readOnly로 설정하기 */
-				$('#warnExistEmp').remove();
-				$('#divEmpNo').append('<div id="warnExistEmp" class="px-4 py-3 text-sm border border-transparent rounded-md text-custom-500 bg-custom-50 dark:bg-custom-400/20"><span class="font-bold">등록 가능</span> 등록 가능한 직원 번호입니다.</div>');
-				$('#btnExistEmp').prop('disabled', true); /* 버튼 비활성화 */
-				
-			}else{      /* false == 이미 등록된 사번 */
-				$('#employeeId').val(''); /* input 비우기 */
-				$('#divEmpNo').append('<div id="warnExistEmp" class="px-4 py-3 text-sm text-red-500 border border-transparent rounded-md bg-red-50 dark:bg-red-400/20"><span class="font-bold">사용 불가</span> 이미 등록된 직원 번호입니다.</div>');
-				$('#employeeId').focus();
-			}
-			
-			/* cancel 버튼 클릭시 중복검사 안내 alert 부분 지우기 */
-			$('#btnReset').click(function() { 
-			    $('#warnExistEmp').remove();
-			    return;
-			});
 	
-		})
-		.fail(function(){
-			alert('중복 검사 실패');
-		});
-	});
 	
 	
 	
@@ -512,6 +478,7 @@ $(document).ready(function() {
 	/*  제출 전 유효성 검사 */
 	$('#addNew').click(function(event) {
 		
+		
 		/* 프로필 사진 첨부 여부 */
 	    if ($('#profile-img-file-input')[0].files.length === 0) {
 	        alert('프로필 이미지를 첨부해 주세요.');
@@ -519,16 +486,6 @@ $(document).ready(function() {
 	        return;
 	    }
 
-
-		/*  직원 번호와 중복 검사 결과 확인 */
-	    var empNo = $('#employeeId').val();
-	    var checkEmpNo = $('#employeeId').prop('readonly'); /*  중복 검사후 readonly로 바뀌는지 확인 */
-	    
-	    if( !empNo.trim() || !checkEmpNo){
-	    	alert('직원 번호 중복 검사를 진행하세요.');
-	    	event.preventDefault(); /*  폼 제출 막기 */
-	    	return;
-	    }
 	    
 	    /*  이름 유효성 검사 */
 	   const nameTest = /^[a-zA-Z가-힣]+$/;
@@ -623,7 +580,15 @@ $(document).ready(function() {
 	        return;
 	    }
 	       
-		$('#addEmployeeForm').submit()    /* 모두 통과시 제출 */
+	    
+
+		console.log('overlay 시작');
+	    $('#loading-overlay').css('display', 'flex');   /* 로딩 화면 표시 */
+	    
+	    
+		
+		 $('#addEmployeeForm').submit()    /* 모두 통과시 제출 */ 
+		
 	});
 	
 	
