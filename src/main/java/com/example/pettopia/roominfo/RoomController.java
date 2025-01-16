@@ -14,8 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.pettopia.util.TeamColor;
-import com.example.pettopia.vo.PetService;
-import com.example.pettopia.vo.RoomImg;
 import com.example.pettopia.vo.RoomInfo;
 
 import jakarta.servlet.http.HttpSession;
@@ -48,9 +46,10 @@ public class RoomController {
 	            roomService.addRoomWithImage(roomInfo, roomImg, uploadPath); // 서비스 호출
 
 	            redirectAttributes.addFlashAttribute("successMessage", "객실이 성공적으로 등록되었습니다!");
+	            log.debug(TeamColor.WJ + "메시지 ====>  " + redirectAttributes.getFlashAttributes().get("successMessage") + TeamColor.RESET);
+
 	        } catch (Exception e) {
 	            redirectAttributes.addFlashAttribute("errorMessage", "객실 등록 중 오류가 발생했습니다.");
-	            log.error("Error occurred during room registration: ", e);
 	        }
 	        return "redirect:/room/getRoomList";
 	    }
