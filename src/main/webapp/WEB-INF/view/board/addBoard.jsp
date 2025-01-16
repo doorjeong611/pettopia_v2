@@ -96,13 +96,7 @@
                                     <div class="editor_container__word-count" id="editor-word-count"></div>
                                 </div>
 
-                                <script>
-                                    ClassicEditor
-                                        .create(document.querySelector('#editor'))
-                                        .catch(error => {
-                                            console.error(error);
-                                        });
-                                </script>
+                              
                             </div>
 
                             <button type="submit">작성하기</button>
@@ -148,7 +142,20 @@
 
 <!-- App js -->
 <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
+  <script>
 
+  ClassicEditor
+      .create(document.querySelector('#editor'), {
+    	  licenseKey: 'eyJhbGciOiJFUzI1NiJ9.eyJleHAiOjE3NjgwMDMxOTksImp0aSI6ImI0M2MyNmVmLTdhZjEtNGY2OC1iZmM5LTM0NjFhMzg1ZjRkMyIsImxpY2Vuc2VkSG9zdHMiOlsiMTI3LjAuMC4xIiwibG9jYWxob3N0IiwiMTkyLjE2OC4qLioiLCIxMC4qLiouKiIsIjE3Mi4qLiouKiIsIioudGVzdCIsIioubG9jYWxob3N0IiwiKi5sb2NhbCJdLCJ1c2FnZUVuZHBvaW50IjoiaHR0cHM6Ly9wcm94eS1ldmVudC5ja2VkaXRvci5jb20iLCJkaXN0cmlidXRpb25DaGFubmVsIjpbImNsb3VkIiwiZHJ1cGFsIl0sImxpY2Vuc2VUeXBlIjoiZGV2ZWxvcG1lbnQiLCJmZWF0dXJlcyI6WyJEUlVQIl0sInZjIjoiMTZkY2VlMDgifQ.Eu41ED_gSYhKU-jr91PNNh88bojdOGPerE9XArJj1J74LgYZ16DRMzHhMKl3qpfHC_agy3lfHoJgH5bqHcpGuA',
+          simpleUpload: {
+              uploadUrl: '${pageContext.request.contextPath}/boardFile'  // 파일 업로드 URL을 설정
+             
+          }
+      })
+      .catch(error => {
+          console.error(error);
+      });
+                                </script>
 </body>
 
 </html>
