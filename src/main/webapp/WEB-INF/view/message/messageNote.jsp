@@ -181,22 +181,120 @@
 
 <!-- 받는사람 모달 -->
 <script>
-	//모달창 열기
+document.addEventListener('DOMContentLoaded', function() {
+	// 모달 창 열기위한 event
+    const openModalBtn = document.getElementById('openModalBtn');
+    const modal = document.getElementById('recipientModal');
+    const closeModalBtn = document.getElementById('closeModalBtn')
+    
+    openModalBtn.addEventListener('click', openModal);
+    closeModalBtn.addEventListener('click', closeModal);
+    
+	// 모달 창 열기
 	function openModal() {
-	    const modal = document.getElementById('recipientModal');
-	    modal.classList.remove('hidden'); // hidden 클래스를 제거하여 모달을 보이도록 설정
-	}
+        modal.classList.remove('hidden');  // Show modal
+        getDivisionList();  // 부서 목록 가져오기 (모달창 열릴때)
+        getRankList();  // 직급 목록 가져오기
+    }
 	
-	// 모달창 닫기
-	function closeModal() {
-	    const modal = document.getElementById('recipientModal');
-	    modal.classList.add('hidden'); // hidden 클래스를 추가하여 모달을 숨기도록 설정
-	}
-	
-	// 모달을 열기 위한 버튼 클릭 이벤트
-	document.getElementById('openModalBtn').addEventListener('click', openModal);
-	document.getElementById('closeModalBtn').addEventListener('click', closeModal);
+    // 모달 창 닫기
+    function closeModal() {
+        modal.classList.add('hidden');  // 모달 창 숨기기
+    }
 
+	//직급 목록 가져오기
+	function getRankList() {
+	$.ajax({
+	    url: '/pettopia/message/rankList',  // 직급 목록 API
+	    type: 'GET',
+	    success: function(data) {
+	        let rankSelect = $('#positionSelect');
+	        rankSelect.empty();  // 기존 옵션 삭제
+	        rankSelect.append('<option value="">---직급 선택---</option>');
+	        data.forEach(function(rank) {
+	            rankSelect.append('<option value="' + rank.rankNo + '">' + rank.rankName + '</option>');
+	        });
+	    },
+	    error: function(error) {
+	        console.error('Error fetching rank data:', error);
+	        
+		    }
+		});
+	}
+	
+	//부서 목록 가져오기 
+    function getDivisionList() {
+	$.ajax({
+	    url: '/pettopia/message/divisionList',  // 부서 목록 API
+	    type: 'GET',
+	    success: function(data) {
+	        let divisionSelect = $('#departmentSelect');
+	        divisionSelect.empty();  // 기존 옵션 삭제
+	        divisionSelect.append('<option value="">---부서 선택---</option>');
+	        data.forEach(function(division) {
+	            divisionSelect.append('<option value="' + division.divisionCode + '">' + division.divisionName + '</option>');
+	        });
+	    },
+	    error: function(error) {
+	        console.error('Error fetching division data:', error);
+		    }
+		});
+	}
+	
+	// 부서 선택 시 팀 목록 가져오기
+	$('#departmentSelect').change(function() {
+	var selectedDivisionCode = $(this).val();
+	if (selectedDivisionCode) {
+	    getDepartmentList(selectedDivisionCode);  // 선택된 부서 코드로 팀 목록 가져오기
+	}
+	});
+	
+	// 팀 목록 가져오기 
+	function getDepartmentList(divisionCode) {
+	$.ajax({
+	    url: '/pettopia/message/departmentList/' + divisionCode,  // 팀 목록 API
+	    type: 'GET',
+	    success: function(data) {
+	        let departmentSelect = $('#teamSelect');
+	        departmentSelect.empty();  // 기존 옵션 삭제
+	        departmentSelect.append('<option value="">---팀 선택---</option>');
+	        data.forEach(function(department) {
+	            departmentSelect.append('<option value="' + department.deptCode + '">' + department.deptName + '</option>');
+	        });
+	    },
+	    error: function(error) {
+	        console.error('Error fetching department data:', error);
+	    }
+	});
+	}
+	
+	//직원 검색 필터링 (이름 입력 시)
+	function filterEmployees() {
+	const name = $('#recipientSearchInput').val();
+	$('#recipientTableBody').empty();  // 기존 직원 리스트 초기화
+	
+	$.ajax({
+	    url: '/pettopia/message/messageNote/employees',  // 직원 목록 API
+	    type: 'GET',
+	    data: {
+	        empStatus: 'E',  // 'E'는 재직중인 직원 필터링
+	    },
+	    success: function(data) {
+	        data.forEach(function(employee) {
+	            if (employee.empName.toLowerCase().includes(name.toLowerCase())) {
+	                $('#recipientTableBody').append('<li>' + employee.empName + '</li>');  // 직원 목록에 이름 추가
+	            }
+	        });
+	    },
+	    error: function(error) {
+	        console.error('Error fetching employee list:', error);
+	    }
+	});
+	}
+	
+	//모달 창 닫기 버튼 클릭 이벤트
+    $('#recipientSearchInput').on('input', filterEmployees);
+});
 </script>
 </body>
 

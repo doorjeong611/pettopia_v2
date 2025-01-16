@@ -1,16 +1,34 @@
 package com.example.pettopia.message;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.pettopia.vo.Department;
+import com.example.pettopia.vo.Division;
+import com.example.pettopia.vo.Rank;
+
 
 @Service
 public class MessageService {
 	@Autowired MessageMapper messageMapper;
+	
+	// 오자윤 : /employee/messageNote 직급검색 (쪽지쓰기 모달창) -->
+	public List<Rank> getRankNameInModal(Rank rank) {
+		return messageMapper.selectRankNameInModal(rank);
+	} 
+	
+	// 오자윤 : /employee/messageNote 팀 검색 (쪽지쓰기 모달창) -->
+	public List<Department> getDepartmentName(String divisionCode) {
+		return messageMapper.selectDeparmentNameInModal(divisionCode);
+	} 
+	
+	// 오자윤 : /employee/messageNote 부서검색 (쪽지쓰기 모달창) -->
+	public List<Division> getDivisionName () {
+		return messageMapper.selectDivisionNameInModal();
+	}
 	
 	// 오자윤 : /employee/messageBin 쪽지보관함으로 복구하기
 	public Integer restoreMessage(List<Long> messageNo) {

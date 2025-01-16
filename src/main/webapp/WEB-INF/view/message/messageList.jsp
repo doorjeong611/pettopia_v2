@@ -205,12 +205,12 @@ document.addEventListener('DOMContentLoaded', function() {
         const checkboxes = document.querySelectorAll('.moveToBin:checked'); // 체크된 체크박스 선택
 
         if (checkboxes.length === 0) {
-            alert('삭제할 메시지를 선택하세요.'); // 선택된 메시지가 없을 경우 사용자에게 알림
+            alert('삭제할 쪽지를 선택하세요.'); // 선택된 메시지가 없을 경우 사용자에게 알림
             return;
         }
 
         // 확인 대화상자
-        if (confirm('선택한 메시지를 삭제하시겠습니까?')) {
+        if (confirm('선택한 쪽지를 삭제하시겠습니까?')) {
             document.querySelector('form').submit(); // 폼 
         }
     });
