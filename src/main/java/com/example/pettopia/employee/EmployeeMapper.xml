@@ -60,7 +60,13 @@
 		ORDER BY divisionName desc
 	</select>
 
-
+	<!-- addEmployee : 사번 자동 입력을 위한 마지막 입사 사번 -->
+	<select id="selectLatestEmpNo" resultType="String">
+		SELECT emp_no AS empNo
+		FROM employee
+		ORDER BY create_datetime DESC
+		LIMIT 1
+	</select>
 
 
 

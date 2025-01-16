@@ -22,6 +22,8 @@ public interface EmployeeMapper {
     // employeeList : 직원 목록 조회
     List<Map<String, Object>> selectEmployeeList();
     
+    // addEmployee : 최근 입사한 사원 조회
+    String selectLatestEmpNo();
     
     
 }

@@ -1,5 +1,8 @@
 package com.example.pettopia.employee;
 
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -31,8 +34,46 @@ public class EmployeeController {
 
 
 	@GetMapping("/admin/addEmployee")
-	public String addEmployee() {
+	public String addEmployee( Model model) {
 		log.debug(TeamColor.KMJ+"[EmployeeController - GET addEmployee()]");
+		
+		// 사번 자동 입력 
+		// 규칙 : 입사년도 + 00001부터 1씩 증가.  -> 입사년도가 바뀌면 다시 00001부터 시작
+		
+		// 올해 년도 
+		LocalDateTime now = LocalDateTime.now();
+		log.debug(TeamColor.KMJ+"오늘 : " + now);
+		
+		DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy");
+		String nowYear = now.format(format);
+		log.debug(TeamColor.KMJ+"올해 : " + nowYear);
+		
+		// 마지막으로 입력된 사원 번호 가져오기
+		String latestEmpNo = employeeService.getLatestEmpNo();
+		log.debug(TeamColor.KMJ+"latestEmpNo : " + latestEmpNo);
+		
+		// 입사년도가 바뀌면 다시 00001부터 시작하기 위해 년도 비교하기
+		String latestEmpNoYear = latestEmpNo.substring( 0, 4);
+		log.debug(TeamColor.KMJ+"latestEmpNoYear : " + latestEmpNoYear);
+		
+		String inputEmpNo = "";
+		if(!nowYear.equals(latestEmpNoYear)) {										// 해가 바뀌면 00001부터 시작
+			
+			inputEmpNo = nowYear + "00001";
+			log.debug(TeamColor.KMJ + "새해 시작 사번 : ", inputEmpNo);
+			
+			model.addAttribute("inputEmpNo", inputEmpNo);
+			
+		}else {																		// 동일한 연도라면 최근 입사한 empNo+1
+			
+			int latestEmpNoPlus = Integer.parseInt(latestEmpNo)+1;
+			log.debug(TeamColor.KMJ + "같은 해 최근 입사 사번 + 1 : " + latestEmpNoPlus + TeamColor.RESET);
+			
+			inputEmpNo = "" + latestEmpNoPlus;
+			model.addAttribute("inputEmpNo", inputEmpNo);
+		}
+		
+		
 		
 		return "common/addEmployee";
 	}
@@ -73,14 +114,14 @@ public class EmployeeController {
 			if(sendMailResult == false) {// 메일 전송 실패시 
 				log.debug(TeamColor.KMJ + "실패 ! 직원 리스트로 이동");
 				log.debug(TeamColor.KMJ + "sendMailResult" + sendMailResult);
-				return "common/employeeList";
+				return "employee/employeeList";
 			}
 			
 			
 		}
 
 		
-		return "common/employeeList";
+		return "redirect:/employeeList";
 	}
 	
 

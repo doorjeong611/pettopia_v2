@@ -18,22 +18,7 @@ public class EmployeeRest {
 	
 	@Autowired EmployeeService employeeService;
 	
-	// 직원 중복 등록 검사
-	@GetMapping("/rest/existEmp/{employeeId}")
-	public Boolean existEmp(@PathVariable String employeeId) {
-		
-		log.debug(TeamColor.KMJ+"[EmployeeRest - GET addEmployee()]");
-		log.debug(TeamColor.KMJ + "넘어온 empNo :" + employeeId);
-		
-		String empNo = employeeId;
-		
-		Boolean result = employeeService.getExistEmployee(empNo);
-		
-		log.debug(TeamColor.KMJ + "empNo " + empNo + TeamColor.RESET);
-		
-		
-		return result;
-	}
+
 	
 	// 직원 목록 조회 
 	@GetMapping("/rest/employeeList")

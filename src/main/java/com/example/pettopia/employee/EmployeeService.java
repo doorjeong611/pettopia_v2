@@ -63,6 +63,17 @@ public class EmployeeService {
 		return existEmp;
 	}
 	
+	// addEmployee : 최근 입사한 사원의 사번 조회
+	public String getLatestEmpNo() {
+		log.debug(TeamColor.KMJ + "EmployeeService - getLatestEmpNo() " );
+		
+		String latestEmpNo = employeeMapper.selectLatestEmpNo();
+		log.debug(TeamColor.KMJ + "latestEmpNo : " + latestEmpNo);
+		
+		return latestEmpNo;
+	}
+	
+	
 	
 	// addEmployee : 직원 등록
 	public boolean addEmployee(EmployeeForm employeeForm, String path) {
