@@ -21,7 +21,7 @@ if (checkAll) {
     });
 }
 
-var perPage = 10;
+var perPage = 4;
 var editlist = false;
 
 //Table
@@ -38,11 +38,15 @@ var options = {
     pagination: true,
     plugins: [
         ListPagination({
-            left: 1,
-            right: 1
+            left: 2,
+            right: 2
         })
     ]
 };
+
+
+
+
 // Init list
 if (document.getElementById("customerList"))
     var customerList = new List("customerList", options).on("updated", function (list) {
@@ -115,7 +119,7 @@ xhttp.onload = function () {
     });
     customerList.remove("id", '<a href="javascript:void(0);" class="fw-medium link-primary id">#VZ2101</a>');
 }
-xhttp.open("GET", "assets/json/table-customer-list.json");
+xhttp.open("GET", "/pettopia/assets/json/table-customer-list.json");
 xhttp.send();
 
 isCount = new DOMParser().parseFromString(
