@@ -44,7 +44,7 @@
                         <h5 class="text-16">쪽지 쓰기</h5>
                     </div>
                     <ul class="flex items-center gap-2 text-sm font-normal shrink-0">
-                        <li class="relative before:content-['\ea54'] before:font-remix ltr:before:-right-1 rtl:before:-left-1  before:absolute before:text-[18px] before:-top-[3px] ltr:pr-4 rtl:pl-4 before:text-slate-400 dark:text-zink-200">
+                        <li class="relative before:content-['\ea54'] before:font-remix ltr:before:-right-1 rtl:before:-left-1  before:absolute before:text-[18px] before:-top-[3px] ltr:pr-4 rtl:pl-4 before:text-slate-400 dark:text-zink-200 text-center">
                             <a href="#!" class="text-slate-400 dark:text-zink-200">메인 화면</a>
                         </li>
                         <li class="text-slate-700 dark:text-zink-100">
@@ -58,14 +58,14 @@
                         <form action="#!">
 							<div class="mb-4">
 							    <span class="font-semibold">받는사람 :</span>
-							    <input type="text" class="text-slate-500 border-b-0 focus:outline-none focus:ring focus:ring-slate-200 dark:bg-zink-700 dark:border-zink-600 dark:text-zink-200" placeholder=" 이름을 입력하세요." readonly/>
+							    <input id="recipientInput" type="text" class="text-slate-500 border-b-0 focus:outline-none focus:ring focus:ring-slate-200 dark:bg-zink-700 dark:border-zink-600 dark:text-zink-200 text-center" placeholder="직원을 검색하세요." readonly/>
 							    <button type="button" id="openModalBtn" class="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20">
 							    	직원검색
 							    </button>
 							</div>
 							<div class="mb-2 pb-2">
 							    <span class="font-semibold">제목 :</span>
-							    <input type="text" class="text-slate-500 border-b-0 focus:outline-none focus:ring focus:ring-slate-200 dark:bg-zink-700 dark:border-zink-600 dark:text-zink-200" placeholder=" 제목을 입력하세요." />
+							    <input type="text" class="text-slate-500 border-b-0 focus:outline-none focus:ring focus:ring-slate-200 dark:bg-zink-700 dark:border-zink-600 dark:text-zink-200 text-center" placeholder=" 제목을 입력하세요." />
 							</div>
 							
 							<!-- 쪽지 내용 시작 -->
@@ -131,11 +131,20 @@
 						
 				        <!-- 직원 리스트 테이블 -->
 				        <div class="overflow-x-auto">
-			                <ul id="recipientTableBody">
-			                    <!-- 예시 직원 목록 -->
-			                </ul> 
-				        </div>
-				
+				        <table id="employeeTable" style="width: 100%; border-collapse: collapse;">
+						    <thead class="ltr:text-left rtl:text-right ">
+						        <tr>
+						            <th class="px-3.5 py-2.5 font-semibold border border-slate-200 dark:border-zink-500 text-center">부서</th>
+						            <th class="px-3.5 py-2.5 font-semibold border border-slate-200 dark:border-zink-500 text-center">팀</th>
+						            <th class="px-3.5 py-2.5 font-semibold border border-slate-200 dark:border-zink-500 text-center">직급</th>
+						            <th class="px-3.5 py-2.5 font-semibold border border-slate-200 dark:border-zink-500 text-center">사원번호</th>
+						            <th class="px-3.5 py-2.5 font-semibold border border-slate-200 dark:border-zink-500 text-center">이름</th>
+						        </tr>
+						    </thead>
+					    <tbody id="recipientTableBody">
+					        <!-- 직원 목록 동적으로 추가 -->
+					    </tbody>
+					</table>
 				    </div>
 				</div>
 				
@@ -178,6 +187,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const openModalBtn = document.getElementById('openModalBtn');
     const modal = document.getElementById('recipientModal');
     const closeModalBtn = document.getElementById('closeModalBtn')
+    // 받는 사람 자동입력 이벤트
+    const recipientInput = document.getElementById('recipientInput');
+    const recipientTableBody = document.getElementById('recipientTableBody');
     
     openModalBtn.addEventListener('click', openModal);
     closeModalBtn.addEventListener('click', closeModal);
@@ -186,6 +198,12 @@ document.addEventListener('DOMContentLoaded', function() {
 	function openModal() {
         modal.classList.remove('hidden');  // 모달창 show
         getDivisionList();  // 부서 목록 가져오기 (모달창 열릴때)
+        
+        // 부서, 팀, 직원 이름 초기화
+        $('#departmentSelect').val(''); 
+        $('#teamSelect').val('');
+        $('#recipientInput').val('');
+        recipientTableBody.innerHTML = ''; // 직원테이블 초기화
     }
 	
     // 모달 창 닫기
@@ -265,19 +283,30 @@ document.addEventListener('DOMContentLoaded', function() {
                 deptCode: teamCode // 선택된 팀 코드 추가
             },
             success: function(data) {
-                if (!data || data.length === 0) {
-                    recipientTableBody.append('<li>직원이 없습니다.</li>');  // 직원이 없을 경우 메시지 표시
-                } else {
+            	if (!data || data.length === 0) {
+                    recipientTableBody.append('<tr><td colspan="5" style="text-align: center;">직원이 없습니다.</td></tr>');  // 직원이 없을 경우 메시지 표시
+                } else { // 직원 반복 추가.
                     data.forEach(function(employee) {
-                        recipientTableBody.append('<li>' + employee.empName + '</li>'); // 직원 이름 추가
+                    	recipientTableBody.append('<tr style="cursor: pointer;"><td class="px-3.5 py-2.5 border border-slate-200 dark:border-zink-500" style="text-align: center;">' + employee.divisionName + '</td><td class="px-3.5 py-2.5 border border-slate-200 dark:border-zink-500" style="text-align: center;">' + employee.deptName + '</td><td class="px-3.5 py-2.5 border border-slate-200 dark:border-zink-500" style="text-align: center;">' + employee.rankName + '</td><td class="px-3.5 py-2.5 border border-slate-200 dark:border-zink-500" style="text-align: center;">' + employee.empNo + '</td><td class="px-3.5 py-2.5 border border-slate-200 dark:border-zink-500" style="text-align: center;">' + employee.empName + '</td></tr>'); // 직원 데이터 테이블에 추가
                     });
                 }
             },
-             error: function(error) {
-                 console.error('직원목록 가져오기 실패:', error);
-             }
+            error: function(error) {
+                console.error('직원목록 가져오기 실패:', error);
+            }
         });
     }
+    // 테이블 행 클릭 시 "받는사람" 자동 입력
+    recipientTableBody.addEventListener('click', function(event) {
+        const targetRow = event.target.closest('tr'); // 클릭한 열(row)을 선택
+        if (targetRow) {
+            const employeeName = targetRow.cells[4]?.textContent.trim(); // '이름' 열의 텍스트 가져오기
+            if (employeeName) {
+                recipientInput.value = employeeName; // 입력 필드에 값 설정
+            }
+            closeModal(); // 모달 창 닫기
+        }
+    });
 });
 </script>
 </body>

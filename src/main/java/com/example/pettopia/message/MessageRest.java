@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.pettopia.util.TeamColor;
@@ -38,11 +39,10 @@ public class MessageRest {
 	@GetMapping("message/messageNote/employees")
 	public List<Map<String, Object>> employeeList
 		(@RequestParam(value = "empStatus", defaultValue = "E") String empStatus, 
-		 @RequestParam(value = "deptCode", required = false) String deptCode) {
+		 @RequestParam(value = "deptCode", required = false) String deptCode,
+		 Model model) {
 		
-		log.debug(TeamColor.OJY + "empStatus rest:" + empStatus + TeamColor.RESET);
-		log.debug(TeamColor.OJY + "teamCode rest: " + deptCode + TeamColor.RESET);
-		
+		//디버깅
 		 List<Map<String, Object>> employeeList = messageService.getEmployeeList(empStatus, deptCode);
 		 log.debug(TeamColor.OJY + "Employee List: " + employeeList + TeamColor.RESET);
 		 
