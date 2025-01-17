@@ -150,6 +150,55 @@ public class EmployeeController {
 		return "employee/employeeList";
 	}
 	
+
+	
+	// 임시 비밀번호 발급 : (비밀번호 찾기)
+	@GetMapping("/sendTempPassword")
+	public String sendTempPassword() {
+		log.debug(TeamColor.KMJ+" LoginController : GET sendTempPassword()" + TeamColor.RESET);
+		
+		return "common/sendTempPassword";
+	}
+	
+	@PostMapping("/sendTempPassword")
+	public String sendTempPassword(@RequestParam String empNo, @RequestParam String empEmail) {
+		log.debug(TeamColor.KMJ+" LoginController : POST sendTempPassword()" + TeamColor.RESET);
+		
+		// 입력된 사번과 이메일이 db 정보와 일치여부 확인
+		log.debug(TeamColor.KMJ+"empNo -  "+ empNo + TeamColor.RESET);
+		log.debug(TeamColor.KMJ+"empEmail -  " + empEmail + TeamColor.RESET);
+		
+		Employee employee = new Employee();
+		employee.setEmpNo(empNo);
+		employee.setEmpEmail(empEmail);
+		
+		Employee empInfo = new Employee();
+		empInfo = employeeService.getSimpleEmpInfo(employee);
+		
+		// 사번과 이메일이 db와 일치한다면 임시비밀번호로 db 수정, 성공시 메일 보내기
+		if(empInfo != null) {												// db와 일치하면 
+			log.debug(TeamColor.KMJ + "empInfo - " + empInfo.toString() );
+			
+			// 임시 비밀번호 발급 : [uuid + !] -> 총 8자리
+			String tempPw = UUID.randomUUID().toString().replace("-", "").substring(0, 7)+"!";
+			log.debug(TeamColor.KMJ + "임시 비밀번호 발급 : " + tempPw);
+			
+			// 발급받은 임시 비밀번호로 db 수정 
+			boolean result = employeeService.modifyEmployee(employee);
+			
+			
+		}
+		
+		
+		
+		
+		
+		return "redirect:/loginForm";
+	}
+	
+	
+	
+	
 	
 	
 	

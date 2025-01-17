@@ -68,6 +68,89 @@
 		LIMIT 1
 	</select>
 
+	<!-- sendTempPassword : 입력한 정보와 db 일치 여부 -->
+	<select id="selectSimpleEmpInfo" parameterType="com.example.pettopia.vo.Employee" resultType="com.example.pettopia.vo.Employee">
+		SELECT emp_no  AS empNo
+				, emp_name AS empName
+				, emp_email AS empEmail
+		FROM employee
+		WHERE emp_no LIKE #{empNo}
+		AND emp_email LIKE #{empEmail}	
+	</select>
+
+
+	<!-- sendTempPassword : 임시비밀번호 발급 후 db 수정 -->
+	<update id="updateEmployee" parameterType="com.example.pettopia.vo.Employee">
+	    UPDATE employee
+	    <set>
+	        <if test="empName != null and empName != ''">
+	            emp_name = #{empName},
+	        </if>
+	
+	        <if test="empPw != null and empPw != ''">
+	            emp_pw = #{empPw},
+	        </if>
+	
+	        <if test="empEmail != null and empEmail != ''">
+	            emp_email = #{empEmail},
+	        </if>
+	
+	        <if test="empBirth != null and empBirth != ''">
+	            emp_birth = #{empBirth},
+	        </if>
+	
+	        <if test="empGender != null and empGender != ''">
+	            emp_gender = #{empGender},
+	        </if>
+	
+	        <if test="empPhone != null and empPhone != ''">
+	            emp_phone = #{empPhone},
+	        </if>
+	
+	        <if test="postalCode != null and postalCode != ''">
+	            postal_code = #{postalCode},
+	        </if>
+	
+	        <if test="basicAddress != null and basicAddress != ''">
+	            basic_address = #{basicAddress},
+	        </if>
+	
+	        <if test="detailAddress != null and detailAddress != ''">
+	            detail_address = #{detailAddress},
+	        </if>
+	
+	        <if test="empStatus != null and empStatus != ''">
+	            emp_status = #{empStatus},
+	        </if>
+	
+	        <if test="isTeamLeader != null">
+	            is_team_leader = #{isTeamLeader},
+	        </if>
+	
+	        <if test="deptCode != null and deptCode != ''">
+	            dept_code = #{deptCode},
+	        </if>
+	
+	        <if test="rankNo != null">
+	            rank_no = #{rankNo},
+	        </if>
+	
+	        <if test="roleName != null and roleName != ''">
+	            role_name = #{roleName},
+	        </if>
+	
+	        <if test="hireDate != null">
+	            hire_date = #{hireDate},
+	        </if>
+	
+	        <if test="resignationDate != null">
+	            resignation_date = #{resignationDate},
+	        </if>
+	
+	        update_datetime = now()
+	    </set>
+	    WHERE emp_no = #{empNo}
+	</update>	
 
 
 

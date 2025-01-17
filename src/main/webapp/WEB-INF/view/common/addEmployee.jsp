@@ -25,8 +25,7 @@
 	href="${pageContext.request.contextPath}/assets/css/tailwind2.css">
 
 <!-- Jquery -->
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
 
 <!-- kakaoMap -->
@@ -126,192 +125,161 @@
 
 		<div
 			class="relative min-h-screen group-data-[sidebar-size=sm]:min-h-sm">
-			<div
-				class="group-data-[sidebar-size=lg]:ltr:md:ml-vertical-menu group-data-[sidebar-size=lg]:rtl:md:mr-vertical-menu group-data-[sidebar-size=md]:ltr:ml-vertical-menu-md group-data-[sidebar-size=md]:rtl:mr-vertical-menu-md group-data-[sidebar-size=sm]:ltr:ml-vertical-menu-sm group-data-[sidebar-size=sm]:rtl:mr-vertical-menu-sm pt-[calc(theme('spacing.header')_*_1)] pb-[calc(theme('spacing.header')_*_0.8)] px-4 group-data-[navbar=bordered]:pt-[calc(theme('spacing.header')_*_1.3)] group-data-[navbar=hidden]:pt-0 group-data-[layout=horizontal]:mx-auto group-data-[layout=horizontal]:max-w-screen-2xl group-data-[layout=horizontal]:px-0 group-data-[layout=horizontal]:group-data-[sidebar-size=lg]:ltr:md:ml-auto group-data-[layout=horizontal]:group-data-[sidebar-size=lg]:rtl:md:mr-auto group-data-[layout=horizontal]:md:pt-[calc(theme('spacing.header')_*_1.6)] group-data-[layout=horizontal]:px-3 group-data-[layout=horizontal]:group-data-[navbar=hidden]:pt-[calc(theme('spacing.header')_*_0.9)]">
-				<div
-					class="container-fluid group-data-[content=boxed]:max-w-boxed mx-auto">
-					<div
-						class="flex flex-col gap-2 py-4 md:flex-row md:items-center print:hidden">
-						<div class="grow">
-							<h5 class="text-16">메인 화면</h5>
-						</div>
-						<ul class="flex items-center gap-2 text-sm font-normal shrink-0">
-							<li
-								class="relative before:content-['\ea54'] before:font-remix ltr:before:-right-1 rtl:before:-left-1  before:absolute before:text-[18px] before:-top-[3px] ltr:pr-4 rtl:pl-4 before:text-slate-400 dark:text-zink-200">
-								<a href="#!" class="text-slate-400 dark:text-zink-200">메인 화면</a>
-							</li>
-							<li class="text-slate-700 dark:text-zink-100">템플릿</li>
-						</ul>
-					</div>
-					<!-- Main content -->
-					<form action="${pageContext.request.contextPath}/admin/addEmployee" class="create-form" method="post" enctype="multipart/form-data" id="addEmployeeForm">
-						<div class="xl:col-span-9">
-							<div class="card">
-								<div class="card-body">
-									<div
-										class="max-h-[calc(theme('height.screen')_-_180px)] p-4 overflow-y-auto">
+			<div class="group-data-[sidebar-size=lg]:ltr:md:ml-vertical-menu group-data-[sidebar-size=lg]:rtl:md:mr-vertical-menu group-data-[sidebar-size=md]:ltr:ml-vertical-menu-md group-data-[sidebar-size=md]:rtl:mr-vertical-menu-md group-data-[sidebar-size=sm]:ltr:ml-vertical-menu-sm group-data-[sidebar-size=sm]:rtl:mr-vertical-menu-sm pt-[calc(theme('spacing.header')_*_1)] pb-[calc(theme('spacing.header')_*_0.8)] px-4 group-data-[navbar=bordered]:pt-[calc(theme('spacing.header')_*_1.3)] group-data-[navbar=hidden]:pt-0 group-data-[layout=horizontal]:mx-auto group-data-[layout=horizontal]:max-w-screen-2xl group-data-[layout=horizontal]:px-0 group-data-[layout=horizontal]:group-data-[sidebar-size=lg]:ltr:md:ml-auto group-data-[layout=horizontal]:group-data-[sidebar-size=lg]:rtl:md:mr-auto group-data-[layout=horizontal]:md:pt-[calc(theme('spacing.header')_*_1.6)] group-data-[layout=horizontal]:px-3 group-data-[layout=horizontal]:group-data-[navbar=hidden]:pt-[calc(theme('spacing.header')_*_0.9)]">
+				
+				<!--  -->
+<div class="container-fluid group-data-[content=boxed]:max-w-boxed mx-auto">
+  <!-- Header -->
+  <div class="flex flex-col gap-2 py-4 md:flex-row md:items-center print:hidden">
+    <div class="grow">
+      <h5 class="text-16">메인 화면</h5>
+    </div>
+    <ul class="flex items-center gap-2 text-sm font-normal shrink-0">
+      <li class="relative before:content-['\ea54'] before:font-remix ltr:before:-right-1 rtl:before:-left-1 before:absolute before:text-[18px] before:-top-[3px] ltr:pr-4 rtl:pl-4 before:text-slate-400 dark:text-zink-200">
+        <a href="#!" class="text-slate-400 dark:text-zink-200">메인 화면</a>
+      </li>
+      <li class="text-slate-700 dark:text-zink-100">템플릿</li>
+    </ul>
+  </div>
 
+  <!-- Main Form -->
+  <form action="${pageContext.request.contextPath}/admin/addEmployee" class="create-form" method="post" enctype="multipart/form-data" id="addEmployeeForm">
+    <div class="xl:col-span-9">
+      <div class="card">
+        <div class="card-body">
+          <div class="max-h-[calc(theme('height.screen')_-_180px)] p-4 overflow-y-auto">
 
-						<!-- 이 부분은 뭔지.. 확인하기 -->
-										<input type="hidden" value="" name="id" id="id"> 
-										<input type="hidden" value="add" name="action" id="action">
-										<input type="hidden" id="id-field">
+            <!-- Hidden Fields -->
+            <input type="hidden" value="" name="id" id="id">
+            <input type="hidden" value="add" name="action" id="action">
+            <input type="hidden" id="id-field">
 
-										<div id="alert-error-msg"
-											class="hidden px-4 py-3 text-sm text-red-500 border border-transparent rounded-md bg-red-50 dark:bg-red-500/20">
-										</div>
-										<!-- border 스타일 지우기! -->
-										<div class="grid grid-cols-1 gap-4 xl:grid-cols-12"
-											style="border: 1px solid red;">
+            <!-- 에러메세지 -->
+            <div id="alert-error-msg" class="hidden px-4 py-3 text-sm text-red-500 border border-transparent rounded-md bg-red-50 dark:bg-red-500/20"></div>
 
-											<!-- 직원 사진 등록 -->
-											<!-- <div class="xl:col-span-12" style="border: 1px solid green;"> -->
-											<div class="relative mx-auto mb-4 rounded-full shadow-md size-24 bg-slate-100 profile-user dark:bg-zink-500">
-												<img id="profileImg"
-													src="${pageContext.request.contextPath }/assets/images/placeholder/placeholder.png"
-													alt=""
-													class="object-cover w-15 h-15 rounded-full user-profile-image">
-												<div
-													class="absolute bottom-0 flex items-center justify-center rounded-full size-8 ltr:right-0 rtl:left-0 profile-photo-edit">
-												<input id="profile-img-file-input" name="employeeFile" type="file" class="hidden profile-img-file-input" accept="image/*"> 
-														<label for="profile-img-file-input"
-														class="flex items-center justify-center bg-white rounded-full shadow-lg cursor-pointer size-8 dark:bg-zink-600 profile-photo-edit">
-														<i data-lucide="image-plus"
-														class="size-4 text-slate-500 fill-slate-200 dark:text-zink-200 dark:fill-zink-500"></i>
-													</label>
-												</div>
-											</div>
-										</div>
-										<!-- 직원 정보 입력 -->
-										<div class="xl:col-span-4" id="divEmpNo" style="border: 1px solid skyblue;">
-											<label for="employeeId"
-												class="inline-block mb-2 text-base font-medium">직원 번호</label> 
-												<input type="number" name="empNo" id="employeeId"
-												class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
-												value="${inputEmpNo}" readOnly>
-												
-										</div>
+            <!-- 직원 프로필 사진  -->
+            <div class="relative mx-auto mb-4 rounded-full shadow-md size-24 bg-slate-100 profile-user dark:bg-zink-500">
+              <img id="profileImg" src="${pageContext.request.contextPath }/assets/images/placeholder/placeholder.png" alt="" class="object-cover w-15 h-15 rounded-full user-profile-image">
+              <div class="absolute bottom-0 flex items-center justify-center rounded-full size-8 ltr:right-0 rtl:left-0 profile-photo-edit">
+                <input id="profile-img-file-input" name="employeeFile" type="file" class="hidden profile-img-file-input" accept="image/*">
+                <label for="profile-img-file-input" class="flex items-center justify-center bg-white rounded-full shadow-lg cursor-pointer size-8 dark:bg-zink-600 profile-photo-edit">
+                  <i data-lucide="image-plus" class="size-4 text-slate-500 fill-slate-200 dark:text-zink-200 dark:fill-zink-500"></i>
+                </label>
+              </div>
+            </div>
 
-										<div class="xl:col-span-4" style="border: 1px solid skyblue;">
-											<label for="employeeInput"
-												class="inline-block mb-2 text-base font-medium">이름</label>
-											<input
-												type="text" name="empName" id="employeeInput"
-												class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
-												placeholder="성명" required>
-										</div>
+            <!-- 직원 정보 입력 -->
+            <div class="grid grid-cols-1 gap-4 xl:grid-cols-12">
+              <!-- 사번 : 자동입력 -->
+              <div class="xl:col-span-4">
+                <label for="employeeId" class="inline-block mb-2 text-base font-medium">직원 번호</label>
+                <input type="number" name="empNo" id="employeeId" class="form-input border-slate-200 dark:border-zink-500" value="${inputEmpNo}" readOnly>
+              </div>
 
+              <!-- 이름 -->
+              <div class="xl:col-span-4">
+                <label for="employeeInput" class="inline-block mb-2 text-base font-medium">이름</label>
+                <input type="text" name="empName" id="employeeInput" class="form-input border-slate-200 dark:border-zink-500" placeholder="성명" required>
+              </div>
 
-										<!-- 날짜 선택시 Flatpickr 한국어 로컬 설정하기 -->
-										<div class="xl:col-span-4" style="border: 1px solid bule;">
-											<label for="joiningDateInput"
-												class="inline-block mb-2 text-base font-medium">생년월일</label>
-											<input type="text" name="empBirth" id="joiningDateInput1"
-												class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
-												placeholder="Select date" data-provider="flatpickr"
-												data-date-format="Y-m-d" >
-										</div>
-										<div class="xl:col-span-4" style="border: 1px solid bule;">
-											<label for="emailInput"
-												class="inline-block mb-2 text-base font-medium">이메일</label>
-											<input type="text" name="empEmail" id="emailInput"
-												class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
-												placeholder="example@tailwick.com" required>
-										</div>
-										<div class="xl:col-span-4" style="border: 1px solid bule;">
-											<label for="phoneNumberInput"
-												class="inline-block mb-2 text-base font-medium">연락처</label>
-											<select type="text" name="empPhoneF" 
-												class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
-												required>
-												<option value="010">010</option>
-												<option value="011">011</option>
-											</select>
-											 - 
-											<input type="number" name="empPhoneM" id="phoneNumberInput1"
-												class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
-												placeholder="Enter phone number" required>
-											 - 
-											<input
-												type="number" name="empPhoneL" id="phoneNumberInput2"
-												class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
-												placeholder="Enter phone number" required>
-										</div>
-										<div class="xl:col-span-4" style="border: 1px solid bule;">
-											<label for="phoneNumberInput"
-												class="inline-block mb-2 text-base font-medium">성별
-											</label> 
-											<label>
-												<input type="radio" name="empGender"
-													class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
-													placeholder="Enter phone number" value="M" required>
-													남성
-											</label> 
-											<label>
-												<input type="radio" name="empGender"
-													class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
-													placeholder="Enter phone number" value="F" required>
-													여성
-											</label>
-										</div>
-										<!-- 카카오맵 API를 이용하여 주소 입력하기 -->
-										<div class="xl:col-span-12" style="border: 1px solid green;">
-											<label for="locationInput" class="inline-block mb-2 text-base font-medium">주소</label>
-										</div>
-										<div style="border: 1px solid green;">
-											<input type="text" name="postalCode" id="sample6_postcode" placeholder="우편번호" required>  
-											<input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기" >
-											<br>
-											<input type="text" name="basicAddress" id="sample6_address" placeholder="주소" required>
-											<br> 
-											<input type="text" name="detailAddress" id="sample6_detailAddress" placeholder="상세주소" required> 
-											<input type="text" name="dong" id="sample6_extraAddress" placeholder="동" required>
-										</div>
+              <!-- 생년월일 -->
+              <div class="xl:col-span-4">
+                <label for="joiningDateInput1" class="inline-block mb-2 text-base font-medium">생년월일</label>
+                <input type="text" name="empBirth" id="joiningDateInput1" class="form-input border-slate-200 dark:border-zink-500" placeholder="Select date" data-provider="flatpickr" data-date-format="Y-m-d">
+              </div>
 
-										<!-- 끝 : 카카오맵 API를 이용하여 주소 입력하기 -->
+              <!-- 이메일 -->
+              <div class="xl:col-span-4">
+                <label for="emailInput" class="inline-block mb-2 text-base font-medium">이메일</label>
+                <input type="text" name="empEmail" id="emailInput" class="form-input border-slate-200 dark:border-zink-500" placeholder="example@tailwick.com" required>
+              </div>
 
-										<!-- 날짜 선택시 Flatpickr 한국어 로컬 설정 -->
-										<div class="xl:col-span-6" style="border: 1px solid green;">
-											<label for="joiningDateInput"
-												class="inline-block mb-2 text-base font-medium">입사일</label>
-											<input type="text" name="hireDate" id="joiningDateInput"
-												class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
-												placeholder="Select date" data-provider="flatpickr"
-												data-date-format="Y-m-d">
-										</div>
+              <!-- 연락처 -->
+              <div class="xl:col-span-4">
+                <label for="phoneNumberInput" class="inline-block mb-2 text-base font-medium">연락처</label>
+                <div class="flex gap-2">
+                  <select name="empPhoneF" class="form-input border-slate-200 dark:border-zink-500">
+                    <option value="010">010</option>
+                    <option value="011">011</option>
+                  </select>
+                  <input type="text" name="empPhoneM" id="phoneNumberInput1" class="form-input border-slate-200 dark:border-zink-500" placeholder="중간 번호" required>
+                  <input type="text" name="empPhoneL" id="phoneNumberInput2" class="form-input border-slate-200 dark:border-zink-500" placeholder="끝 번호" required>
+                </div>
+              </div>
 
-										<div class="xl:col-span-12" style="border: 1px solid green;">
-											<label for="designationSelect"
-												class="inline-block mb-2 text-base font-medium">부서</label> <select
-												class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
-												name="divisionCode" id="divisionSelect">
-												<option value="">부서 선택</option>
-											</select> <select
-												class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
-												name="deptCode" id="departSelect">
-												<option value="">팀 선택</option>
-											</select> <select
-												class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
-												name="rankNo" id="rankSelect">
-												<option value="">직급 선택</option>
-											</select>
-		  					
-										</div>
-									</div>
-									<div class="flex justify-end gap-2 mt-4">
-										<button type="reset" id="btnReset"
-											data-modal-close="addEmployeeModal"
-											class="text-red-500 bg-white btn hover:text-red-500 hover:bg-red-100 focus:text-red-500 focus:bg-red-100 active:text-red-500 active:bg-red-100 dark:bg-zink-600 dark:hover:bg-red-500/10 dark:focus:bg-red-500/10 dark:active:bg-red-500/10">Cancel</button>
-										<button type="submit" id="addNew"
-											class="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20 ">직원
-											등록</button>
-									</div>
-
-								</div>
-							</div>
-						</div>
+              <!-- 성별 -->
+				<div class="xl:col-span-4">
+				  <label class="block text-base font-medium mb-2" style=" margin-bottom: 15px;">성별</label>
+				  <div class="flex items-center space-x-4">
+				    <label class="flex items-center space-x-2" style="margin-right: 30px;">
+				      <input type="radio" name="empGender" value="M" class="h-5 w-5 text-blue-600 border-gray-300 focus:ring-blue-500" style="margin-left: 10px;">
+				      <span>남성</span>
+				    </label>
+				    <label class="flex items-center space-x-2">
+				      <input type="radio" name="empGender" value="F" class="h-5 w-5 text-pink-600 border-gray-300 focus:ring-pink-500">
+				      <span>여성</span>
+				    </label>
+				  </div>
 				</div>
-				</form>
+
+              <!-- 주소 -->          
+				<div class="xl:col-span-4">
+				  <label for="locationInput" class="inline-block mb-2 text-base font-medium">
+				    주소
+				  </label>
+				  <div class="grid gap-2">
+				    <!-- 우편번호와 버튼 -->
+				    <div class="flex items-center space-x-2">
+				      <input type="text" name="postalCode" id="sample6_postcode" placeholder="우편번호" readonly class="flex-grow border border gray-300 rounded-md px-2 py-1">
+				      <!-- <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기" style="background-color: #3B82F6; color: white;" >  -->
+				      <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기" style="background-color: #3B82F6; color: white; padding: 5px 10px; font-size: 13px; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease;">
+				    </div>
+				
+				    <!-- 주소 입력 -->
+				    <input type="text" name="basicAddress" id="sample6_address" placeholder="주소" required class="border border-gray-300 rounded-md px-2 py-1">
+				    <input type="text"  name="detailAddress"  id="sample6_detailAddress" placeholder="상세주소" required class="border border-gray-300 rounded-md px-2 py-1">
+				    <input type="text" name="dong" id="sample6_extraAddress" placeholder="동" required class="border border-gray-300 rounded-md px-2 py-1">
+				  </div>
+				</div>              
+
+              <!-- 입사일 -->
+              <div class="xl:col-span-4">
+                <label for="joiningDateInput" class="inline-block mb-2 text-base font-medium">입사일</label>
+                <input type="text" name="hireDate" id="joiningDateInput" class="form-input border-slate-200 dark:border-zink-500" placeholder="Select date" data-provider="flatpickr" data-date-format="Y-m-d">
+              </div>
+
+              <!-- 부서 -->
+              <div class="xl:col-span-4">
+                <label for="designationSelect" class="inline-block mb-2 text-base font-medium">부서</label>
+                <div class="flex gap-2">
+                  <select name="divisionCode" id="divisionSelect" class="form-input border-slate-200 dark:border-zink-500">
+                    <option value="">부서 선택</option>
+                  </select>
+                  <select name="deptCode" id="departSelect" class="form-input border-slate-200 dark:border-zink-500">
+                    <option value="">팀 선택</option>
+                  </select>
+                  <select name="rankNo" id="rankSelect" class="form-input border-slate-200 dark:border-zink-500">
+                    <option value="">직급 선택</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- 등록 버튼 -->
+            <div class="flex justify-end gap-2 mt-4">
+              <button type="reset" id="btnReset" class="text-red-500 bg-white btn hover:bg-red-100">다시 작성</button>
+              <button type="submit" id="addNew" class="text-white btn bg-custom-500 hover:bg-custom-600">직원 등록</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+				
+				
+				
 				<!--end add Employee-->
 			</div>
 			<!-- container-fluid -->
@@ -542,11 +510,46 @@ $(document).ready(function() {
 	   
 		/*  연락처 유효성 검사  */
 	   if(($('#phoneNumberInput1').val() == '' || $('#phoneNumberInput1').val().length != 4) || ($('#phoneNumberInput2').val() == '' || $('#phoneNumberInput2').val().length != 4)){
-		   alert('잘못된 연락처 입니다. 다시 입력해주세요.');
+		   alert('연락처를 입력해주세요.');
 		   $('#phoneNumberInput1').focus();
 		   event.preventDefault(); /*  폼 제출 막기 */
 		   return;
 	   }
+	   
+		const numTest = /^[0-9]*$/;
+		
+	   if(numTest.test($('#phoneNumberInput1').val()) == false || numTest.test($('#phoneNumberInput2').val()) == false){ /* 연락처 숫자 정규식 */
+		   alert('잘못된 연락처 입니다. 다시 입력해주세요.');
+			$('#phoneNumberInput1').focus();
+			event.preventDefault(); /*  폼 제출 막기 */
+	    	return;
+	   }
+	   
+	   /* 성별 */
+	   if($("input[name=empGender]:radio:checked").length < 1){
+		   alert('성별을 선택해주세요.');
+			event.preventDefault(); /*  폼 제출 막기 */
+			return;
+	   }
+	   
+		
+	   /* 주소 유효성 검사 */
+	   if( $('#sample6_address').val() == '' || $('#sample6_detailAddress').val() == ''  || $('#sample6_extraAddress').val() == '' ){
+		   alert('주소를 입력해주세요.');
+			$('#sample6_postcode').focus();
+			event.preventDefault(); /*  폼 제출 막기 */
+	    	return;
+	   }
+	   
+	   if(numTest.test($('#sample6_postcode').val()) == false){
+		   alert('잘못된 주소 입니다. 다시 입력해주세요.');
+			$('#sample6_postcode').focus();
+			event.preventDefault(); /*  폼 제출 막기 */
+	    	return;
+	   }
+	   
+
+		
 	   
 	   /* 입사일 */
 	   const hireDate = document.querySelector("#joiningDateInput").value;
