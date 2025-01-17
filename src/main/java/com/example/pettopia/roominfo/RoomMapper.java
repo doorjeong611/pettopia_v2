@@ -20,9 +20,6 @@ public interface RoomMapper {
 	// 상세보기
 	Map<String, Object> selectRoomOne(Integer roomNo);
 	
-	// room_type ENUM 값 추출
-	// List<String> selectRoomTypeEnum(); 
-	
 	// 객실 등록
 	 int insertRoomInfo(RoomInfo roomInfo);
 	 
@@ -31,5 +28,11 @@ public interface RoomMapper {
 	 
 	// 전체 객실 및 이미지 조회 (추가된 메서드)
 	List<Map<String, Object>> selectRoomWithImages();
+	
+	 // 객실 정보 수정
+    int updateRoomInfo(RoomInfo roomInfo);
+
+    // 객실 이미지 수정
+    int updateRoomImg(RoomImg roomImg);
 
 }

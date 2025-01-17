@@ -24,6 +24,39 @@ public class RoomService {
 	@Autowired
     private RoomMapper roomMapper;
 
+	// 객실 수정
+	public void updateRoomWithImage(RoomInfo roomInfo, MultipartFile roomImg, String uploadPath) throws Exception {
+	    // 1. 객실 정보 업데이트
+	    int updateResult = roomMapper.updateRoomInfo(roomInfo);
+	    if (updateResult == 0) {
+	        throw new RuntimeException("객실 정보 수정 실패");
+	    }
+	    log.debug("객실 정보 수정 완료: {}", roomInfo);
+
+	    // 2. 이미지 업데이트 처리
+	    if (roomImg != null && !roomImg.isEmpty()) {
+	        RoomImg roomImage = new RoomImg();
+	        roomImage.setRoomNo(roomInfo.getRoomNo());
+	        roomImage.setOriginFileName(roomImg.getOriginalFilename());
+
+	        String fileName = UUID.randomUUID() + "." + getFileExtension(roomImg.getOriginalFilename());
+	        roomImage.setFileName(fileName);
+	        roomImage.setFileExt(getFileExtension(roomImg.getOriginalFilename()));
+	        roomImage.setFileType(roomImg.getContentType());
+
+	        // 이미지 업데이트
+	        int imgUpdateResult = roomMapper.updateRoomImg(roomImage);
+	        if (imgUpdateResult == 0) {
+	            throw new RuntimeException("이미지 수정 실패");
+	        }
+	        log.debug("객실 이미지 수정 완료: {}", roomImage);
+
+	        // 파일 저장
+	        File saveFile = new File(uploadPath, fileName);
+	        roomImg.transferTo(saveFile);
+	    }
+	}
+	
 	// 전체 객실 리스트 조회
     public List<RoomInfo> getRoomList() {
         return roomMapper.selectRoom();
@@ -97,45 +130,5 @@ public class RoomService {
         return roomMapper.selectRoomWithImages();
     }
     
-    
-    // 객실 등록 (이미지 갖고 오려다 실패한 버전)
-//    public void addRoom(RoomInfo roomInfo, String path) {
-//        int row1 = roomMapper.insertRoom(roomInfo);
-//        Integer roomNo = roomInfo.getRoomNo(); // insert된 room no 받아오기
-//        log.debug(TeamColor.WJ + "roomNo =====> " + roomNo + TeamColor.RESET);
-//
-//        if (row1 == 1 && roomInfo.getRoomFiles() != null) {
-//            List<MultipartFile> roomFiles = roomInfo.getRoomFiles(); // RoomInfo에 파일 리스트 추가 필요
-//            for (MultipartFile mf : roomFiles) {
-//                RoomImg roomImg = new RoomImg();
-//                roomImg.setRoomNo(roomNo);
-//                roomImg.setFileType(mf.getContentType());
-//                String filename = UUID.randomUUID().toString().replace("-", "");
-//                roomImg.setFileName(filename);
-//                log.debug(TeamColor.WJ + "roomFiles =====> " + filename + TeamColor.RESET);
-//                int dotIdx = mf.getOriginalFilename().lastIndexOf(".");
-//                String originName = mf.getOriginalFilename().substring(0, dotIdx);
-//                String ext = mf.getOriginalFilename().substring(dotIdx + 1);
-//                roomImg.setOriginFileName(originName);
-//                roomImg.setFileExt(ext);
-//
-//                int row2 = roomMapper.insertRoomImg(roomImg);
-//                if (row2 == 1) {
-//                    try {
-//                        mf.transferTo(new File(path + filename + "." + ext));
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                        throw new RuntimeException(); // 예외 발생 시 롤백
-//                    }
-//                }
-//            }
-//        }
-//    }
 }
-    
-    // 룸 타입 ENUM 값 추출
-//    public List<String> getRoomTypes() {
-//    	List<String> enumList = roomMapper.selectRoomTypeEnum(); // "enum('S','D','ST','F')"
-//        return Arrays.asList(enumList.replace("'", "").split(","));
-//    }
 
