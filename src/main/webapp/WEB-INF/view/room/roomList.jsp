@@ -17,6 +17,23 @@
     <!-- Tailwind CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tailwind2.css">
 </head>
+<style>
+.image-container {
+    width: 373px; /* 고정 너비 */
+    height: 223px; /* 고정 높이 */
+    overflow: hidden; /* 영역을 벗어난 이미지는 숨김 처리 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0f0f0; /* 필요하면 배경색 추가 */
+}
+
+.image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 크기에 맞게 확대/자르기 */
+}
+</style>
 <body class="text-base bg-body-bg text-body font-public dark:text-zink-100 dark:bg-zink-800 group-data-[skin=bordered]:bg-body-bordered group-data-[skin=bordered]:dark:bg-zink-700">
 <div class="group-data-[sidebar-size=sm]:min-h-sm group-data-[sidebar-size=sm]:relative">
     
@@ -59,7 +76,31 @@
                 <div class="card">
 	                <div class="card-body">
 	                    <div class="overflow-x-auto">
-	                        <table class="w-full">
+	                    	<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+							    <c:forEach var="room" items="${roomListImg}">
+							        <div class="flex flex-col p-4 bg-white border rounded-md shadow-sm dark:bg-zinc-800">
+							            <div class="image-container">
+							                <img src="${pageContext.request.contextPath}/upload/${room.fileName}" 
+							                     alt="${room.originFileName}">
+							            </div>
+							            <div class="mt-4">
+							                <h6 class="text-lg font-semibold text-slate-700 dark:text-white">
+							                    <a href="${pageContext.request.contextPath}/room/getRoomOne?roomNo=${room.roomNo}" 
+							                       class="transition-all duration-300 ease-linear hover:text-custom-500">
+							                        ${room.roomName}호
+							                    </a>
+							                </h6>
+							                <p class="text-sm text-slate-500 mt-1">타입: <span>${room.roomType}</span></p>
+							                <p class="text-sm text-slate-500">수용 인원: <span>${room.roomCapacity}</span></p>
+							                <p class="text-sm text-slate-500">1박 당 가격: <span>${room.pricePerNight}</span></p>
+							                <p class="text-sm text-slate-500">설명: <span>${room.roomDesc}</span></p>
+							            </div>
+							        </div>
+							    </c:forEach>
+							</div>
+	                    
+                            
+	                        <%-- <table class="w-full">
 	                            <tbody>
 	                            	<c:forEach var="room" items="${roomListImg}">
 		                                <tr>
@@ -82,7 +123,7 @@
 		                                </tr>
 		                            </c:forEach>
 	                            </tbody>
-	                        </table>
+	                        </table> --%>
 	                    </div>
 	                </div>
                  </div>
