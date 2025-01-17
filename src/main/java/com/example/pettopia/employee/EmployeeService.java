@@ -247,7 +247,7 @@ public class EmployeeService {
 	       
 	  }
 	 
-	// 직원 목록 조회
+	// employeeList : 직원 목록 조회
 	public List<Map<String, Object>> getEmployeeList(){
 		log.debug(TeamColor.KMJ + "EmployeeService - getEmployeeList() " );
 		
@@ -257,6 +257,39 @@ public class EmployeeService {
 		
 		return empList;
 	}
+	
+	// sendTempPassword : 입력한 사번, 이메일 일치 여부 조회
+	public Employee getSimpleEmpInfo(Employee employee) {
+		log.debug(TeamColor.KMJ + "EmployeeService - getSimpleEmpInfo() " );
+		
+		Employee empInfo = employeeMapper.selectSimpleEmpInfo(employee);
+		
+		if(empInfo != null) {
+			log.debug(TeamColor.KMJ + "empInfo - " + empInfo.toString() );
+		}
+		
+		return empInfo;
+	}
+	
+	
+	// 직원 정보 수정 : sendTempPassword - 새로 발급한 임시비밀번호로 db 수정
+	public boolean modifyEmployee(Employee employee) {
+		log.debug(TeamColor.KMJ + "EmployeeService - modifyEmployee() " );
+		
+		boolean result = false;
+		
+		Integer update = employeeMapper.updateEmployee(employee);
+		
+		if(update == 1) {
+			log.debug(TeamColor.KMJ + "update 결과 : " + update );
+			result = true;
+		}
+		
+		
+		return result; 
+	}
+	
+	
 	
 
 }// employeeService

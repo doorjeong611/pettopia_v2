@@ -25,5 +25,11 @@ public interface EmployeeMapper {
     // addEmployee : 최근 입사한 사원 조회
     String selectLatestEmpNo();
     
+    // sendTempPassword : 입력한 사번, 이메일 일치 여부 조회
+    Employee selectSimpleEmpInfo(Employee employee);
+    
+    // 직원 정보 수정 : sendTmepPassword - 직원 비밀번호 수정
+    Integer updateEmployee(Employee employee);
+    
     
 }

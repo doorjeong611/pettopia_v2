@@ -22,7 +22,7 @@ public class LoginController {
 	
 	@Autowired EmployeeService employeeService;
 	
-
+	// 로그인 폼으로 이동
 	@GetMapping("/loginForm")
 	public String login(Authentication authentication) {
 		
@@ -35,17 +35,20 @@ public class LoginController {
 		return "login/login";
 	}
 	
+	// 로그아웃
 	@GetMapping("/logout")
 	public String logout() {
 		return "login/login";
 	}
 	
+	// 에러페이지
 	@GetMapping("/errorPage")
 	public String error() {
-		log.debug("00000000000");
+		log.debug(TeamColor.KMJ+"00000000000" + TeamColor.RESET);
 		return "common/404";
 	}
 	
+
 	
 	
 	
