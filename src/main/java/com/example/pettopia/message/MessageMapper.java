@@ -13,9 +13,6 @@ import com.example.pettopia.vo.Rank;
 @Mapper
 public interface MessageMapper {
 	
-	// 오자윤 : /employee/messageNote 직급검색 (쪽지쓰기 모달창) -->
-	List<Rank> selectRankNameInModal(Rank rank);
-	
 	// 오자윤 : /employee/messageNote 팀 검색 (쪽지쓰기 모달창) -->
 	List<Department> selectDeparmentNameInModal(String divisionCode);
 	
@@ -29,7 +26,7 @@ public interface MessageMapper {
 	Integer deleteMessage(List<Integer> messageNo);
 	
 	// 오자윤 : /employee/messageNote (모달)직원 조회 
-	List<Map<String, Object>> getEmployeeList(String empStatus);
+	List<Map<String, Object>> getEmployeeList(String empStatus, String deptCode);
 	
 	// 오자윤 : /employee/messageOne 쪽지 상세보기
 	Map<String, Object>getMessageById(String messageNo);

@@ -15,11 +15,6 @@ import com.example.pettopia.vo.Rank;
 public class MessageService {
 	@Autowired MessageMapper messageMapper;
 	
-	// 오자윤 : /employee/messageNote 직급검색 (쪽지쓰기 모달창) -->
-	public List<Rank> getRankNameInModal(Rank rank) {
-		return messageMapper.selectRankNameInModal(rank);
-	} 
-	
 	// 오자윤 : /employee/messageNote 팀 검색 (쪽지쓰기 모달창) -->
 	public List<Department> getDepartmentName(String divisionCode) {
 		return messageMapper.selectDeparmentNameInModal(divisionCode);
@@ -41,8 +36,8 @@ public class MessageService {
 	}
 	
 	// 오자윤 : /employee/messageNote (모달)직원 조회 -->
-	public List<Map<String, Object>> getEmployeeList(String empStatus) {
-		return messageMapper.getEmployeeList(empStatus);
+	public List<Map<String, Object>> getEmployeeList(String empStatus, String deptCode) {
+		return messageMapper.getEmployeeList(empStatus,deptCode);
 	}
 	
 	// 오자윤 : /employee/messageList 쪽지리스트
