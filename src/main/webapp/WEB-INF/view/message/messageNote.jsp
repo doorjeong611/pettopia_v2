@@ -114,18 +114,12 @@
 				                	<option value="">---팀 선택---</option>
 				                </select>
 				            </div>
-				
-				            <div class="flex-grow">
-				                <select id="positionSelect" class="border border-gray-300 rounded w-full p-2">
-				                    <option value="">---직급 선택---</option>
-				                </select>
-				            </div>
 				        </div>
 
 				        <!-- 사원번호 입력란 -->
 				        <div class="mb-4">
 				            <label class="block mb-1">이름</label>
-				            <input type="text" id="recipientSearchInput" class="border border-gray-300 rounded w-full p-2" placeholder="직원이름을 입력하세요." oninput="filterEmployees()"/>
+				            <input type="text" id="recipientSearchInput" class="border border-gray-300 rounded w-full p-2" placeholder="직원이름을 입력하세요." />
 				        </div>
 						
 						<div class="flex justify-end mb-4">
@@ -133,9 +127,7 @@
 						</div>
 						
 						<!-- 선택된 직원 이름 표시 -->
-				        <div id="selectedEmployee" class="mb-4">
-				            선택된 직원: <span id="selectedEmployeeName">없음</span>
-				        </div>
+				        <div id="selectedEmployee" class="mb-4"></div>
 						
 				        <!-- 직원 리스트 테이블 -->
 				        <div class="overflow-x-auto">
@@ -192,9 +184,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
 	// 모달 창 열기
 	function openModal() {
-        modal.classList.remove('hidden');  // Show modal
+        modal.classList.remove('hidden');  // 모달창 show
         getDivisionList();  // 부서 목록 가져오기 (모달창 열릴때)
-        getRankList();  // 직급 목록 가져오기
     }
 	
     // 모달 창 닫기
@@ -202,98 +193,91 @@ document.addEventListener('DOMContentLoaded', function() {
         modal.classList.add('hidden');  // 모달 창 숨기기
     }
 
-	//직급 목록 가져오기
-	function getRankList() {
-	$.ajax({
-	    url: '/pettopia/message/rankList',  // 직급 목록 API
-	    type: 'GET',
-	    success: function(data) {
-	        let rankSelect = $('#positionSelect');
-	        rankSelect.empty();  // 기존 옵션 삭제
-	        rankSelect.append('<option value="">---직급 선택---</option>');
-	        data.forEach(function(rank) {
-	            rankSelect.append('<option value="' + rank.rankNo + '">' + rank.rankName + '</option>');
-	        });
-	    },
-	    error: function(error) {
-	        console.error('Error fetching rank data:', error);
-	        
-		    }
-		});
-	}
-	
 	//부서 목록 가져오기 
     function getDivisionList() {
-	$.ajax({
-	    url: '/pettopia/message/divisionList',  // 부서 목록 API
-	    type: 'GET',
-	    success: function(data) {
-	        let divisionSelect = $('#departmentSelect');
-	        divisionSelect.empty();  // 기존 옵션 삭제
-	        divisionSelect.append('<option value="">---부서 선택---</option>');
-	        data.forEach(function(division) {
-	            divisionSelect.append('<option value="' + division.divisionCode + '">' + division.divisionName + '</option>');
-	        });
-	    },
-	    error: function(error) {
-	        console.error('Error fetching division data:', error);
-		    }
-		});
-	}
+		$.ajax({
+		    url: '/pettopia/message/divisionList',  // 부서 목록 API
+		    type: 'GET',
+		    success: function(data) {
+		        let divisionSelect = $('#departmentSelect');
+		        divisionSelect.empty();  // 기존 옵션 삭제
+		        divisionSelect.append('<option value="">---부서 선택---</option>');
+		        data.forEach(function(division) {
+		            divisionSelect.append('<option value="' + division.divisionCode + '">' + division.divisionName + '</option>');
+		        });
+		    },
+		    error: function(error) {
+		        console.error('부서목록 가져오기 실패 :', error);
+			    }
+			});
+		}
 	
 	// 부서 선택 시 팀 목록 가져오기
 	$('#departmentSelect').change(function() {
-	var selectedDivisionCode = $(this).val();
-	if (selectedDivisionCode) {
-	    getDepartmentList(selectedDivisionCode);  // 선택된 부서 코드로 팀 목록 가져오기
-	}
+		var selectedDivisionCode = $(this).val();
+		if (selectedDivisionCode) {
+		    getDepartmentList(selectedDivisionCode);  // 선택된 부서 코드로 팀 목록 가져오기
+		}
 	});
 	
 	// 팀 목록 가져오기 
 	function getDepartmentList(divisionCode) {
-	$.ajax({
-	    url: '/pettopia/message/departmentList/' + divisionCode,  // 팀 목록 API
-	    type: 'GET',
-	    success: function(data) {
-	        let departmentSelect = $('#teamSelect');
-	        departmentSelect.empty();  // 기존 옵션 삭제
-	        departmentSelect.append('<option value="">---팀 선택---</option>');
-	        data.forEach(function(department) {
-	            departmentSelect.append('<option value="' + department.deptCode + '">' + department.deptName + '</option>');
-	        });
-	    },
-	    error: function(error) {
-	        console.error('Error fetching department data:', error);
-	    }
-	});
-	}
+		$.ajax({
+		    url: '/pettopia/message/departmentList/' + divisionCode,  // 팀 목록 API
+		    type: 'GET',
+		    success: function(data) {
+		        let departmentSelect = $('#teamSelect');
+		        departmentSelect.empty();  // 기존 옵션 삭제
+		        departmentSelect.append('<option value="">---팀 선택---</option>');
+		        data.forEach(function(department) {
+		            departmentSelect.append('<option value="' + department.deptCode + '">' + department.deptName + '</option>');
+		        });
+		        updateEmployeeList(); // 팀 목록 갱신 후 직원 목록 업데이트
+		    },
+		    error: function(error) {
+		        console.error('팀목록 가져오기 실패 :', error);
+		    }
+		});
+	   }
 	
-	//직원 검색 필터링 (이름 입력 시)
-	function filterEmployees() {
-	const name = $('#recipientSearchInput').val();
-	$('#recipientTableBody').empty();  // 기존 직원 리스트 초기화
+    // 부서 또는 팀 선택 시 직원 목록 업데이트
+    $('#departmentSelect, #teamSelect').change(function() {
+        updateEmployeeList();  // 부서나 팀 선택 시 직원 목록 갱신
+    });
 	
-	$.ajax({
-	    url: '/pettopia/message/messageNote/employees',  // 직원 목록 API
-	    type: 'GET',
-	    data: {
-	        empStatus: 'E',  // 'E'는 재직중인 직원 필터링
-	    },
-	    success: function(data) {
-	        data.forEach(function(employee) {
-	            if (employee.empName.toLowerCase().includes(name.toLowerCase())) {
-	                $('#recipientTableBody').append('<li>' + employee.empName + '</li>');  // 직원 목록에 이름 추가
-	            }
-	        });
-	    },
-	    error: function(error) {
-	        console.error('Error fetching employee list:', error);
-	    }
-	});
-	}
-	
-	//모달 창 닫기 버튼 클릭 이벤트
-    $('#recipientSearchInput').on('input', filterEmployees);
+    // 직원 검색 필터링
+    function updateEmployeeList() {
+    	const divisionCode = $('#departmentSelect').val(); // 선택된 부서 코드
+        const teamCode = $('#teamSelect').val(); // 선택된 팀 코드
+        const recipientTableBody = $('#recipientTableBody');
+        recipientTableBody.html(''); // 기존 직원 리스트 초기화
+
+        // 부서나 팀이 선택되지 않으면 직원 목록을 가져오지 않음
+        if (!divisionCode || !teamCode) {
+            return;
+        }
+        
+        $.ajax({
+            url: '/pettopia/message/messageNote/employees', // 직원 목록 API
+            type: 'GET',
+            data: {
+                empStatus: 'E', // 'E'는 재직중인 직원 필터링
+                deptCode: teamCode // 선택된 팀 코드 추가
+            },
+            success: function(data) {
+                if (!data || data.length === 0) {
+                    recipientTableBody.append('<li>직원이 없습니다.</li>');  // 직원이 없을 경우 메시지 표시
+                } else {
+                    data.forEach(function(employee) {
+                        recipientTableBody.append('<li>' + employee.empName + '</li>'); // 직원 이름 추가
+                    });
+                }
+            },
+             error: function(error) {
+                 console.error('직원목록 가져오기 실패:', error);
+             }
+        });
+    }
 });
 </script>
 </body>

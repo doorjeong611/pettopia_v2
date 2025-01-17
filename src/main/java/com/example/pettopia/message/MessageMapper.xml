@@ -2,23 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.pettopia.message.MessageMapper">
 
-	<!-- 오자윤 : /employee/messageNote 쪽지쓰기 모달창 직급검색 -->
-	<select id="selectRankNameInModal" parameterType="String">
-		SELECT 
-		    rank_no rankNo, 
-		    rank_name rankName 
-		FROM `rank`;
-	</select>
-	
 	<!-- 오자윤 : /employee/messageNote 쪽지쓰기 모달창 팀검색 -->
 	<select id="selectDeparmentNameInModal" parameterType="String">
 	    SELECT 
-		    dept_code deptCode,
+	    	dept_code deptCode,
+		    division_code divisionCode,
 		    dept_name deptName
 		FROM 
 			department
-		JOIN 
-		    division ON division.division_code = department.division_code
+		WHERE 
+			division_code = #{divisionCode}
+		ORDER BY deptName
 	</select>
 	
 	<!-- 오자윤 : /employee/messageNote 쪽지쓰기 모달창 부서검색 -->
@@ -46,7 +40,7 @@
 	</delete>
 
 
-	<!-- 오자윤 : /employee/messageNote (모달)직원 조회 -->
+	<!-- 오자윤 : /employee/messageNote (모달)직원 선택 조회 -->
 	<select id="getEmployeeList" parameterType="String" resultType="map">
 		SELECT 
 		    d.division_name divisionName,
@@ -63,7 +57,8 @@
 		JOIN 
 		    division d ON dep.division_code = d.division_code 
 		WHERE 
-		    e.emp_status = #{empStatus};  <!-- 재직상태 직원 -->     
+		    e.emp_status = #{empStatus}  <!-- 재직상태 직원 -->
+		    AND dep.dept_code = #{deptCode};     
 
 	</select>
 	
