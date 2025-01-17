@@ -27,6 +27,28 @@ public class RoomController {
 		@Autowired
 		private RoomService roomService;
 		
+		// 객실 수정
+		@PostMapping("/room/updateRoom")
+		public String updateRoom(@ModelAttribute RoomInfo roomInfo,
+		                         @RequestParam(value = "roomImg", required = false) MultipartFile roomImg,
+		                         HttpSession session,
+		                         RedirectAttributes redirectAttributes) {
+			log.debug(TeamColor.WJ + "updateRoom 호출됨 - roomInfo ====> " + roomInfo + TeamColor.RESET);
+
+		    try {
+		        String uploadPath = session.getServletContext().getRealPath("/upload/");
+		        roomService.updateRoomWithImage(roomInfo, roomImg, uploadPath);
+		        redirectAttributes.addFlashAttribute("successMessage", "객실 정보가 성공적으로 수정되었습니다!");
+		    } catch (Exception e) {
+		    	log.debug(TeamColor.WJ + "객실 수정 중 오류 발생 ====> " + e + TeamColor.RESET);
+		        redirectAttributes.addFlashAttribute("errorMessage", "객실 정보 수정 중 오류가 발생했습니다.");
+		    }
+
+		    return "redirect:/room/getRoomList";
+		}
+
+		
+		
 		// 객실 추가
 		@GetMapping("/room/getAddRoom")
 		public String getAddRoom() {
@@ -46,10 +68,12 @@ public class RoomController {
 	            roomService.addRoomWithImage(roomInfo, roomImg, uploadPath); // 서비스 호출
 
 	            redirectAttributes.addFlashAttribute("successMessage", "객실이 성공적으로 등록되었습니다!");
+	            redirectAttributes.addFlashAttribute("alertType", "success");
 	            log.debug(TeamColor.WJ + "메시지 ====>  " + redirectAttributes.getFlashAttributes().get("successMessage") + TeamColor.RESET);
 
 	        } catch (Exception e) {
 	            redirectAttributes.addFlashAttribute("errorMessage", "객실 등록 중 오류가 발생했습니다.");
+	            redirectAttributes.addFlashAttribute("alertType", "error");
 	        }
 	        return "redirect:/room/getRoomList";
 	    }
