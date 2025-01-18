@@ -37,11 +37,5 @@ public class DocumentRest {
 		return documentService.getEmpSearchByDocument(empName);
 	}
 	
-	@GetMapping("/getDocumentList")
-	public List<Map<String, Object>> getDocumnetList(@RequestParam(required = false) String empNo, 
-													 @RequestParam(required = false) String docType) {
-		return documentService.getDocumnetList(empNo, docType);
-	}
-	
 	
 }

@@ -68,7 +68,7 @@
 	<select id="selectDocumentList" parameterType="String" resultType="Map">
     	SELECT d.doc_no docNo, d.doc_title docTitle, d.doc_writer_no docWriterNo, e1.emp_name docWriterName, dp1.dept_name writerDeptName,
     		   d.doc_type docType, d.approval_status approvalStatus, d.doc_bin docBin, d.update_datetime updateDatetime,
-			   da.init_approver_no initApproverNo, e2.emp_name initApproversName, dp2.dept_name approvaersDeptName, da.init_approval_status initApproverStatus, 
+			   da.init_approver_no initApproverNo, e2.emp_name initApproversName, dp2.dept_name approversDeptName, da.init_approval_status initApproverStatus, 
 			   da.mid_approval_status midApproverStatus, da.final_approval_status finalApproverStatus
 		FROM document d
 		INNER JOIN document_approvers da ON d.doc_no = da.doc_no
@@ -81,8 +81,14 @@
 	        <if test="empNo != null">
 	            AND (d.doc_writer_no = #{empNo} OR da.init_approver_no = #{empNo})
 	        </if>
-	        <if test="docType != null">
-	            AND d.doc_type = #{docType}
+	        <if test="docWriterNo != null">
+	            AND d.doc_writer_no = #{docWriterNo}
+	        </if>
+	        <if test="initApproverNo != null">
+	            AND da.init_approver_no = #{initApproverNo}
+	        </if>
+	        <if test="approvalStatus != null">
+	            AND d.approval_status = #{approvalStatus}
 	        </if>
     	</where>
     	ORDER BY d.update_datetime DESC

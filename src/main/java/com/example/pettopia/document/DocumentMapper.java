@@ -35,6 +35,6 @@ public interface DocumentMapper {
 	List<Map<String, Object>> selectEmpSearchByDocument(String empName);
 	
 	// documentList → 문서 리스트 조회
-	List<Map<String, Object>> selectDocumentList(String empNo, String docType);
+	List<Map<String, Object>> selectDocumentList(String empNo, String docWriterNo, String initApproverNo, String approvalStatus);
 
 }
