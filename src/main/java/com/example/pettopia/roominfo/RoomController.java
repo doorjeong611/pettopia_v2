@@ -116,5 +116,21 @@ public class RoomController {
 		    model.addAttribute("roomListImg", roomListImg); 
 		    return "room/roomList"; 
 		}
+		
+		// 객실 삭제 메서드
+	    @PostMapping("/room/deleteRoom")
+	    public String deleteRoom(@RequestParam("roomNo") int roomNo, Model model) {
+	        boolean isDeleted = roomService.deleteRoom(roomNo);
+
+	        if (isDeleted) {
+	            model.addAttribute("message", "객실이 성공적으로 삭제되었습니다.");
+	            log.debug(TeamColor.WJ + "message =======> " + model + TeamColor.RESET);
+
+	        } else {
+	            model.addAttribute("message", "객실 삭제에 실패했습니다.");
+	        }
+
+	        return "redirect:/room/getRoomList"; // 삭제 후 목록 페이지로 리다이렉트
+	    }
 	
 }
