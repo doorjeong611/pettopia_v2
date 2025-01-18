@@ -14,13 +14,14 @@
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/assets/images/pettopia_favicon.ico">
     <!-- Layout config Js -->
     <script src="${pageContext.request.contextPath}/assets/js/layout.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Tailwind CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tailwind2.css">
 </head>
 <style>
 .image-container {
-    width: 373px; /* 고정 너비 */
-    height: 223px; /* 고정 높이 */
+    width: 100%; /* 고정 너비 */
+    height: 250px; /* 고정 높이 */
     overflow: hidden; /* 영역을 벗어난 이미지는 숨김 처리 */
     display: flex;
     align-items: center;
@@ -62,9 +63,7 @@
 					    </a>
 					    
 					    <!-- 삭제 버튼 -->
-					    <button type="button" class="text-white bg-red-500 border-red-500 btn hover:text-white hover:bg-red-600 hover:border-red-600 focus:text-white focus:bg-red-600 focus:border-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:border-red-600 active:ring active:ring-red-100 dark:ring-custom-400/20" onClick="deleteMultiple()">
-					        <i class="ri-delete-bin-2-line"></i>
-					    </button>
+					   
 					</div>
                    <!--  <ul class="flex items-center gap-2 text-sm font-normal shrink-0">
                         <li class="relative before:font-remix ltr:before:-right-1 rtl:before:-left-1  before:absolute before:text-[18px] before:-top-[3px] ltr:pr-4 rtl:pl-4 before:text-slate-400 dark:text-zink-200">
@@ -84,12 +83,19 @@
 							                     alt="${room.originFileName}">
 							            </div>
 							            <div class="mt-4">
-							                <h6 class="text-lg font-semibold text-slate-700 dark:text-white">
-							                    <a href="${pageContext.request.contextPath}/room/getRoomOne?roomNo=${room.roomNo}" 
-							                       class="transition-all duration-300 ease-linear hover:text-custom-500">
-							                        ${room.roomName}호
-							                    </a>
-							                </h6>
+							            	<div style="display: flex; justify-content: space-between;">
+								                <h6 class="text-lg font-semibold text-slate-700 dark:text-white" style="line-height: 2;">
+								                    <a href="${pageContext.request.contextPath}/room/getRoomOne?roomNo=${room.roomNo}" 
+								                       class="transition-all duration-300 ease-linear hover:text-custom-500">
+								                        ${room.roomName}호
+								                    </a>
+								                </h6>
+								                 <button type="button" 
+								                 		class="text-white bg-red-500 border-red-500 btn hover:text-white hover:bg-red-600 hover:border-red-600 focus:text-white focus:bg-red-600 focus:border-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:border-red-600 active:ring active:ring-red-100 dark:ring-custom-400/20"
+								                 		 onclick="deleteRoom(${room.roomNo})">
+										        	<i class="ri-delete-bin-2-line"></i>
+										    	</button>
+							                </div>
 							                <p class="text-sm text-slate-500 mt-1">타입: <span>${room.roomType}</span></p>
 							                <p class="text-sm text-slate-500">수용 인원: <span>${room.roomCapacity}</span></p>
 							                <p class="text-sm text-slate-500">1박 당 가격: <span>${room.pricePerNight}</span></p>
@@ -152,6 +158,25 @@
 <script src="${pageContext.request.contextPath}/assets/js/pages/apps-ecommerce-product-grid.init.js"></script>
 <!-- App js -->
 <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
+<script>
+	function deleteRoom(roomNo) {
+	    if (confirm("정말 삭제하시겠습니까?")) {
+	        $.ajax({
+	        	url: "${pageContext.request.contextPath}/room/deleteRoom",
+	        	data: { roomNo: roomNo },
+	            type: "POST",
+	            success: function(response) {
+	                alert("삭제되었습니다");
+	                // 삭제 성공 시 화면 새로고침 또는 목록 업데이트
+	                location.reload();
+	            },
+	            error: function(error) {
+	                alert("삭제에 실패했습니다.");
+	            }
+	        });
+	    }
+	}
+</script>
 
 </body>
 

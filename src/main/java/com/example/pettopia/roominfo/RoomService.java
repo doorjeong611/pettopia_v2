@@ -1,6 +1,9 @@
 package com.example.pettopia.roominfo;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -11,10 +14,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.pettopia.util.TeamColor;
-import com.example.pettopia.vo.PetService;
 import com.example.pettopia.vo.RoomImg;
 import com.example.pettopia.vo.RoomInfo;
 
+import jakarta.servlet.ServletContext;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -23,6 +26,9 @@ import lombok.extern.slf4j.Slf4j;
 public class RoomService {
 	@Autowired
     private RoomMapper roomMapper;
+	
+	@Autowired
+	private ServletContext servletContext;
 
 	// 객실 수정
 	public void updateRoomWithImage(RoomInfo roomInfo, MultipartFile roomImg, String uploadPath) throws Exception {
@@ -126,8 +132,32 @@ public class RoomService {
         return fileName.substring(dotIndex + 1);
     }
     
+    // 객실 이미지 첨부
     public List<Map<String, Object>> getRoomListWithImages() {
         return roomMapper.selectRoomWithImages();
+    }
+    
+    // 객실 삭제
+    
+    public boolean deleteRoom(int roomNo) {
+    	String uploadPath = servletContext.getRealPath("/upload/");
+        // 1. 해당 객실의 이미지 정보 조회
+        List<Map<String, Object>> roomImages = roomMapper.selectRoomWithImages();
+
+        // 2. 이미지 파일 삭제
+        for (RoomImg roomImage : roomImages) {
+            log.debug(TeamColor.WJ + "imagePath ========> " + uploadPath + TeamColor.RESET);
+            try {
+                Files.delete(Paths.get(uploadPath));
+            } catch (IOException e) {
+                log.error("이미지 파일 삭제 실패: {}", e.getMessage());
+                // 에러 발생 시, 트랜잭션 롤백 처리 (필요에 따라)
+                // throw new RuntimeException("객실 삭제 실패 (이미지 삭제 실패)");
+            }
+        }
+
+        // 3. 객실 정보 삭제
+        return roomMapper.deleteRoom(roomNo) > 0;
     }
     
 }
