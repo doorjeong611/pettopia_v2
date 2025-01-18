@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <!DOCTYPE html>
 <html lang="en" class="light scroll-smooth group" data-layout="vertical" data-sidebar="light" data-sidebar-size="lg" data-mode="light" data-topbar="light" data-skin="default" data-navbar="sticky" data-content="fluid" dir="ltr">
@@ -17,14 +18,28 @@
     <!-- Tailwind CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tailwind2.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
+	<style>
+	
+		.custom-gray {
+		    background-color: #d3d3d3;
+		}
+		
+		.custom-blue {
+	    	background-color: #e0f7fa; 
+	    	color: #007bff; 
+		}
+	    .highlight {
+        	color: blue; /* 파란색 글씨 */
+        	font-weight: bolder;
+    	}
+	</style>
 </head>
 
 <body class="text-base bg-body-bg text-body font-public dark:text-zink-100 dark:bg-zink-800 group-data-[skin=bordered]:bg-body-bordered group-data-[skin=bordered]:dark:bg-zink-700">
 <div class="group-data-[sidebar-size=sm]:min-h-sm group-data-[sidebar-size=sm]:relative">
     
 	<!-- Left Sidebar Start -->
-    <div class="app-menu w-vertical-menu bg-vertical-menu ltr:border-r rtl:border-l border-vertical-menu-border fixed bottom-0 top-0 z-[1003] transition-all duration-75 ease-linear group-data-[sidebar-size=md]:w-vertical-menu-md group-data-[sidebar-size=sm]:w-vertical-menu-sm group-data-[sidebar-size=sm]:pt-header group-data-[sidebar=dark]:bg-vertical-menu-dark group-data-[sidebar=dark]:border-vertical-menu-dark group-data-[sidebar=brand]:bg-vertical-menu-brand group-data-[sidebar=brand]:border-vertical-menu-brand group-data-[sidebar=modern]:bg-gradient-to-tr group-data-[sidebar=modern]:to-vertical-menu-to-modern group-data-[sidebar=modern]:from-vertical-menu-form-modern group-data-[layout=horizontal]:w-full group-data-[layout=horizontal]:bottom-auto group-data-[layout=horizontal]:top-header hidden md:block print:hidden group-data-[sidebar-size=sm]:absolute group-data-[sidebar=modern]:border-vertical-menu-border-modern group-data-[layout=horizontal]:dark:bg-zink-700 group-data-[layout=horizontal]:border-t group-data-[layout=horizontal]:dark:border-zink-500 group-data-[layout=horizontal]:border-r-0 group-data-[sidebar=dark]:dark:bg-zink-700 group-data-[sidebar=dark]:dark:border-zink-600 group-data-[layout=horizontal]:group-data-[navbar=scroll]:absolute group-data-[layout=horizontal]:group-data-[navbar=bordered]:top-[calc(theme('spacing.header')_+_theme('spacing.4'))] group-data-[layout=horizontal]:group-data-[navbar=bordered]:inset-x-4 group-data-[layout=horizontal]:group-data-[navbar=hidden]:top-0 group-data-[layout=horizontal]:group-data-[navbar=hidden]:h-16 group-data-[layout=horizontal]:group-data-[navbar=bordered]:w-[calc(100%_-_2rem)] group-data-[layout=horizontal]:group-data-[navbar=bordered]:[&.sticky]:top-header group-data-[layout=horizontal]:group-data-[navbar=bordered]:rounded-b-md group-data-[layout=horizontal]:shadow-md group-data-[layout=horizontal]:shadow-slate-500/10 group-data-[layout=horizontal]:dark:shadow-zink-500/10 group-data-[layout=horizontal]:opacity-0">
+    <div class="app-menu w-vertical-menu bg-vertical-menu ltr:border-r rtl:border-l border-vertical-menu-border fixed bottom-0 top-0 z-[1003] transition-all duration-75 ease-linear group-data-[sidebar-size=md]:w-vertical-menu-md group-data-[sidebar-size=sm]:w-vertical-menu-sm group-data-[sidebar-size=sm]:pt-header group-data-[sidebar=dark]:bg-vertical-menu-dark group-data-[sidebar=dark]:border-vertical-menu-dark group-data-[sidebar=brand]:bg-vertical-menu-brand group-data-[sidebar=brand]:border-vertical-menu-brand group-data-[sidebar=modern]:bg-gradient-to-tr group-data-[sidebar=modern]:to-vertical-menu-to-modern group-data-[sidebar=modern]:from-vertical-menu-form-modern group-data-[layout=horizontal]:w-full group-data-[layout=horizontal]:bottom-auto group-data-[layout=horizontal]:top-header hidden md:block print:hidden group-data-[sidebar-size=sm]:absolute group-data-[sidebar=modern]:border-vertical-menu-border-modern group-data-[layout=horizontal]:dark:bg-zink-700 group-data-[layout=horizontal]:border-t group-data-[layout=horizontal]: group-data-[layout=horizontal]:border-r-0 group-data-[sidebar=dark]:dark:bg-zink-700 group-data-[sidebar=dark]:dark:border-zink-600 group-data-[layout=horizontal]:group-data-[navbar=scroll]:absolute group-data-[layout=horizontal]:group-data-[navbar=bordered]:top-[calc(theme('spacing.header')_+_theme('spacing.4'))] group-data-[layout=horizontal]:group-data-[navbar=bordered]:inset-x-4 group-data-[layout=horizontal]:group-data-[navbar=hidden]:top-0 group-data-[layout=horizontal]:group-data-[navbar=hidden]:h-16 group-data-[layout=horizontal]:group-data-[navbar=bordered]:w-[calc(100%_-_2rem)] group-data-[layout=horizontal]:group-data-[navbar=bordered]:[&.sticky]:top-header group-data-[layout=horizontal]:group-data-[navbar=bordered]:rounded-b-md group-data-[layout=horizontal]:shadow-md group-data-[layout=horizontal]:shadow-slate-500/10 group-data-[layout=horizontal]:dark:shadow-zink-500/10 group-data-[layout=horizontal]:opacity-0">
     	 <c:import url="/WEB-INF/view/inc/leftSidebar.jsp"></c:import>   
     </div>
     <!-- Left Sidebar End -->
@@ -52,63 +67,122 @@
                 </div>
                 <!-- Main content -->
                 
-                <div class="card" id="customerList">
+                <div class="card" id="documentList">
                     <div class="card-body">
+	                    <div class="mb-5">
+						    <ul class="flex">
+						        <li class="mr-4">
+						            <form action="${pageContext.request.contextPath}/document/documentList" method="POST">
+						            	<input type="hidden" name="highlight" value="all">
+						                <button type="submit" class="py-2 px-4 text-gray-600 hover:text-custom-500 focus:outline-none 
+							            <c:if test='${highlight == "all"}'>text-custom-500 font-semibold</c:if>">
+							                전체 보관함
+							            </button>
+						            </form>
+						        </li>
+						        <li class="mr-4">
+						            <form action="${pageContext.request.contextPath}/document/documentList" method="POST">
+						            	<input type="hidden" name="highlight" value="received">
+						                <input type="hidden" name="initApproverNo" value="${empNo}">
+						                <button type="submit" class="py-2 px-4 text-gray-600 hover:text-custom-500 focus:outline-none 
+							            <c:if test='${highlight == "received"}'>text-custom-500 font-semibold</c:if>">
+							                수신 보관함
+							            </button>
+						            </form>
+						        </li>
+						        <li class="mr-4">
+						            <form action="${pageContext.request.contextPath}/document/documentList" method="POST">
+						             	<input type="hidden" name="highlight" value="sent">
+						                <input type="hidden" name="docWriterNo" value="${empNo}">
+						                <button type="submit" class="py-2 px-4 text-gray-600 hover:text-custom-500 focus:outline-none 
+							            <c:if test='${highlight == "sent"}'>text-custom-500 font-semibold</c:if>">
+							                발신 보관함
+							            </button>
+						            </form>
+						        </li>
+						        <li>
+						            <form action="${pageContext.request.contextPath}/document/documentList" method="POST">
+						            	<input type="hidden" name="highlight" value="temporary">
+						                <input type="hidden" name="approvalStatus" value="T">
+						                <button type="submit" class="py-2 px-4 text-gray-600 hover:text-custom-500 focus:outline-none 
+							            <c:if test='${highlight == "temporary"}'>text-custom-500 font-semibold</c:if>">
+							                임시 보관함
+							            </button>
+						            </form>
+						        </li>
+						    </ul>
+						</div>
                         <div class="grid grid-cols-1 gap-5 mb-5 xl:grid-cols-2">
                             <div>
                                 <div class="relative xl:w-3/6">
-                                    <input type="text" class="ltr:pl-8 rtl:pr-8 search form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="검색어를 입력하세요" autocomplete="off">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="search" class="lucide lucide-search inline-block size-4 absolute ltr:left-2.5 rtl:right-2.5 top-2.5 text-slate-500 dark:text-zink-200 fill-slate-100 dark:fill-zink-600"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+                                    <input type="text" class="ltr:pl-8 search form-input border-slate-200 focus:outline-none focus:border-custom-500 placeholder:text-slate-400" placeholder="검색어를 입력하세요" autocomplete="off">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="search" class="lucide lucide-search inline-block size-4 absolute ltr:left-2.5 top-2.5 text-slate-500 fill-slate-100"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
                                 </div>
                             </div>
-                            <div class="ltr:md:text-end rtl:md:text-start"> 
-                                <button type="button" data-modal-target="showModal" class="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20 add-btn" data-bs-toggle="modal" id="create-btn" data-bs-target="#showModal"><i class="align-bottom ri-add-line me-1"></i> Add Customer</button>
-                                <button type="button" class="text-white bg-red-500 border-red-500 btn hover:text-white hover:bg-red-600 hover:border-red-600 focus:text-white focus:bg-red-600 focus:border-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:border-red-600 active:ring active:ring-red-100 dark:ring-custom-400/20" onclick="deleteMultiple()"><i class="ri-delete-bin-2-line"></i></button>
+                            <div class="ltr:md:text-end">
+                            	<a href="${pageContext.request.contextPath}/document/addDocument" class="mr-1 bg-white text-custom-500 btn border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100"><i class="align-bottom ri-add-line me-1"></i> 문서 작성</a>
+                                <button type="button" class="text-red-500 bg-white border-red-500 btn hover:text-white hover:bg-red-600 hover:border-red-600 focus:text-white focus:bg-red-600 focus:border-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:border-red-600 active:ring active:ring-red-100" ><i class="ri-delete-bin-2-line"></i> 삭제</button>
                             </div>
                         </div>
 
                         <div class="overflow-x-auto">
-                            <table class="w-full whitespace-nowrap" id="customerTable">
-                                <thead class="bg-slate-100 dark:bg-zink-600">
+                            <table class="w-full whitespace-nowrap" id="documentTable">
+                                <thead class="bg-slate-100">
                                     <tr>
-                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500" scope="col" style="width: 50px;">
-                                            <input class="border rounded-sm appearance-none cursor-pointer size-4 bg-slate-100 border-slate-200 dark:bg-zink-600 dark:border-zink-500 checked:bg-custom-500 checked:border-custom-500 dark:checked:bg-custom-500 dark:checked:border-custom-500 checked:disabled:bg-custom-400 checked:disabled:border-custom-400" type="checkbox" id="checkAll" value="option">
+                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 checkBox" style="width: 50px;">
+                                            <input type="checkbox" class="border rounded-sm appearance-none cursor-pointer size-4 bg-slate-100 border-slate-200 checked:bg-custom-500 checked:border-custom-500 checked:disabled:bg-custom-400 checked:disabled:border-custom-400">
                                         </th>
-                                        <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right" data-sort="customer_name" style="width: 100px;">Customer</th>
-                                        <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right" data-sort="email">Email</th>
-                                        <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right" data-sort="phone">Phone</th>
-                                        <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right" data-sort="date">Joining Date</th>
-                                        <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right" data-sort="status">Delivery Status</th>
-                                        <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right" data-sort="action">Action</th>
-                                        <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right" data-sort="action">Action</th>
-                                        <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right" data-sort="action">Action</th>
+                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 ltr:text-center" data-sort="docNo" style="width: 95px;">문서 번호</th>
+                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 ltr:text-center" data-sort="docTitle" style="width: 450px;">제목</th>
+                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 ltr:text-center" data-sort="docWriterName" style="width: 250px;">작성자</th>
+                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 ltr:text-center" data-sort="approvalStatus" style="width: 70px;">결재 상태</th>
+                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 ltr:text-center" data-sort="initApproversName" style="width: 250px;">수신자</th>
+                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 ltr:text-center" data-sort="updateDatetime" style="width: 150px;">작성일</th>
                                     </tr>
                                 </thead>
-                                <tbody class="list form-check-all"><tr>
-                                        <th class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500" scope="row">
-                                            <input class="border rounded-sm appearance-none cursor-pointer size-4 bg-slate-100 border-slate-200 dark:bg-zink-600 dark:border-zink-500 checked:bg-custom-500 checked:border-custom-500 dark:checked:bg-custom-500 dark:checked:border-custom-500 checked:disabled:bg-custom-400 checked:disabled:border-custom-400" type="checkbox" name="chk_child">
-                                        </th>
-                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500 id" style="display:none;"><a href="javascript:void(0);" class="fw-medium link-primary id">#VZ2101</a></td>
-                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500 customer_name"></td>
-                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500 email"></td>
-                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500 phone"></td>
-                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500 date"></td>
-                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500 status"><span class="px-2.5 py-0.5 inline-block text-xs font-medium rounded border bg-green-100 border-transparent text-green-500 dark:bg-green-500/20 dark:border-transparent text-uppercase">Active</span></td>
-                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">
-                                            <div class="flex gap-2">
-                                                <div class="edit">
-                                                    <button data-modal-target="showModal" class="py-1 text-xs text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20 edit-item-btn">Edit</button>
-                                                </div>
-                                                <div class="remove">
-                                                    <button data-modal-target="deleteRecordModal" id="delete-record" class="py-1 text-xs text-white bg-red-500 border-red-500 btn hover:text-white hover:bg-red-600 hover:border-red-600 focus:text-white focus:bg-red-600 focus:border-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:border-red-600 active:ring active:ring-red-100 dark:ring-custom-400/20 remove-item-btn">Remove</button>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr></tbody>
+                                <tbody>
+                                	<c:forEach var="d" items="${documentList}">
+	                                	 <tr onclick="window.location='${pageContext.request.contextPath}/document/documentOne?docNo=${d.docNo}'" style="cursor: pointer;">
+	                                        <td class="px-3.5 py-1.5 border-y border-slate-200 text-center">
+	                                        	<input type="checkbox" class="border rounded-sm appearance-none cursor-pointer size-4 bg-slate-100 border-slate-200 checked:bg-custom-500 checked:border-custom-500 checked:disabled:bg-custom-400 checked:disabled:border-custom-400">
+	                                        </td>
+	                                        <td class="px-3.5 py-1.5 border-y border-slate-200 text-center">${d.docNo}</td>
+	                                        <td class="px-3.5 py-1.5 border-y border-slate-200 text-center"><span class="text-gray-500">[${d.docType == 'D' ? '기안 문서' : d.docType == 'V' ? '연차 신청서' : d.docType == 'M' ? '비품 신청서' : d.docType == 'R' ? '사직서' : d.docType}]</span> ${d.docTitle}</td>
+	                                        <td class="px-3.5 py-1.5 border-y border-slate-200 text-center">
+											    <div>
+											        <div>${d.docWriterName}</div>
+											        <div style="font-size: 0.85em; color: gray;">${d.writerDeptName}</div>
+											    </div>
+											</td>
+	                                        <td class="px-3.5 py-1.5 border-y border-slate-200 text-center">
+											    <span class="px-2.5 py-0.5 inline-block text-xs font-medium rounded 
+											        ${d.approvalStatus == 'T' ? 'custom-gray text-gray-500' : 
+											          d.approvalStatus == 'P' ? 'custom-blue' : 
+											          d.approvalStatus == 'A' ? 'bg-green-100 text-green-500' : 
+											          d.approvalStatus == 'R' ? 'bg-red-100 text-red-500' : ''} 
+											        border-transparent text-uppercase">
+											        ${d.approvalStatus == 'T' ? '임시' : 
+											          d.approvalStatus == 'P' ? '대기' : 
+											          d.approvalStatus == 'A' ? '승인' : 
+											          d.approvalStatus == 'R' ? '반려' : ''}
+											    </span>
+											</td>
+	                                        <td class="px-3.5 py-1.5 border-y border-slate-200 text-center">
+											    <div>
+											        <div>${d.initApproversName}</div>
+											        <div style="font-size: 0.85em; color: gray;">${d.approversDeptName}</div>
+											    </div>
+											</td>
+	                                        <td class="px-3.5 py-1.5 border-y border-slate-200 text-center">
+											    ${fn:substringBefore(d.updateDatetime, 'T')}
+											</td>
+	                                    </tr>
+                                	</c:forEach>
+                               	</tbody>
                             </table>
                             <div class="noresult" style="display: none">
                                 <div class="text-center p-7">
-                                    <h5 class="mb-2">Sorry! No Result Found</h5>
+                                    <h5 class="mb-2">결재 문서가 없습니다.</h5>
                                     <p class="mb-0 text-slate-500 dark:text-zink-200">We've searched more than 150+ Orders We did not find any orders for you search.</p>
                                 </div>
                             </div>
@@ -116,12 +190,12 @@
 
                         <div class="flex justify-end mt-4">
                             <div class="flex gap-2 pagination-wrap">
-                                <a class="inline-flex items-center justify-center bg-white dark:bg-zink-700 h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 dark:border-zink-500 text-slate-500 dark:text-zink-200 hover:text-custom-500 dark:hover:text-custom-500 hover:bg-custom-50 dark:hover:bg-custom-500/10 focus:bg-custom-50 dark:focus:bg-custom-500/10 focus:text-custom-500 dark:focus:text-custom-500 [&amp;.active]:text-custom-500 dark:[&amp;.active]:text-custom-500 [&amp;.active]:bg-custom-50 dark:[&amp;.active]:bg-custom-500/10 [&amp;.active]:border-custom-50 dark:[&amp;.active]:border-custom-500/10 [&amp;.active]:hover:text-custom-700 dark:[&amp;.active]:hover:text-custom-700 [&amp;.disabled]:text-slate-400 dark:[&amp;.disabled]:text-zink-300 [&amp;.disabled]:cursor-auto page-item pagination-prev disabled pagination-prev disabled" href="#">
-                                    Previous
+                                <a class="inline-flex items-center justify-center bg-white dark:bg-zink-700 h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200  text-slate-500 dark:text-zink-200 hover:text-custom-500 dark:hover:text-custom-500 hover:bg-custom-50 dark:hover:bg-custom-500/10 focus:bg-custom-50 dark:focus:bg-custom-500/10 focus:text-custom-500 dark:focus:text-custom-500 [&amp;.active]:text-custom-500 dark:[&amp;.active]:text-custom-500 [&amp;.active]:bg-custom-50 dark:[&amp;.active]:bg-custom-500/10 [&amp;.active]:border-custom-50 dark:[&amp;.active]:border-custom-500/10 [&amp;.active]:hover:text-custom-700 dark:[&amp;.active]:hover:text-custom-700 [&amp;.disabled]:text-slate-400 dark:[&amp;.disabled]:text-zink-300 [&amp;.disabled]:cursor-auto page-item pagination-prev disabled pagination-prev disabled" href="#">
+                                    이전
                                 </a>
                                 <ul class="flex gap-2 mb-0 pagination listjs-pagination"><li class="active"><a class="page" href="#" data-i="1" data-page="5">1</a></li></ul>
-                                <a class="inline-flex items-center justify-center bg-white dark:bg-zink-700 h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 dark:border-zink-500 text-slate-500 dark:text-zink-200 hover:text-custom-500 dark:hover:text-custom-500 hover:bg-custom-50 dark:hover:bg-custom-500/10 focus:bg-custom-50 dark:focus:bg-custom-500/10 focus:text-custom-500 dark:focus:text-custom-500 [&amp;.active]:text-custom-500 dark:[&amp;.active]:text-custom-500 [&amp;.active]:bg-custom-50 dark:[&amp;.active]:bg-custom-500/10 [&amp;.active]:border-custom-50 dark:[&amp;.active]:border-custom-500/10 [&amp;.active]:hover:text-custom-700 dark:[&amp;.active]:hover:text-custom-700 [&amp;.disabled]:text-slate-400 dark:[&amp;.disabled]:text-zink-300 [&amp;.disabled]:cursor-auto page-item pagination-prev disabled pagination-next" href="#">
-                                    Next
+                                <a class="inline-flex items-center justify-center bg-white dark:bg-zink-700 h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200  text-slate-500 dark:text-zink-200 hover:text-custom-500 dark:hover:text-custom-500 hover:bg-custom-50 dark:hover:bg-custom-500/10 focus:bg-custom-50 dark:focus:bg-custom-500/10 focus:text-custom-500 dark:focus:text-custom-500 [&amp;.active]:text-custom-500 dark:[&amp;.active]:text-custom-500 [&amp;.active]:bg-custom-50 dark:[&amp;.active]:bg-custom-500/10 [&amp;.active]:border-custom-50 dark:[&amp;.active]:border-custom-500/10 [&amp;.active]:hover:text-custom-700 dark:[&amp;.active]:hover:text-custom-700 [&amp;.disabled]:text-slate-400 dark:[&amp;.disabled]:text-zink-300 [&amp;.disabled]:cursor-auto page-item pagination-prev disabled pagination-next" href="#">
+                                    다음
                                 </a>
                             </div>
                         </div>
@@ -153,14 +227,6 @@
 <!--apexchart js-->
 <!-- <script src="${pageContext.request.contextPath}/assets/libs/apexcharts/apexcharts.min.js"></script>  -->
 
-<!-- grid js -->
-<script src="${pageContext.request.contextPath}/assets/libs/gridjs/gridjs.js"></script>
-<script src="${pageContext.request.contextPath}/assets/libs/gridjs/gridjs.production.min.js"></script>
-<script src="${pageContext.request.contextPath}/assets/libs/flatpickr/flatpickr.min.js"></script>
-
-<script src="${pageContext.request.contextPath}/assets/libs/list.js/list.min.js"></script>
-<script src="${pageContext.request.contextPath}/assets/libs/list.pagination.js/list.pagination.min.js"></script>
-<script src="${pageContext.request.contextPath}/assets/js/pages/document-listjs.init.js"></script>
 <!-- Sweet Alerts js -->
 <script src="${pageContext.request.contextPath}/assets/libs/sweetalert2/sweetalert2.min.js"></script>
 
@@ -169,13 +235,6 @@
 
 <!-- App js -->
 <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
-
-<script>
-
-
-</script>
-
-
 
 </body>
 
