@@ -40,13 +40,19 @@ public class MessageRest {
 	public List<Map<String, Object>> employeeList
 		(@RequestParam(value = "empStatus", defaultValue = "E") String empStatus, 
 		 @RequestParam(value = "deptCode", required = false) String deptCode,
+		 @RequestParam(value = "empName", required = false) String empName,
 		 Model model) {
 		
-		//디버깅
-		 List<Map<String, Object>> employeeList = messageService.getEmployeeList(empStatus, deptCode);
+		// 매개변수디버깅
+		 log.debug(TeamColor.OJY + "empStatus: " + empStatus + TeamColor.RESET);
+		 log.debug(TeamColor.OJY + "deptCode: " + deptCode + TeamColor.RESET);
+		 log.debug(TeamColor.OJY + "empName: " + empName + TeamColor.RESET);
+		 
+		// 디버깅
+		 List<Map<String, Object>> employeeList = messageService.getEmployeeList(empStatus, deptCode, empName);
 		 log.debug(TeamColor.OJY + "Employee List: " + employeeList + TeamColor.RESET);
 		 
-		return messageService.getEmployeeList(empStatus, deptCode);
+		return messageService.getEmployeeList(empStatus, deptCode, empName);
 	}
 	
 }

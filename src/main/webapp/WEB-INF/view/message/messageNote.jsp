@@ -5,6 +5,45 @@
 <html lang="en" class="light scroll-smooth group" data-layout="vertical" data-sidebar="light" data-sidebar-size="lg" data-mode="light" data-topbar="light" data-skin="default" data-navbar="sticky" data-content="fluid" dir="ltr">
 
 <head>
+  <style>
+     #recipientTableContainer {
+      max-height: 200px;  /* Set the max height of the table container */
+      overflow-y: auto;   /* Enable vertical scrolling */
+      width: 100%;        /* Ensure it fills the width of the container */
+    }
+
+    /* Keep the table structure intact while scrolling */
+    table {
+      width: 100%;
+      table-layout: fixed; /* This ensures the table columns maintain their size */
+    }
+
+    thead {
+      position: sticky;   /* Stick the table header to the top */
+      top: 0;             /* Ensure it sticks at the top */
+      background-color: white; /* Add a background color to prevent content overlap */
+      z-index: 1;         /* Ensure the header stays above the table body */
+    }
+
+    tbody {
+      display: block;
+      max-height: 200px;  /* Adjust according to your preference */
+      overflow-y: auto;   /* Enable scrolling in the body */
+    }
+
+    tr {
+      display: table;
+      width: 100%;
+      table-layout: fixed; /* Keep the row consistent with columns */
+    }
+
+    td {
+      word-wrap: break-word; /* Break long words if needed */
+    }
+    
+    
+  </style>
+  </head>
 	<meta charset="utf-8">
     <title>PetTopia</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -105,32 +144,32 @@
 				        <div class="flex space-x-4 mb-4">
 				            <div class="flex-grow">
 				                <select id="departmentSelect" class="border border-gray-300 rounded w-full p-2">
-				                    <option value="">---부서 선택---</option>
+				                    <option value="">부서 선택</option>
 				                </select>
 				            </div>
 				
 				            <div class="flex-grow">
 				                <select id="teamSelect" class="border border-gray-300 rounded w-full p-2">
-				                	<option value="">---팀 선택---</option>
+				                	<option value="">팀 선택</option>
 				                </select>
 				            </div>
 				        </div>
 
-				        <!-- 사원번호 입력란 -->
+				        <!-- 사원 입력란 -->
 				        <div class="mb-4">
 				            <label class="block mb-1">이름</label>
-				            <input type="text" id="recipientSearchInput" class="border border-gray-300 rounded w-full p-2" placeholder="직원이름을 입력하세요." />
+				            <input type="text" id="employeeSearchInput" class="border border-gray-300 rounded w-full p-2" placeholder="직원이름을 입력하세요." />
 				        </div>
 						
 						<div class="flex justify-end mb-4">
-							<button id="searchButton" class="bg-blue-500 hover:bg-blue-700 text-black rounded p-2" onclick="filterEmployees()">검색</button>
+							<button id="searchEmployeeBtn" class="bg-blue-500 hover:bg-blue-700 text-black rounded p-2">검색</button>
 						</div>
 						
 						<!-- 선택된 직원 이름 표시 -->
 				        <div id="selectedEmployee" class="mb-4"></div>
 						
 				        <!-- 직원 리스트 테이블 -->
-				        <div class="overflow-x-auto">
+				        <div class="overflow-y-auto">
 				        <table id="employeeTable" style="width: 100%; border-collapse: collapse;">
 						    <thead class="ltr:text-left rtl:text-right ">
 						        <tr>
@@ -190,6 +229,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // 받는 사람 자동입력 이벤트
     const recipientInput = document.getElementById('recipientInput');
     const recipientTableBody = document.getElementById('recipientTableBody');
+    const departmentSelect = document.getElementById('departmentSelect'); // 부서 선택
+    const teamSelect = document.getElementById('teamSelect'); // 팀 선택
+    const employeeSearchInput = document.getElementById('employeeSearchInput'); // 직원 이름 input
+    const searchEmployeeBtn = document.getElementById('searchEmployeeBtn'); // 직원 검색 Btn
+    
     
     openModalBtn.addEventListener('click', openModal);
     closeModalBtn.addEventListener('click', closeModal);
@@ -198,12 +242,14 @@ document.addEventListener('DOMContentLoaded', function() {
 	function openModal() {
         modal.classList.remove('hidden');  // 모달창 show
         getDivisionList();  // 부서 목록 가져오기 (모달창 열릴때)
-        
-        // 부서, 팀, 직원 이름 초기화
-        $('#departmentSelect').val(''); 
-        $('#teamSelect').val('');
-        $('#recipientInput').val('');
-        recipientTableBody.innerHTML = ''; // 직원테이블 초기화
+        resetInputs();
+    }
+	
+    function resetInputs() {
+        departmentSelect.value = '';
+        teamSelect.value = '';
+        recipientInput.value = '';
+        recipientTableBody.innerHTML = '';
     }
 	
     // 모달 창 닫기
@@ -219,7 +265,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		    success: function(data) {
 		        let divisionSelect = $('#departmentSelect');
 		        divisionSelect.empty();  // 기존 옵션 삭제
-		        divisionSelect.append('<option value="">---부서 선택---</option>');
+		        divisionSelect.append('<option value="">부서 선택</option>');
 		        data.forEach(function(division) {
 		            divisionSelect.append('<option value="' + division.divisionCode + '">' + division.divisionName + '</option>');
 		        });
@@ -232,10 +278,23 @@ document.addEventListener('DOMContentLoaded', function() {
 	
 	// 부서 선택 시 팀 목록 가져오기
 	$('#departmentSelect').change(function() {
-		var selectedDivisionCode = $(this).val();
-		if (selectedDivisionCode) {
-		    getDepartmentList(selectedDivisionCode);  // 선택된 부서 코드로 팀 목록 가져오기
-		}
+	    var selectedDivisionCode = $(this).val();
+	    
+	    // 팀 선택 초기화
+	    let departmentSelect = $('#teamSelect');
+	    departmentSelect.empty(); 
+	    departmentSelect.append('<option value="">팀 선택</option>'); 
+	
+	    // 이름 검색 초기화
+	    employeeSearchInput.value = ''; 
+	    
+	    // 부서 선택 시 선택된 부서 코드로 팀 목록 가져오기
+	    if (selectedDivisionCode) {
+	        getDepartmentList(selectedDivisionCode);
+	    } else {
+	        // 부서를 선택하지 않은 경우 직원 목록 초기화
+	        $('#recipientTableBody').html('');
+	    }
 	});
 	
 	// 팀 목록 가져오기 
@@ -246,7 +305,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		    success: function(data) {
 		        let departmentSelect = $('#teamSelect');
 		        departmentSelect.empty();  // 기존 옵션 삭제
-		        departmentSelect.append('<option value="">---팀 선택---</option>');
+		        departmentSelect.append('<option value="">팀 선택</option>');
 		        data.forEach(function(department) {
 		            departmentSelect.append('<option value="' + department.deptCode + '">' + department.deptName + '</option>');
 		        });
@@ -267,20 +326,51 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateEmployeeList() {
     	const divisionCode = $('#departmentSelect').val(); // 선택된 부서 코드
         const teamCode = $('#teamSelect').val(); // 선택된 팀 코드
+        const employeeName = employeeSearchInput.value.trim(); // view 에서 입력된 이름
         const recipientTableBody = $('#recipientTableBody');
         recipientTableBody.html(''); // 기존 직원 리스트 초기화
 
-        // 부서나 팀이 선택되지 않으면 직원 목록을 가져오지 않음
-        if (!divisionCode || !teamCode) {
-            return;
-        }
         
+        // 직원 이름 독립적으로 검색
+	   if (!divisionCode && !teamCode && employeeName) {
+	        // 부서나 팀 없이 이름만으로 검색
+	        $.ajax({
+	            url: '/pettopia/message/messageNote/employees',
+	            type: 'GET',
+	            data: {
+	                empStatus: 'E',
+	                empName: employeeName
+	            },
+	            success: function(data) {
+	                if (!data || data.length === 0) {
+	                    recipientTableBody.append('<tr><td colspan="5" style="text-align: center;">직원이 없습니다.</td></tr>');
+	                } else {
+	                    data.forEach(function(employee) {
+	                        recipientTableBody.append('<tr style="cursor: pointer;"><td class="px-3.5 py-2.5 border border-slate-200 dark:border-zink-500" style="text-align: center;">' + employee.divisionName + '</td><td class="px-3.5 py-2.5 border border-slate-200 dark:border-zink-500" style="text-align: center;">' + employee.deptName + '</td><td class="px-3.5 py-2.5 border border-slate-200 dark:border-zink-500" style="text-align: center;">' + employee.rankName + '</td><td class="px-3.5 py-2.5 border border-slate-200 dark:border-zink-500" style="text-align: center;">' + employee.empNo + '</td><td class="px-3.5 py-2.5 border border-slate-200 dark:border-zink-500" style="text-align: center;">' + employee.empName + '</td></tr>'); // 직원 데이터 테이블에 추가
+	                    });
+	                }
+	            },
+	            error: function(error) {
+	                console.error('Error fetching employees by name:', error);
+	            }
+	        });
+	        return;
+	    }
+
+       // 부서와 팀을 선택한 경우 직원 목록 갱신
+	   if (!divisionCode || !teamCode) {
+	        return; // 부서나, 팀 선택 안될시 값 반환x
+	    }
+
+        
+        // AJAX 요청
         $.ajax({
             url: '/pettopia/message/messageNote/employees', // 직원 목록 API
             type: 'GET',
             data: {
                 empStatus: 'E', // 'E'는 재직중인 직원 필터링
-                deptCode: teamCode // 선택된 팀 코드 추가
+                deptCode: teamCode || '', // 선택된 팀 코드 추가
+                empName: employeeName || '' // 직원 이름 추가
             },
             success: function(data) {
             	if (!data || data.length === 0) {
@@ -293,22 +383,28 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             error: function(error) {
                 console.error('직원목록 가져오기 실패:', error);
-            }
+            },
         });
+        
     }
-    // 테이블 행 클릭 시 "받는사람" 자동 입력
-    recipientTableBody.addEventListener('click', function(event) {
-        const targetRow = event.target.closest('tr'); // 클릭한 열(row)을 선택
-        if (targetRow) {
-            const employeeName = targetRow.cells[4]?.textContent.trim(); // '이름' 열의 텍스트 가져오기
-            if (employeeName) {
-                recipientInput.value = employeeName; // 입력 필드에 값 설정
-            }
+    
+    // 직원 검색 버튼 클릭 시 필터링
+    $(searchEmployeeBtn).click(function () {
+        updateEmployeeList(); // 직원 목록 필터링
+    });
+    
+ 	// 테이블 행 클릭 시 "받는사람" 자동 입력
+    $('#recipientTableBody').on('click', 'tr', function () {
+        const employeeName = $(this).find('td:last-child').text().trim(); // '이름' 열의 텍스트 가져오기
+        if (employeeName) {
+            $('#recipientInput').val(employeeName); // 입력 필드에 값 설정
             closeModal(); // 모달 창 닫기
         }
     });
+
+    // 초기화 및 부서 목록 로드
+    getDivisionList();
 });
 </script>
 </body>
-
 </html>
