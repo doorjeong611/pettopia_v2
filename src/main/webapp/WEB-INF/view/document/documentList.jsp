@@ -69,14 +69,15 @@
                 
                 <div class="card" id="documentList">
                     <div class="card-body">
-	                    <div class="mb-5">
+	                    <div class="mb-2">
 						    <ul class="flex">
 						        <li class="mr-4">
 						            <form action="${pageContext.request.contextPath}/document/documentList" method="POST">
 						            	<input type="hidden" name="highlight" value="all">
+						            	<input type="hidden" name="empNo" value="${empNo}">
 						                <button type="submit" class="py-2 px-4 text-gray-600 hover:text-custom-500 focus:outline-none 
 							            <c:if test='${highlight == "all"}'>text-custom-500 font-semibold</c:if>">
-							                전체 보관함
+							                전체 보관함	
 							            </button>
 						            </form>
 						        </li>
@@ -84,6 +85,8 @@
 						            <form action="${pageContext.request.contextPath}/document/documentList" method="POST">
 						            	<input type="hidden" name="highlight" value="received">
 						                <input type="hidden" name="initApproverNo" value="${empNo}">
+						                <input type="hidden" name="midApproverNo" value="${empNo}">
+						                <input type="hidden" name="finalApproverNo" value="${empNo}">
 						                <button type="submit" class="py-2 px-4 text-gray-600 hover:text-custom-500 focus:outline-none 
 							            <c:if test='${highlight == "received"}'>text-custom-500 font-semibold</c:if>">
 							                수신 보관함
@@ -114,43 +117,65 @@
 						</div>
                         <div class="grid grid-cols-1 gap-5 mb-5 xl:grid-cols-2">
                             <div>
-                                <div class="relative xl:w-3/6">
-                                    <input type="text" class="ltr:pl-8 search form-input border-slate-200 focus:outline-none focus:border-custom-500 placeholder:text-slate-400" placeholder="검색어를 입력하세요" autocomplete="off">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="search" class="lucide lucide-search inline-block size-4 absolute ltr:left-2.5 top-2.5 text-slate-500 fill-slate-100"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
-                                </div>
+                               	<form id="searchForm" method="post" action="${pageContext.request.contextPath}/document/documentList">
+	                                <div class="relative xl:w-3/6">
+	                                	<input type="hidden" name="highlight" value="${highlight}">
+	                                	        <c:if test="${highlight == 'received'}">
+												    <input type="hidden" name="initApproverNo" value="${empNo}">
+									                <input type="hidden" name="midApproverNo" value="${empNo}">
+									                <input type="hidden" name="finalApproverNo" value="${empNo}">
+												</c:if>
+												<c:if test="${highlight == 'sent'}">
+												    <input type="hidden" name="docWriterNo" value="${empNo}">
+												</c:if>
+												<c:if test="${highlight == 'temporary'}">
+												    <input type="hidden" name="approvalStatus" value="T">
+												</c:if>
+												<c:if test="${highlight == 'all'}">
+												    <input type="hidden" name="empNo" value="${empNo}">
+												</c:if>
+	                                    <input type="text" id="searchWord" name="searchWord" value="${searchWord}" class="ltr:pl-8 search form-input border-slate-200 focus:outline-none focus:border-custom-500 placeholder:text-slate-400" placeholder="검색어를 입력하세요" autocomplete="off">
+	                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="search" class="lucide lucide-search inline-block size-4 absolute ltr:left-2.5 top-2.5 text-slate-500 fill-slate-100"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+	                                </div>
+                                </form>
                             </div>
                             <div class="ltr:md:text-end">
                             	<a href="${pageContext.request.contextPath}/document/addDocument" class="mr-1 bg-white text-custom-500 btn border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100"><i class="align-bottom ri-add-line me-1"></i> 문서 작성</a>
-                                <button type="button" class="text-red-500 bg-white border-red-500 btn hover:text-white hover:bg-red-600 hover:border-red-600 focus:text-white focus:bg-red-600 focus:border-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:border-red-600 active:ring active:ring-red-100" ><i class="ri-delete-bin-2-line"></i> 삭제</button>
+                                <form id="binForm" action="${pageContext.request.contextPath}/document/documentBin" method="post" class="inline">
+								    <button type="button" id="binBtn" class="text-red-500 bg-white border-red-500 btn hover:text-white hover:bg-red-600 hover:border-red-600 focus:text-white focus:bg-red-600 focus:border-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:border-red-600 active:ring active:ring-red-100"><i class="ri-delete-bin-2-line"></i> 휴지통</button>
+								</form>
                             </div>
                         </div>
 
                         <div class="overflow-x-auto">
+                        	<c:if test="${not empty documentList}">
                             <table class="w-full whitespace-nowrap" id="documentTable">
                                 <thead class="bg-slate-100">
                                     <tr>
-                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 checkBox" style="width: 50px;">
-                                            <input type="checkbox" class="border rounded-sm appearance-none cursor-pointer size-4 bg-slate-100 border-slate-200 checked:bg-custom-500 checked:border-custom-500 checked:disabled:bg-custom-400 checked:disabled:border-custom-400">
+                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200" style="width: 50px;">
+                                            <input id="selectAll" type="checkbox" class="border rounded-sm appearance-none cursor-pointer size-4 bg-slate-100 border-slate-200 checked:bg-custom-500 checked:border-custom-500">
                                         </th>
-                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 ltr:text-center" data-sort="docNo" style="width: 95px;">문서 번호</th>
-                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 ltr:text-center" data-sort="docTitle" style="width: 450px;">제목</th>
-                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 ltr:text-center" data-sort="docWriterName" style="width: 250px;">작성자</th>
-                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 ltr:text-center" data-sort="approvalStatus" style="width: 70px;">결재 상태</th>
-                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 ltr:text-center" data-sort="initApproversName" style="width: 250px;">수신자</th>
-                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 ltr:text-center" data-sort="updateDatetime" style="width: 150px;">작성일</th>
+                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 ltr:text-center" style="width: 95px;">문서 번호</th>
+                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 ltr:text-center" style="width: 500px;">제목</th>
+                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 ltr:text-center" style="width: 170px;">작성자</th>
+                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 ltr:text-center" style="width: 70px;">결재 상태</th>
+                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 ltr:text-center" style="width: 170px;">초기 결재자</th>
+                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 ltr:text-center" style="width: 170px;">중간 결재자</th>
+                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 ltr:text-center" style="width: 170px;">최종 결재자</th>
+                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 ltr:text-center" style="width: 150px;">작성일</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                 	<c:forEach var="d" items="${documentList}">
 	                                	 <tr onclick="window.location='${pageContext.request.contextPath}/document/documentOne?docNo=${d.docNo}'" style="cursor: pointer;">
-	                                        <td class="px-3.5 py-1.5 border-y border-slate-200 text-center">
-	                                        	<input type="checkbox" class="border rounded-sm appearance-none cursor-pointer size-4 bg-slate-100 border-slate-200 checked:bg-custom-500 checked:border-custom-500 checked:disabled:bg-custom-400 checked:disabled:border-custom-400">
-	                                        </td>
+	                                        <td class="px-3.5 py-1.5 border-y border-slate-200 text-center checkBox">
+											    <input type="checkbox" value="${d.docNo}" class="border rounded-sm appearance-none cursor-pointer size-4 bg-slate-100 border-slate-200 checked:bg-custom-500 checked:border-custom-500">
+											</td>
 	                                        <td class="px-3.5 py-1.5 border-y border-slate-200 text-center">${d.docNo}</td>
 	                                        <td class="px-3.5 py-1.5 border-y border-slate-200 text-center"><span class="text-gray-500">[${d.docType == 'D' ? '기안 문서' : d.docType == 'V' ? '연차 신청서' : d.docType == 'M' ? '비품 신청서' : d.docType == 'R' ? '사직서' : d.docType}]</span> ${d.docTitle}</td>
 	                                        <td class="px-3.5 py-1.5 border-y border-slate-200 text-center">
 											    <div>
-											        <div>${d.docWriterName}</div>
+											        <div>${d.docWriterName} <span style="font-size: 0.85em; color: gray;">[${d.docWriterRank}]</span></div>
 											        <div style="font-size: 0.85em; color: gray;">${d.writerDeptName}</div>
 											    </div>
 											</td>
@@ -169,8 +194,101 @@
 											</td>
 	                                        <td class="px-3.5 py-1.5 border-y border-slate-200 text-center">
 											    <div>
-											        <div>${d.initApproversName}</div>
-											        <div style="font-size: 0.85em; color: gray;">${d.approversDeptName}</div>
+											        <div>
+											        	${d.initApproversName}
+											        	<span style="font-size: 0.85em; color: gray;">[${d.initApproverRank}]</span>
+											        	<c:if test="${empty d.initApprovalStatus}">
+											                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#101ee5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-dashed" style="display: inline;">
+															    <path d="M10.1 2.182a10 10 0 0 1 3.8 0"/>
+															    <path d="M13.9 21.818a10 10 0 0 1-3.8 0"/>
+															    <path d="M17.609 3.721a10 10 0 0 1 2.69 2.7"/>
+															    <path d="M2.182 13.9a10 10 0 0 1 0-3.8"/>
+															    <path d="M20.279 17.609a10 10 0 0 1-2.7 2.69"/>
+															    <path d="M21.818 10.1a10 10 0 0 1 0 3.8"/>
+															    <path d="M3.721 6.391a10 10 0 0 1 2.7-2.69"/>
+															    <path d="M6.391 20.279a10 10 0 0 1-2.69-2.7"/>
+															</svg>
+											            </c:if>
+											            <c:if test="${d.initApprovalStatus == 'A'}">
+											                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2f8331" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check" style="display: inline;">
+												                <circle cx="12" cy="12" r="10"/>
+												                <path d="m9 12 2 2 4-4"/>
+											                </svg>
+											            </c:if>
+											            <c:if test="${d.initApprovalStatus == 'R'}">
+											                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e60000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-x" style="display: inline;">
+												                <circle cx="12" cy="12" r="10"/>
+												                <path d="m15 9-6 6"/><path d="m9 9 6 6"/>
+											                </svg>
+											            </c:if>
+											        </div>
+											        <div style="font-size: 0.85em; color: gray;">${d.initApproversDeptName}</div>
+											    </div>
+											</td>
+											<td class="px-3.5 py-1.5 border-y border-slate-200 text-center">
+											    <div>
+											        <div>
+											        	${d.midApproversName} 
+											        	<span style="font-size: 0.85em; color: gray;">[${d.midApproverRank}]</span>
+											        	<c:if test="${empty d.midApprovalStatus}">
+											                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#101ee5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-dashed" style="display: inline;">
+															    <path d="M10.1 2.182a10 10 0 0 1 3.8 0"/>
+															    <path d="M13.9 21.818a10 10 0 0 1-3.8 0"/>
+															    <path d="M17.609 3.721a10 10 0 0 1 2.69 2.7"/>
+															    <path d="M2.182 13.9a10 10 0 0 1 0-3.8"/>
+															    <path d="M20.279 17.609a10 10 0 0 1-2.7 2.69"/>
+															    <path d="M21.818 10.1a10 10 0 0 1 0 3.8"/>
+															    <path d="M3.721 6.391a10 10 0 0 1 2.7-2.69"/>
+															    <path d="M6.391 20.279a10 10 0 0 1-2.69-2.7"/>
+															</svg>
+											            </c:if>
+											            <c:if test="${d.midApprovalStatus == 'A'}">
+											                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2f8331" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check" style="display: inline;">
+												                <circle cx="12" cy="12" r="10"/>
+												                <path d="m9 12 2 2 4-4"/>
+											                </svg>
+											            </c:if>
+											            <c:if test="${d.midApprovalStatus == 'R'}">
+											                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e60000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-x" style="display: inline;">
+												                <circle cx="12" cy="12" r="10"/>
+												                <path d="m15 9-6 6"/><path d="m9 9 6 6"/>
+											                </svg>
+											            </c:if>
+											        </div>
+											        <div style="font-size: 0.85em; color: gray;">${d.midApproversDeptName}</div>
+											    </div>
+											</td>
+											<td class="px-3.5 py-1.5 border-y border-slate-200 text-center">
+											    <div>
+											        <div>
+											        	${d.finalApproversName} 
+											        	<span style="font-size: 0.85em; color: gray;">[${d.finalApproverRank}]</span>
+											        	<c:if test="${empty d.finalApprovalStatus}">
+											                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#101ee5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-dashed" style="display: inline;">
+															    <path d="M10.1 2.182a10 10 0 0 1 3.8 0"/>
+															    <path d="M13.9 21.818a10 10 0 0 1-3.8 0"/>
+															    <path d="M17.609 3.721a10 10 0 0 1 2.69 2.7"/>
+															    <path d="M2.182 13.9a10 10 0 0 1 0-3.8"/>
+															    <path d="M20.279 17.609a10 10 0 0 1-2.7 2.69"/>
+															    <path d="M21.818 10.1a10 10 0 0 1 0 3.8"/>
+															    <path d="M3.721 6.391a10 10 0 0 1 2.7-2.69"/>
+															    <path d="M6.391 20.279a10 10 0 0 1-2.69-2.7"/>
+															</svg>
+											            </c:if>
+											            <c:if test="${d.finalApprovalStatus == 'A'}">
+											                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2f8331" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check" style="display: inline;">
+												                <circle cx="12" cy="12" r="10"/>
+												                <path d="m9 12 2 2 4-4"/>
+											                </svg>
+											            </c:if>
+											            <c:if test="${d.finalApprovalStatus == 'R'}">
+											                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e60000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-x" style="display: inline;">
+												                <circle cx="12" cy="12" r="10"/>
+												                <path d="m15 9-6 6"/><path d="m9 9 6 6"/>
+											                </svg>
+											            </c:if>
+											        </div>
+											        <div style="font-size: 0.85em; color: gray;">${d.finalApproversDeptName}</div>
 											    </div>
 											</td>
 	                                        <td class="px-3.5 py-1.5 border-y border-slate-200 text-center">
@@ -180,28 +298,67 @@
                                 	</c:forEach>
                                	</tbody>
                             </table>
-                            <div class="noresult" style="display: none">
-                                <div class="text-center p-7">
-                                    <h5 class="mb-2">결재 문서가 없습니다.</h5>
-                                    <p class="mb-0 text-slate-500 dark:text-zink-200">We've searched more than 150+ Orders We did not find any orders for you search.</p>
-                                </div>
-                            </div>
+                            </c:if>
+							<c:if test="${empty documentList}">
+						            <table class="w-full whitespace-nowrap" id="documentTable">
+						                <thead class="bg-slate-100">
+						                    <tr>
+		                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200" style="width: 50px;">
+		                                            <input id="selectAll" type="checkbox" class="border rounded-sm appearance-none cursor-pointer size-4 bg-slate-100 border-slate-200 checked:bg-custom-500 checked:border-custom-500">
+		                                        </th>
+		                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 ltr:text-center" style="width: 95px;">문서 번호</th>
+		                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 ltr:text-center" style="width: 500px;">제목</th>
+		                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 ltr:text-center" style="width: 170px;">작성자</th>
+		                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 ltr:text-center" style="width: 70px;">결재 상태</th>
+		                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 ltr:text-center" style="width: 170px;">초기 결재자</th>
+		                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 ltr:text-center" style="width: 170px;">중간 결재자</th>
+		                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 ltr:text-center" style="width: 170px;">최종 결재자</th>
+		                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 ltr:text-center" style="width: 150px;">작성일</th>
+		                                    </tr>
+						                </thead>
+						            </table>
+						        <div class="noresult text-center p-7">
+						            <h5 class="mb-3">검색 결과가 없습니다.</h5>
+						            <p class="mb-0 text-slate-500">검색어에 맞는 문서가 없습니다.</p>
+					            </div>
+						    </c:if>
                         </div>
-
+						
+						<!-- 페이지 네이션 -->
                         <div class="flex justify-end mt-4">
-                            <div class="flex gap-2 pagination-wrap">
-                                <a class="inline-flex items-center justify-center bg-white dark:bg-zink-700 h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200  text-slate-500 dark:text-zink-200 hover:text-custom-500 dark:hover:text-custom-500 hover:bg-custom-50 dark:hover:bg-custom-500/10 focus:bg-custom-50 dark:focus:bg-custom-500/10 focus:text-custom-500 dark:focus:text-custom-500 [&amp;.active]:text-custom-500 dark:[&amp;.active]:text-custom-500 [&amp;.active]:bg-custom-50 dark:[&amp;.active]:bg-custom-500/10 [&amp;.active]:border-custom-50 dark:[&amp;.active]:border-custom-500/10 [&amp;.active]:hover:text-custom-700 dark:[&amp;.active]:hover:text-custom-700 [&amp;.disabled]:text-slate-400 dark:[&amp;.disabled]:text-zink-300 [&amp;.disabled]:cursor-auto page-item pagination-prev disabled pagination-prev disabled" href="#">
-                                    이전
-                                </a>
-                                <ul class="flex gap-2 mb-0 pagination listjs-pagination"><li class="active"><a class="page" href="#" data-i="1" data-page="5">1</a></li></ul>
-                                <a class="inline-flex items-center justify-center bg-white dark:bg-zink-700 h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200  text-slate-500 dark:text-zink-200 hover:text-custom-500 dark:hover:text-custom-500 hover:bg-custom-50 dark:hover:bg-custom-500/10 focus:bg-custom-50 dark:focus:bg-custom-500/10 focus:text-custom-500 dark:focus:text-custom-500 [&amp;.active]:text-custom-500 dark:[&amp;.active]:text-custom-500 [&amp;.active]:bg-custom-50 dark:[&amp;.active]:bg-custom-500/10 [&amp;.active]:border-custom-50 dark:[&amp;.active]:border-custom-500/10 [&amp;.active]:hover:text-custom-700 dark:[&amp;.active]:hover:text-custom-700 [&amp;.disabled]:text-slate-400 dark:[&amp;.disabled]:text-zink-300 [&amp;.disabled]:cursor-auto page-item pagination-prev disabled pagination-next" href="#">
-                                    다음
-                                </a>
-                            </div>
-                        </div>
+						    <div class="flex gap-2 pagination-wrap">
+						        <!-- 이전 페이지 -->
+						        <c:if test="${!(page.currentPage > 1)}">
+						            <a class="inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 focus:bg-custom-50 focus:text-custom-500 [&amp;.active]:text-custom-500 [&amp;.active]:bg-custom-50 [&amp;.active]:border-custom-50 [&amp;.active]:hover:text-custom-700 [&amp;.disabled]:text-slate-400 [&amp;.disabled]:cursor-auto page-item pagination-prev pagination-prev disabled" href="#">이전</a>
+						        </c:if>
+						        <c:if test="${page.currentPage > 1}">
+						            <a class="inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 focus:bg-custom-50 focus:text-custom-500 [&amp;.active]:text-custom-500 [&amp;.active]:bg-custom-50 [&amp;.active]:border-custom-50 [&amp;.active]:hover:text-custom-700 [&amp;.disabled]:text-slate-400 [&amp;.disabled]:cursor-auto page-item pagination-prev pagination-next" href="${pageContext.request.contextPath}/document/documentList?currentPage=${page.currentPage - 1}">이전</a>
+						        </c:if>
+						
+						        <!-- 페이지 번호 링크 -->
+						        <ul class="flex gap-2 mb-0">
+						            <c:forEach var="num" begin="${page.getStartPagingNum()}" end="${page.getEndPagingNum()}">
+						                <c:if test="${num == page.currentPage}">
+						                    <li class="active"><a class="inline-flex items-center justify-center bg-custom-500 border border-custom-500 text-custom-50 h-8 px-3 rounded" href="#">${num}</a></li>
+						                </c:if>
+						                <c:if test="${num != page.currentPage}">
+						                    <li><a class="inline-flex items-center justify-center bg-white border border-slate-200 text-slate-500 hover:text-custom-500 h-8 px-3 rounded" href="${pageContext.request.contextPath}/document/documentList?currentPage=${num}">${num}</a></li>
+						                </c:if>
+						            </c:forEach>
+						        </ul>
+						
+						        <!-- 다음 페이지 -->
+						        <c:if test="${page.currentPage < page.lastPage}">
+						            <a class="inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 dark:hover:bg-custom-500/10 focus:bg-custom-50 focus:text-custom-500 dark:focus:text-custom-500 [&amp;.active]:text-custom-500 [&amp;.active]:bg-custom-50 [&amp;.active]:border-custom-50 [&amp;.active]:hover:text-custom-700 [&amp;.disabled]:text-slate-400 [&amp;.disabled]:cursor-auto page-item pagination-prev pagination-next" href="${pageContext.request.contextPath}/document/documentList?currentPage=${page.currentPage + 1}">다음</a>
+						        </c:if>
+						        <c:if test="${page.currentPage >= page.lastPage}">
+						            <a class="inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 focus:bg-custom-50 focus:text-custom-500 [&amp;.active]:text-custom-500 [&amp;.active]:bg-custom-50 [&amp;.active]:border-custom-50 [&amp;.active]:hover:text-custom-700 [&amp;.disabled]:text-slate-400 [&amp;.disabled]:cursor-auto page-item pagination-prev pagination-prev disabled" href="#">다음</a>
+						        </c:if>
+						    </div>
+						</div>
+						
                     </div>
                 </div>
-                
             </div>
             <!-- container-fluid -->
         </div>
@@ -235,6 +392,81 @@
 
 <!-- App js -->
 <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
+
+<script>
+$(document).ready(function() {
+    
+    // 전체 선택 체크박스 클릭 이벤트
+    $('#selectAll').click(function() {
+        const isChecked = $(this).prop('checked'); // 전체 선택 체크박스 상태 확인
+        $('tbody input[type="checkbox"]').prop('checked', isChecked); // 다른 체크박스 상태 변경
+    });
+
+    // 개별 체크박스 클릭 이벤트 (전체 선택 체크박스 상태 업데이트)
+    $('tbody input[type="checkbox"]').click(function() {
+        const totalCheckboxes = $('tbody input[type="checkbox"]').length;
+        const checkedCheckboxes = $('tbody input[type="checkbox"]:checked').length;
+
+        // 전체 선택 체크박스의 상태 업데이트
+        $('#selectAll').prop('checked', totalCheckboxes === checkedCheckboxes);
+    });
+    
+    $('.checkBox').click(function(event) {
+        // td 클릭 시에만 반전
+        if (!$(event.target).is('input[type="checkbox"]')) {
+            const checkbox = $(this).find('input[type="checkbox"]');
+            checkbox.prop('checked', !checkbox.prop('checked')); // 체크 상태 반전
+        }
+        event.stopPropagation(); // 이벤트 전파 방지
+    });
+
+    // 체크박스 클릭 시 이벤트 전파 방지
+    $('input[type="checkbox"]').click(function(event) {
+        event.stopPropagation();
+    });
+    
+ 	// 휴지통 버튼
+    $('#binBtn').click(function() {
+        const selectedDocs = [];
+
+        // 체크된 체크박스를 찾아서 docNo 값을 배열에 추가
+        $('input[type="checkbox"]:checked').each(function() {
+            // 전체 선택 체크박스를 제외하고 docNo 값을 추가
+            if ($(this).attr('id') !== 'selectAll') {
+                selectedDocs.push($(this).val());
+            }
+        });
+
+        // 선택된 문서가 없을 경우 경고
+        if (selectedDocs.length === 0) {
+            alert("하나 이상의 문서를 선택해 주세요.");
+            return;
+        }
+
+        // 확인 대화상자 표시
+        const confirmMove = confirm("정말 삭제 하시겠습니까?");
+        if (!confirmMove) {
+            return; // 사용자가 취소하면 폼 제출 중단
+        }
+        
+        alert('삭제 성공하였습니다.');
+
+        // 선택된 문서 번호를 hidden input으로 추가
+        selectedDocs.forEach(function(docNo) {
+            $('#binForm').append($('<input>').attr({
+                type: 'hidden',
+                name: 'docNoList',
+                value: docNo
+            }));
+        });
+        console.log(selectedDocs);
+        // 폼 제출
+        $('#binForm').submit();
+    });
+    
+});
+
+</script>
 
 </body>
 

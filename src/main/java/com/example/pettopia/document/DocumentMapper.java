@@ -35,6 +35,23 @@ public interface DocumentMapper {
 	List<Map<String, Object>> selectEmpSearchByDocument(String empName);
 	
 	// documentList → 문서 리스트 조회
-	List<Map<String, Object>> selectDocumentList(String empNo, String docWriterNo, String initApproverNo, String approvalStatus);
+	List<Map<String, Object>> selectDocumentList(Map<String, Object> parmaMap);
+	
+	// documentList → 문서 리스트 개수 조회
+	Integer selectCountDocumentList(Map<String, Object> paramMap);
+	
+	// documentBin → 문서 휴지통 조회
+	List<Map<String, Object>> selectDocumentBin(Map<String, Object> parmaMap);
+	
+	// documentBin → 문서 휴지통 개수 조회
+	Integer selectCountDocumentBin(Map<String, Object> paramMap);
+	
+	// documentBin → 문서 보관함에서 휴지통으로 or 휴지통에서 보관함으로 복원
+	void updateDocumentBin(Integer docNo);
+	
+	// documentBin → 문서 휴지통에서 영구삭제
+	void deleteDocument(Integer docNo);
+	
+	
 
 }

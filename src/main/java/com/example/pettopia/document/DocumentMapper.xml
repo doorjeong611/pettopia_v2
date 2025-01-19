@@ -7,8 +7,8 @@
 		<selectKey resultType="Integer" keyProperty="docNo" order="AFTER">
 			SELECT LAST_INSERT_ID()
 		</selectKey>
-		INSERT INTO document(doc_title, doc_writer_no, doc_content, doc_type, doc_purpose, doc_price, doc_remarks, vacation_type, vacation_backup, material_name, material_quantity, resignation_type, start_date, end_date) 
-		VALUES(#{docTitle}, #{docWriterNo}, #{docContent}, #{docType}, #{docPurpose}, #{docPrice}, #{docRemarks}, #{vacationType}, #{vacationBackup}, #{materialName}, #{materialQuantity}, #{resignationType}, #{startDate}, #{endDate})
+		INSERT INTO document(doc_title, doc_writer_no, doc_content, doc_type, approval_status, doc_purpose, doc_price, doc_remarks, vacation_type, vacation_backup, material_name, material_quantity, resignation_type, start_date, end_date) 
+		VALUES(#{docTitle}, #{docWriterNo}, #{docContent}, #{docType}, #{approvalStatus}, #{docPurpose}, #{docPrice}, #{docRemarks}, #{vacationType}, #{vacationBackup}, #{materialName}, #{materialQuantity}, #{resignationType}, #{startDate}, #{endDate})
 	</insert>
 	
 	<!-- selectEmployeeDept : 직원 부서 조회 -->
@@ -65,36 +65,320 @@
 	</select>
 	
 	<!-- selectDocumentList : 문서 조회 -->
-	<select id="selectDocumentList" parameterType="String" resultType="Map">
+	<select id="selectDocumentList" parameterType="Map" resultType="Map">
     	SELECT d.doc_no docNo, d.doc_title docTitle, d.doc_writer_no docWriterNo, e1.emp_name docWriterName, dp1.dept_name writerDeptName,
-    		   d.doc_type docType, d.approval_status approvalStatus, d.doc_bin docBin, d.update_datetime updateDatetime,
-			   da.init_approver_no initApproverNo, e2.emp_name initApproversName, dp2.dept_name approversDeptName, da.init_approval_status initApproverStatus, 
-			   da.mid_approval_status midApproverStatus, da.final_approval_status finalApproverStatus
+    		   d.doc_type docType, d.approval_status approvalStatus, d.doc_bin docBin, d.create_datetime updateDatetime,
+			   da.init_approver_no initApproverNo, e2.emp_name initApproversName, dp2.dept_name initApproversDeptName, da.init_approval_status initApprovalStatus,
+				da.mid_approver_no midApproverNo, e3.emp_name midApproversName, dp3.dept_name midApproversDeptName, da.mid_approval_status midApprovalStatus,
+				da.final_approver_no finalApproverNo, e4.emp_name finalApproversName, dp4.dept_name finalApproversDeptName, da.final_approval_status finalApprovalStatus, 
+				r1.rank_name docWriterRank, r2.rank_name initApproverRank, r3.rank_name midApproverRank, r4.rank_name finalApproverRank  
 		FROM document d
 		INNER JOIN document_approvers da ON d.doc_no = da.doc_no
 		INNER JOIN employee e1 ON e1.emp_no = d.doc_writer_no
 		INNER JOIN employee e2 ON e2.emp_no = da.init_approver_no
+		INNER JOIN employee e3 ON e3.emp_no = da.mid_approver_no
+		INNER JOIN employee e4 ON e4.emp_no = da.final_approver_no
 		INNER JOIN department dp1 ON e1.dept_code = dp1.dept_code
 		INNER JOIN department dp2 ON e2.dept_code = dp2.dept_code
+		INNER JOIN department dp3 ON e3.dept_code = dp3.dept_code
+		INNER JOIN department dp4 ON e4.dept_code = dp4.dept_code
+		INNER JOIN `rank` r1 ON e1.rank_no = r1.rank_no
+		INNER JOIN `rank` r2 ON e2.rank_no = r2.rank_no
+		INNER JOIN `rank` r3 ON e3.rank_no = r3.rank_no
+		INNER JOIN `rank` r4 ON e4.rank_no = r4.rank_no
 		<where>
 	        d.doc_bin = '0'
 	        <if test="empNo != null">
-	            AND (d.doc_writer_no = #{empNo} OR da.init_approver_no = #{empNo})
-	        </if>
+			    AND (d.doc_writer_no = #{empNo} 
+			         OR da.init_approver_no = #{empNo} 
+			         OR da.mid_approver_no = #{empNo} 
+			         OR da.final_approver_no = #{empNo})
+			</if>
 	        <if test="docWriterNo != null">
 	            AND d.doc_writer_no = #{docWriterNo}
 	        </if>
-	        <if test="initApproverNo != null">
-	            AND da.init_approver_no = #{initApproverNo}
-	        </if>
+	        <if test="initApproverNo != null or midApproverNo != null or finalApproverNo != null">
+			    AND (
+			        <if test="initApproverNo != null">
+			            da.init_approver_no = #{initApproverNo}
+			        </if>
+			        <if test="midApproverNo != null">
+			            <if test="initApproverNo != null"> OR </if>
+			            da.mid_approver_no = #{midApproverNo}
+			        </if>
+			        <if test="finalApproverNo != null">
+			            <if test="initApproverNo != null or midApproverNo != null"> OR </if>
+			            da.final_approver_no = #{finalApproverNo}
+			        </if>
+			    )
+			</if>
 	        <if test="approvalStatus != null">
 	            AND d.approval_status = #{approvalStatus}
 	        </if>
+	        <if test="searchWord != null and searchWord != ''">
+			    AND (
+			        d.doc_no LIKE CONCAT('%', #{searchWord}, '%') OR
+			        d.doc_title LIKE CONCAT('%', #{searchWord}, '%') OR
+			        e1.emp_name LIKE CONCAT('%', #{searchWord}, '%') OR
+			        dp1.dept_name LIKE CONCAT('%', #{searchWord}, '%') OR
+			        e2.emp_name LIKE CONCAT('%', #{searchWord}, '%') OR
+			        dp2.dept_name LIKE CONCAT('%', #{searchWord}, '%') OR
+			        r1.rank_name LIKE CONCAT('%', #{searchWord}, '%') OR
+			        r2.rank_name LIKE CONCAT('%', #{searchWord}, '%')
+			        <if test="searchWord == '대기'">
+			            OR d.approval_status = 'P'
+			        </if>
+			        <if test="searchWord == '승인'">
+			            OR d.approval_status = 'A'
+			        </if>
+			        <if test="searchWord == '반려'">
+			            OR d.approval_status = 'R'
+			        </if>
+			        <if test="searchWord == '임시'">
+			            OR d.approval_status = 'T'
+			        </if>
+			    )
+			</if>
     	</where>
-    	ORDER BY d.update_datetime DESC
+    	ORDER BY d.create_datetime DESC
+    	LIMIT #{beginRow}, #{rowPerPage}
 	</select>
 	
+	<!-- selectCountDocuments : 문서 개수 조회 -->
+	<select id="selectCountDocumentList" parameterType="Map" resultType="Integer">
+	    SELECT COUNT(*) 
+	    FROM document d
+		INNER JOIN document_approvers da ON d.doc_no = da.doc_no
+		INNER JOIN employee e1 ON e1.emp_no = d.doc_writer_no
+		INNER JOIN employee e2 ON e2.emp_no = da.init_approver_no
+		INNER JOIN employee e3 ON e3.emp_no = da.mid_approver_no
+		INNER JOIN employee e4 ON e4.emp_no = da.final_approver_no
+		INNER JOIN department dp1 ON e1.dept_code = dp1.dept_code
+		INNER JOIN department dp2 ON e2.dept_code = dp2.dept_code
+		INNER JOIN department dp3 ON e3.dept_code = dp3.dept_code
+		INNER JOIN department dp4 ON e4.dept_code = dp4.dept_code
+		INNER JOIN `rank` r1 ON e1.rank_no = r1.rank_no
+		INNER JOIN `rank` r2 ON e2.rank_no = r2.rank_no
+		INNER JOIN `rank` r3 ON e3.rank_no = r3.rank_no
+		INNER JOIN `rank` r4 ON e4.rank_no = r4.rank_no
+	    <where>
+	        d.doc_bin = '0'
+	        <if test="empNo != null">
+			    AND (d.doc_writer_no = #{empNo} 
+			         OR da.init_approver_no = #{empNo} 
+			         OR da.mid_approver_no = #{empNo} 
+			         OR da.final_approver_no = #{empNo})
+			</if>
+	        <if test="docWriterNo != null">
+	            AND d.doc_writer_no = #{docWriterNo}
+	        </if>
+	        <if test="initApproverNo != null or midApproverNo != null or finalApproverNo != null">
+			    AND (
+			        <if test="initApproverNo != null">
+			            da.init_approver_no = #{initApproverNo}
+			        </if>
+			        <if test="midApproverNo != null">
+			            <if test="initApproverNo != null"> OR </if>
+			            da.mid_approver_no = #{midApproverNo}
+			        </if>
+			        <if test="finalApproverNo != null">
+			            <if test="initApproverNo != null or midApproverNo != null"> OR </if>
+			            da.final_approver_no = #{finalApproverNo}
+			        </if>
+			    )
+			</if>
+	        <if test="approvalStatus != null and approvalStatus != ''">
+	            AND d.approval_status = #{approvalStatus}
+	        </if>
+	        <if test="searchWord != null and searchWord != ''">
+			    AND (
+			        d.doc_no LIKE CONCAT('%', #{searchWord}, '%') OR
+			        d.doc_title LIKE CONCAT('%', #{searchWord}, '%') OR
+			        e1.emp_name LIKE CONCAT('%', #{searchWord}, '%') OR
+			        dp1.dept_name LIKE CONCAT('%', #{searchWord}, '%') OR
+			        e2.emp_name LIKE CONCAT('%', #{searchWord}, '%') OR
+			        dp2.dept_name LIKE CONCAT('%', #{searchWord}, '%') OR
+			        r1.rank_name LIKE CONCAT('%', #{searchWord}, '%') OR
+			        r2.rank_name LIKE CONCAT('%', #{searchWord}, '%')
+			        <if test="searchWord == '대기'">
+			            OR d.approval_status = 'P'
+			        </if>
+			        <if test="searchWord == '승인'">
+			            OR d.approval_status = 'A'
+			        </if>
+			        <if test="searchWord == '반려'">
+			            OR d.approval_status = 'R'
+			        </if>
+			        <if test="searchWord == '임시'">
+			            OR d.approval_status = 'T'
+			        </if>
+			    )
+			</if>
+	    </where>
+	</select>
 	
+	<!-- selectDocumentBin : 결재 문서 휴지통 조회 -->
+	<select id="selectDocumentBin" parameterType="Map" resultType="Map">
+    	SELECT d.doc_no docNo, d.doc_title docTitle, d.doc_writer_no docWriterNo, e1.emp_name docWriterName, dp1.dept_name writerDeptName,
+    		   d.doc_type docType, d.approval_status approvalStatus, d.doc_bin docBin, d.create_datetime updateDatetime,
+			   da.init_approver_no initApproverNo, e2.emp_name initApproversName, dp2.dept_name initApproversDeptName, da.init_approval_status initApprovalStatus,
+				da.mid_approver_no midApproverNo, e3.emp_name midApproversName, dp3.dept_name midApproversDeptName, da.mid_approval_status midApprovalStatus,
+				da.final_approver_no finalApproverNo, e4.emp_name finalApproversName, dp4.dept_name finalApproversDeptName, da.final_approval_status finalApprovalStatus, 
+				r1.rank_name docWriterRank, r2.rank_name initApproverRank, r3.rank_name midApproverRank, r4.rank_name finalApproverRank  
+		FROM document d
+		INNER JOIN document_approvers da ON d.doc_no = da.doc_no
+		INNER JOIN employee e1 ON e1.emp_no = d.doc_writer_no
+		INNER JOIN employee e2 ON e2.emp_no = da.init_approver_no
+		INNER JOIN employee e3 ON e3.emp_no = da.mid_approver_no
+		INNER JOIN employee e4 ON e4.emp_no = da.final_approver_no
+		INNER JOIN department dp1 ON e1.dept_code = dp1.dept_code
+		INNER JOIN department dp2 ON e2.dept_code = dp2.dept_code
+		INNER JOIN department dp3 ON e3.dept_code = dp3.dept_code
+		INNER JOIN department dp4 ON e4.dept_code = dp4.dept_code
+		INNER JOIN `rank` r1 ON e1.rank_no = r1.rank_no
+		INNER JOIN `rank` r2 ON e2.rank_no = r2.rank_no
+		INNER JOIN `rank` r3 ON e3.rank_no = r3.rank_no
+		INNER JOIN `rank` r4 ON e4.rank_no = r4.rank_no
+		<where>
+	        d.doc_bin = '1'
+	        <if test="empNo != null">
+			    AND (d.doc_writer_no = #{empNo} 
+			         OR da.init_approver_no = #{empNo} 
+			         OR da.mid_approver_no = #{empNo} 
+			         OR da.final_approver_no = #{empNo})
+			</if>
+	        <if test="docWriterNo != null">
+	            AND d.doc_writer_no = #{docWriterNo}
+	        </if>
+	        <if test="initApproverNo != null or midApproverNo != null or finalApproverNo != null">
+			    AND (
+			        <if test="initApproverNo != null">
+			            da.init_approver_no = #{initApproverNo}
+			        </if>
+			        <if test="midApproverNo != null">
+			            <if test="initApproverNo != null"> OR </if>
+			            da.mid_approver_no = #{midApproverNo}
+			        </if>
+			        <if test="finalApproverNo != null">
+			            <if test="initApproverNo != null or midApproverNo != null"> OR </if>
+			            da.final_approver_no = #{finalApproverNo}
+			        </if>
+			    )
+			</if>
+	        <if test="approvalStatus != null">
+	            AND d.approval_status = #{approvalStatus}
+	        </if>
+	        <if test="searchWord != null and searchWord != ''">
+			    AND (
+			        d.doc_no LIKE CONCAT('%', #{searchWord}, '%') OR
+			        d.doc_title LIKE CONCAT('%', #{searchWord}, '%') OR
+			        e1.emp_name LIKE CONCAT('%', #{searchWord}, '%') OR
+			        dp1.dept_name LIKE CONCAT('%', #{searchWord}, '%') OR
+			        e2.emp_name LIKE CONCAT('%', #{searchWord}, '%') OR
+			        dp2.dept_name LIKE CONCAT('%', #{searchWord}, '%') OR
+			        r1.rank_name LIKE CONCAT('%', #{searchWord}, '%') OR
+			        r2.rank_name LIKE CONCAT('%', #{searchWord}, '%')
+			        <if test="searchWord == '대기'">
+			            OR d.approval_status = 'P'
+			        </if>
+			        <if test="searchWord == '승인'">
+			            OR d.approval_status = 'A'
+			        </if>
+			        <if test="searchWord == '반려'">
+			            OR d.approval_status = 'R'
+			        </if>
+			        <if test="searchWord == '임시'">
+			            OR d.approval_status = 'T'
+			        </if>
+			    )
+			</if>
+    	</where>
+    	ORDER BY d.create_datetime DESC
+    	LIMIT #{beginRow}, #{rowPerPage}
+	</select>
+	
+	<!-- selectCountDocuments : 문서 개수 조회 -->
+	<select id="selectCountDocumentBin" parameterType="Map" resultType="Integer">
+	    SELECT COUNT(*) 
+	    FROM document d
+		INNER JOIN document_approvers da ON d.doc_no = da.doc_no
+		INNER JOIN employee e1 ON e1.emp_no = d.doc_writer_no
+		INNER JOIN employee e2 ON e2.emp_no = da.init_approver_no
+		INNER JOIN employee e3 ON e3.emp_no = da.mid_approver_no
+		INNER JOIN employee e4 ON e4.emp_no = da.final_approver_no
+		INNER JOIN department dp1 ON e1.dept_code = dp1.dept_code
+		INNER JOIN department dp2 ON e2.dept_code = dp2.dept_code
+		INNER JOIN department dp3 ON e3.dept_code = dp3.dept_code
+		INNER JOIN department dp4 ON e4.dept_code = dp4.dept_code
+		INNER JOIN `rank` r1 ON e1.rank_no = r1.rank_no
+		INNER JOIN `rank` r2 ON e2.rank_no = r2.rank_no
+		INNER JOIN `rank` r3 ON e3.rank_no = r3.rank_no
+		INNER JOIN `rank` r4 ON e4.rank_no = r4.rank_no
+	    <where>
+	        d.doc_bin = '1'
+	        <if test="empNo != null">
+			    AND (d.doc_writer_no = #{empNo} 
+			         OR da.init_approver_no = #{empNo} 
+			         OR da.mid_approver_no = #{empNo} 
+			         OR da.final_approver_no = #{empNo})
+			</if>
+	        <if test="docWriterNo != null">
+	            AND d.doc_writer_no = #{docWriterNo}
+	        </if>
+	        <if test="initApproverNo != null or midApproverNo != null or finalApproverNo != null">
+			    AND (
+			        <if test="initApproverNo != null">
+			            da.init_approver_no = #{initApproverNo}
+			        </if>
+			        <if test="midApproverNo != null">
+			            <if test="initApproverNo != null"> OR </if>
+			            da.mid_approver_no = #{midApproverNo}
+			        </if>
+			        <if test="finalApproverNo != null">
+			            <if test="initApproverNo != null or midApproverNo != null"> OR </if>
+			            da.final_approver_no = #{finalApproverNo}
+			        </if>
+			    )
+			</if>
+	        <if test="approvalStatus != null and approvalStatus != ''">
+	            AND d.approval_status = #{approvalStatus}
+	        </if>
+	        <if test="searchWord != null and searchWord != ''">
+			    AND (
+			        d.doc_no LIKE CONCAT('%', #{searchWord}, '%') OR
+			        d.doc_title LIKE CONCAT('%', #{searchWord}, '%') OR
+			        e1.emp_name LIKE CONCAT('%', #{searchWord}, '%') OR
+			        dp1.dept_name LIKE CONCAT('%', #{searchWord}, '%') OR
+			        e2.emp_name LIKE CONCAT('%', #{searchWord}, '%') OR
+			        dp2.dept_name LIKE CONCAT('%', #{searchWord}, '%') OR
+			        r1.rank_name LIKE CONCAT('%', #{searchWord}, '%') OR
+			        r2.rank_name LIKE CONCAT('%', #{searchWord}, '%')
+			        <if test="searchWord == '대기'">
+			            OR d.approval_status = 'P'
+			        </if>
+			        <if test="searchWord == '승인'">
+			            OR d.approval_status = 'A'
+			        </if>
+			        <if test="searchWord == '반려'">
+			            OR d.approval_status = 'R'
+			        </if>
+			        <if test="searchWord == '임시'">
+			            OR d.approval_status = 'T'
+			        </if>
+			    )
+			</if>
+	    </where>
+	</select>
+	
+	<!-- updateDocumentBin : 문서 개수 조회 -->
+	<update id="updateDocumentBin" parameterType="Integer">
+	    UPDATE document SET doc_bin = CASE WHEN doc_bin = '0' THEN '1' WHEN doc_bin = '1' THEN '0' END WHERE doc_no = #{docNo};
+	</update>
+	
+	<!-- deleteDocument : 문서 영구 삭제 -->
+	<delete id="deleteDocument" parameterType="Integer">
+		DELETE FROM document WHERE doc_no = #{docNo}
+	</delete>
 	
 	
 	
