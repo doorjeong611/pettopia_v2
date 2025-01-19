@@ -108,13 +108,13 @@
                     <div class="mt-10">
                         <button type="submit" class="w-full text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20">로그인</button>
                     </div>
-        			
-        			<!-- 임시 비밀번호 발급받기 버튼 -->
+   
+                </form>
+                
+                <!-- 임시 비밀번호 발급받기 버튼 -->
         			<div class="mt-10">
                        <a href="${pageContext.request.contextPath}/sendTempPassword"> <button type="button" class="w-full text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20">비밀번호 찾기</button></a>
                     </div>
-                   
-                </form>
             </div>
         </div>
     </div>
@@ -144,7 +144,7 @@ window.onload = function() {
 document.getElementById("signInForm").addEventListener("submit", function(event) {
     const empNo = document.getElementById("username").value;
     const rememberMe = document.getElementById("checkboxDefault1").checked;
-    console.log('empNo' + empNo);
+    console.log('empNo : ' + empNo);
     if (rememberMe) {
         localStorage.setItem("rememberEmpNo", empNo); // 사번을 로컬스토리지에 저장
     } else {

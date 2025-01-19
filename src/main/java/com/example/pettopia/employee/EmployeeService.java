@@ -1,6 +1,7 @@
 package com.example.pettopia.employee;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.pettopia.employeefile.EmployeeFileMapper;
@@ -136,7 +138,7 @@ public class EmployeeService {
 		// 직원 정보 insert
 		Integer resultRow = employeeMapper.insertEmployeeInfo(employee); 
 		
-		// <select Key> 값
+		// empNo
 		String empNo = employeeForm.getEmpNo();
 		
 		log.debug(TeamColor.KMJ + "empNo :" + empNo);
@@ -162,6 +164,15 @@ public class EmployeeService {
 			log.debug(TeamColor.KMJ + "fileName :" + fileName);
 			log.debug(TeamColor.KMJ + "ext :" + ext);
 			
+			
+			// 파일 유효성 검사 (이미지 파일만 가능)
+			// Spring Boot에서 Multipart 파일의 최대 업로드 크기는 기본적으로 1MB로 설정함. -> 수정하려면 application.yml 에서 설정해야함
+			List<String> allowedExtensions = Arrays.asList(".jpg", ".png", ".jpeg");
+			if (!allowedExtensions.contains(ext.toLowerCase())) {
+			    throw new IllegalArgumentException("이미지 파일만 가능");
+			}
+
+			
 			EmployeeFile employeeFile = new EmployeeFile();
 			employeeFile.setEmpNo(empNo);
 			employeeFile.setOriginFileName(orginFileName);
@@ -170,7 +181,8 @@ public class EmployeeService {
 			employeeFile.setFilePurpose(filePurpose);
 			employeeFile.setFileType(empFile.getContentType());
 			
-			fileResultRow = employeeFileMapper.insertEmployeeProfile(employeeFile);
+			// db insert
+			fileResultRow = employeeFileMapper.insertEmployeeFile(employeeFile);
 			log.debug(TeamColor.KMJ + "fileResultRow :" + fileResultRow);
 			
 			if(fileResultRow == 1) {
@@ -213,7 +225,7 @@ public class EmployeeService {
 			    "<p style='font-size: 16px; line-height: 1.6;'>안녕하세요, " + empName + "님!</p>" +
 			    "<p style='font-size: 16px; line-height: 1.6;'>귀하의 사원 번호는 <b>" + empNo + "</b>입니다.</p>" +
 			    "<p style='font-size: 16px; line-height: 1.6;'>임시 비밀번호는 <b>" + empPw + "</b>입니다.</p>" +
-			    "<p style='font-size: 16px; line-height: 1.6;'>아래의 버튼을 클릭하여 비밀번호를 변경해주세요.</p>" +
+			    "<p style='font-size: 16px; line-height: 1.6;'>아래의 버튼을 클릭하여 로그인 후 비밀번호를 변경해주세요.</p>" +
 			    "<p style='text-align: center;'>" +
 			    "<form action='http://localhost/pettopia/changePassword' method='post'>" +
 			    "<input type='submit' value='비밀번호 변경하기' style='display: inline-block; padding: 15px 30px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px; font-size: 18px; font-weight: bold; text-align: center; border: none;'>" +
@@ -248,10 +260,44 @@ public class EmployeeService {
 	  }
 	 
 	// employeeList : 직원 목록 조회
-	public List<Map<String, Object>> getEmployeeList(){
+	public List<Map<String, Object>> getEmployeeList(Map<String, Object> paramMap){
 		log.debug(TeamColor.KMJ + "EmployeeService - getEmployeeList() " );
 		
-		List<Map<String, Object>> empList =  employeeMapper.selectEmployeeList();
+		String empNo = (String)paramMap.get("empNo");					 // loginEmp.username 으로 가져온 값
+		
+		String paramDivisionCode = "";
+		log.debug(TeamColor.KMJ + "view에서 넘어온 값 divisionCode : " + (String)paramMap.get("divisionCode") );
+		
+		if(paramMap.get("divisionCode") != null) {
+			paramDivisionCode = (String)paramMap.get("divisionCode"); // view에서 넘어온 divisionCode
+		}
+		log.debug(TeamColor.KMJ + "paramDivisionCode : " + paramDivisionCode );
+		
+		
+		// 직원 목록을 조회하려는 사원의 직급 확인 (일반 사원 == 재직 중인 사원만, 인사부 관리자 == 퇴사자 등 모든 사원)
+		Map<String, Object> empDivRoleInfo = employeeMapper.selectEmpDivRoleInfo(empNo);
+		
+		// divisionCode == HR, roleName = ROLE_ADMIN -> isHRAdmin == true
+		String divisionCode = (String) empDivRoleInfo.get("divisionCode");   // select로 가져온 부서
+		String roleName = (String) empDivRoleInfo.get("roleName");
+		
+		log.debug(TeamColor.KMJ + "divisionCode : " + divisionCode );
+		log.debug(TeamColor.KMJ + "roleName : " + roleName );
+		
+		boolean isHRAdmin = false;
+		
+		if(divisionCode.equals("HR") && roleName.equals("ROLE_ADMIN")) {
+			isHRAdmin = true;
+		}
+		
+		log.debug(TeamColor.KMJ + "isHRAdmin : " + isHRAdmin );
+		
+		// 인사부 관리자, view에서 divisionCode 선택 여부
+		Map<String, Object> params = new HashMap<>();
+		params.put("isHRAdmin", isHRAdmin);
+		params.put("divisionCode", paramDivisionCode);
+		
+		List<Map<String, Object>> empList =  employeeMapper.selectEmployeeList(params);
 		log.debug(TeamColor.KMJ + "empList [0]" + empList.get(0).toString());
 		
 		
@@ -272,11 +318,11 @@ public class EmployeeService {
 	}
 	
 	
-	// 직원 정보 수정 : sendTempPassword - 새로 발급한 임시비밀번호로 db 수정
-	public boolean modifyEmployee(Employee employee) {
+	// sendTempPassword - 새로 발급한 임시비밀번호로 db 수정
+	public boolean modifyEmployeeTempPw(Employee employee) {
 		log.debug(TeamColor.KMJ + "EmployeeService - modifyEmployee() " );
 		
-		boolean result = false;
+		boolean result = false; // update 성공하면 true 
 		
 		Integer update = employeeMapper.updateEmployee(employee);
 		
@@ -290,6 +336,209 @@ public class EmployeeService {
 	}
 	
 	
+	// sendTempPassword : 임시비밀번호 메일 전송
+	public boolean sendMailTempPassword(Employee empInfo) {
+		log.debug(TeamColor.KMJ + "EmployeeService - sendMailTempPassword() " );
+		
+		String empNo = empInfo.getEmpNo();
+		String empName = empInfo.getEmpName();
+		String empPw = empInfo.getEmpPw();
+		String empEmail = empInfo.getEmpEmail();
+		
+		
+		String subject = "PetTopia Co. 펫토피아 임시 비밀번호 발급 안내";
+		String htmlContent = "<html>" +
+			    "<body style='font-family: Arial, sans-serif; color: #333;'>" +
+			    "<div style='max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f4f4f9; border-radius: 8px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);'>" +
+			    "<h1 style='color: #f15b2a; text-align: center;'>임시 비밀번호 발급 안내입니다, " + empName + "님!</h1>" +
+			    "<p style='font-size: 16px; line-height: 1.6;'>안녕하세요, " + empName + "님!</p>" +
+			    "<p style='font-size: 16px; line-height: 1.6;'>귀하의 사원 번호는 <b>" + empNo + "</b>입니다.</p>" +
+			    "<p style='font-size: 16px; line-height: 1.6;'>임시 비밀번호는 <b>" + empPw + "</b>입니다.</p>" +
+			    "<p style='font-size: 16px; line-height: 1.6;'>아래의 버튼을 클릭하여 로그인 후 반드시 비밀번호를 변경해주세요.</p>" +
+			    "<p style='text-align: center;'>" +
+			    "<form action='http://localhost/pettopia/changePassword' method='post'>" +
+			    "<input type='submit' value='비밀번호 변경하기' style='display: inline-block; padding: 15px 30px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px; font-size: 18px; font-weight: bold; text-align: center; border: none;'>" +
+			    "<input type='hidden' name='empNo' value='" + empNo + "'>" +
+			    "<input type='hidden' name='empPw' value='" + empPw + "'>" +
+			    "</form>" +
+			    "</p>" +
+			    "<p style='font-size: 14px; text-align: center; color: #666;'>이 이메일은 자동으로 발송된 시스템 메시지입니다.</p>" +
+			    "</div>" +
+			    "</body>" +
+			    "</html>";
+
+		 MimeMessage message = javaMailSender.createMimeMessage();
+	        try {
+	            MimeMessageHelper helper = new MimeMessageHelper(message, true); 
+	            helper.setTo(empEmail);
+	            helper.setSubject(subject);
+	            helper.setFrom("pettopia.corp@gmail.com");
+	            helper.setText(htmlContent, true); 
+
+	            javaMailSender.send(message);
+
+	            log.debug("메일 전송 성공!");
+	            return true;
+
+	        } catch (Exception e) {
+	        	log.debug("메일 전송 실패!");
+	        	e.printStackTrace();
+	        	return false;
+	        }     
+	       
+	  }
+	
+	
+	// employeeOne : 직원 정보 상세보기
+	public Map<String, Object> getEmployeeOne(String empNo){
+		log.debug(TeamColor.KMJ + "EmployeeService - getEmployeeOne() " );
+		
+		log.debug(TeamColor.KMJ + "empNo : " + empNo );
+		Map<String , Object> empInfo = employeeMapper.selectEmployeeOne(empNo);
+		
+		log.debug(TeamColor.KMJ + "empInfo.empName : " + empInfo.get("empName") + TeamColor.RESET );
+		
+		return empInfo;
+		
+	}
+	
+	
+	// modifyEmployeeOne : 마이페이지 - 직원 정보 수정
+	public boolean modifyEmployeeOne(EmployeeForm empForm, String path, String empFileNo, String empStatus) {
+		
+		log.debug(TeamColor.KMJ + "EmployeeService - modifyEmployeeOne() " );
+		
+		// 직원 정보 수정 
+		boolean result = false; // 정보 + 프로필 파일 모두 update 성공하면 true 
+		
+		// employee 테이블 직원 등록
+		Employee employee = new Employee();
+		employee.setEmpNo(empForm.getEmpNo());
+		log.debug(TeamColor.KMJ + "employeeForm.getEmpNo() : " + empForm.getEmpNo());
+		log.debug(TeamColor.KMJ + "employeeForm.getEmpPw() : " + empForm.getEmpPw());
+		
+		employee.setEmpPw(bCryptPasswordEncoder.encode(empForm.getEmpPw()));
+		log.debug(TeamColor.KMJ + "bCryptPasswordEncoder 후 비밀번호 : " + employee.getEmpPw());
+		
+		// 이름, 이메일, 생년월일, 성별
+		employee.setEmpName(empForm.getEmpName());
+		employee.setEmpEmail(empForm.getEmpEmail());
+		employee.setEmpBirth(empForm.getEmpBirth());
+		employee.setEmpGender(empForm.getEmpGender());
+		
+		// 연락처 
+		String empPhone = empForm.getEmpPhoneF()+"-"+empForm.getEmpPhoneM()+"-"+empForm.getEmpPhoneL();
+		log.debug(TeamColor.KMJ + "empPhone " + empPhone);
+		employee.setEmpPhone(empPhone);
+		
+		// 주소
+		String detailAddress = empForm.getDetailAddress() + "_" +empForm.getDong();
+		log.debug(TeamColor.KMJ + "detailAddress : " + detailAddress + TeamColor.RESET);
+		employee.setPostalCode(empForm.getPostalCode());
+		employee.setBasicAddress(empForm.getBasicAddress());
+		employee.setDetailAddress(detailAddress);
+		
+		// 재직 상태
+		if(empStatus.equals("T")) {
+			employee.setEmpStatus("E"); // 재직 중
+		}
+		
+		log.debug(TeamColor.KMJ + "수정할 정보 employee : " + employee.toString() + TeamColor.RESET);
+		
+		
+		// 정보 수정
+		Integer update = employeeMapper.updateEmployee(employee);
+		
+		// 정보 수정 성공 -> 프로필 파일 수정 여부 확인 -> 프로필 파일 db 수정 -> 물리적 파일 삭제 -> return true 
+		if(update == 1) { // 정보 수정에 성공
+			log.debug(TeamColor.KMJ + "update 결과 : " + update );
+			
+			// 수정할 프로필 파일이 존재하면 수정할 파일로 db 수정 후 /employeeFile에 존재하는 예전 파일(물리적 파일) 지우기
+			if(empForm.getEmployeeFile().getSize() > 0) { // 수정할 프로필 파일이 존재하면 
+				
+				log.debug(TeamColor.KMJ + "프로필 파일 수정 여부 : " + empForm.getEmployeeFile().getSize() + TeamColor.RESET);
+
+				// 프로필 사진 수정
+				MultipartFile empFile = empForm.getEmployeeFile();
+				
+				int dotIndex = empFile.getOriginalFilename().lastIndexOf(".");					// 확장자와 파일명 구분을 위한 . 인덱스 찾기
+				String orginFileName = empFile.getOriginalFilename().substring(0, dotIndex);	// 원본파일명
+				String fileName = UUID.randomUUID().toString().replace("-", "");				// 랜덤으로 생성한 파일명
+				String ext = empFile.getOriginalFilename().substring(dotIndex);					// 확장자 (.jpg)
+				String filePurpose = "P";														// 파일 목적 (P : 프로필사진)
+				
+				log.debug(TeamColor.KMJ + "dotIndex :" + dotIndex);
+				log.debug(TeamColor.KMJ + "orginFileName :" + orginFileName);
+				log.debug(TeamColor.KMJ + "fileName :" + fileName);
+				log.debug(TeamColor.KMJ + "ext :" + ext);
+				
+				// 파일 유효성 검사 (이미지 파일만 가능)
+				// Spring Boot에서 Multipart 파일의 최대 업로드 크기는 기본적으로 1MB로 설정함. -> 수정하려면 application.yml 에서 설정해야함
+				List<String> allowedExtensions = Arrays.asList(".jpg", ".png", ".jpeg");
+				if (!allowedExtensions.contains(ext.toLowerCase())) {
+				    throw new IllegalArgumentException("이미지 파일만 가능");
+				}
+
+				EmployeeFile employeeFile = new EmployeeFile();
+				// empFileNo 필요
+				Integer employeeFileNo = Integer.parseInt(empFileNo);
+				employeeFile.setEmpFileNo(employeeFileNo); 										// empFileNo
+				employeeFile.setEmpNo(empForm.getEmpNo());
+				employeeFile.setOriginFileName(orginFileName);
+				employeeFile.setFileName(fileName);
+				employeeFile.setFileExt(ext);
+				employeeFile.setFilePurpose(filePurpose);
+				employeeFile.setFileType(empFile.getContentType());
+				
+				// db 수정 전 물리적으로 삭제할 파일 이름 가져오기
+				EmployeeFile empFileInfo = employeeFileMapper.selectEmployeeFile(employeeFileNo);
+				String deleteFileName = empFileInfo.getFileName() + empFileInfo.getFileExt();
+				
+				log.debug(TeamColor.KMJ + "deleteFileName :" + deleteFileName);
+				
+				// db 수정
+				int updateEmpFile = employeeFileMapper.updateEmployeeFile(employeeFile);
+				
+				// db 수정에 성공하면 새로운 파일 저장 + 물리적 파일 삭제
+				if(updateEmpFile == 1) {
+					
+					// 새로운 물리적 파일 저장하기
+					try {
+						empFile.transferTo(new File(path + fileName + ext)); // /employeeFile/manggom5(UUID로 변환).jpg
+					} catch (Exception e) {
+						e.printStackTrace();
+						throw new RuntimeException();
+					}
+					
+					
+					File f = new File(path, deleteFileName); 	// 해당 path에 deleteFileName의 파일 가져옴
+					if(f.exists()) {						 	// 파일이 존재한다면
+						boolean deleteFileResult = f.delete();	// 파일 삭제
+						
+						if(deleteFileResult == false) {			// 파일 삭제에 실패한다면  예외 발생시키기
+							throw new RuntimeException("파일 삭제에 실패했습니다: " + deleteFileName); // 물리적 파일 삭제는 @transactional이 관리하지 않으므로 실패시 RuntimeException을 만들어줌	
+						
+						}
+	
+					}
+
+				}
+
+				
+			}else {
+				log.debug(TeamColor.KMJ + "getEmployeeFile().getSize() : " +empForm.getEmployeeFile().getSize() + TeamColor.RESET);
+				log.debug(TeamColor.KMJ + "첨부 파일 없음" + TeamColor.RESET);
+			}
+
+			// 1. 직원 정보 수정(db) + 프로필 파일 수정(db) + 물리적 파일 삭제 모두 성공 
+			// 2. 직원 정보 수정(db) + (수정할 프로필 파일 없음)
+			result = true;
+		}
+		
+		log.debug(TeamColor.KMJ + "최종 result :" + result + TeamColor.KMJ);
+		return result; 
+		
+	}
 	
 
 }// employeeService

@@ -1,6 +1,7 @@
 package com.example.pettopia.employee;
 
 
+import java.sql.Date;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -141,28 +142,23 @@ public class EmployeeController {
 		
 		log.debug(TeamColor.KMJ+"[EmployeeController - Get employeeList()]");
 		
-		// 직원 목록 가져오기
-		List<Map<String, Object>> empList = employeeService.getEmployeeList();
-		log.debug(TeamColor.KMJ + "empList [0]" + empList.get(0).toString());
-		
-		model.addAttribute("empList", empList);
-		
 		return "employee/employeeList";
 	}
 	
 
 	
-	// 임시 비밀번호 발급 : (비밀번호 찾기)
+	// 임시 비밀번호 발급 : (비밀번호 찾기) 폼
 	@GetMapping("/sendTempPassword")
 	public String sendTempPassword() {
-		log.debug(TeamColor.KMJ+" LoginController : GET sendTempPassword()" + TeamColor.RESET);
+		log.debug(TeamColor.KMJ+" EmployeeController : GET sendTempPassword()" + TeamColor.RESET);
 		
 		return "common/sendTempPassword";
 	}
 	
+	// 임시 비밀번호 발급 : (비밀번호 찾기)
 	@PostMapping("/sendTempPassword")
 	public String sendTempPassword(@RequestParam String empNo, @RequestParam String empEmail) {
-		log.debug(TeamColor.KMJ+" LoginController : POST sendTempPassword()" + TeamColor.RESET);
+		log.debug(TeamColor.KMJ+" EmployeeController : POST sendTempPassword()" + TeamColor.RESET);
 		
 		// 입력된 사번과 이메일이 db 정보와 일치여부 확인
 		log.debug(TeamColor.KMJ+"empNo -  "+ empNo + TeamColor.RESET);
@@ -173,7 +169,9 @@ public class EmployeeController {
 		employee.setEmpEmail(empEmail);
 		
 		Employee empInfo = new Employee();
-		empInfo = employeeService.getSimpleEmpInfo(employee);
+		empInfo = employeeService.getSimpleEmpInfo(employee); // 일치한다면 사번, 이름, 이메일 가져옴
+		
+		String msg = "임시 비밀번호 발급 성공!";
 		
 		// 사번과 이메일이 db와 일치한다면 임시비밀번호로 db 수정, 성공시 메일 보내기
 		if(empInfo != null) {												// db와 일치하면 
@@ -183,17 +181,146 @@ public class EmployeeController {
 			String tempPw = UUID.randomUUID().toString().replace("-", "").substring(0, 7)+"!";
 			log.debug(TeamColor.KMJ + "임시 비밀번호 발급 : " + tempPw);
 			
-			// 발급받은 임시 비밀번호로 db 수정 
-			boolean result = employeeService.modifyEmployee(employee);
+			employee.setEmpPw(tempPw);
 			
+			// 발급받은 임시 비밀번호로 db 수정 
+			boolean result = employeeService.modifyEmployeeTempPw(employee); // update 성공하면 true 
+			log.debug(TeamColor.KMJ + "임시비밀번호 db 수정 : " + result);
+			
+			if(result == false) { // update 실패
+				log.debug(TeamColor.KMJ + "임시비밀번호 db 수정 : " + result);
+				msg = "임시 비밀번호 발급 실패! 인사팀으로 연락주세요";
+				log.debug(TeamColor.KMJ + "msg : " + msg);
+				
+				return "redirect:/loginForm?msg="+msg;
+			}
+			
+			// update 성공
+			// 발급한 임시비밀번호 메일로 전송 (사번, 이름, 이메일, 임시비밀번호)
+			empInfo.setEmpPw(tempPw);
+			boolean sendMailResult = employeeService.sendMailTempPassword(empInfo);
+			
+			if(sendMailResult == false) {// 메일 전송 실패시 
+				log.debug(TeamColor.KMJ + "실패 ! 로그인 폼으로 이동");
+				log.debug(TeamColor.KMJ + "sendMailResult" + sendMailResult);
+				
+				msg = "임시 비밀번호 발급 실패! 인사팀으로 연락주세요";
+				log.debug(TeamColor.KMJ + "msg : " + msg);
+				
+				return "redirect:/loginForm?msg="+msg;
+			}
+			
+			// 메일 전송 성공시
+			log.debug(TeamColor.KMJ + "msg : " + msg);
+			return "redirect:/loginForm?msg="+msg;
 			
 		}
 		
+		// 직원 정보 불일치 
+		msg = "임시 비밀번호 발급 실패! 인사팀으로 연락주세요";
+		log.debug(TeamColor.KMJ + "msg : " + msg);
+		
+		return "redirect:/loginForm?msg="+msg;
+	}
+	
+	
+	// 직원 상세보기 : 마이페이지
+	@GetMapping("/employee/employeeOne")
+	public String getEmployeeOne(@RequestParam String empNo, Model model) {
+		log.debug(TeamColor.KMJ+" EmployeeController : POST employeeOne()" + TeamColor.RESET);
+		log.debug(TeamColor.KMJ+" empNo : "+ empNo + TeamColor.RESET);
+		
+		Map<String, Object> empInfo = employeeService.getEmployeeOne(empNo);
+		
+		model.addAttribute("empInfo", empInfo);
+		
+		return "employee/employeeOne";
+	}
+	
+	
+	// 직원 정보 수정
+	@GetMapping("/employee/modifyEmployeeOne")
+	public String modifyEmployeeOne(@RequestParam String empNo, Model model) {
+		log.debug(TeamColor.KMJ+" EmployeeController : GET modifyEmployeeOne()" + TeamColor.RESET);
+		
+		log.debug(TeamColor.KMJ+" empNo : "+ empNo + TeamColor.RESET);
+		
+		Map<String, Object> empInfo = employeeService.getEmployeeOne(empNo);
+		
+		// 수정 페이지에 맞춰서 employeeForm에 담아주기.
+		EmployeeForm empForm = new EmployeeForm();
+		
+		empForm.setEmpName((String)empInfo.get("empName"));				// 이름
+		
+		// mysql date타입 -> String으로 변환 = java.sql.Date 사용
+		Date date = (Date)empInfo.get("empBirth");
+		String birth = date.toString(); 
+		empForm.setEmpBirth(birth);										// 생년월일
+		
+		empForm.setEmpEmail((String)empInfo.get("empEmail"));			// 이메일
+		
+		// 연락처 숫자만 필요하므로 '-' 제외
+		String empPhone = (String) empInfo.get("empPhone");
+		String empPhoneF = empPhone.substring(0, 3); // 010
+		String empPhoneM = empPhone.substring(4, 8); // 1234
+		String empPhoneL = empPhone.substring(9);	 // 5678
+		
+		empForm.setEmpPhoneF(empPhoneF);								// 연락처
+		empForm.setEmpPhoneM(empPhoneM);
+		empForm.setEmpPhoneL(empPhoneL);
+		
+		// 성별 : 남자, 여자 -> M, F 변환하기
+		if(((String) empInfo.get("empGender")).equals("여자")) {
+			empForm.setEmpGender("F");									// 성별
+		}else {
+			empForm.setEmpGender("M");			
+		}
+		
+		// 주소
+		empForm.setPostalCode((String)empInfo.get("postalCode")); 		// 우편번호
+		empForm.setBasicAddress((String) empInfo.get("basicAddress")); 	// 기본주소
+		
+		String detailAddr = (String) empInfo.get("detailAddress");
+		int dongIndex = detailAddr.indexOf("_");
+		String detailAddress = detailAddr.substring(0, dongIndex); 
+		String dong = detailAddr.substring(dongIndex+1);
+		
+		empForm.setDetailAddress(detailAddress);						// 상세주소
+		empForm.setDong(dong);											// 동
+		
+		// 프로필 사진
+		Integer empFileNo = (Integer)empInfo.get("empFileNo"); 			// 수정을 위한 empFileNo
+		String fileName = (String)empInfo.get("empFileName");			// 프로필 파일
+		
+		// 직원 상태 = 임시 직원 'T' -> 'E' 로 변경해야하므로 조회 후 가져오기
+		String empStatus = (String) empInfo.get("empStatus");
+		
+		model.addAttribute("empStatus", empStatus);
+		model.addAttribute("fileName", fileName);
+		model.addAttribute("empFileNo", empFileNo);
+		model.addAttribute("empForm", empForm);
+		
+		return "employee/modifyEmployeeOne";
+	}
+	
+	
+	@PostMapping("/employee/modifyEmployeeOne")
+	public String modifyEmployeeOne(EmployeeForm employeeForm, @RequestParam String empFileNo, @RequestParam String empStatus, HttpSession session) {
+		log.debug(TeamColor.KMJ+" EmployeeController : POST modifyEmployeeOne()" + TeamColor.RESET);
+		
+		log.debug(TeamColor.KMJ+" empFileNo : "+ empFileNo + TeamColor.RESET);
+		log.debug(TeamColor.KMJ+" empStatus : "+ empStatus + TeamColor.RESET);
+		log.debug(TeamColor.KMJ+" employeeForm : "+ employeeForm.toString() + TeamColor.RESET);
+		
+		String path = session.getServletContext().getRealPath("/employeeFile/");
+		
+		// 직원 정보 수정
+		boolean result = employeeService.modifyEmployeeOne(employeeForm, path, empFileNo, empStatus);
+		
+		// 서비스에서 물리적 파일 삭제 부분 구현 후 주석 풀기!!!
 		
 		
-		
-		
-		return "redirect:/loginForm";
+		return "common/petTopiaMain";
 	}
 	
 	
