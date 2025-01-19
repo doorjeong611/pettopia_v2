@@ -83,7 +83,9 @@
                                         <input type="text" id="docTitle" name="docTitle" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-200 placeholder:text-slate-400" placeholder="문서 유형을 먼저 선택하세요" readonly required="">
 	                                </div><!--end col-->
 	                                
-	                                <div class="xl:col-span-3"></div>
+	                                <div class="xl:col-span-3">
+	                                	<input type="hidden" id="approvalStatus" name="approvalStatus" value="P">
+	                                </div>
                                     
                                     <div class="xl:col-span-4">
                                         <label for="docWriterNo" class="inline-block mb-2 text-base font-medium">작성자</label>
@@ -216,8 +218,8 @@
                            		</div>
                                 <div class="flex justify-end gap-2 mt-4">
                                 	<button type="reset" class="text-red-500 bg-white btn hover:text-red-500 hover:bg-red-100 focus:text-red-500 focus:bg-red-100 active:text-red-500 active:bg-red-100 dark:bg-zink-700 dark:hover:bg-red-500/10 dark:focus:bg-red-500/10 dark:active:bg-red-500/10">리셋</button>
-                                    <button type="button" class="bg-white text-sky-500 btn border-sky-500 hover:text-white hover:bg-sky-600 hover:border-sky-600 focus:text-white focus:bg-sky-600 focus:border-sky-600 focus:ring focus:ring-sky-100 active:text-white active:bg-sky-600 active:border-sky-600 active:ring active:ring-sky-100">임시 저장</button>
-                                    <button type="submit" class="bg-white text-custom-500 btn border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100">문서 작성</button>
+                                    <button type="button" id="tempAddDocumentBtn" class="bg-white text-sky-500 btn border-sky-500 hover:text-white hover:bg-sky-600 hover:border-sky-600 focus:text-white focus:bg-sky-600 focus:border-sky-600 focus:ring focus:ring-sky-100 active:text-white active:bg-sky-600 active:border-sky-600 active:ring active:ring-sky-100">임시 저장</button>
+                                    <button type="submit" id="addDocumentBtn" class="bg-white text-custom-500 btn border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100">문서 작성</button>
 								    <a href="${pageContext.request.contextPath}/document/documentList" class="text-green-500 bg-white border-green-500 btn hover:text-white hover:bg-green-600 hover:border-green-600 focus:text-white focus:bg-green-600 focus:border-green-600 focus:ring focus:ring-green-100 active:text-white active:bg-green-600 active:border-green-600 active:ring active:ring-green-100">목록</a>
                             	</div>
                            	</form>
@@ -248,7 +250,9 @@
                                         <input type="text" id="docTitle" name="docTitle" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-200 placeholder:text-slate-400" placeholder="문서 제목을 입력하세요" required="">
 	                                </div><!--end col-->
 	                                
-	                                <div class="xl:col-span-3"></div>
+	                                <div class="xl:col-span-3">
+	                                	<input type="hidden" id="approvalStatus" name="approvalStatus" value="P">
+	                                </div>
                                     
                                     <div class="xl:col-span-4">
                                         <label for="docWriterNo" class="inline-block mb-2 text-base font-medium">작성자</label>
@@ -326,8 +330,8 @@
                            		</div>
                                 <div class="flex justify-end gap-2 mt-4">
                                 	<button type="reset" class="text-red-500 bg-white btn hover:text-red-500 hover:bg-red-100 focus:text-red-500 focus:bg-red-100 active:text-red-500 active:bg-red-100 dark:bg-zink-700 dark:hover:bg-red-500/10 dark:focus:bg-red-500/10 dark:active:bg-red-500/10">리셋</button>
-                                    <button type="button" class="bg-white text-sky-500 btn border-sky-500 hover:text-white hover:bg-sky-600 hover:border-sky-600 focus:text-white focus:bg-sky-600 focus:border-sky-600 focus:ring focus:ring-sky-100 active:text-white active:bg-sky-600 active:border-sky-600 active:ring active:ring-sky-100">임시 저장</button>
-                                    <button type="submit" class="bg-white text-custom-500 btn border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100">문서 작성</button>
+                                    <button type="button" id="tempAddDocumentBtn" class="bg-white text-sky-500 btn border-sky-500 hover:text-white hover:bg-sky-600 hover:border-sky-600 focus:text-white focus:bg-sky-600 focus:border-sky-600 focus:ring focus:ring-sky-100 active:text-white active:bg-sky-600 active:border-sky-600 active:ring active:ring-sky-100">임시 저장</button>
+                                    <button type="submit" id="addDocumentBtn" class="bg-white text-custom-500 btn border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100">문서 작성</button>
 								    <a href="${pageContext.request.contextPath}/document/documentList" class="text-green-500 bg-white border-green-500 btn hover:text-white hover:bg-green-600 hover:border-green-600 focus:text-white focus:bg-green-600 focus:border-green-600 focus:ring focus:ring-green-100 active:text-white active:bg-green-600 active:border-green-600 active:ring active:ring-green-100">목록</a>
                             	</div>
                        	    </form>
@@ -359,7 +363,9 @@
                                         <input type="text" id="docTitle" name="docTitle" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-200 placeholder:text-slate-400" placeholder="문서 제목을 입력하세요" required="">
 	                                </div><!--end col-->
 	                                
-	                                <div class="xl:col-span-3"></div>
+	                                <div class="xl:col-span-3">
+	                                	<input type="hidden" id="approvalStatus" name="approvalStatus" value="P">
+	                                </div>
                                     
                                     <div class="xl:col-span-4">
                                         <label for="docWriterNo" class="inline-block mb-2 text-base font-medium">작성자</label>
@@ -489,8 +495,8 @@
                            		</div>
                                 <div class="flex justify-end gap-2 mt-4">
                                 	<button type="reset" class="text-red-500 bg-white btn hover:text-red-500 hover:bg-red-100 focus:text-red-500 focus:bg-red-100 active:text-red-500 active:bg-red-100 dark:bg-zink-700 dark:hover:bg-red-500/10 dark:focus:bg-red-500/10 dark:active:bg-red-500/10">리셋</button>
-                                    <button type="button" class="bg-white text-sky-500 btn border-sky-500 hover:text-white hover:bg-sky-600 hover:border-sky-600 focus:text-white focus:bg-sky-600 focus:border-sky-600 focus:ring focus:ring-sky-100 active:text-white active:bg-sky-600 active:border-sky-600 active:ring active:ring-sky-100">임시 저장</button>
-                                    <button type="submit" class="bg-white text-custom-500 btn border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100">문서 작성</button>
+                                    <button type="button" id="tempAddDocumentBtn" class="bg-white text-sky-500 btn border-sky-500 hover:text-white hover:bg-sky-600 hover:border-sky-600 focus:text-white focus:bg-sky-600 focus:border-sky-600 focus:ring focus:ring-sky-100 active:text-white active:bg-sky-600 active:border-sky-600 active:ring active:ring-sky-100">임시 저장</button>
+                                    <button type="submit" id="addDocumentBtn" class="bg-white text-custom-500 btn border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100">문서 작성</button>
 								    <a href="${pageContext.request.contextPath}/document/documentList" class="text-green-500 bg-white border-green-500 btn hover:text-white hover:bg-green-600 hover:border-green-600 focus:text-white focus:bg-green-600 focus:border-green-600 focus:ring focus:ring-green-100 active:text-white active:bg-green-600 active:border-green-600 active:ring active:ring-green-100">목록</a>
                             	</div>
                        	    </form>
@@ -522,7 +528,9 @@
                                         <input type="text" id="docTitle" name="docTitle" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-200 placeholder:text-slate-400" placeholder="문서 제목을 입력하세요" required="">
 	                                </div><!--end col-->
 	                                
-	                                <div class="xl:col-span-3"></div>
+	                                <div class="xl:col-span-3">
+	                                	<input type="hidden" id="approvalStatus" name="approvalStatus" value="P">
+	                                </div>
                                     
                                     <div class="xl:col-span-4">
                                         <label for="docWriterNo" class="inline-block mb-2 text-base font-medium">작성자</label>
@@ -632,8 +640,8 @@
                            		</div>
                        	    	<div class="flex justify-end gap-2 mt-4">
                                 	<button type="reset" class="text-red-500 bg-white btn hover:text-red-500 hover:bg-red-100 focus:text-red-500 focus:bg-red-100 active:text-red-500 active:bg-red-100 dark:bg-zink-700 dark:hover:bg-red-500/10 dark:focus:bg-red-500/10 dark:active:bg-red-500/10">리셋</button>
-                                    <button type="button" class="bg-white text-sky-500 btn border-sky-500 hover:text-white hover:bg-sky-600 hover:border-sky-600 focus:text-white focus:bg-sky-600 focus:border-sky-600 focus:ring focus:ring-sky-100 active:text-white active:bg-sky-600 active:border-sky-600 active:ring active:ring-sky-100">임시 저장</button>
-                                    <button type="submit" class="bg-white text-custom-500 btn border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100">문서 작성</button>
+                                    <button type="button" id="tempAddDocumentBtn" class="bg-white text-sky-500 btn border-sky-500 hover:text-white hover:bg-sky-600 hover:border-sky-600 focus:text-white focus:bg-sky-600 focus:border-sky-600 focus:ring focus:ring-sky-100 active:text-white active:bg-sky-600 active:border-sky-600 active:ring active:ring-sky-100">임시 저장</button>
+                                    <button type="submit" id="addDocumentBtn" class="bg-white text-custom-500 btn border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100">문서 작성</button>
 								    <a href="${pageContext.request.contextPath}/document/documentList" class="text-green-500 bg-white border-green-500 btn hover:text-white hover:bg-green-600 hover:border-green-600 focus:text-white focus:bg-green-600 focus:border-green-600 focus:ring focus:ring-green-100 active:text-white active:bg-green-600 active:border-green-600 active:ring active:ring-green-100">목록</a>
                             	</div>
                        	    </form>
@@ -664,7 +672,9 @@
                                         <input type="text" id="docTitle" name="docTitle" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-200 placeholder:text-slate-400" placeholder="문서 제목을 입력하세요" required="">
 	                                </div><!--end col-->
 	                                
-	                                <div class="xl:col-span-3"></div>
+	                                <div class="xl:col-span-3">
+	                                	<input type="hidden" id="approvalStatus" name="approvalStatus" value="P">
+	                                </div>
 	                                
 	                                <div class="xl:col-span-4">
                                         <label for="docWriterNo" class="inline-block mb-2 text-base font-medium">작성자</label>
@@ -763,8 +773,8 @@
                             	</div>
                             	<div class="flex justify-end gap-2 mt-4">
                                 	<button type="reset" class="text-red-500 bg-white btn hover:text-red-500 hover:bg-red-100 focus:text-red-500 focus:bg-red-100 active:text-red-500 active:bg-red-100 dark:bg-zink-700 dark:hover:bg-red-500/10 dark:focus:bg-red-500/10 dark:active:bg-red-500/10">리셋</button>
-                                    <button type="button" class="bg-white text-sky-500 btn border-sky-500 hover:text-white hover:bg-sky-600 hover:border-sky-600 focus:text-white focus:bg-sky-600 focus:border-sky-600 focus:ring focus:ring-sky-100 active:text-white active:bg-sky-600 active:border-sky-600 active:ring active:ring-sky-100">임시 저장</button>
-                                    <button type="submit" class="bg-white text-custom-500 btn border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100">문서 작성</button>
+                                    <button type="button" id="tempAddDocumentBtn" class="bg-white text-sky-500 btn border-sky-500 hover:text-white hover:bg-sky-600 hover:border-sky-600 focus:text-white focus:bg-sky-600 focus:border-sky-600 focus:ring focus:ring-sky-100 active:text-white active:bg-sky-600 active:border-sky-600 active:ring active:ring-sky-100">임시 저장</button>
+                                    <button type="submit" id="addDocumentBtn" class="bg-white text-custom-500 btn border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100">문서 작성</button>
 								    <a href="${pageContext.request.contextPath}/document/documentList" class="text-green-500 bg-white border-green-500 btn hover:text-white hover:bg-green-600 hover:border-green-600 focus:text-white focus:bg-green-600 focus:border-green-600 focus:ring focus:ring-green-100 active:text-white active:bg-green-600 active:border-green-600 active:ring active:ring-green-100">목록</a>
                             	</div>
                        	    </form>
@@ -1396,6 +1406,16 @@
 			        closeVacationModal(); // 선택 후 모달 닫기
 			    }
 	        });
+	     	
+	        $("#tempAddDocumentBtn").click(function() {
+	            // approvalStatus 값을 T로 변경
+	            $("#approvalStatus").val('T'); 
+	            console.log('임시 저장 상태로 변경되었습니다.');
+
+	            // addDocumentBtn 클릭
+	            $("#addDocumentBtn").click(); // 이 줄이 자동으로 클릭합니다.
+	        });
+	     	
 	
 	        var date = new Date();
 	        var year = date.getFullYear();
@@ -1409,7 +1429,6 @@
 	    });
 	    
 	});
-
 </script>
 
 <script>
@@ -1468,6 +1487,7 @@
         // ESC 키를 눌렀을 때 모달 닫기
         $(document).on('keydown', function(event) {
             if (event.key === 'Escape') {
+            	console.log('ESC 모달 종료');
                 closeModal();
             }
         });
