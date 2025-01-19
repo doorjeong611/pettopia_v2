@@ -26,7 +26,7 @@ public interface MessageMapper {
 	Integer deleteMessage(List<Integer> messageNo);
 	
 	// 오자윤 : /employee/messageNote (모달)직원 조회 
-	List<Map<String, Object>> getEmployeeList(String empStatus, String deptCode);
+	List<Map<String, Object>> getEmployeeList(String empStatus, String deptCode, String empName);
 	
 	// 오자윤 : /employee/messageOne 쪽지 상세보기
 	Map<String, Object>getMessageById(String messageNo);
