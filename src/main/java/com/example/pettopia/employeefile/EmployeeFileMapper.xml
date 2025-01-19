@@ -3,8 +3,53 @@
 <mapper namespace="com.example.pettopia.employeefile.EmployeeFileMapper">
 
 	<!-- addEmployee : 직원 프로필 사진 등록 -->
-	<insert id="insertEmployeeProfile">
+	<insert id="insertEmployeeFile" parameterType="com.example.pettopia.vo.EmployeeFile">
 		INSERT INTO employee_file(emp_no, file_purpose, origin_file_name, file_name, file_ext, file_type, create_datetime, update_datetime)
 		VALUES (#{empNo}, #{filePurpose}, #{originFileName}, #{fileName}, #{fileExt}, #{fileType}, now(), now())
 	</insert>
+	
+	<!-- modifyEmployeeOne : 직원 프로필 사진 수정 -->
+	<update id="updateEmployeeFile"  parameterType="com.example.pettopia.vo.EmployeeFile">
+		 UPDATE employee_file
+	    <set>
+	        <if test="empNo != null and empNo != ''">
+	            emp_no = #{empNo},
+	        </if>
+	
+	        <if test="filePurpose != null and filePurpose != ''">
+	            file_purpose = #{filePurpose},
+	        </if>
+	
+	        <if test="originFileName != null and originFileName != ''">
+	            origin_file_name = #{originFileName},
+	        </if>
+	
+	        <if test="fileName != null and fileName != ''">
+	            file_name = #{fileName},
+	        </if>
+	
+	        <if test="fileExt != null and fileExt != ''">
+	            file_ext = #{fileExt},
+	        </if>
+	
+	        <if test="fileType != null and fileType != ''">
+	            file_type = #{fileType},
+	        </if>
+	
+	        update_datetime = now()
+	    </set>
+	    WHERE emp_file_no = #{empFileNo}
+	</update>
+	
+	<!-- modifyEmployeeOne : 물리적 파일 삭제를 위해 db에 저장된 이름 가져오기 -->
+	<select id="selectEmployeeFile">
+		SELECT emp_no AS empNo
+				, emp_file_no AS empFileNo
+				, file_name AS fileName
+				, file_ext AS fileExt
+		FROM employee_file
+		WHERE emp_file_no = #{empFileNo}		
+	</select>
+	
+	
 </mapper>

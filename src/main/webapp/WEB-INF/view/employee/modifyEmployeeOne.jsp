@@ -2,6 +2,14 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
+<!-- 시큐리티 세션 사용을 위한 taglib -->
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<!-- 시큐리티 세션정보 접근 -->
+<sec:authorize access="isAuthenticated()"><sec:authentication property="principal" var="loginEmp"/></sec:authorize>
+
+
+
+
 <!DOCTYPE html>
 <html lang="en" class="light scroll-smooth group" data-layout="vertical"
 	data-sidebar="light" data-sidebar-size="lg" data-mode="light"
@@ -143,7 +151,7 @@
   </div>
 
   <!-- Main Form -->
-  <form action="${pageContext.request.contextPath}/admin/addEmployee" class="create-form" method="post" enctype="multipart/form-data" id="addEmployeeForm">
+  <form action="${pageContext.request.contextPath}/employee/modifyEmployeeOne" class="create-form" method="post" enctype="multipart/form-data" id="modifyEmployeeForm">
     <div class="xl:col-span-9">
       <div class="card">
         <div class="card-body">
@@ -159,9 +167,10 @@
 
             <!-- 직원 프로필 사진  -->
             <div class="relative mx-auto mb-4 rounded-full shadow-md size-24 bg-slate-100 profile-user dark:bg-zink-500">
-              <img id="profileImg" src="${pageContext.request.contextPath }/assets/images/placeholder/placeholder.png" alt="" class="object-cover w-15 h-15 rounded-full user-profile-image">
+              <img id="profileImg" src="${pageContext.request.contextPath }/employeeFile/${fileName}" alt="" class="object-cover w-15 h-15 rounded-full user-profile-image">
               <div class="absolute bottom-0 flex items-center justify-center rounded-full size-8 ltr:right-0 rtl:left-0 profile-photo-edit">
                 <input id="profile-img-file-input" name="employeeFile" type="file" class="hidden profile-img-file-input" accept="image/*">
+                <input type="hidden" name="empFileNo" value="${empFileNo}">
                 <label for="profile-img-file-input" class="flex items-center justify-center bg-white rounded-full shadow-lg cursor-pointer size-8 dark:bg-zink-600 profile-photo-edit">
                   <i data-lucide="image-plus" class="size-4 text-slate-500 fill-slate-200 dark:text-zink-200 dark:fill-zink-500"></i>
                 </label>
@@ -173,25 +182,26 @@
               <!-- 사번 : 자동입력 -->
               <div class="xl:col-span-4">
                 <label for="employeeId" class="inline-block mb-2 text-base font-medium">직원 번호</label>
-                <input type="number" name="empNo" id="employeeId" class="form-input border-slate-200 dark:border-zink-500" value="${inputEmpNo}" readOnly>
+                <input type="number" name="empNo" id="employeeId" class="form-input border-slate-200 dark:border-zink-500" value="${loginEmp.username}" readOnly>
+             	<input type="hidden" name="empStatus" value="${empStatus}">
               </div>
 
               <!-- 이름 -->
               <div class="xl:col-span-4">
                 <label for="employeeInput" class="inline-block mb-2 text-base font-medium">이름</label>
-                <input type="text" name="empName" id="employeeInput" class="form-input border-slate-200 dark:border-zink-500" placeholder="성명" required>
+                <input type="text" name="empName" id="employeeInput" class="form-input border-slate-200 dark:border-zink-500" value="${empForm.empName }" required>
               </div>
 
               <!-- 생년월일 -->
               <div class="xl:col-span-4">
                 <label for="joiningDateInput1" class="inline-block mb-2 text-base font-medium">생년월일</label>
-                <input type="text" name="empBirth" id="joiningDateInput1" class="form-input border-slate-200 dark:border-zink-500" placeholder="Select date" data-provider="flatpickr" data-date-format="Y-m-d">
+                <input type="text" name="empBirth" id="joiningDateInput1" class="form-input border-slate-200 dark:border-zink-500" value="${empForm.empBirth }" data-provider="flatpickr" data-date-format="Y-m-d">
               </div>
 
               <!-- 이메일 -->
               <div class="xl:col-span-4">
                 <label for="emailInput" class="inline-block mb-2 text-base font-medium">이메일</label>
-                <input type="text" name="empEmail" id="emailInput" class="form-input border-slate-200 dark:border-zink-500" placeholder="example@tailwick.com" required>
+                <input type="text" name="empEmail" id="emailInput" class="form-input border-slate-200 dark:border-zink-500" value="${empForm.empEmail}" required>
               </div>
 
               <!-- 연락처 -->
@@ -199,11 +209,11 @@
                 <label for="phoneNumberInput" class="inline-block mb-2 text-base font-medium">연락처</label>
                 <div class="flex gap-2">
                   <select name="empPhoneF" class="form-input border-slate-200 dark:border-zink-500">
-                    <option value="010">010</option>
-                    <option value="011">011</option>
+                    <option value="010" ${empForm.empPhoneF == '010' ?  'selected' : '' } >010</option>
+                    <option value="011" ${empForm.empPhoneF == '011' ?  'selected' : '' } >011</option>
                   </select>
-                  <input type="text" name="empPhoneM" id="phoneNumberInput1" class="form-input border-slate-200 dark:border-zink-500" placeholder="중간 번호" required>
-                  <input type="text" name="empPhoneL" id="phoneNumberInput2" class="form-input border-slate-200 dark:border-zink-500" placeholder="끝 번호" required>
+                  <input type="text" name="empPhoneM" id="phoneNumberInput1" class="form-input border-slate-200 dark:border-zink-500" value="${empForm.empPhoneM}" required>
+                  <input type="text" name="empPhoneL" id="phoneNumberInput2" class="form-input border-slate-200 dark:border-zink-500" value="${empForm.empPhoneL}" required>
                 </div>
               </div>
 
@@ -212,11 +222,12 @@
 				  <label class="block text-base font-medium mb-2" style=" margin-bottom: 15px;">성별</label>
 				  <div class="flex items-center space-x-4">
 				    <label class="flex items-center space-x-2" style="margin-right: 30px;">
-				      <input type="radio" name="empGender" value="M" class="h-5 w-5 text-blue-600 border-gray-300 focus:ring-blue-500" style="margin-left: 10px;">
+				      <input type="radio" name="empGender" value="M"  ${empForm.empGender == 'M' ? 'checked' : ''} class="h-5 w-5 text-blue-600 border-gray-300 focus:ring-blue-500" style="margin-left: 10px;">
 				      <span>남성</span>
 				    </label>
 				    <label class="flex items-center space-x-2">
-				      <input type="radio" name="empGender" value="F" class="h-5 w-5 text-pink-600 border-gray-300 focus:ring-pink-500">
+				      <input type="radio" name="empGender" value="F"  ${empForm.empGender == 'F' ? 'checked' : ''} class="h-5 w-5 text-pink-600 border-gray-300 focus:ring-pink-500"> 
+				    	
 				      <span>여성</span>
 				    </label>
 				  </div>
@@ -230,45 +241,38 @@
 				  <div class="grid gap-2">
 				    <!-- 우편번호와 버튼 -->
 				    <div class="flex items-center space-x-2">
-				      <input type="text" name="postalCode" id="sample6_postcode" placeholder="우편번호" readonly class="flex-grow border border gray-300 rounded-md px-2 py-1">
+				      <input type="text" name="postalCode" id="sample6_postcode" value="${empForm.postalCode }" readonly class="flex-grow border border gray-300 rounded-md px-2 py-1">
 				      <!-- <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기" style="background-color: #3B82F6; color: white;" >  -->
 				      <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기" style="background-color: #3B82F6; color: white; padding: 5px 10px; font-size: 13px; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease;">
 				    </div>
 				
 				    <!-- 주소 입력 -->
-				    <input type="text" name="basicAddress" id="sample6_address" placeholder="주소" required class="border border-gray-300 rounded-md px-2 py-1">
-				    <input type="text"  name="detailAddress"  id="sample6_detailAddress" placeholder="상세주소" required class="border border-gray-300 rounded-md px-2 py-1">
-				    <input type="text" name="dong" id="sample6_extraAddress" placeholder="동" required class="border border-gray-300 rounded-md px-2 py-1">
+				    <input type="text" name="basicAddress" id="sample6_address" value="${empForm.basicAddress }" required class="border border-gray-300 rounded-md px-2 py-1">
+				    <input type="text"  name="detailAddress"  id="sample6_detailAddress" value="${empForm.detailAddress}" required class="border border-gray-300 rounded-md px-2 py-1">
+				    <input type="text" name="dong" id="sample6_extraAddress" value="${empForm.dong }" required class="border border-gray-300 rounded-md px-2 py-1">
 				  </div>
-				</div>              
+				</div> 
+				
+				<!-- 공백 -->
+              	<div class="xl:col-span-4">
+	                
+              	</div>
+				
+				
+				<!-- 비밀번호 -->
+              	<div class="xl:col-span-4 mt-6" style="margin-top: 70px;">
+	                <label for="employeeInput" class="inline-block mb-2 mt-10 text-base font-medium">비밀번호</label>
+	                <input type="text" name="empPw" id="empPw" class="form-input border-slate-200 dark:border-zink-500" value="" required>
+              	</div>
+              
+				             
 
-              <!-- 입사일 -->
-              <div class="xl:col-span-4">
-                <label for="joiningDateInput" class="inline-block mb-2 text-base font-medium">입사일</label>
-                <input type="text" name="hireDate" id="joiningDateInput" class="form-input border-slate-200 dark:border-zink-500" placeholder="Select date" data-provider="flatpickr" data-date-format="Y-m-d">
-              </div>
 
-              <!-- 부서 -->
-              <div class="xl:col-span-4">
-                <label for="designationSelect" class="inline-block mb-2 text-base font-medium">부서</label>
-                <div class="flex gap-2">
-                  <select name="divisionCode" id="divisionSelect" class="form-input border-slate-200 dark:border-zink-500">
-                    <option value="">부서 선택</option>
-                  </select>
-                  <select name="deptCode" id="departSelect" class="form-input border-slate-200 dark:border-zink-500">
-                    <option value="">팀 선택</option>
-                  </select>
-                  <select name="rankNo" id="rankSelect" class="form-input border-slate-200 dark:border-zink-500">
-                    <option value="">직급 선택</option>
-                  </select>
-                </div>
-              </div>
             </div>
 
             <!-- 등록 버튼 -->
             <div class="flex justify-end gap-2 mt-4">
-              <button type="reset" id="btnReset" class="text-red-500 bg-white btn hover:bg-red-100">다시 작성</button>
-              <button type="submit" id="addNew" class="text-white btn bg-custom-500 hover:bg-custom-600">직원 등록</button>
+              <button type="submit" id="modifyBtn" class="text-white btn bg-custom-500 hover:bg-custom-600">수정</button>
             </div>
 
           </div>
@@ -336,96 +340,6 @@ $(document).ready(function() {
 
 	console.log("목록 스크립트 실행")
 
-	/* 상위부부서를 <select >선택하면 하위 팀 선택하는 <select>rest 사용하기 */
-	$.ajax({
-				url : '/pettopia/rest/divisionList',
-				method : 'GET'
-	}).done(function(result) {
-				console.log($('#divisionSelect').css('display'));
-				console.log($('#departSelect').css('visibility'));
-				console.log($('#rankSelect').css('opacity'));
-				console.log("응답받은 결과:", result);
-				$(result).each(function(index,item) {
-					$('#divisionSelect').append('<option value="' + item.divisionCode + '">'+ item.divisionName+ '</option>');
-				});
-				console.log("typeSelect 내용:", 
-				$('#divisionSelect').html()); // 드롭다운 내용 확인
-			}).fail(function() {
-		alert('부서 호출 실패');
-	});
-
-	/* 부서 선택 시 */
-	$('#divisionSelect')
-			.change(
-					function() {
-
-						$.ajax(
-								{
-								url : '/pettopia/rest/departmentList/'+ $('#divisionSelect').val(),
-								method : 'GET'
-										})
-								.done(
-										function(result) {
-											// 팀 리셋
-											$('#departSelect').empty();
-											$('#departSelect').append(
-															'<option value="">팀 선택</option>');
-
-											$(result)
-													.each(
-															function(
-																	index,
-																	item) {
-																$(
-																		'#departSelect')
-																		.append(
-																				'<option value="' + item.deptCode + '">'
-																						+ item.deptName
-																						+ '</option>');
-															});
-
-										}).fail(function() {
-									alert('팀 호출 실패');
-								});
-					});
-
-	/* 팀 선택 시 */
-	$('#departSelect').change(function() {
-
-			$.ajax({
-						url : '/pettopia/rest/rankList',
-						method : 'GET'
-					})
-					.done(
-							function(result) {
-								// 직급 리셋
-								$('#rankSelect')
-										.empty();
-								$('#rankSelect')
-										.append(
-												'<option value="">직급 선택</option>');
-
-								$(result).each(
-										function(
-												index,
-												item) {
-											$(
-													'#rankSelect')
-													.append(
-															'<option value="' + item.rankNo + '">'
-																	+ item.rankName
-																	+ '</option>');
-												});
-							}).fail(function() {
-						alert('직급 호출 실패');
-				});
-		});
-
-
-	
-	
-	
-	
 	flatpickr("#joiningDateInput1", {
 	    dateFormat: "Y-m-d", /*  날짜 형식  */
 	    maxDate: new Date(), /*  오늘 날짜까지만 선택 가능 */
@@ -435,15 +349,16 @@ $(document).ready(function() {
 	
 	
 	/*  제출 전 유효성 검사 */
-	$('#addNew').click(function(event) {
-		
+	$('#modifyBtn').click(function(event) {
 		
 		/* 프로필 사진 첨부 여부 */
-	    if ($('#profile-img-file-input')[0].files.length === 0) {
+	   /*  
+	   if ($('#profile-img-file-input')[0].files.length === 0) {
 	        alert('프로필 이미지를 첨부해 주세요.');
-	        event.preventDefault(); /* 폼 제출 막기 */
+	        event.preventDefault(); 
 	        return;
-	    }
+	    } 
+		*/
 
 	    
 	    /*  이름 유효성 검사 */
@@ -538,50 +453,31 @@ $(document).ready(function() {
 			event.preventDefault(); /*  폼 제출 막기 */
 	    	return;
 	   }
-	   
-
-		
-	   
-	   /* 입사일 */
-	   const hireDate = document.querySelector("#joiningDateInput").value;
-	   
-       if (!hireDate.trim()) {
-           alert("날짜를 선택해주세요.");
-           document.querySelector("#joiningDateInput").focus();
-           event.preventDefault(); /*  폼 제출 막기 */
-           return;
-       }
-       
-       /* 부서, 팀, 직급 선택 */
-	    if ($('#divisionSelect').val() == "" ) {
-	        alert('부서를 선택하세요.');
-	        $('#divisionSelect').focus();
-	        event.preventDefault(); /*  폼 제출 막기 */
-	        return;
-	    }
-	
-	    if ($('#departSelect').val() == "") {
-	        alert('팀을 선택하세요.');
-	        $('#departSelect').focus();
-	        event.preventDefault(); /*  폼 제출 막기 */
-	        return;
-	    }
-	
-	    if ($('#rankSelect').val() == "" ) {
-	        alert('직급을 선택하세요.');
-	        $('#rankSelect').focus();
-	        event.preventDefault(); /*  폼 제출 막기 */
-	        return;
-	    }
+	       
 	       
 	    
+	    /* 비밀번호 */
+	    const passwordTest = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$/; /* 비밀번호 정규식 */
+	    
+	    if($('#empPw').val() == ""){
+	    	alert('비밀번호를 입력하세요.');
+	        $('#empPw').focus();
+	        event.preventDefault(); /*  폼 제출 막기 */
+	        return;
+	    }
+	    
+	    if(passwordTest.test($('#empPw').val()) == false){
+	    	alert('비밀번호는 영어,숫자,특수문자를 포함하여 8~16자리로 작성해주세요.');
+	    	$('#empPw').focus();
+	        event.preventDefault(); /*  폼 제출 막기 */
+	        return;
+	    }
 
 		console.log('overlay 시작');
+
 	    $('#loading-overlay').css('display', 'flex');   /* 로딩 화면 표시 */
-	    
-	    
 		
-		 $('#addEmployeeForm').submit()    /* 모두 통과시 제출 */ 
+		$('#modifyEmployeeForm').submit()    /* 모두 통과시 제출 */ 
 		
 	});
 	

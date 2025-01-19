@@ -6,6 +6,7 @@
 <!-- 시큐리티 세션정보 접근 -->
 <sec:authorize access="isAuthenticated()"><sec:authentication property="principal" var="loginEmp"/></sec:authorize>
 
+
 <!DOCTYPE html>
 <html lang="en" class="light scroll-smooth group" data-layout="vertical" data-sidebar="light" data-sidebar-size="lg" data-mode="light" data-topbar="light" data-skin="default" data-navbar="sticky" data-content="fluid" dir="ltr">
 
@@ -21,13 +22,9 @@
     <script src="${pageContext.request.contextPath}/assets/js/layout.js"></script>
     <!-- Tailwind CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tailwind2.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 
 <body class="text-base bg-body-bg text-body font-public dark:text-zink-100 dark:bg-zink-800 group-data-[skin=bordered]:bg-body-bordered group-data-[skin=bordered]:dark:bg-zink-700">
-
-
-
 <div class="group-data-[sidebar-size=sm]:min-h-sm group-data-[sidebar-size=sm]:relative">
     
 	<!-- Left Sidebar Start -->
@@ -45,95 +42,126 @@
         <div class="group-data-[sidebar-size=lg]:ltr:md:ml-vertical-menu group-data-[sidebar-size=lg]:rtl:md:mr-vertical-menu group-data-[sidebar-size=md]:ltr:ml-vertical-menu-md group-data-[sidebar-size=md]:rtl:mr-vertical-menu-md group-data-[sidebar-size=sm]:ltr:ml-vertical-menu-sm group-data-[sidebar-size=sm]:rtl:mr-vertical-menu-sm pt-[calc(theme('spacing.header')_*_1)] pb-[calc(theme('spacing.header')_*_0.8)] px-4 group-data-[navbar=bordered]:pt-[calc(theme('spacing.header')_*_1.3)] group-data-[navbar=hidden]:pt-0 group-data-[layout=horizontal]:mx-auto group-data-[layout=horizontal]:max-w-screen-2xl group-data-[layout=horizontal]:px-0 group-data-[layout=horizontal]:group-data-[sidebar-size=lg]:ltr:md:ml-auto group-data-[layout=horizontal]:group-data-[sidebar-size=lg]:rtl:md:mr-auto group-data-[layout=horizontal]:md:pt-[calc(theme('spacing.header')_*_1.6)] group-data-[layout=horizontal]:px-3 group-data-[layout=horizontal]:group-data-[navbar=hidden]:pt-[calc(theme('spacing.header')_*_0.9)]">
             <div class="container-fluid group-data-[content=boxed]:max-w-boxed mx-auto">
                 <div class="flex flex-col gap-2 py-4 md:flex-row md:items-center print:hidden">
+                    <div class="grow">
+                        <h5 class="text-16">메인 화면</h5>
+                    </div>
+                    <ul class="flex items-center gap-2 text-sm font-normal shrink-0">
+                        <li class="relative before:content-['\ea54'] before:font-remix ltr:before:-right-1 rtl:before:-left-1  before:absolute before:text-[18px] before:-top-[3px] ltr:pr-4 rtl:pl-4 before:text-slate-400 dark:text-zink-200">
+                            <a href="#!" class="text-slate-400 dark:text-zink-200">메인 화면</a>
+                        </li>
+                        <li class="text-slate-700 dark:text-zink-100">
+                            템플릿
+                        </li>
+                    </ul>
                 </div>
-
-			<!-- Main content -->			
-		    <div class="card-body" style="height:196px;">
-		        <div class="card gradient-1">
-		        	<div class="card-body" style="height:196px; background: #f8f9fa);">
-			        <!-- 근태 -->
-			        <div class="float-right">
-			            <form id="attendanceOnForm" action="${pageContext.request.contextPath}/employee/attendanceOn" method="post" onsubmit="return checkAttendance(event, 'in');">
-			                <input type="hidden" name="empNo" value="${employee.empNo}">
-			                <input type="hidden" name="attendanceDate" value="${currentDate}">
-			                <input type="hidden" name="clockInTime" value="${clockInTime}">
-			                
-			                <input type="submit" class="btn" style="background-color: rgba(59, 130, 246, 0.5); color: white; margin-bottom: 10px;" value="출근">
-			            </form>
-			            <form id="attendanceOffForm" action="${pageContext.request.contextPath}/employee/attendanceOff" method="post" onsubmit="return checkAttendance(event, 'out');">
-			            	<input type="hidden" name="empNo" value="${employee.empNo}">
-			                <input type="hidden" name="attendanceDate" value="${currentDate}">
-			                <input type="hidden" name="clockInTime" value="${clockInTime}">
-			                
-			                <input type="submit" class="btn" style="background-color: rgba(59, 130, 246, 0.5); color: white;" value="퇴근">
-			            </form>
-			        </div>
-			        <h3 class="card-title" style="color: rgb(59, 130, 246); font-weight: bold;">
-			        <i class="fas fa-calendar-check" style="margin-right: 8px;"></i> 오늘의 근무 
-			        </h3>
-			        <br>
-			        <c:forEach var="attendance" items="${attendanceList}">
-					    <div class="d-inline-block">
-					        <div class="text-dark" id="attendanceClockInTime" style="color: #003366;">
-					            <c:if test="${attendance.clockInTime != null}">
-					                출근 시간: ${attendance.clockInTime}
-					            </c:if>
-					            <c:if test="${attendance.clockInTime == null}">
-					                출근 시간: 없음
-					            </c:if>
-					        </div>
-					        <div class="text-dark" id="attendanceClockOutTime" style="color: #003366;">
-					            <c:if test="${attendance.clockOutTime != null}">
-					                퇴근 시간: ${attendance.clockOutTime}
-					            </c:if>
-					            <c:if test="${attendance.clockOutTime == null}">
-					                퇴근 시간: 없음
-					            </c:if>
-					        </div>
-					    </div>
-					</c:forEach>
-					
-					
-					
-					
-						 <script>
-							/* 로그인시 empStatus -> 'T'라면 비밀번호 변경 alert */
-							/* var changePwMsg = "${changePwMsg}"; */
-							var empStatus = "${loginEmp.empStatus}"; 
-			               	if(empStatus == 'T'){
-			               		alert("비밀번호를 변경해주세요");
-			               	}
-						 
-						 
-						 
-			                function checkAttendance(event, action) {
-			                	event.preventDefault(); // 기본 동작 방지
-			                	
-			                    const clockInTime = "${attendanceList[0] != null ? attendanceList[0].clockInTime : ''}";
-			                    const clockOutTime = "${attendanceList[0] != null ? attendanceList[0].clockOutTime : ''}";
-			
-			                    if (action === 'in') {
-			                        if (clockInTime) {
-			                            alert("이미 출근하셨습니다.😊");
-			                            return false; 
-			                        }
-			                    } else if (action === 'out') {
-			                        if (clockOutTime) {
-			                            alert("이미 퇴근하셨습니다.😊");
-			                            return false; 
-			                        } else if (!clockInTime) {
-			                            alert("출근시간을 입력해주세요.⏰");
-			                            return false; 
-			                        }
-			                    }
-			                    
-			                    event.target.submit(); // 유효성 통과 시 폼 제출
-			                    return true; 
-			                }
-			                
-
-			            </script>	
-					 </div>
+                <!-- Main content -->
+				<div class="xl:col-span-9 flex justify-center">
+				  <div class="card w-full max-w-5xl">
+				    <div class="card-body">
+				      <div class="max-h-[calc(theme('height.screen')_-_180px)] p-4 overflow-y-auto">
+				        <!-- 에러메세지 -->
+				        <div id="alert-error-msg" class="hidden px-4 py-3 text-sm text-red-500 border border-transparent rounded-md bg-red-50 dark:bg-red-500/20"></div>
+				
+				        <!-- 직원 프로필 사진  -->
+				        <div class="relative mx-auto mb-4 rounded-full shadow-md size-24 bg-slate-100 profile-user dark:bg-zink-500">
+				          <img id="profileImg" src="${pageContext.request.contextPath }/employeeFile/${empInfo.empFileName}" alt="" class="object-cover w-15 h-15 rounded-full user-profile-image">
+				        </div>
+				
+				        <!-- 직원 정보 입력 -->
+				        <div class="grid grid-cols-1 gap-4 xl:grid-cols-12 " style="padding-left: 100px;">
+				          <!-- 사번 : 자동입력 -->
+				          <div class="xl:col-span-4">
+				            <label for="employeeId" class="inline-block mb-2 text-base font-medium">직원 번호</label>
+				            <input type="number" name="empNo" id="employeeId" class="form-input border-slate-200 dark:border-zink-500 px-5 focus:outline-none" value="${loginEmp.username}" readOnly>
+				          </div>
+				
+				          <!-- 이름 -->
+				          <div class="xl:col-span-4 ">
+				            <label for="employeeInput" class="inline-block mb-2 text-base font-medium">이름</label>
+				            <input type="text" name="empName" id="employeeInput" class="form-input border-slate-200 dark:border-zink-500 px-5 focus:outline-none" value="${empInfo.empName}" readonly>
+				          </div>
+				
+				          <!-- 생년월일 -->
+				          <div class="xl:col-span-4 ">
+				            <label for="joiningDateInput" class="inline-block mb-2 text-base font-medium">생년월일</label>
+				            <div class="gap-2">
+				              <input type="text" name="empBirth" class="border border-gray-300 rounded-md px-5 py-2 mb-2 focus:outline-none" value="${empInfo.empBirth}" readonly>
+				            </div>
+				          </div>
+				
+				          <!-- 이메일 -->
+				          <div class="xl:col-span-4">
+				            <label for="emailInput" class="inline-block mb-2 text-base font-medium">이메일</label>
+				            <input type="text" name="empEmail" class="form-input border-slate-200 dark:border-zink-500 px-5 focus:outline-none " value="${empInfo.empEmail}" readonly>
+				          </div>
+				
+				          <!-- 연락처 -->
+				          <div class="xl:col-span-4 ">
+				            <label for="phoneNumberInput" class="inline-block mb-2 text-base font-medium">연락처</label>
+				            <div class="flex items-center space-x-4">
+				              <input type="text" name="empPhone" id="phoneNumberInput2" class="form-input border-slate-200 dark:border-zink-500 px-5 focus:outline-none" value="${empInfo.empPhone}" readonly>
+				            </div>
+				          </div>
+				
+				          <!-- 성별 -->
+				          <div class="xl:col-span-4 ">
+				            <label class="block text-base font-medium mb-2" style=" margin-bottom: 8px;">성별</label>
+				            <div class="flex items-center space-x-4">
+				              <input type="text" name="empGender" class="border border-gray-300 rounded-md px-5 py-2 mb-2 focus:outline-none" value="${empInfo.empGender}" readonly>
+				            </div>
+				          </div>
+				
+				          <!-- 주소 -->          
+				          <div class="xl:col-span-4 ">
+				            <label for="locationInput" class="inline-block mb-2 text-base font-medium">
+				              주소
+				            </label>
+				            <div class="grid gap-2">
+				              <!-- 우편번호 -->
+				              <div class="flex items-center space-x-2">
+				                <input type="text" name="postalCode" id="sample6_postcode" class="flex-grow border border-gray-300 rounded-md px-5 py-2 focus:outline-none" value="${empInfo.postalCode}" readonly>
+				              </div>
+				              
+				              <!-- 주소 입력 -->
+				              <input type="text" name="basicAddress" id="sample6_address" class="border border-gray-300 rounded-md px-5 py-2 focus:outline-none" value="${empInfo.basicAddress}" readonly>
+				              <input type="text" name="detailAddress" id="sample6_detailAddress" class="border border-gray-300 rounded-md px-5 py-2 focus:outline-none" value="${empInfo.detailAddress}" readonly>
+				              
+				            </div>
+				          </div>
+				
+				          <!-- 입사일 -->
+				          <div class="xl:col-span-4 ">
+				            <label for="joiningDateInput" class="inline-block mb-2 text-base font-medium">입사일</label>
+				            <div class="gap-2">
+				              <input type="text" name="hireDate" class="border border-gray-300 rounded-md px-5 py-2 mb-2 focus:outline-none" value="${empInfo.hireDate}" readonly>
+				            </div>
+				          </div>
+				
+				          <!-- 부서 -->
+				          <div class="xl:col-span-4 ">
+				            <label for="designationSelect" class="inline-block mb-2 text-base font-medium">소속 부서</label>
+				            <div class="gap-2">
+				              <input type="text" name="divisionCode" class="border border-gray-300 rounded-md px-5 py-2 mb-2 focus:outline-none" value="${empInfo.divisionName}" readonly>
+				              <input type="text" name="deptCode" class="border border-gray-300 rounded-md px-5 py-2 mb-2 focus:outline-none" value="${empInfo.deptName}" readonly>
+				              <input type="text" name="rankNo" class="border border-gray-300 rounded-md px-5 py-2 mb-2 focus:outline-none" value="${empInfo.rankName}" readonly>
+				            </div>
+				          </div>
+				        </div>
+				
+				        <!-- 수정 버튼 -->
+				        <div class="flex justify-end gap-2 mt-4">
+				         <a href="${pageContext.request.contextPath }/employee/modifyEmployeeOne?empNo=${loginEmp.username}"> <button type="button" id="addNew" class="text-white btn bg-custom-500 hover:bg-custom-600">수정</button></a> 
+				        </div>
+				
+				      </div>
+				    </div>
+				  </div>
+				</div>
+               
+				<!-- 끝 : Main content -->
+                
+                
+            </div>
             <!-- container-fluid -->
         </div>
         <!-- End Page-content -->

@@ -21,7 +21,9 @@
     <script src="https://cdn.jsdelivr.net/npm/gridjs/dist/gridjs.production.min.js"></script> -->
     
     
-    
+<!-- Jquery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+ 
 </head>
 
 <body class="text-base bg-body-bg text-body font-public dark:text-zink-100 dark:bg-zink-800 group-data-[skin=bordered]:bg-body-bordered group-data-[skin=bordered]:dark:bg-zink-700">
@@ -55,35 +57,119 @@
                     </ul>
                 </div>
                 <!-- Main content -->
+                <div class="xl:col-span-4">
+                <label for="designationSelect" class="inline-block mb-2 text-base font-medium">부서</label>
+                <div class="flex gap-2">
+                  <select name="divisionCode" id="divisionSelect" class="form-input border-slate-200 dark:border-zink-500">
+                    <option value="">부서 선택</option>
+                  </select>
+                </div>
+              	</div>
+                
                 <div id="employeeTable"></div>
-<script>
 
+<script>
+let gridInstance; // 전역 변수로 선언
+let divisionCode = 'null'; // 초기값 설정
+
+// 부서 드롭다운 데이터를 가져오는 함수
+function fetchDivisionData() {
+    return fetch('/pettopia/rest/divisionList')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('부서 호출 실패');
+            }
+            return response.json();
+        })
+        .then(result => {
+            console.log("응답받은 결과:", result);
+            result.forEach(item => {
+                const option = document.createElement("option");
+                option.value = item.divisionCode;
+                option.textContent = item.divisionName;
+                document.getElementById("divisionSelect").appendChild(option);
+            });
+        })
+        .catch(error => {
+            console.error('에러:', error);
+            alert('부서 호출 실패');
+        });
+}
+
+// 부서 드롭다운 초기화 및 데이터 요청
 window.onload = function() {
-    fetch('/pettopia/rest/employeeList')  // Java 서버에서 데이터를 가져옵니다.
+    fetchDivisionData()
+        .then(() => {
+            // 초기 선택된 값으로 설정
+            divisionCode = document.getElementById("divisionSelect").value || 'null'; // 기본 값 설정
+            console.log('초기 선택 divisionCode:', divisionCode);
+            fetchEmployeeData(); // 데이터 가져오기
+        });
+};
+
+// 드롭다운 변경 이벤트 처리
+document.getElementById("divisionSelect").addEventListener("change", function() {
+    divisionCode = this.value || 'null'; // 선택된 부서값 업데이트, 값이 없으면 null
+    console.log('변경된 divisionCode:', divisionCode);
+    fetchEmployeeData(); // 데이터를 다시 가져오는 함수 호출
+});
+
+// 데이터를 가져오는 함수
+function fetchEmployeeData() {
+    console.log('데이터 요청 divisionCode: ', divisionCode);
+
+    fetch('/pettopia/rest/employeeList/' + divisionCode)
         .then(response => response.json())
         .then(data => {
-            // 데이터를 수정하여 'empStatus'가 'T'일 경우 '임시'로 변경
-            const modifiedData = data.map(emp => {
+            console.log('가져온 데이터:', data);
+
+            // 데이터가 없거나 필터링된 값이 없을 경우를 대비
+            if (data.length === 0) {
+                alert('해당 부서에 소속된 직원이 없습니다.');
+            }
+
+            // 필터링 (divisionCode에 맞는 직원만)
+            const filteredData = data.filter(emp => {
+                // divisionCode가 'null'일 경우, 모든 직원 반환
+                return divisionCode === 'null' || emp.divisionCode === divisionCode;
+            });
+
+            // 데이터를 수정하여
+            const modifiedData = filteredData.map(emp => {
                 return {
                     ...emp,
-                    empName : '<a href="${pageContext.request.contextPath}/getEmployeeOne?empNo='+emp.empNo+'" class="flex items-center gap-3"><div div="" class="w-6 h-6 rounded-full shrink-0 bg-slate-100 dark:bg-zink-600">'
-                    			+'<img src="${pageContext.request.contextPath}/employeeFile/' + emp.fileName + '" class="h-6 rounded-full">'
-                    			+'</div> <h6 class="grow">'+ emp.empName +'</h6> </a>',
-                    empStatus: emp.empStatus === 'T' ? '임시' : emp.empStatus,
-                    division: '<strong>'+emp.divisionName+'</strong>'+ ' / ' + emp.deptName, 
-                    rankName : emp.isTeamLeader === 'H'? emp.rankName + '('+ emp.isTeamLeader + ')' : emp.rankName,
+                    empName: '<a href="${pageContext.request.contextPath}/getEmployeeOne?empNo=' + emp.empNo + '" class="flex items-center gap-3">'
+			                + '<div class="w-6 h-6 rounded-full shrink-0 bg-slate-100 dark:bg-zink-600">'
+			                + '<img src="${pageContext.request.contextPath}/employeeFile/' + (emp.fileName ? emp.fileName : 'placeholder.png') + '" class="h-6 rounded-full">'
+			                + '</div>'
+			                + '<h6 class="grow">' + emp.empName + '</h6>' + '</a>',
+			        empStatus: emp.empStatus,
+			        division: '<strong>' + emp.divisionName + '</strong>' + '/' + emp.deptName,
+			        rankName: emp.isTeamLeader === 'H' ? emp.rankName + '(' + emp.isTeamLeader + ')' : emp.rankName,
+			        divisionCode: emp.divisionCode,
+
                 };
             });
 
-            // Grid.js에 데이터를 전달
-            new gridjs.Grid({
+            console.log("필터링된 데이터:", modifiedData);
+
+            // 기존 데이터를 제거하여 컨테이너를 비움
+            const container = document.getElementById("employeeTable");
+
+            // 기존 그리드 인스턴스를 파괴하여 메모리에서 제거
+            if (gridInstance) {
+                gridInstance.destroy();
+            }
+
+            // 그리드 렌더링
+            gridInstance = new gridjs.Grid({
                 columns: ["사번", "이름", "이메일", "재직상태", "소속부서", "직급", "입사일"],
                 data: modifiedData.map(emp => [
                     emp.empNo,
                     gridjs.html(emp.empName),
                     emp.empEmail,
-                    emp.empStatus,  // 수정된 empStatus 값 사용
-                    gridjs.html(emp.division),  // 결합된 division 값 사용
+                    emp.empStatus,
+                    gridjs.html(emp.division),
                     emp.rankName,
                     emp.hireDate,
                 ]),
@@ -93,23 +179,24 @@ window.onload = function() {
                     th: {
                         background: '#f8f9fa',
                         color: '#495057',
-                        
                     },
                     td: {
                         padding: '0.75rem',
                         borderBottom: '1px solid #e0e0e0',
-                        
                     },
                 }
-            }).render(document.getElementById("employeeTable"));
+            }).render(container);
+            console.log('그리드 렌더링 완료');
+        })
+        .catch(error => {
+            console.error('데이터 가져오기 실패:', error);
         });
 }
-
-
 </script>
+
 			    
                 
-            </div>
+        </div>
             <!-- container-fluid -->
         </div>
         <!-- End Page-content -->

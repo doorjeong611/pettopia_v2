@@ -39,25 +39,53 @@
 				, #{rankNo}, #{roleName}, #{hireDate}, #{resignationDate}, now(), now() )
 	</insert>
 
-	<!-- employeeList -->
-	<select id="selectEmployeeList" resultType="map">
+	
+	<!-- employeeList : 직원 목록 조회를 위해 로그인한 사원의 소속 부서와 ROLE 확인 -->
+	<select id="selectEmpDivRoleInfo" parameterType="String" resultType="map">
 		SELECT e.emp_no AS empNo
 				, e.emp_name AS empName
-				, CONCAT(ef.file_name,ef.file_ext) AS fileName
-				, e.emp_email AS empEmail
-				, e.emp_status AS empStatus
+				, e.role_name AS roleName
 				, di.division_name AS divisionName
-				, d.dept_name AS deptName
-				, r.rank_name AS rankName
-				, IFNULL(e.is_team_leader,'N') AS isTeamLeader
-				, e.hire_date AS hireDate
+				, di.division_code AS divisionCode
+		FROM employee e
+		JOIN department d ON e.dept_code = d.dept_code
+		JOIN division di ON d.division_code = di.division_code
+		WHERE e.emp_no = #{empNo}
+	</select>
+
+
+	<!-- employeeList : 일반 사원은 재직 중인 사원목록만 조회, 인사부 관리자는 모든 사원 목록 조회  -->
+	<select id="selectEmployeeList" parameterType="map" resultType="map">
+		SELECT e.emp_no AS empNo
+		     , e.emp_name AS empName
+		     , CONCAT(ef.file_name, ef.file_ext) AS fileName
+		     , e.emp_email AS empEmail
+		     , CASE WHEN e.emp_status = 'T' THEN '임시'
+					WHEN e.emp_status = 'E' THEN '재직'
+					WHEN e.emp_status = 'L' THEN '휴직'
+					WHEN e.emp_status = 'R' THEN '퇴직'
+					ELSE '대기'
+			 	END AS empStatus	
+		     , di.division_name AS divisionName
+		     , di.division_code AS divisionCode
+		     , d.dept_name AS deptName
+		     , r.rank_name AS rankName
+		     , IFNULL(e.is_team_leader,'N') AS isTeamLeader
+		     , e.hire_date AS hireDate
 		FROM employee e
 		JOIN department d ON e.dept_code = d.dept_code
 		JOIN division di ON d.division_code = di.division_code
 		JOIN `rank` r ON e.rank_no = r.rank_no
-		JOIN employee_file ef ON e.emp_no = ef.emp_no
-		WHERE e.emp_status NOT IN ('R', 'H')
-		ORDER BY divisionName desc
+		LEFT OUTER JOIN employee_file ef ON e.emp_no = ef.emp_no
+		<where>
+		  <if test="isHRAdmin != true">
+		     e.emp_status = 'E'
+		  </if>
+		  <if test="divisionCode != 'null'">
+		  	AND di.division_code = #{divisionCode}
+		  </if>
+		</where>
+		ORDER BY divisionName DESC;
 	</select>
 
 	<!-- addEmployee : 사번 자동 입력을 위한 마지막 입사 사번 -->
@@ -151,6 +179,36 @@
 	    </set>
 	    WHERE emp_no = #{empNo}
 	</update>	
+
+	<!-- employeeOne : 마이페이지 상세 정보 -->
+	<select id="selectEmployeeOne" parameterType="String" resultType="map">
+		SELECT e.emp_no AS empNo
+				, ef.emp_file_no AS empFileNo
+				, CONCAT(ef.file_name,ef.file_ext) AS empFileName
+				, e.emp_name AS empName
+				, e.emp_email AS empEmail
+				, e.emp_birth AS empBirth
+				, e.emp_status AS empStatus
+				, CASE WHEN e.emp_gender = 'F' THEN '여자' ELSE '남자'END AS empGender
+				, e.emp_phone AS empPhone
+				, e.postal_code AS postalCode
+				, e.basic_address AS basicAddress
+				, e.detail_address AS detailAddress
+				, e.hire_date as hireDate
+				, di.division_code AS divisionCode
+				, di.division_name AS divisionName
+				, e.dept_code AS deptCode
+				, d.dept_name AS deptName 
+				, r.rank_no AS rankNo
+				, r.rank_name AS rankName
+		FROM employee e 
+		JOIN employee_file ef ON e.emp_no = ef.emp_no
+		JOIN department d ON e.dept_code = d.dept_code
+		JOIN division di ON d.division_code = di.division_code
+		JOIN `rank` r ON e.rank_no = r.rank_no
+		WHERE e.emp_no LIKE #{empNo}
+	</select>
+
 
 
 
