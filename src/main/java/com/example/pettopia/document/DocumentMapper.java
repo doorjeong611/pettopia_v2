@@ -52,6 +52,9 @@ public interface DocumentMapper {
 	// documentBin → 문서 휴지통에서 영구삭제
 	void deleteDocument(Integer docNo);
 	
+	// documentOne → 문서 상세보기
+	Map<String, Object> selectDocumentOne(Integer docNo);
+	
 	
 
 }
