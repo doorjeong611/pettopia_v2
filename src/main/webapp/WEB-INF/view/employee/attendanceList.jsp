@@ -91,44 +91,24 @@
                         <div class="grid grid-cols-1 gap-5 mb-5 xl:grid-cols-12">
                             <div class="xl:col-span-3">
                                 <div class="relative">
-                                    <input type="text" class="ltr:pl-8 rtl:pr-8 search form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="직원 검색" autocomplete="off">
+                                    <input type="text" id="empName" class="ltr:pl-8 rtl:pr-8 search form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="직원 검색" autocomplete="off">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="search" class="lucide lucide-search inline-block size-4 absolute ltr:left-2.5 rtl:right-2.5 top-2.5 text-slate-500 dark:text-zink-200 fill-slate-100 dark:fill-zink-600"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+                                    <button id="searchButton" class="bg-blue-500 text-white p-2 rounded">검색</button>
                                 </div>
                             </div><!--end col-->
                             <div class="xl:col-span-2 xl:col-start-11">
-                                <div class="relative">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="calendar-range" class="lucide lucide-calendar-range absolute size-4 ltr:left-3 rtl:right-3 top-3 text-slate-500 dark:text-zink-200"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect><line x1="16" x2="16" y1="2" y2="6"></line><line x1="8" x2="8" y1="2" y2="6"></line><line x1="3" x2="21" y1="10" y2="10"></line><path d="M17 14h-6"></path><path d="M13 18H7"></path><path d="M7 14h.01"></path><path d="M17 18h.01"></path></svg>
-                                    <input type="text" class="ltr:pl-10 rtl:pr-10 form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200 flatpickr-input" data-provider="flatpickr" data-date-format="d M, Y" data-range-date="true" readonly="readonly" placeholder="달력">
-                                </div>
+                            
                             </div>
+                            
                         </div><!--end grid-->
+                        
                         <div class="overflow-x-auto">
                             <table class="w-full whitespace-nowrap">
                                     <thead>
-			            <tr>
-			                <!-- 현재 달의 날짜 자동 생성 -->
-			                  <c:forEach var="day" begin="1" end="${daysInMonth}">
-			                    <th>${day < 10 ? '0' + day : day}</th>
-			                </c:forEach>
-			            </tr>
 			        </thead>
 			        <tbody>
-			            <c:forEach var="attendance" items="${attendanceList}">
-			                <tr>
-			                    <td>${attendance.empNo}</td>
-			                    <c:forEach var="day" begin="1" end="${daysInMonth}">
-			                        <td>
-			                            <c:choose>
-			                                 <c:when test="${attendance.attendanceDate == currentYear + '-' + (currentMonth < 10 ? '0' + currentMonth : currentMonth) + '-' + (day < 10 ? '0' + day : day)}">
-			                                    ${attendance.attendanceStatus}
-			                                </c:when>
-			                                <c:otherwise>-</c:otherwise>
-			                            </c:choose>
-			                        </td>
-			                    </c:forEach>
-			                </tr>
-            </c:forEach>
         </tbody>
+        
             <!-- container-fluid -->
         </div>
         <!-- End Page-content -->
@@ -150,11 +130,16 @@
 <script src="${pageContext.request.contextPath}/assets/libs/prismjs/prism.js"></script>
 <script src="${pageContext.request.contextPath}/assets/libs/lucide/umd/lucide.js"></script>
 <script src="${pageContext.request.contextPath}/assets/js/tailwick.bundle.js"></script>
+
 <!--apexchart js-->
 <script src="${pageContext.request.contextPath}/assets/libs/apexcharts/apexcharts.min.js"></script>
 
 <!--dashboard ecommerce init js-->
 <script src="${pageContext.request.contextPath}/assets/js/pages/dashboards-ecommerce.init.js"></script>
+
+<!-- grid  -->
+<script src="${pageContext.request.contextPath}/assets/libs/gridjs/gridjs.js"></script>
+<script src="${pageContext.request.contextPath}/assets/libs/gridjs/gridjs.production.min.js"></script>
 
 <!-- App js -->
 <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
