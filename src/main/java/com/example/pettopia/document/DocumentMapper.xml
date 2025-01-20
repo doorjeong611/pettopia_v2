@@ -382,12 +382,15 @@
 	
 	<!-- selectDocumentOne : 문서 상세보기 -->
 	<select id="selectDocumentOne" parameterType="Integer" resultType="Map">
-	SELECT 
-d.doc_no docNo, d.doc_type docType, d.doc_writer_no docWriterNo, e1.emp_name docWriterName, de.dept_name docWriterDept, d.create_datetime createDatetime, d.approval_status approvalStatus
-FROM document d
-INNER JOIN employee e1 ON e1.emp_no = d.doc_writer_no
-INNER JOIN department de ON e1.dept_code = de.dept_code
-WHERE doc_no = #{docNo}
+	SELECT d.doc_no docNo, d.doc_type docType, d.doc_writer_no docWriterNo, e1.emp_name docWriterName, de.dept_name docWriterDept, 
+		   d.create_datetime createDatetime, d.approval_status approvalStatus, d.doc_title docTitle, d.doc_content docContent, d.doc_remarks docRemarks,
+		   e2.emp_name initApproverName
+	FROM document d
+	INNER JOIN employee e1 ON e1.emp_no = d.doc_writer_no
+	INNER JOIN department de ON e1.dept_code = de.dept_code
+	INNER JOIN document_approvers da ON d.doc_no = da.doc_no
+	INNER JOIN employee e2 ON e2.emp_no = da.init_approver_no
+	WHERE d.doc_no = #{docNo}
 	</select>
 	
 	
