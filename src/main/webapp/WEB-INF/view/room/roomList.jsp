@@ -104,39 +104,46 @@
 							        </div>
 							    </c:forEach>
 							</div>
-	                    
-                            
-	                        <%-- <table class="w-full">
-	                            <tbody>
-	                            	<c:forEach var="room" items="${roomListImg}">
-		                                <tr>
-		                                    <td class="px-3.5 py-4 border-b border-dashed first:pl-0 last:pr-0 border-slate-200 dark:border-zink-500">
-		                                        <div class="flex items-center gap-3">
-		                                            <div class="flex items-center justify-center rounded-md size-12 bg-slate-100 shrink-0">
-		                                                 <img src="${pageContext.request.contextPath}/upload/${room.fileName}" 
-								                             alt="${room.originFileName}" 
-								                             class="h-8">
-		                                            </div>
-		                                            <div class="grow">
-		                                                <h6 class="mb-1 text-15"><a href="${pageContext.request.contextPath}/room/getRoomOne?roomNo=${room.roomNo}" class="transition-all duration-300 ease-linear hover:text-custom-500"><span>${room.roomName}</span>호</a></h6>
-		                                                <p class="text-slate-500">타입 : <span>${room.roomType}</span></p>
-		                                                <p class="text-slate-500">수용 인원 : <span>${room.roomCapacity}</span></p>
-		                                                <p class="text-slate-500">1박 당 가격 : <span>${room.pricePerNight}</span></p>
-		                                                <p class="te3xt-slate-500">설명 : <span>${room.roomDesc}</span> </p>
-		                                            </div>
-		                                        </div>
-		                                    </td>
-		                                </tr>
-		                            </c:forEach>
-	                            </tbody>
-	                        </table> --%>
 	                    </div>
 	                </div>
                  </div>
+                 <!-- MAIN END -->
+		        <!-- 페이지 네이션 -->
+                        <div class="flex justify-end mt-4">
+						    <div class="flex gap-2 pagination-wrap">
+						        <!-- 이전 페이지 -->
+						        <c:if test="${!(page.currentPage > 1)}">
+						            <a class="inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 focus:bg-custom-50 focus:text-custom-500 [&amp;.active]:text-custom-500 [&amp;.active]:bg-custom-50 [&amp;.active]:border-custom-50 [&amp;.active]:hover:text-custom-700 [&amp;.disabled]:text-slate-400 [&amp;.disabled]:cursor-auto page-item pagination-prev pagination-prev disabled" href="#">이전</a>
+						        </c:if>
+						        <c:if test="${page.currentPage > 1}">
+						            <a class="inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 focus:bg-custom-50 focus:text-custom-500 [&amp;.active]:text-custom-500 [&amp;.active]:bg-custom-50 [&amp;.active]:border-custom-50 [&amp;.active]:hover:text-custom-700 [&amp;.disabled]:text-slate-400 [&amp;.disabled]:cursor-auto page-item pagination-prev pagination-next" href="${pageContext.request.contextPath}/document/documentList?currentPage=${page.currentPage - 1}">이전</a>
+						        </c:if>
+						
+						        <!-- 페이지 번호 링크 -->
+						        <ul class="flex gap-2 mb-0">
+						            <c:forEach var="num" begin="${page.getStartPagingNum()}" end="${page.getEndPagingNum()}">
+						                <c:if test="${num == page.currentPage}">
+						                    <li class="active"><a class="inline-flex items-center justify-center bg-custom-500 border border-custom-500 text-custom-50 h-8 px-3 rounded" href="#">${num}</a></li>
+						                </c:if>
+						                <c:if test="${num != page.currentPage}">
+						                    <li><a class="inline-flex items-center justify-center bg-white border border-slate-200 text-slate-500 hover:text-custom-500 h-8 px-3 rounded" href="${pageContext.request.contextPath}/document/documentList?currentPage=${num}">${num}</a></li>
+						                </c:if>
+						            </c:forEach>
+						        </ul>
+						
+						        <!-- 다음 페이지 -->
+						        <c:if test="${page.currentPage < page.lastPage}">
+						            <a class="inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 dark:hover:bg-custom-500/10 focus:bg-custom-50 focus:text-custom-500 dark:focus:text-custom-500 [&amp;.active]:text-custom-500 [&amp;.active]:bg-custom-50 [&amp;.active]:border-custom-50 [&amp;.active]:hover:text-custom-700 [&amp;.disabled]:text-slate-400 [&amp;.disabled]:cursor-auto page-item pagination-prev pagination-next" href="${pageContext.request.contextPath}/document/documentList?currentPage=${page.currentPage + 1}">다음</a>
+						        </c:if>
+						        <c:if test="${page.currentPage >= page.lastPage}">
+						            <a class="inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 focus:bg-custom-50 focus:text-custom-500 [&amp;.active]:text-custom-500 [&amp;.active]:bg-custom-50 [&amp;.active]:border-custom-50 [&amp;.active]:hover:text-custom-700 [&amp;.disabled]:text-slate-400 [&amp;.disabled]:cursor-auto page-item pagination-prev pagination-prev disabled" href="#">다음</a>
+						        </c:if>
+						    </div>
+						</div>
         	</div>
         </div>
         <!-- End Page-content -->
-
+        
 		<!-- Start Footer -->
         <footer class="ltr:md:left-vertical-menu rtl:md:right-vertical-menu group-data-[sidebar-size=md]:ltr:md:left-vertical-menu-md group-data-[sidebar-size=md]:rtl:md:right-vertical-menu-md group-data-[sidebar-size=sm]:ltr:md:left-vertical-menu-sm group-data-[sidebar-size=sm]:rtl:md:right-vertical-menu-sm absolute right-0 bottom-0 px-4 h-14 group-data-[layout=horizontal]:ltr:left-0  group-data-[layout=horizontal]:rtl:right-0 left-0 border-t py-3 flex items-center dark:border-zink-600">
         	<c:import url="/WEB-INF/view/inc/footer.jsp"></c:import>    
@@ -159,15 +166,16 @@
 <!-- App js -->
 <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
 <script>
-	$(document).ready(function() {
-	    $('#deleteRoom').on('click', function(e) {
-	        e.preventDefault();
-	        
-	        if(confirm("정말 삭제 하시겠습니까?")) {
-	            alert('삭제 성공하였습니다.');
-	            window.location.href = $(this).attr('href');
-	        }
-	    });
+	
+	// 삭제 버튼
+	$('#deleteRoom').on('click', function(e) {
+	    e.preventDefault();
+	    
+	    if(confirm("정말 삭제 하시겠습니까?")) {
+	        alert('삭제 성공하였습니다.');
+	        window.location.href = $(this).attr('href');
+	    }
+	});
 	});
 </script>
 

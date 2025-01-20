@@ -138,7 +138,6 @@ public class RoomService {
     }
     
     // 객실 삭제
-    
     public boolean deleteRoom(int roomNo) {
         try {
             // 1. 업로드 경로 가져오기
