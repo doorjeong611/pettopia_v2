@@ -90,11 +90,11 @@
 								                        ${room.roomName}호
 								                    </a>
 								                </h6>
-								                 <button type="button" 
-								                 		class="text-white bg-red-500 border-red-500 btn hover:text-white hover:bg-red-600 hover:border-red-600 focus:text-white focus:bg-red-600 focus:border-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:border-red-600 active:ring active:ring-red-100 dark:ring-custom-400/20"
-								                 		 onclick="deleteRoom(${room.roomNo})">
-										        	<i class="ri-delete-bin-2-line"></i>
-										    	</button>
+										    	<a href="${pageContext.request.contextPath}/room/deleteRoom?roomNo=${room.roomNo}"
+										    		id="deleteRoom"
+											    	class="text-white bg-red-500 border-red-500 btn hover:text-white hover:bg-red-600 hover:border-red-600 focus:text-white focus:bg-red-600 focus:border-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:border-red-600 active:ring active:ring-red-100 dark:ring-custom-400/20">
+											    	<i class="ri-delete-bin-2-line"></i>
+										    	</a>
 							                </div>
 							                <p class="text-sm text-slate-500 mt-1">타입: <span>${room.roomType}</span></p>
 							                <p class="text-sm text-slate-500">수용 인원: <span>${room.roomCapacity}</span></p>
@@ -159,23 +159,16 @@
 <!-- App js -->
 <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
 <script>
-	function deleteRoom(roomNo) {
-	    if (confirm("정말 삭제하시겠습니까?")) {
-	        $.ajax({
-	        	url: "${pageContext.request.contextPath}/room/deleteRoom",
-	        	data: { roomNo: roomNo },
-	            type: "POST",
-	            success: function(response) {
-	                alert("삭제되었습니다");
-	                // 삭제 성공 시 화면 새로고침 또는 목록 업데이트
-	                location.reload();
-	            },
-	            error: function(error) {
-	                alert("삭제에 실패했습니다.");
-	            }
-	        });
-	    }
-	}
+	$(document).ready(function() {
+	    $('#deleteRoom').on('click', function(e) {
+	        e.preventDefault();
+	        
+	        if(confirm("정말 삭제 하시겠습니까?")) {
+	            alert('삭제 성공하였습니다.');
+	            window.location.href = $(this).attr('href');
+	        }
+	    });
+	});
 </script>
 
 </body>
