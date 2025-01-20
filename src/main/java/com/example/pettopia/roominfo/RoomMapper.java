@@ -35,8 +35,9 @@ public interface RoomMapper {
     // 객실 이미지 수정
     int updateRoomImg(RoomImg roomImg);
     
-    //객실 삭제
+    // 객실 삭제
+    int deleteRoomImages(int roomNo);
+    List<RoomImg> selectRoomImages(int roomNo);
     int deleteRoom(int roomNo);
-    RoomInfo selectRoomByNo(int roomNo);
 
 }

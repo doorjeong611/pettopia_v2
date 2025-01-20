@@ -1,5 +1,6 @@
 package com.example.pettopia.roominfo;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -117,20 +118,14 @@ public class RoomController {
 		    return "room/roomList"; 
 		}
 		
-		// 객실 삭제 메서드
-	    @PostMapping("/room/deleteRoom")
-	    public String deleteRoom(@RequestParam("roomNo") int roomNo, Model model) {
-	        boolean isDeleted = roomService.deleteRoom(roomNo);
-
-	        if (isDeleted) {
-	            model.addAttribute("message", "객실이 성공적으로 삭제되었습니다.");
-	            log.debug(TeamColor.WJ + "message =======> " + model + TeamColor.RESET);
-
-	        } else {
-	            model.addAttribute("message", "객실 삭제에 실패했습니다.");
-	        }
-
-	        return "redirect:/room/getRoomList"; // 삭제 후 목록 페이지로 리다이렉트
-	    }
-	
+		//객실 삭제
+		@GetMapping("/room/deleteRoom")
+		public String deleteRoom(@RequestParam int roomNo, Model model) {
+			boolean isRemove = roomService.deleteRoom(roomNo);
+			if(isRemove) {
+				log.debug(TeamColor.WJ + "isRemove =======> " + "삭제" + TeamColor.RESET);
+				return "redirect:/room/getRoomList";
+			}
+			return "redirect:/room/getRoomList";
+		}
 }

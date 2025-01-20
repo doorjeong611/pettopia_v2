@@ -2,13 +2,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.pettopia.roominfo.RoomMapper">
 
-    <!-- 객실 삭제 SQL -->
-    <delete id="deleteRoom" parameterType="com.example.pettopia.vo.RoomInfo">
-        DELETE FROM room WHERE room_no = #{roomNo}
+  <!-- 객실 삭제 -->
+    <delete id="deleteRoomImages" parameterType="int">
+        DELETE FROM room_img WHERE room_no = #{roomNo}
     </delete>
-     <select id="selectRoomImagesByRoomNo" resultType="com.example.pettopia.vo.RoomImg">
-	    SELECT * FROM room_img WHERE room_no = #{roomNo}
-	  </select>
+    
+    <delete id="deleteRoom" parameterType="int">
+        DELETE FROM room_info WHERE room_no = #{roomNo}
+    </delete>
+    
+    <select id="selectRoomImages" parameterType="int" resultType="com.example.pettopia.vo.RoomImg">
+        SELECT 
+        		room_img_no roomImgNo,
+        		room_no roomNo,
+        		origin_file_name originFileName,
+        		file_name fileName,
+        		file_ext fileExt,
+        		file_type fileType,
+        		create_datetime createDatetime,
+        		update_datetime updateDatetime
+        		
+        FROM room_img WHERE room_no = #{roomNo}
+    </select>
 
 <!-- 객실 정보 수정 -->
 <update id="updateRoomInfo" parameterType="com.example.pettopia.vo.RoomInfo">

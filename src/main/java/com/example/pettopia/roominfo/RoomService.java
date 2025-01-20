@@ -140,25 +140,37 @@ public class RoomService {
     // 객실 삭제
     
     public boolean deleteRoom(int roomNo) {
-    	String uploadPath = servletContext.getRealPath("/upload/");
-        // 1. 해당 객실의 이미지 정보 조회
-        List<Map<String, Object>> roomImages = roomMapper.selectRoomWithImages();
-
-        // 2. 이미지 파일 삭제
-        for (RoomImg roomImage : roomImages) {
-            log.debug(TeamColor.WJ + "imagePath ========> " + uploadPath + TeamColor.RESET);
-            try {
-                Files.delete(Paths.get(uploadPath));
-            } catch (IOException e) {
-                log.error("이미지 파일 삭제 실패: {}", e.getMessage());
-                // 에러 발생 시, 트랜잭션 롤백 처리 (필요에 따라)
-                // throw new RuntimeException("객실 삭제 실패 (이미지 삭제 실패)");
+        try {
+            // 1. 업로드 경로 가져오기
+            String uploadPath = servletContext.getRealPath("/upload/");
+            
+            // 2. roomNo에 따른 이미지 가져오기
+            List<RoomImg> roomImages = roomMapper.selectRoomImages(roomNo);
+            log.debug(TeamColor.WJ + "roomNo =======> " + roomNo + TeamColor.RESET);
+            log.debug(TeamColor.WJ + "roomImages =======> " + roomImages + TeamColor.RESET);
+            
+            // 3. 경로에 있는 이미지 파일 지우기
+            for (RoomImg img : roomImages) {
+                if (img.getFileName() != null) {
+                    File imageFile = new File(uploadPath + img.getFileName());
+                    if (imageFile.exists()) {
+                        if (!imageFile.delete()) {
+                            log.warn("Failed to delete image file: " + imageFile.getAbsolutePath());
+                        }
+                    }
+                }
             }
+            
+            // 4. DB에서 이미지 지우기
+            roomMapper.deleteRoomImages(roomNo);
+            
+            // 5. 룸 정보 지우기
+            int result = roomMapper.deleteRoom(roomNo);
+            
+            return result > 0;
+        } catch (Exception e) {
+            throw new RuntimeException("객실 삭제 실패", e);
         }
-
-        // 3. 객실 정보 삭제
-        return roomMapper.deleteRoom(roomNo) > 0;
     }
-    
 }
 
