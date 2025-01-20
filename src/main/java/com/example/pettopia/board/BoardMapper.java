@@ -10,8 +10,10 @@ import com.example.pettopia.vo.Division;
 
 @Mapper
 public interface BoardMapper {
+
+	
 // 작성글 셀렉트 /board/boardOne 작업자 : 이준호
-	Map<String, Object> selectBoardByBoardOne();
+	Map<String, Object> selectBoardByBoardOne(Integer boardNo);
 	
 // 공지사항 리스트 : 부서 목록 작업자 : 이준호
 	List<Division> selectDivisionList();

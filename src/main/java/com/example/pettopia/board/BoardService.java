@@ -25,7 +25,6 @@ public class BoardService {
 	
 // 부서 번호 카테고리 작업자 : 이준호
 	public List<Division> getDivisionList(){
-			
 			// log.debug(TeamColor.KMJ+"[NoticeService - getDivisionList]");
 			
 			List<Division> divisionList = boardMapper.selectDivisionList();
@@ -48,9 +47,13 @@ public class BoardService {
 		boardMapper.deleteBoard(boardNo);
 	}
 	
+	public Map<String, Object> getListByBoardOne(Integer boardNo){
+		boardMapper.selectBoardByBoardOne(boardNo);
+		
+		return boardMapper.selectBoardByBoardOne(boardNo);
+	}
+	
 	public List<Map<String, Object>> getBoardList(String boardCategory, Map<String, Object> boardMap){
-		
-		
 		return boardMapper.selectBoardList(boardCategory,boardMap);
 	}
 	
