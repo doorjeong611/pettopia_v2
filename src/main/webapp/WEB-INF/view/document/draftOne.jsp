@@ -18,9 +18,6 @@
     <!-- Tailwind CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tailwind2.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <style>
-    
-    </style>
 </head>
 
 <body class="text-base bg-body-bg text-body font-public dark:text-zink-100 dark:bg-zink-800 group-data-[skin=bordered]:bg-body-bordered group-data-[skin=bordered]:dark:bg-zink-700">
@@ -59,7 +56,7 @@
 				    <div class="card-body flex justify-center items-center h-full flex-col">
 					    <div class="p-5 border" id="draftOne" style="width: 1000px; margin: 20px; border:2px solid black;">
 					        <!-- 내용 -->
-					        <span style="font-family: &quot;맑은 고딕&quot;; font-size: 10pt; line-height: normal; margin-top: 0px; margin-bottom: 0px;"><!-- default copy start --><span style="font-family: &quot;맑은 고딕&quot;; font-size: 10pt; line-height: normal; margin-top: 0px; margin-bottom: 0px;"> 
+					        <div style="font-family: &quot;맑은 고딕&quot;; font-size: 10pt; line-height: normal; margin-top: 0px; margin-bottom: 0px;">
 					        
 					        <table style="border: 0px solid rgb(0, 0, 0); width: 100%; font-family: malgun gothic, dotum, arial, tahoma; margin-top: 1px; border-collapse: collapse;"><!-- Header --> 
 						    	<colgroup> 
@@ -74,7 +71,7 @@
 										</td>
 									</tr>
 									<tr>
-										<td style="background: white; padding: 0px !important; border: currentColor; text-align: left; color: black; font-size: 12px; font-weight: normal; vertical-align: top;">
+										<td style="background: white; padding: 0px; border: currentColor; text-align: left; color: black; font-size: 12px; font-weight: normal; vertical-align: top;">
 											<table style="border: 1px solid rgb(0, 0, 0); font-family: &quot;malgun gothic&quot;, dotum, arial, tahoma; margin-top: 1px; border-collapse: collapse; width: 250px;"><!-- User --> 
 										    	<colgroup> 
 										        	<col width="90"> 
@@ -167,7 +164,7 @@
 												</tbody>
 											</table> 
 										</td>
-										<td style="background: white; padding: 0px !important; border: currentColor; text-align: right; color: black; font-size: 12px; font-weight: normal; vertical-align: top;">
+										<td style="background: white; padding: 0px; border: currentColor; text-align: right; color: black; font-size: 12px; font-weight: normal; vertical-align: top;">
 											[결재선]
 											<table style="border: 1px solid rgb(0, 0, 0); width: 100%; margin-top: 10px; font-family: malgun gothic, dotum, arial, tahoma; border-collapse: collapse; table-layout: fixed; height: 120px;">
 											    <tbody>
@@ -208,7 +205,7 @@
 											제&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;목
 										</td>
 										<td style="background: rgb(255, 255, 255); padding: 5px;border:1px solid black; height: 40px; text-align: left; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;">
-											<span id="docTitle" data-title="${documentOne.docTitle}" style="width: 100%; font-family: &quot;malgun gothic&quot;, dotum, arial, tahoma; font-size: 10pt; line-height: normal; margin-top: 0px; margin-bottom: 0px; padding-left: 10px;">
+											<span id="docTitle" data-title="${documentOne.docTitle}" style="width: 100%; font-family: &quot;malgun gothic&quot;, dotum, arial, tahoma; font-size: 10pt; line-height: normal; margin-top: 0px; margin-bottom: 0px; padding-left: 10px; vertical-align: middle;">
 												${documentOne.docTitle}
 											</span>
 										</td>
@@ -255,7 +252,7 @@
 									</tr>
 								</tbody>
 							</table>
-							</span></span>
+							</div>
 							<div style="height: 40px;"></div>
 							<p style="font-family: &quot;맑은 고딕&quot;; font-size: 10pt; line-height: 20px; margin-top: 0px; margin-bottom: 0px;"><br></p>   
 						</div>
@@ -298,7 +295,7 @@
 
 <!--pdf download-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.2/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
 <!-- App js -->
 <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
@@ -318,20 +315,21 @@ $(document).ready(function() {
             y: 0                // 캡처 시작 Y 좌표 (상단)
         };
 
+        // html2canvas를 사용하여 div 요소를 캡처
         html2canvas(element, opt).then(function(canvas) {
             const { jsPDF } = window.jspdf;  // jsPDF 객체 가져오기
-            const imgData = canvas.toDataURL('image/png');
-            const pdf = new jsPDF();
+            const imgData = canvas.toDataURL('image/png');  // 캡처된 이미지를 PNG 포맷으로 변환
+            const pdf = new jsPDF();  // jsPDF 객체 생성
 
             const imgProps = pdf.getImageProperties(imgData);
-            const pdfWidth = pdf.internal.pageSize.getWidth();
-            const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+            const pdfWidth = pdf.internal.pageSize.getWidth();  // PDF 페이지의 너비
+            const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;  // 비율에 따라 높이 계산
 
-            // PDF에 이미지 추가 (0, 30)에서 시작하여 이미지 위치 조정
+            // PDF에 이미지 추가 (0, 0)에서 시작하여 이미지 위치 조정
             pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
 
             // documentOne.createDatetime에서 시간(T 이후)을 제거하고 -를 _로 치환
-            const createDatetime = '${documentOne.createDatetime}'.split('T')[0].replace(/-/g, '.');  // 날짜에서 시간 제거하고 -를 _로 변환
+            const createDatetime = '${documentOne.createDatetime}'.split('T')[0].replace(/-/g, '.');  // 날짜에서 시간 제거하고 -를 .로 변환
 
             // 제목에서 공백을 언더바로 변경
             const title = ($('#docTitle').data('title') || 'defaultTitle').replace(/\s+/g, '_');  // 공백을 언더바로 변경
@@ -339,13 +337,14 @@ $(document).ready(function() {
             // 날짜와 제목을 결합하여 파일명 설정
             const fileName = '(' + createDatetime + ')' + title;
 
-            pdf.save(fileName + ".pdf");  // 파일명 설정
+            pdf.save(fileName + ".pdf");  // 파일명 설정 및 PDF 저장
         }).catch(function(error) {
-            console.error("html2canvas error:", error);
+            console.error("html2canvas error:", error);  // 에러 발생 시 로그 출력
         });
     });
 });
 </script>
+
 
 
 
