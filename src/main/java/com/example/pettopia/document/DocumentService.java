@@ -161,6 +161,10 @@ public class DocumentService {
 		documentMapper.deleteDocument(docNo);
 	}
 	
+	// documentOne → 문서 상세보기
+	public Map<String, Object> getDocumentOne(Integer docNo) {
+		return documentMapper.selectDocumentOne(docNo);
+	}
 	
 
 }

@@ -167,7 +167,7 @@
                                 </thead>
                                 <tbody>
                                 	<c:forEach var="d" items="${documentList}">
-	                                	 <tr onclick="window.location='${pageContext.request.contextPath}/document/documentOne?docNo=${d.docNo}'" style="cursor: pointer;">
+	                                	 <tr onclick="window.location='${pageContext.request.contextPath}/document/documentOne?docNo=${d.docNo}&docType=${d.docType}'" style="cursor: pointer;">
 	                                        <td class="px-3.5 py-1.5 border-y border-slate-200 text-center checkBox">
 											    <input type="checkbox" value="${d.docNo}" class="border rounded-sm appearance-none cursor-pointer size-4 bg-slate-100 border-slate-200 checked:bg-custom-500 checked:border-custom-500">
 											</td>

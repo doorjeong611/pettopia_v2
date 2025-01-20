@@ -1,7 +1,6 @@
 package com.example.pettopia.document;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +19,6 @@ import com.example.pettopia.vo.DocumentApprovers;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
-
-
-
 
 @Controller
 @Slf4j
@@ -267,14 +263,21 @@ public class DocumentController {
 	
 	// documentOne Form
 	@GetMapping("/document/documentOne")
-	public String getDocumentOne(Model model, @RequestParam String docNo) {
+	public String getDocumentOne(Model model, @RequestParam Integer docNo, @RequestParam String docType) {
 		
-		model.addAttribute("docNo", docNo);
+		Map<String, Object> documentOne = documentService.getDocumentOne(docNo);
+		log.debug(TeamColor.KDH + "documentOne: " + documentOne.toString() + TeamColor.RESET);
+		
+		model.addAttribute("documentOne", documentOne);
+		
+		if ("D".equals(docType)) {
+	        return "document/draftOne"; 
+	    }
+		
 		
 		return "document/documentOne";
 	}
 
-	
 	
 
 }
