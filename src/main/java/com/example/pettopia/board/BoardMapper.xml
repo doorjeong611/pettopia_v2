@@ -32,6 +32,22 @@
 		)
 	</insert>
 	
+	<!-- 상세 글 보기 셀렉트 쿼리 /board/getBoardOne 작업자 : 이준호 -->
+	<select id="selectBoardByBoardOne" parameterType="map">
+		SELECT
+			board_no boardNo,
+			board_title boardTitle,
+			board_writer_no boardWriterNo,
+			board_content boardContent,
+			board_header boardHeader,
+			board_like boardLike,
+			board_view boardView,
+			create_datetime createDatetime,
+			update_datetime updateDatetime
+		FROM board
+			WHERE board_no = #{boardNo} 
+	</select>
+	
 	<!-- 게시판 리스트 쿼리 /board/getBoardList 작업자 : 이준호 -->
 	<select id="selectBoardList" parameterType="Map" resultType="Map">
  SELECT
@@ -71,14 +87,6 @@
         boardNum DESC
 </select>
 
-	
-	
-	
-	<!-- 작성글 셀렉트 쿼리 -->
-	
-	<select id="selectBoardByBoardOne" parameterType="map">
-		
-	</select>
 	
 	<!-- 조회수 증가 /board/boardList 작업자 : 이준호 -->
 	<update id="updateBoard" parameterType="com.example.pettopia.vo.Board" >

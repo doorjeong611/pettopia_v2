@@ -33,19 +33,50 @@ public class BoardController {
 	@GetMapping("/board/getBoardOne")
 	public String getBoardOne(Model model,
 								Board board,
-								@RequestParam Integer boardNo) {
+								Authentication auth,
+								@RequestParam(required = false) String divisionCode,
+								@RequestParam(required = false) Integer boardNo
+								) {
 	    Map<String, Object> map = new HashMap<>();
+	   
 	    
 	    // 조회수 증가
 	    int successViewByBoard = boardService.addBoardView(board);
 	    
+	    // 상세 글보기 셀렉트
+	    Map<String, Object> boardOneMap = boardService.getListByBoardOne(boardNo);
+	    
+
+		List<Division> divisionList = boardService.getDivisionList();
+		
+		Map<String, Object> categoryByBoardOne = new HashMap<>();
+		
+		// 보드헤더 값
+	    String boardHeader = (String) boardOneMap.get("boardHeader");
+		
+		categoryByBoardOne.put("division", divisionCode);
+		categoryByBoardOne.put("divisionList", divisionList);
+		
+		model.addAttribute("division", categoryByBoardOne);
+	    
+	    
+	    
+	    // 로그인 세션
+	    EmpUserDetails empUserDetails = (EmpUserDetails) auth.getPrincipal();
+	    String empNo = empUserDetails.getUsername();
+	    String boardWriterNo = board.getBoardWriterNo();
+	    
 	    if(successViewByBoard != 1) {
 	    	return "redirect:/board/boardList";
 	    }
-	    
-		// boardNo 값 모델에 추가
+	    // 모델값 
+	    model.addAttribute("boardCategory", boardHeader);
+	    model.addAttribute("divisionCode",divisionCode);
+	    model.addAttribute("boardWriterNo",boardWriterNo);
+	    model.addAttribute("empNo", empNo);
+		model.addAttribute("boardMap",boardOneMap);
 		model.addAttribute("boardNo",boardNo);
-		
+	 
 		return "board/boardOne";
 	}
 	
@@ -136,8 +167,7 @@ public class BoardController {
 							Board board,
 							Authentication auth,
 	                        @RequestParam(value = "category", defaultValue = "ALL") String boardCategory,
-	                        @RequestParam(required = false) Integer boardNo, 
-	                        HttpServletRequest request) {
+	                        @RequestParam(required = false) Integer boardNo) {
 	    Map<String, Object> map = new HashMap<>();
 	    
 	    
@@ -148,9 +178,10 @@ public class BoardController {
 	    
 	    // 게시판 목록 조회
 	    List<Map<String, Object>> boardList = boardService.getBoardList(boardCategory, map);
-	    model.addAttribute("boardList", boardList);
+	    
+	 
 	    model.addAttribute("empNo", empNo);
-
+	    model.addAttribute("boardList", boardList);
 	    model.addAttribute("boardNo", boardNo);
 	    model.addAttribute("boardCategory", boardCategory);
 	    model.addAttribute("boardWriterNo",boardWriterNo);

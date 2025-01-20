@@ -17,7 +17,36 @@
     <!-- Tailwind CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tailwind2.css">
 </head>
-
+<style>
+	.boardTitleBox {width:70%; margin: 10px auto; text-align: left;}
+	.boardHeaderBox {width: 70%; margin: 0 auto; }
+	.boardHeaderBox > div {width: 32%; margin: 1% 1%; float: left; }
+	.boardHeaderBox > div > label {padding-bottom: 2%;}
+	.boardHeaderBox > div:first-child {margin-left: 0;}
+	.boardHeaderBox > div:last-child {margin-right: 0;}
+	.boardContentBox{ width: 70%; margin: 0 auto;}
+	.boardContentBox > textarea {height: 500px; text-align: left; resize: none;}
+	
+	.boardContentBox .btnBox { width: 35%;  display: flex; justify-content: flex-end; margin-top: 2%;}
+	
+	.boardContentBox .btnBox div {transition:all 0.3s; border-radius: 15px; width: 33.3%; text-align: center; margin: 0 1%;}
+	.boardContentBox .btnBox div a {display: block; padding: 7% 10%; }
+	.boardContentBox .btnBox:first-child {margin-left: 0;}
+	.boardContentBox .btnBox:last-child {margin-right: 0;}
+	
+	.contentFooterBox {width: 100%; display: flex; justify-content: flex-end; }
+	
+	.boardContentBox .btnBox .modifyBtn {background-color:#D6D6D6;}
+	.boardContentBox .btnBox .deleteBtn {background-color:#D6D6D6;}
+	.boardContentBox .btnBox .returnBtn {background-color:#D6D6D6;}
+	
+	.boardContentBox .btnBox .modifyBtn:hover {background-color:#0eA5e9; color:#CCEBF9;}
+	.boardContentBox .btnBox .deleteBtn:hover {background-color:#f75a45; color:#FEEBEB;}
+	.boardContentBox .btnBox .returnBtn:hover {background-color:#898989; color:#FFFFFF;}
+	
+	
+	
+</style>
 <body class="text-base bg-body-bg text-body font-public dark:text-zink-100 dark:bg-zink-800 group-data-[skin=bordered]:bg-body-bordered group-data-[skin=bordered]:dark:bg-zink-700">
 <div class="group-data-[sidebar-size=sm]:min-h-sm group-data-[sidebar-size=sm]:relative">
     
@@ -61,13 +90,55 @@
                    		<!-- 드랍파일 스타트-->
 			                   <div class="relative min-h-screen group-data-[sidebar-size=sm]:min-h-sm">
 
-               
-                <div class="card">
-                    <div class="card-body">
-                    
-                    
-                    </div>
-                </div><!--end card-->
+
+	                <div class="card">
+	                    <div class="card-body">
+	                    	<div class="boardHeaderBox">
+	                    		<div>
+	                    			<label for="category_input" class="inline-block text-base">말머리</label>
+	                    			<input type="text" class="form-input" id="category_input" name="category" value="${boardCategory == 'SG' ? '건의사항' : boardCategory == 'DS' ? '토론' : boardCategory == 'CT' ? '잡답' : boardCategory == 'IN' ? '정보' : boardCategory == 'QA' ? '질문' : boardCategory == 'CP' ? '칭찬' : ''}" readonly>
+	                    		</div>
+	                    		<div>
+		                    		<label for="division_input" class="inline-block text-base">부서 번호</label>
+		                    		<input type="text" class="form-input" id="division_input" readonly value="${division.divisionCode}">
+	                    		</div>
+	                    		<div>
+		                    		<label for="creatDateTime_input"  class="inline-block text-base">작성일시</label>
+		                    		<input type="text" class="form-input" id="creatDateTime_input" readonly value="${boardMap.createDatetime}">
+	                    		</div>
+	                    	</div>
+	                    	
+		                  	 <div class="boardTitleBox">
+		                  	 	<input type="text" class="form-input" value="${boardMap.boardTitle}" readonly onfocus='this.blur();'>
+		                  	 </div> 
+		                  	 <div class="boardContentBox">
+		                  	 	<textarea class="form-input" readonly onfocus='this.blur();'>${boardMap.boardContent}</textarea>
+		                  	 
+		                  	 	<div class="contentFooterBox">
+			                  	 	<!-- 버튼 박스 -->
+			                  	 	<c:if test="${empNo == boardMap.boardWriterNo}">
+				                  	 	<div class="btnBox">
+				                  	 		<div class="modifyBtn"><a href="${pageContext.request.contextPath}/board/modifyBoard">수정하기</a></div>
+				                  	 		<div class="deleteBtn"><a href="${pageContext.request.contextPath}/board/removeBoard?boardNo=${boardMap.boardNo}">삭제하기</a></div>
+				                  	 		<div class="returnBtn"><a href="${pageContext.request.contextPath}/board/boardList">돌아가기</a></div>
+			            				</div>	
+			                  	 	</c:if>
+			                  	 	<c:if test="${empNo != boardMap.boardWriterNo}">
+				                  	 	<div class="btnBox">
+			            					<div class="returnBtn"><a href="${pageContext.request.contextPath}/board/boardList">돌아가기</a></div>
+										</div>
+			                  	 	</c:if>
+		                  	 	</div>
+		                  	 </div>
+	            			
+	            			
+	            			
+	            			
+	                    </div>
+	                </div>
+          	
+            
+                <!--end card-->
 
                 
 
@@ -103,13 +174,10 @@
 <script src="${pageContext.request.contextPath}/assets/js/pages/form-file-upload.init.js"></script>
 <!--apexchart js-->
 <script src="${pageContext.request.contextPath}/assets/libs/apexcharts/apexcharts.min.js"></script>
-
 <!--dashboard ecommerce init js-->
 <script src="${pageContext.request.contextPath}/assets/js/pages/dashboards-ecommerce.init.js"></script>
-
 <!-- App js -->
 <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
-
 </body>
 
 </html>
