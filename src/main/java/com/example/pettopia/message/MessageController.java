@@ -14,11 +14,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.pettopia.dto.EmpUserDetails;
 import com.example.pettopia.employee.EmployeeService;
 import com.example.pettopia.util.TeamColor;
 import com.example.pettopia.vo.Employee;
+import com.example.pettopia.vo.Message;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -27,6 +29,24 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 public class MessageController {
 	@Autowired MessageService messageService;
+	
+	// 오자윤 : /employee/messageNote 쪽지 전송
+	@PostMapping("/message/sendMessage")
+	public String sendMessage(@RequestParam("emp_No")String empNo, @RequestParam("title")String messageTitle, @RequestParam("content")String messageContent,Authentication auth, Message message) {
+		log.debug(TeamColor.OJY + "empNo------>" + empNo + TeamColor.RESET);
+		
+		// 시큐리티 empNo 가져오기
+		EmpUserDetails empUserDetails = (EmpUserDetails)auth.getPrincipal();
+		String senderEmpNo = empUserDetails.getUsername();
+		
+		message.setSenderEmpNo(senderEmpNo); // 발신자
+		message.setRecipientEmpNo(empNo); // 수신자
+		message.setMessageTitle(messageTitle);
+		message.setMessageContent(messageContent);
+		
+		messageService.sendMessage(message);
+		return  "redirect:/message/messageNote";
+	}
 	
 	// 오자윤 : /employee/messageList 휴지통으로 보내기		
 	@PostMapping("/message/messageBin")
