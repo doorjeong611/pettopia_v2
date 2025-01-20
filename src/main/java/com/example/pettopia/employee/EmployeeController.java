@@ -10,6 +10,7 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.authentication.configuration.EnableGlobalAuthentication;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.pettopia.dto.EmpUserDetails;
 import com.example.pettopia.util.TeamColor;
 import com.example.pettopia.vo.Employee;
 import com.example.pettopia.vo.EmployeeForm;
@@ -138,9 +140,25 @@ public class EmployeeController {
 	
 	// 직원 목록
 	@GetMapping("/employeeList")
-	public String employeeList(Model model) {
-		
+	public String employeeList(Model model, Authentication auth) {
 		log.debug(TeamColor.KMJ+"[EmployeeController - Get employeeList()]");
+		
+		EmpUserDetails empUserDetails = (EmpUserDetails) auth.getPrincipal();
+		String diviCode = empUserDetails.getDeptCode().substring(0, 2); // divisionCode
+		String roleName = empUserDetails.getRoleNameo();
+		
+		log.debug(TeamColor.KMJ+"diviCode -  "+ diviCode + TeamColor.RESET);
+		log.debug(TeamColor.KMJ+"roleName -  "+ roleName + TeamColor.RESET);
+		
+		boolean isAllowedEmpStatus = false; // 인사부 관리자가 아니면 
+		if(diviCode.equals("HR") && roleName.equals("ROLE_ADMIN")) {
+			isAllowedEmpStatus = true;
+		}
+		
+		log.debug(TeamColor.KMJ+"isAllowedEmpStatus -  "+ isAllowedEmpStatus + TeamColor.RESET);
+		
+		model.addAttribute("isAllowedEmpStatus", isAllowedEmpStatus);
+		
 		
 		return "employee/employeeList";
 	}
@@ -303,7 +321,7 @@ public class EmployeeController {
 		return "employee/modifyEmployeeOne";
 	}
 	
-	
+	// modifyEmployeeOne : 직원 개인 정보 수정
 	@PostMapping("/employee/modifyEmployeeOne")
 	public String modifyEmployeeOne(EmployeeForm employeeForm, @RequestParam String empFileNo, @RequestParam String empStatus, HttpSession session) {
 		log.debug(TeamColor.KMJ+" EmployeeController : POST modifyEmployeeOne()" + TeamColor.RESET);
@@ -317,10 +335,40 @@ public class EmployeeController {
 		// 직원 정보 수정
 		boolean result = employeeService.modifyEmployeeOne(employeeForm, path, empFileNo, empStatus);
 		
-		// 서비스에서 물리적 파일 삭제 부분 구현 후 주석 풀기!!!
 		
 		
 		return "common/petTopiaMain";
+	}
+	
+	
+	// employeeSummary : 직원 부서정보 
+	@GetMapping("/employee/employeeSummary")
+	public String getEmployeeSummary(@RequestParam String empNo, Model model, Authentication auth) {
+		log.debug(TeamColor.KMJ+" EmployeeController : GET getEmployeeSummary()" + TeamColor.RESET);
+		log.debug(TeamColor.KMJ+" empNo : "+ empNo + TeamColor.RESET);
+		
+		// 로그인 한 직원 권한 확인 (인사부 관리자)
+		EmpUserDetails empUserDetails = (EmpUserDetails) auth.getPrincipal();
+		String loginEmpRoleName = empUserDetails.getRoleNameo();
+		String loginEmpDeptCode = empUserDetails.getDeptCode().substring(0, 2);
+		
+		boolean isAdmin = false; // 인사부 관리자라면 true
+		
+		if(loginEmpDeptCode.equals("HR") && loginEmpRoleName.equals("ROLE_ADMIN")) {
+			isAdmin = true;
+		}
+		log.debug(TeamColor.KMJ+" isAdmin : "+ isAdmin + TeamColor.RESET);
+		model.addAttribute("isAdmin", isAdmin);
+		
+		// 직원 공식 정보 
+		Map<String, Object> empInfo = employeeService.getEmployeeSummary(empNo);	
+		
+		log.debug(TeamColor.KMJ+" empInfo : "+ empInfo.toString() + TeamColor.RESET);
+		model.addAttribute("empInfo", empInfo);
+		
+		return "employee/employeeSummary";
+		
+		
 	}
 	
 	
