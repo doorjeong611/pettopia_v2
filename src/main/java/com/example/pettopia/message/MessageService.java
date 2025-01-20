@@ -8,12 +8,18 @@ import org.springframework.stereotype.Service;
 
 import com.example.pettopia.vo.Department;
 import com.example.pettopia.vo.Division;
+import com.example.pettopia.vo.Message;
 import com.example.pettopia.vo.Rank;
 
 
 @Service
 public class MessageService {
 	@Autowired MessageMapper messageMapper;
+	
+	// 오자윤 : /employee/messageNote 쪽지보내기 -->
+	public void sendMessage(Message message) {
+		messageMapper.insertMessage(message);
+	} 
 	
 	// 오자윤 : /employee/messageNote 팀 검색 (쪽지쓰기 모달창) -->
 	public List<Department> getDepartmentName(String divisionCode) {

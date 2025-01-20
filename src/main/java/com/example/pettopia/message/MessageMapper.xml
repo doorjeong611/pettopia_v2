@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.pettopia.message.MessageMapper">
-
+	
+	<!-- 오자윤 : /employee/messageNote 쪽지보내기-->
+	<insert id="insertMessage" parameterType="com.example.pettopia.vo.Message">
+    INSERT INTO message (sender_emp_no, recipient_emp_no, message_title, message_content, message_state, message_bin, create_datetime, update_datetime) 
+    VALUES (#{senderEmpNo},#{recipientEmpNo},#{messageTitle},#{messageContent},'N','0',NOW(),NOW());
+    </insert>
+    
 	<!-- 오자윤 : /employee/messageNote 쪽지쓰기 모달창 팀검색 -->
 	<select id="selectDeparmentNameInModal" parameterType="String">
 	    SELECT 

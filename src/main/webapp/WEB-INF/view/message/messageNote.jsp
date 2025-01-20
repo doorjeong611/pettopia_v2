@@ -4,45 +4,67 @@
 <!DOCTYPE html>
 <html lang="en" class="light scroll-smooth group" data-layout="vertical" data-sidebar="light" data-sidebar-size="lg" data-mode="light" data-topbar="light" data-skin="default" data-navbar="sticky" data-content="fluid" dir="ltr">
 
+<!-- 모달 스크롤 css 추후 수정 필요 -->
 <head>
   <style>
      #recipientTableContainer {
-      max-height: 200px;  /* Set the max height of the table container */
-      overflow-y: auto;   /* Enable vertical scrolling */
-      width: 100%;        /* Ensure it fills the width of the container */
+      max-height: 2400px;  
+      overflow-y: auto;  
+      width: 100%;        
     }
 
-    /* Keep the table structure intact while scrolling */
+
     table {
       width: 100%;
-      table-layout: fixed; /* This ensures the table columns maintain their size */
+      table-layout: fixed; 
     }
 
     thead {
-      position: sticky;   /* Stick the table header to the top */
-      top: 0;             /* Ensure it sticks at the top */
-      background-color: white; /* Add a background color to prevent content overlap */
-      z-index: 1;         /* Ensure the header stays above the table body */
+      position: sticky;  
+      top: 0;            
+      background-color: white; 
+      z-index: 1;         
     }
 
     tbody {
       display: block;
-      max-height: 200px;  /* Adjust according to your preference */
-      overflow-y: auto;   /* Enable scrolling in the body */
+      max-height: 200px;  
+      overflow-y: auto;   
     }
 
     tr {
       display: table;
       width: 100%;
-      table-layout: fixed; /* Keep the row consistent with columns */
+      table-layout: fixed;
     }
 
     td {
-      word-wrap: break-word; /* Break long words if needed */
+      word-wrap: break-word; 
     }
     
-    
-  </style>
+    /* 쪽지 전달 모달 */
+	.modal.hidden {
+	    display: none;
+	}
+	
+	.modal {
+	    position: fixed;
+	    top: 0;
+	    left: 0;
+	    width: 100%;
+	    height: 100%;
+	    background: rgba(0, 0, 0, 0.5);
+	    display: flex;
+	    justify-content: center;
+	    align-items: center;
+	}
+	
+	.modal-content {
+	    background: white;
+	    padding: 20px;
+	    border-radius: 5px;
+	}
+</style>
   </head>
 	<meta charset="utf-8">
     <title>PetTopia</title>
@@ -92,30 +114,35 @@
                     </ul>
                 </div>
                 <!-- Main content -->
+                
                 <div class="card">
                     <div class="card-body">
-                        <form action="#!">
+							<form method="POST" action="${pageContext.request.contextPath}/message/sendMessage">
 							<div class="mb-4">
 							    <span class="font-semibold">받는사람 :</span>
-							    <input id="recipientInput" type="text" class="text-slate-500 border-b-0 focus:outline-none focus:ring focus:ring-slate-200 dark:bg-zink-700 dark:border-zink-600 dark:text-zink-200 text-center" placeholder="직원을 검색하세요." readonly/>
+							    <input id="recipientInput" type="text" name="recipient" class="text-slate-500 border-b-0 focus:outline-none focus:ring focus:ring-slate-200 dark:bg-zink-700 dark:border-zink-600 dark:text-zink-200 text-center" placeholder="직원을 검색하세요." readonly/>
 							    <button type="button" id="openModalBtn" class="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20">
 							    	직원검색
 							    </button>
+							 <!-- message 전송을 위한 hidden값 -->
+						  	<input type="hidden" id="recipientEmpNo" name="emp_No" />  
+						  	
 							</div>
 							<div class="mb-2 pb-2">
 							    <span class="font-semibold">제목 :</span>
-							    <input type="text" class="text-slate-500 border-b-0 focus:outline-none focus:ring focus:ring-slate-200 dark:bg-zink-700 dark:border-zink-600 dark:text-zink-200 text-center" placeholder=" 제목을 입력하세요." />
+							    <input type="text" id="messageTitle" name="title" class="text-slate-500 border-b-0 focus:outline-none focus:ring focus:ring-slate-200 dark:bg-zink-700 dark:border-zink-600 dark:text-zink-200 text-center" placeholder=" 제목을 입력하세요." />
 							</div>
 							
 							<!-- 쪽지 내용 시작 -->
 							<hr class="border-t border-blue-400 my-4" /> 
 							<div class="mt-4">
-							<textarea class="w-full p-2 border border-slate-300 rounded focus:outline-none focus:ring focus:ring-slate-200 dark:bg-zink-700 dark:border-zink-600 dark:text-zink-200" rows="25" placeholder="내용을 입력하세요."></textarea>
+							<textarea id="messageContent" name="content" class="w-full p-2 border border-slate-300 rounded focus:outline-none focus:ring focus:ring-slate-200 dark:bg-zink-700 dark:border-zink-600 dark:text-zink-200" rows="25" placeholder="내용을 입력하세요." required></textarea>
 							 <div class="flex justify-end gap-2 mt-5">
-								<button type="button" class="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20">
+								<button type="submit" id="submitMessage" class="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20">
 								    <i class="ri-mail-send-line inline-block mr-1" style="font-size: 1.05rem;"></i> <!-- 크기 조정 -->
 								    <span class="align-middle">전송하기</span>
 								</button>
+							</form>
  								<a href="${pageContext.request.contextPath}/message/messageList" class="text-slate-500 btn bg-slate-200 border-slate-200 hover:text-slate-600 hover:bg-slate-300 hover:border-slate-300 focus:text-slate-600 focus:bg-slate-300 focus:border-slate-300 focus:ring focus:ring-slate-100 active:text-slate-600 active:bg-slate-300 active:border-slate-300 active:ring active:ring-slate-100 dark:bg-zink-600 dark:hover:bg-zink-500 dark:border-zink-600 dark:hover:border-zink-500 dark:text-zink-200 dark:ring-zink-400/50">
 								    <i class="ri-mail-line inline-block mr-1" style="font-size: 1.05rem;"></i> <!-- 크기 조정 -->
 								    <span class="align-middle">쪽지보관함</span>
@@ -124,7 +151,6 @@
 							</div>
                             <div class="grid grid-cols-1 gap-5 xl:grid-cols-12">
                             </div><!--end grid-->
-                        </form>
                     </div>
                 </div>
                 
@@ -160,7 +186,7 @@
 				            <label class="block mb-1">이름</label>
 				            <input type="text" id="employeeSearchInput" class="border border-gray-300 rounded w-full p-2" placeholder="직원이름을 입력하세요." />
 				        </div>
-						
+						 
 						<div class="flex justify-end mb-4">
 							<button id="searchEmployeeBtn" class="bg-blue-500 hover:bg-blue-700 text-black rounded p-2">검색</button>
 						</div>
@@ -188,6 +214,16 @@
 				</div>
 				
 			    </div>
+			    
+			    <!-- 메시지 전송 모달창 -->
+				<div id="messageSentModal" class="modal hidden">
+				    <div class="modal-content">
+				        <h2>쪽지발송</h2>
+				        <p>쪽지 전송이 완료 되었습니다.</p>
+				        <button id="closeModalBtn">닫기</button>
+				    </div>
+				</div>
+
 			</div>
             <!-- container-fluid -->
         </div>
@@ -396,8 +432,11 @@ document.addEventListener('DOMContentLoaded', function() {
  	// 테이블 행 클릭 시 "받는사람" 자동 입력
     $('#recipientTableBody').on('click', 'tr', function () {
         const employeeName = $(this).find('td:last-child').text().trim(); // '이름' 열의 텍스트 가져오기
+        const empNo = $(this).find('td:nth-child(4)').text().trim(); // '사원번호' 열의 텍스트 가져오기
+        
         if (employeeName) {
             $('#recipientInput').val(employeeName); // 입력 필드에 값 설정
+            $('#recipientEmpNo').val(empNo); // emp_no를 hidden 필드에 설정
             closeModal(); // 모달 창 닫기
         }
     });
@@ -406,5 +445,28 @@ document.addEventListener('DOMContentLoaded', function() {
     getDivisionList();
 });
 </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById("messageForm");
+        const modal = document.getElementById("messageSentModal");
+        const closeModalBtn = document.getElementById("closeModalBtn");
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            modal.classList.remove('hidden');
+            document.getElementById("recipientInput").value = '';
+            document.getElementById("recipientEmpNo").value = '';
+            document.getElementById("messageTitle").value = '';
+            document.getElementById("messageContent").value = '';
+        });
+
+        closeModalBtn.addEventListener('click', function() {
+            modal.classList.add('hidden');
+        });
+    });
+</script>
+</body>
+
 </body>
 </html>

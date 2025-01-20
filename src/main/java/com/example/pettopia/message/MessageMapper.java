@@ -7,11 +7,15 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.example.pettopia.vo.Department;
 import com.example.pettopia.vo.Division;
+import com.example.pettopia.vo.Message;
 import com.example.pettopia.vo.Rank;
 
 
 @Mapper
 public interface MessageMapper {
+	
+	// 오자윤 : /employee/messageNote 쪽지보내기-->
+	void insertMessage(Message message);
 	
 	// 오자윤 : /employee/messageNote 팀 검색 (쪽지쓰기 모달창) -->
 	List<Department> selectDeparmentNameInModal(String divisionCode);
