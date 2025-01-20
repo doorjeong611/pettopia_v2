@@ -266,12 +266,21 @@ public class EmployeeService {
 		String empNo = (String)paramMap.get("empNo");					 // loginEmp.username 으로 가져온 값
 		
 		String paramDivisionCode = "";
+		String paramEmpStatus = "";
 		log.debug(TeamColor.KMJ + "view에서 넘어온 값 divisionCode : " + (String)paramMap.get("divisionCode") );
+		log.debug(TeamColor.KMJ + "view에서 넘어온 값 empStatus : " + (String)paramMap.get("empStatus") );
 		
+		// 선택된 부서
 		if(paramMap.get("divisionCode") != null) {
 			paramDivisionCode = (String)paramMap.get("divisionCode"); // view에서 넘어온 divisionCode
 		}
 		log.debug(TeamColor.KMJ + "paramDivisionCode : " + paramDivisionCode );
+		
+		// 선택된 재직 상태
+		if(paramMap.get("empStatus") != null) {
+			paramEmpStatus = (String)paramMap.get("empStatus"); // view에서 넘어온 divisionCode
+		}
+		log.debug(TeamColor.KMJ + "paramEmpStatus : " + paramEmpStatus );
 		
 		
 		// 직원 목록을 조회하려는 사원의 직급 확인 (일반 사원 == 재직 중인 사원만, 인사부 관리자 == 퇴사자 등 모든 사원)
@@ -292,13 +301,18 @@ public class EmployeeService {
 		
 		log.debug(TeamColor.KMJ + "isHRAdmin : " + isHRAdmin );
 		
-		// 인사부 관리자, view에서 divisionCode 선택 여부
+		// 인사부 관리자, view에서 divisionCode 선택 여부, 재직 상태(관리자만 조회 가능)
 		Map<String, Object> params = new HashMap<>();
 		params.put("isHRAdmin", isHRAdmin);
 		params.put("divisionCode", paramDivisionCode);
+		params.put("empStatus", paramEmpStatus);
 		
 		List<Map<String, Object>> empList =  employeeMapper.selectEmployeeList(params);
-		log.debug(TeamColor.KMJ + "empList [0]" + empList.get(0).toString());
+		if(empList.size() >0) {
+			log.debug(TeamColor.KMJ + "empList [0]" + empList.get(0).toString());			
+		}else {
+			log.debug(TeamColor.KMJ + "조회 결과 없음" );	
+		}
 		
 		
 		return empList;
@@ -539,6 +553,21 @@ public class EmployeeService {
 		return result; 
 		
 	}
+	
+
+	// employeeSummary : 직원 공식 정보 상세보기
+	public Map<String, Object> getEmployeeSummary(String empNo){
+		log.debug(TeamColor.KMJ + "EmployeeService - getEmployeeSummary() " );
+		log.debug(TeamColor.KMJ + "empNo:" + empNo + TeamColor.KMJ);
+		
+		Map<String, Object> empInfo = employeeMapper.selectEmployeeSummary(empNo);
+		log.debug(TeamColor.KMJ + "empInfo : " + empInfo + TeamColor.RESET);
+		
+		return empInfo;
+	}
+	
+	
+	
 	
 
 }// employeeService

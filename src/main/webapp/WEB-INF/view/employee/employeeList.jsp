@@ -1,6 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
+<!-- 시큐리티 세션 사용을 위한 taglib -->
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<!-- 시큐리티 세션정보 접근 -->
+<sec:authorize access="isAuthenticated()"><sec:authentication property="principal" var="loginEmp"/></sec:authorize>
+
+
+
+
 <!DOCTYPE html>
 <html lang="en" class="light scroll-smooth group" data-layout="vertical" data-sidebar="light" data-sidebar-size="lg" data-mode="light" data-topbar="light" data-skin="default" data-navbar="sticky" data-content="fluid" dir="ltr">
 
@@ -23,6 +31,14 @@
     
 <!-- Jquery -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+ 
+<style>
+    .gridjs-summary {
+        display: none;
+    }
+</style>
+ 
+ 
  
 </head>
 
@@ -56,21 +72,47 @@
                         </li>
                     </ul>
                 </div>
-                <!-- Main content -->
-                <div class="xl:col-span-4">
-                <label for="designationSelect" class="inline-block mb-2 text-base font-medium">부서</label>
-                <div class="flex gap-2">
-                  <select name="divisionCode" id="divisionSelect" class="form-input border-slate-200 dark:border-zink-500">
-                    <option value="">부서 선택</option>
-                  </select>
-                </div>
-              	</div>
                 
+                
+                <!-- Main content -->
+				<div class="xl:col-span-12 flex flex justify-end gap-4">
+				    <!-- 부서 선택 (전체) -->
+				    <div class="xl:col-span-4">
+				        <label for="divisionSelect" class="inline-block mb-2 text-base font-medium">부서</label>
+				        <div class="flex gap-2">
+				            <select name="divisionCode" id="divisionSelect" class="form-input border-slate-200 dark:border-zink-500">
+				                <option value="">부서 선택</option>
+				            </select>
+				        </div>
+				    </div>
+				    
+				    <!-- 재직 상태 선택 (인사부 관리자만) -->
+				    <c:if test="${isAllowedEmpStatus}">
+				        <div class="xl:col-span-4">
+				            <label for="empStatusSelect" class="inline-block mb-2 text-base font-medium">재직 상태</label>
+				            <div class="flex gap-2">
+				                <select name="empStatus" id="empStatusSelect" class="form-input border-slate-200 dark:border-zink-500">
+				                    <option value="">재직 상태 선택</option>
+				                    <option value="E">재직</option>
+				                    <option value="H">대기</option>
+				                    <option value="L">휴직</option>
+				                    <option value="R">퇴직</option>
+				                    <option value="T">임시</option>
+				                </select>
+				            </div>
+				        </div>
+				    </c:if>
+				</div>				
+				
+				
+                <!-- gridjs 출력 -->
                 <div id="employeeTable"></div>
 
 <script>
-let gridInstance; // 전역 변수로 선언
-let divisionCode = 'null'; // 초기값 설정
+//전역 변수로 선언
+let gridInstance; 			
+let divisionCode = 'null';  // 처음은 null -> 전체 조회
+let empStatus = 'null';  // 처음은 null -> 전체 조회
 
 // 부서 드롭다운 데이터를 가져오는 함수
 function fetchDivisionData() {
@@ -96,49 +138,85 @@ function fetchDivisionData() {
         });
 }
 
-// 부서 드롭다운 초기화 및 데이터 요청
+// 부서, 재직 상태 드롭다운 초기화 및 데이터 요청
 window.onload = function() {
     fetchDivisionData()
         .then(() => {
             // 초기 선택된 값으로 설정
             divisionCode = document.getElementById("divisionSelect").value || 'null'; // 기본 값 설정
+            
+         	// empStatusSelect가 존재할 경우에만 empStatus 값을 설정
+            const empStatusSelect = document.getElementById("empStatusSelect");
+            empStatus = empStatusSelect ? empStatusSelect.value || 'null' : 'null'; // 기본 값 설정
+            
             console.log('초기 선택 divisionCode:', divisionCode);
-            fetchEmployeeData(); // 데이터 가져오기
+            console.log('초기 선택 empStatus:', empStatus);
+            fetchEmployeeData(); 													// 데이터 가져오기
         });
 };
 
-// 드롭다운 변경 이벤트 처리
+// 부서 드롭다운 변경 이벤트 처리
 document.getElementById("divisionSelect").addEventListener("change", function() {
-    divisionCode = this.value || 'null'; // 선택된 부서값 업데이트, 값이 없으면 null
+    divisionCode = this.value || 'null'; 						// 선택된 부서값 업데이트, 값이 없으면 null
     console.log('변경된 divisionCode:', divisionCode);
-    fetchEmployeeData(); // 데이터를 다시 가져오는 함수 호출
+    fetchEmployeeData(); 										// 데이터를 다시 가져오는 함수 호출
 });
+
+
+//재직 상태 드롭다운 변경 이벤트 처리 (empStatusSelect가 존재할 경우에만 처리)
+const empStatusSelect = document.getElementById("empStatusSelect");
+if (empStatusSelect) {
+    empStatusSelect.addEventListener("change", function() {
+        empStatus = this.value || 'null'; 						// 선택된 재직 상태값 업데이트, 값이 없으면 null
+        console.log('변경된 empStatus:', empStatus);
+        fetchEmployeeData(); 									// 데이터를 다시 가져오는 함수 호출
+    });
+}
+
 
 // 데이터를 가져오는 함수
 function fetchEmployeeData() {
+	
+	 // 기존 데이터를 제거하여 컨테이너를 비워야 새로운 조회 테이블로 업데이트 가능
+    const container = document.getElementById("employeeTable");
+	
     console.log('데이터 요청 divisionCode: ', divisionCode);
+    console.log('데이터 요청 "empStatus": ', empStatus);
+    
 
-    fetch('/pettopia/rest/employeeList/' + divisionCode)
+    // 기존 그리드 인스턴스를 파괴하기
+    if (gridInstance) {
+        gridInstance.destroy();
+    }
+    
+ 	// 기존 컨테이너 내용을 비워줌
+    container.innerHTML = ''; 
+    
+
+    fetch('/pettopia/rest/employeeList/' + divisionCode + '?empStatus=' + empStatus)
         .then(response => response.json())
         .then(data => {
             console.log('가져온 데이터:', data);
 
-            // 데이터가 없거나 필터링된 값이 없을 경우를 대비
-            if (data.length === 0) {
-                alert('해당 부서에 소속된 직원이 없습니다.');
-            }
+         // 데이터가 없을 경우 "조회 결과 없음" 메시지 표시
+         if (!data || data.length === 0) {
+        	 container.innerHTML = '<div style="display: flex; justify-content: center; align-items: center; height: 200px; font-size: 18px; color: #6c757d;">'
+		            				+ ' 조회 결과 없음 '
+		         					+ ' </div>' ; 
+		     return;
+         }
 
             // 필터링 (divisionCode에 맞는 직원만)
             const filteredData = data.filter(emp => {
-                // divisionCode가 'null'일 경우, 모든 직원 반환
-                return divisionCode === 'null' || emp.divisionCode === divisionCode;
+                // divisionCode가 'null'일 경우 전체 직원 반환
+                return divisionCode === 'null' || emp.divisionCode === divisionCode
             });
 
             // 데이터를 수정하여
             const modifiedData = filteredData.map(emp => {
                 return {
                     ...emp,
-                    empName: '<a href="${pageContext.request.contextPath}/getEmployeeOne?empNo=' + emp.empNo + '" class="flex items-center gap-3">'
+                    empName: '<a href="${pageContext.request.contextPath}/employee/employeeSummary?empNo=' + emp.empNo + '" class="flex items-center gap-3">'
 			                + '<div class="w-6 h-6 rounded-full shrink-0 bg-slate-100 dark:bg-zink-600">'
 			                + '<img src="${pageContext.request.contextPath}/employeeFile/' + (emp.fileName ? emp.fileName : 'placeholder.png') + '" class="h-6 rounded-full">'
 			                + '</div>'
@@ -153,15 +231,7 @@ function fetchEmployeeData() {
 
             console.log("필터링된 데이터:", modifiedData);
 
-            // 기존 데이터를 제거하여 컨테이너를 비움
-            const container = document.getElementById("employeeTable");
-
-            // 기존 그리드 인스턴스를 파괴하여 메모리에서 제거
-            if (gridInstance) {
-                gridInstance.destroy();
-            }
-
-            // 그리드 렌더링
+            // 그리드 렌더링 (divisionCode는 출력하지 않음)
             gridInstance = new gridjs.Grid({
                 columns: ["사번", "이름", "이메일", "재직상태", "소속부서", "직급", "입사일"],
                 data: modifiedData.map(emp => [
@@ -174,7 +244,7 @@ function fetchEmployeeData() {
                     emp.hireDate,
                 ]),
                 pagination: true,
-                search: true,
+                search: true, 
                 style: {
                     th: {
                         background: '#f8f9fa',
@@ -184,6 +254,7 @@ function fetchEmployeeData() {
                         padding: '0.75rem',
                         borderBottom: '1px solid #e0e0e0',
                     },
+
                 }
             }).render(container);
             console.log('그리드 렌더링 완료');
