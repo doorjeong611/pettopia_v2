@@ -2,6 +2,7 @@ package com.example.pettopia.attendance;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +20,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.GetMapping;
 
 
@@ -142,9 +144,7 @@ public class AttendanceController {
         model.addAttribute("absentCount", employeeStatusCount.get("A"));
         model.addAttribute("annualLeaveCount", employeeStatusCount.get("V"));
         model.addAttribute("halfDayLeaveCount", employeeStatusCount.get("H"));
-    	// 출석 목록 조회
-    	List<Attendance> attendanceList = attendanceService.getAttendance(attendance);
-    	model.addAttribute("attendanceList", attendanceList);
+        
     	
         return "employee/attendanceList";
     }
