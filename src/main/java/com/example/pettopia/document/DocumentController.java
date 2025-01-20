@@ -272,10 +272,14 @@ public class DocumentController {
 		
 		if ("D".equals(docType)) {
 	        return "document/draftOne"; 
+	    } else if ("V".equals(docType)) {
+	    	return "document/vacationOne";
+	    } else if ("M".equals(docType)) {
+	    	return "document/materialOne";
+	    } else if ("R".equals(docType)) {
+	    	return "document/resignationOne";
 	    }
-		
-		
-		return "document/documentOne";
+		return "document/documentList";
 	}
 
 	
