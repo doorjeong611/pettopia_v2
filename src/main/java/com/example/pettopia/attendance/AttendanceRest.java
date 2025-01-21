@@ -5,37 +5,65 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.pettopia.message.MessageService;
+import com.example.pettopia.util.TeamColor;
 import com.example.pettopia.vo.Department;
+import com.example.pettopia.vo.Division;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
+@ComponentScan("com.example.pettopia.message")
 public class AttendanceRest {
     @Autowired
-    private AttendanceSerivce attendanceService;
+    AttendanceSerivce attendanceService;
+    @Autowired
+    MessageService messageService; // 쪽지모달창 부서, 팀 검색 재활용
 
-    // 직원 검색 API
-    @GetMapping("/attendanceSearch")
-    public ResponseEntity<Map<String, Object>> searchAttendance(
-            @RequestParam(required = false) String empNo,
-            @RequestParam(required = false) String attendanceDate) {
-
+	// 오자윤 : /attendance/attendanceList 팀 검색 -->
+	@GetMapping("attendance/departmentList/{divisionCode}")
+	public List<Department> getDepartmentName(@PathVariable String divisionCode) {
+		return messageService.getDepartmentName(divisionCode);
+	}
+	
+	// 오자윤 : /attendance/attendanceList 부서검색 -->
+	@GetMapping("attendance/divisionList")
+	public List<Division> getDivisionName() {
+		return messageService.getDivisionName();
+	}
+	
+    // 직원리스트 반환 : /attendance/attendanceList 근태리스트 반환
+    @GetMapping("attendance/attendanceList")
+    public List<Map<String, Object>> attendanceList(
+            @RequestParam(required = false) String attendanceDate,
+            @RequestParam(required = false) String deptCode,
+            @RequestParam(required = false) String divisionCode,
+            @RequestParam(required = false) String empName,
+            @RequestParam(defaultValue = "0") int offset,
+            @RequestParam(defaultValue = "10") int limit) {
+    	
+        // 쿼리 파라미터 추가
         Map<String, Object> params = new HashMap<>();
-        params.put("empNo", empNo);
         params.put("attendanceDate", attendanceDate);
+        params.put("deptCode", deptCode);
+        params.put("divisionCode", divisionCode);
+        params.put("empName", empName);
+        params.put("offset", offset);
+        params.put("limit", limit);
 
-        List<Map<String, Object>> attendanceList = attendanceService.selectAttendance(params);
-
-        Map<String, Object> response = new HashMap<>();
-        response.put("attendanceList", attendanceList);
-
-        return ResponseEntity.ok(response); // Return as JSON response
+		 // 디버깅
+		 List<Map<String, Object>> attendanceList = attendanceService.selectAttendance(params);
+		 log.debug(TeamColor.OJY + "attendanceList: " + attendanceList + TeamColor.RESET);
+		 
+        // 직원리스트 반환
+        return attendanceService.selectAttendance(params);
     }
 }

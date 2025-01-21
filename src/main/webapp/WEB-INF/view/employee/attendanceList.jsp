@@ -14,6 +14,8 @@
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/assets/images/pettopia_favicon.ico">
     <!-- Layout config Js -->
     <script src="${pageContext.request.contextPath}/assets/js/layout.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Tailwind CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tailwind2.css">
 </head>
@@ -87,40 +89,97 @@
                 </div>
                 
 		   <div class="card">
-                    <div class="card-body">
+                    <div class="items-center gab3 card-body">
                         <div class="grid grid-cols-1 gap-5 mb-5 xl:grid-cols-12">
                             <div class="xl:col-span-3">
-                                <div class="relative">
-                                    <input type="text" id="empName" class="ltr:pl-8 rtl:pr-8 search form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="직원 검색" autocomplete="off">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="search" class="lucide lucide-search inline-block size-4 absolute ltr:left-2.5 rtl:right-2.5 top-2.5 text-slate-500 dark:text-zink-200 fill-slate-100 dark:fill-zink-600"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
-                                    <button id="searchButton" class="bg-blue-500 text-white p-2 rounded">검색</button>
-                                </div>
+                     <!-- 선택박스 -->
+                  <div id="container" style="display: flex; gap: 20px; width: 100%; justify-content: space-between;">
+				    <!-- 선택 박스 : 부서 선택 -->
+				    <div style="display: flex; gap: 20px; width: 100%;">
+				        <div class="select-box" style="flex: 1; min-width: 200px;">
+				            <select id="departmentSelect" class="border border-gray-300 rounded w-full p-2">
+				                <option value="">부서 선택</option>
+				            </select>
+				        </div>
+				        
+			        <div class="select-box" style="flex: 1; min-width: 200px;">
+			            <select id="teamSelect" class="border border-gray-300 rounded w-full p-2">
+			                <option value="">팀 선택</option>
+			            </select>
+			        </div>
+			        
+				   <div class="input-box" id="employeeBox" style="min-width: 200px;">
+				        <input type="text" id="employeeSearchInput" class="border border-gray-300 rounded w-full p-2" placeholder="직원이름을 입력하세요." />
+				    </div>
+				    <!-- 직원 검색 -->
+				      <div class="button-box" id="buttonBox" style="min-width: 200px;">
+				        <button id="searchEmployeeBtn" style="background-color: #007BFF; color: white; border-radius: 4px; padding: 9px 12px; cursor: pointer; transition: background-color 0.3s; " onmouseover="this.style.backgroundColor='#66B2FF';" onmouseout="this.style.backgroundColor='#007BFF';">검색</button>
+				    </div>
+			    </div>
+
+			    <!-- Employee search input and search button on the right -->
+				    <div style="display: flex; gap: 10px;">
+				
+				    </div>
+				</div>
+
+					<!-- 직원 리스트 테이블 -->
+					<div id="newAttendance" style="display: none;">
+					<table class="w-full whitespace-nowrap">
+				        <thead class="...">
+				            <tr>
+				                <th class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500" style="padding-left: 15px; text-align: center;">소속팀</th>
+				                <th class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500" style="padding-right: 44px;">직원이름</th>
+		                        <th class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500" style="padding-right: 44px;">출근날짜</th>
+		                        <th class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500" style="padding-right: 44px;">출근시간</th>
+		                        <th class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500" style="padding-right: 44px;">퇴근시간</th>
+		                        <th class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500" style="padding-right: 44px;">근태상태</th>
+				            </tr>
+				        </thead>
+					    <tbody id="attendanceTableBody">
+					        <!-- 직원 목록 동적으로 추가 -->
+					    </tbody>
+				    </table>
+					</div>
+
+			        		
                             </div><!--end col-->
                             <div class="xl:col-span-2 xl:col-start-11">
                             
                             </div>
                             
                         </div><!--end grid-->
-                        
-                        <div>
+                        <div id="existingAttendance" style="display-block;">
                             <table class="w-full whitespace-nowrap">
-                          <thead>
+                          <thead class="ltr:text-left rtl:text-right bg-slate-100 text-slate-500 dark:bg-zink-600 dark:text-zink-200">
                     <tr>
-                        <th class="px-3.5 py-1.5 border-y border-slate-200 text-center">직원이름</th>
-                        <th class="px-3.5 py-1.5 border-y border-slate-200 text-center">출근날짜</th>
-                        <th class="px-3.5 py-1.5 border-y border-slate-200 text-center">출근시간</th>
-                        <th class="px-3.5 py-1.5 border-y border-slate-200 text-center">퇴근시간</th>
-                        <th class="px-3.5 py-1.5 border-y border-slate-200 text-center">근태상태</th>
+                        <th class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500" style="padding-left: 15px; text-align: center;">소속팀</th>
+                        <th class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500" style="padding-right: 44px;">직원이름</th>
+                        <th class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500" style="padding-right: 44px;">출근날짜</th>
+                        <th class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500" style="padding-right: 44px;">출근시간</th>
+                        <th class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500" style="padding-right: 44px;">퇴근시간</th>
+                        <th class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500" style="padding-right: 44px;">근태상태</th>
                     </tr>
                 </thead>
                 <tbody>
                     <c:forEach var="a" items="${attendanceList}">
                         <tr>
-                            <td class="px-3.5 py-2 border-y border-slate-200 text-center">${a.empName}</td>
-                            <td class="px-3.5 py-2 border-y border-slate-200 text-center">${a.attendanceDate}</td>
-                            <td class="px-3.5 py-2 border-y border-slate-200 text-center">${a.clockInTime}</td>
-                            <td class="px-3.5 py-2 border-y border-slate-200 text-center">${a.clockOutTime}</td>
-                            <td class="px-3.5 py-2 border-y border-slate-200 text-center">${a.attendanceStatus}</td>
+                            <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500" style=" text-align: center;">${a.deptName}</td>
+                            <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500" style="padding-left: 20px;">${a.empName}</td>
+                            <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500" style="padding-left: 5px;">${a.attendanceDate}</td>
+                            <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500" style="padding-left: 14px;">${a.clockInTime}</td>
+                            <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500" style="padding-left: 13px;">${a.clockOutTime}</td>
+                            <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500" style="padding-left: 28px;">  
+                            <c:choose>
+		                    <c:when test="${a.attendanceStatus == 'P'}">출근</c:when>
+		                    <c:when test="${a.attendanceStatus == 'L'}">지각</c:when>
+		                    <c:when test="${a.attendanceStatus == 'E'}">조퇴</c:when>
+		                    <c:when test="${a.attendanceStatus == 'A'}">결근</c:when>
+		                    <c:when test="${a.attendanceStatus == 'V'}">연차</c:when>
+		                    <c:when test="${a.attendanceStatus == 'H'}">반차</c:when>
+		                    <c:otherwise>알 수 없음</c:otherwise>
+		                	</c:choose>
+		            		</td>
                         </tr>
                     </c:forEach>
                 </tbody>
@@ -132,17 +191,17 @@
 		                </p>
 		            </div>
         <!-- Pagination controls -->
-            <div class="pagination">
+            <div style="margin-left: 963px; margin-top: 20px; display: flex; align-items: center;">
                 <c:if test="${currentPage > 1}">
-                    <a href="${pageContext.request.contextPath}/employee/attendanceList?page=${currentPage - 1}" class="prev">이전</a>
+                    <a href="${pageContext.request.contextPath}/employee/attendanceList?page=${currentPage - 1}" class="prev" style="margin-right: 10px; padding: 8px 12px; border: 1px solid #007bff; background-color: #ffffff; color: #007bff; border-radius: 4px; text-decoration: none;"> < 이전</a>
                 </c:if>
 
                 <c:forEach var="pageNum" begin="1" end="${totalPages}">
-                    <a href="${pageContext.request.contextPath}/employee/attendanceList?page=${pageNum}" class="page-num">${pageNum}</a>
+                    <a href="${pageContext.request.contextPath}/employee/attendanceList?page=${pageNum}" class="page-num" style="margin-right: 10px; padding: 8px 12px; border: 1px solid #007bff; background-color: #ffffff; color: #007bff; border-radius: 4px; text-decoration: none;">${pageNum}</a>
                 </c:forEach>
 
                 <c:if test="${currentPage < totalPages}">
-                    <a href="${pageContext.request.contextPath}/employee/attendanceList?page=${currentPage + 1}" class="next">다음</a>
+                    <a href="${pageContext.request.contextPath}/employee/attendanceList?page=${currentPage + 1}" class="next" style="margin-left: 10px; padding: 8px 12px; border: 1px solid #007bff; background-color: #ffffff; color: #007bff; border-radius: 4px; text-decoration: none;"> 다음 > </a>
                 </c:if>
             </div>
         </div>
@@ -165,34 +224,168 @@
 
 <script src='${pageContext.request.contextPath}/assets/libs/choices.js/public/assets/scripts/choices.min.js'></script>
 <script src="${pageContext.request.contextPath}/assets/libs/@popperjs/core/umd/popper.min.js"></script>
-<script src="${pageContext.request.contextPath}/assets/libs/tippy.js/tippy-bundle.umd.min.js"></script>
-<script src="${pageContext.request.contextPath}/assets/libs/simplebar/simplebar.min.js"></script>
-<script src="${pageContext.request.contextPath}/assets/libs/prismjs/prism.js"></script>
-<script src="${pageContext.request.contextPath}/assets/libs/lucide/umd/lucide.js"></script>
-<script src="${pageContext.request.contextPath}/assets/js/tailwick.bundle.js"></script>
 
-<!--apexchart js-->
-<script src="${pageContext.request.contextPath}/assets/libs/apexcharts/apexcharts.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const attendanceTableBody = document.getElementById('attendanceTableBody');
+    const departmentSelect = document.getElementById('departmentSelect'); // 부서 선택
+    const teamSelect = document.getElementById('teamSelect'); // 팀 선택
+    const employeeSearchInput = document.getElementById('employeeSearchInput'); // 직원 이름 input
+    const searchEmployeeBtn = document.getElementById('searchEmployeeBtn'); // 직원 검색 Btn
+    
+    function resetInputs() {
+        departmentSelect.value = '';
+        teamSelect.value = '';
+        attendanceTableBody.innerHTML = '';
+        
+    }
+	
+	//부서 목록 가져오기 
+    function getDivisionList() {
+		$.ajax({
+		    url: '/pettopia/attendance/divisionList',  // 부서 목록 API
+		    type: 'GET',
+		    success: function(data) {
+		        let divisionSelect = $('#departmentSelect');
+		        divisionSelect.empty();  // 기존 옵션 삭제
+		        divisionSelect.append('<option value="">부서 선택</option>');
+		        data.forEach(function(division) {
+		            divisionSelect.append('<option value="' + division.divisionCode + '">' + division.divisionName + '</option>');
+		        });
+		    },
+		    error: function(error) {
+		        console.error('부서목록 가져오기 실패 :', error);
+			    }
+			});
+		}
+	
+	// 부서 선택 시 팀 목록 가져오기
+	$('#departmentSelect').change(function() {
+	    var selectedDivisionCode = $(this).val();
+	    
+	    // 팀 선택 초기화
+	    let departmentSelect = $('#teamSelect');
+	    departmentSelect.empty(); 
+	    departmentSelect.append('<option value="">팀 선택</option>'); 
+	
+	    // 이름 검색 초기화
+	    employeeSearchInput.value = ''; 
+	    
+	    // 부서 선택 시 선택된 부서 코드로 팀 목록 가져오기
+	    if (selectedDivisionCode) {
+	        getDepartmentList(selectedDivisionCode);
+	    } else {
+	        // 부서를 선택하지 않은 경우 직원 목록 초기화
+	        $('#attendanceTableBody').html('');
+	        
+	    }
+	});
+	
+	// 팀 목록 가져오기 
+	function getDepartmentList(divisionCode) {
+		$.ajax({
+		    url: '/pettopia/attendance/departmentList/' + divisionCode,  // 팀 목록 API
+		    type: 'GET',
+		    success: function(data) {
+		        let departmentSelect = $('#teamSelect');
+		        departmentSelect.empty();  // 기존 옵션 삭제
+		        departmentSelect.append('<option value="">팀 선택</option>');
+		        data.forEach(function(department) {
+		            departmentSelect.append('<option value="' + department.deptCode + '">' + department.deptName + '</option>');
+		        });
+		        updateEmployeeList(); // 팀 목록 갱신 후 직원 목록 업데이트
+		    },
+		    error: function(error) {
+		        console.error('팀목록 가져오기 실패 :', error);
+		    }
+		});
+	   }
+	
+    // 팀 선택 시 직원 목록 업데이트
+	$('#teamSelect').change(function() {
+        updateEmployeeList();  // 팀 선택 시 직원 목록 갱신
+    });
+	
+    // 직원 검색 필터링
+    function updateEmployeeList() {
+    	const divisionCode = $('#departmentSelect').val(); // 선택된 부서 코드
+        const teamCode = $('#teamSelect').val(); // 선택된 팀 코드
+        const employeeName = employeeSearchInput.value.trim(); // view 에서 입력된 이름
+        const attendanceTableBody = $('#attendanceTableBody');
+        
+        attendanceTableBody.html(''); // 기존 직원 리스트 초기화
+        $('#existingAttendance').hide(); // 기존 목록 숨기기
+        $('#newAttendance').show(); // 새로운 목록 보이기
+        
+        // 직원 이름 독립적으로 검색
+	   if (!divisionCode && !teamCode && employeeName) {
+	        // 부서나 팀 없이 이름만으로 검색
+	        $.ajax({
+	            url: '/pettopia/attendance/attendanceList',
+	            type: 'GET',
+	            data: {
+	                empStatus: 'E',
+	                empName: employeeName
+	            },
+	            success: function(data) {
+	                if (!data || data.length === 0) {
+	                	attendanceTableBody.append('<tr><td colspan="5" style="text-align: center;">근태기록이 없습니다.</td></tr>');
+	                } else {
+	                    data.forEach(function(employee) {
+	                    	attendanceTableBody.append('<tr><td class="px-3.5 py-2.5 border border-slate-200 dark:border-zink-500" style="text-align: center;">' + employee.empNo + '</td>' + '<td class="px-3.5 py-2.5 border border-slate-200 dark:border-zink-500" style="text-align: center;">' + employee.empName + '</td>' + '<td class="px-3.5 py-2.5 border border-slate-200 dark:border-zink-500" style="text-align: center;">' + employee.attendanceDate + '</td>' + '<td class="px-3.5 py-2.5 border border-slate-200 dark:border-zink-500" style="text-align: center;">' + employee.clockInTime + '</td>' + '<td class="px-3.5 py-2.5 border border-slate-200 dark:border-zink-500" style="text-align: center;">' + employee.clockOutTime + '</td>' + '<td class="px-3.5 py-2.5 border border-slate-200 dark:border-zink-500" style="text-align: center;">' + employee.attendanceStatus + '</td></tr>'); // 직원 데이터 테이블에 추가
+	                    });
+	                }
+	            },
+	            error: function(error) {
+	                console.error('Error fetching employees by name:', error);
+	            }
+	        });
+	        return;
+	    }
 
-<!--dashboard ecommerce init js-->
-<script src="${pageContext.request.contextPath}/assets/js/pages/dashboards-ecommerce.init.js"></script>
+       // 부서와 팀을 선택한 경우 직원 목록 갱신
+	   if (!divisionCode || !teamCode) {
+	        return; // 부서나, 팀 선택 안될시 값 반환x
+	    }
 
-<!-- grid  -->
-<script src="${pageContext.request.contextPath}/assets/libs/gridjs/gridjs.js"></script>
-<script src="${pageContext.request.contextPath}/assets/libs/gridjs/gridjs.production.min.js"></script>
+        
+        // AJAX 요청
+        $.ajax({
+            url: '/pettopia/attendance/attendanceList', // 직원 목록 API
+            type: 'GET',
+            data: {
+                empStatus: 'E', // 'E'는 재직중인 직원 필터링
+                deptCode: teamCode || '', // 선택된 팀 코드 추가
+                empName: employeeName || '' // 직원 이름 추가
+            },
+            success: function(data) {
+            	if (!data || data.length === 0) {
+            		attendanceTableBody.append('<tr><td colspan="5" style="text-align: center;">근태기록이 없습니다.</td></tr>');  // 직원이 없을 경우 메시지 표시
+                } else { // 직원 반복 추가.
+                    data.forEach(function(employee) {
+                    	attendanceTableBody.append('<tr><td class="px-3.5 py-2.5 border border-slate-200 dark:border-zink-500" style="text-align: center;">' + employee.empNo + '</td>' + '<td class="px-3.5 py-2.5 border border-slate-200 dark:border-zink-500" style="text-align: center;">' + employee.empName + '</td>' + '<td class="px-3.5 py-2.5 border border-slate-200 dark:border-zink-500" style="text-align: center;">' + employee.attendanceDate + '</td>' + '<td class="px-3.5 py-2.5 border border-slate-200 dark:border-zink-500" style="text-align: center;">' + employee.clockInTime + '</td>' + '<td class="px-3.5 py-2.5 border border-slate-200 dark:border-zink-500" style="text-align: center;">' + employee.clockOutTime + '</td>' + '<td class="px-3.5 py-2.5 border border-slate-200 dark:border-zink-500" style="text-align: center;">' + employee.attendanceStatus + '</td></tr>'); // 직원 데이터 테이블에 추가
+                    });
+                }
+            },
+            error: function(error) {
+                console.error('직원목록 가져오기 실패:', error);
+            },
+        });
+        
+    }
+    
+    // 직원 검색 버튼 클릭 시 필터링
+    $(searchEmployeeBtn).click(function () {
+        updateEmployeeList(); // 직원 목록 필터링
+    });
 
-<!-- App js -->
-<script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
+    // 초기화 및 부서 목록 로드
+    getDivisionList();
+});
 
-<script src='assets/libs/choices.js/public/assets/scripts/choices.min.js'></script>
-<script src="assets/libs/@popperjs/core/umd/popper.min.js"></script>
-<script src="assets/libs/tippy.js/tippy-bundle.umd.min.js"></script>
-<script src="assets/libs/simplebar/simplebar.min.js"></script>
-<script src="assets/libs/prismjs/prism.js"></script>
-<script src="assets/libs/lucide/umd/lucide.js"></script>
-<script src="assets/js/tailwick.bundle.js"></script>
-<!-- App js -->
-<script src="assets/js/app.js"></script>
+
+
+</script>
 </body>
 
 </html>

@@ -43,12 +43,12 @@ public class MessageRest {
 		 @RequestParam(value = "empName", required = false) String empName,
 		 Model model) {
 		
-		// 매개변수디버깅
+		 // 매개변수디버깅
 		 log.debug(TeamColor.OJY + "empStatus: " + empStatus + TeamColor.RESET);
 		 log.debug(TeamColor.OJY + "deptCode: " + deptCode + TeamColor.RESET);
 		 log.debug(TeamColor.OJY + "empName: " + empName + TeamColor.RESET);
 		 
-		// 디버깅
+		 // 디버깅
 		 List<Map<String, Object>> employeeList = messageService.getEmployeeList(empStatus, deptCode, empName);
 		 log.debug(TeamColor.OJY + "Employee List: " + employeeList + TeamColor.RESET);
 		 
