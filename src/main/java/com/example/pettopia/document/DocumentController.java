@@ -267,11 +267,12 @@ public class DocumentController {
 	
 	// documentRemove Action - 문서 영구 삭제
 	@PostMapping("/document/documentRemove")
-	public String getDocumentRemove(Model model, @RequestParam(required = false) Integer[] docNoList) {
+	public String getDocumentRemove(Model model, HttpSession session, @RequestParam(required = false) Integer[] docNoList) {
 	    if (docNoList != null) {
 	        for (Integer docNo : docNoList) {
 	            log.debug(TeamColor.KDH + "Received docNo: " + docNo + TeamColor.RESET);
-	            documentService.removeDocument(docNo);
+	            String path = session.getServletContext().getRealPath("/documentFile/");
+	            documentService.removeDocument(docNo, path);
 	            log.debug(TeamColor.KDH + "removeDocument: " + docNo + ".문서 영구 삭제" + TeamColor.RESET);
 	        }
 	    } else {

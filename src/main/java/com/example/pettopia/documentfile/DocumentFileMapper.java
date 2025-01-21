@@ -20,5 +20,8 @@ public interface DocumentFileMapper {
 	
 	// documentOne : 파일 리스트 조회
 	List<DocumentFile> selectDocumentFileList(Integer docFileNo);
+	
+	// documentBinList : 문서 영구삭제 시 파일 삭제를 위한 파일 No 조회
+	List<Integer> selectDocFileNoList (Integer docNo);
 
 }	

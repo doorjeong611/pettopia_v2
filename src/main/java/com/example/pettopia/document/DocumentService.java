@@ -194,7 +194,24 @@ public class DocumentService {
 	}
 	
 	// documentBin → 문서 영구삭제
-	public void removeDocument(Integer docNo) {
+	public void removeDocument(Integer docNo, String path) {
+		
+		List<Integer> docFileNoList = documentFileMapper.selectDocFileNoList(docNo);
+		log.debug(TeamColor.KDH + "docFileNoList : " + docFileNoList.toString() + TeamColor.RESET);
+
+		if(docFileNoList != null) {
+		    for (Integer docFileNo : docFileNoList) {
+		    	DocumentFile documentFile = documentFileMapper.selectDocumentFileOne(docFileNo);
+		        int deleteDocFile = documentFileMapper.deleteDocumentFile(docFileNo); // 각 파일 삭제
+		        log.debug(TeamColor.KDH + "documentFile : " + documentFile.toString() + TeamColor.RESET);
+		        if(deleteDocFile == 1) {
+	    			String fullname = path + documentFile.getFileName() + "." + documentFile.getFileExt();
+	    			File file = new File(fullname);
+	    			file.delete();
+		        }
+		    }
+		}
+		
 		documentMapper.deleteDocument(docNo);
 	}
 	
