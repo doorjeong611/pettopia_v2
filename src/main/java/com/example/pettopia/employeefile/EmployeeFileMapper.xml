@@ -3,6 +3,7 @@
 <mapper namespace="com.example.pettopia.employeefile.EmployeeFileMapper">
 
 	<!-- addEmployee : 직원 프로필 사진 등록 -->
+	<!-- employeeOne : 직원 서명 등록 -->
 	<insert id="insertEmployeeFile" parameterType="com.example.pettopia.vo.EmployeeFile">
 		INSERT INTO employee_file(emp_no, file_purpose, origin_file_name, file_name, file_ext, file_type, create_datetime, update_datetime)
 		VALUES (#{empNo}, #{filePurpose}, #{originFileName}, #{fileName}, #{fileExt}, #{fileType}, now(), now())
@@ -65,7 +66,13 @@
 		AND file_purpose = 'S'
 	</select>
 	
-	
+	<!-- employeeOne : 이미 존재하는 sign 삭제 -->
+	<select id="deleteEmployeeSignFile" parameterType="String">
+		DELETE 
+		FROM employee_file
+		WHERE emp_no = #{empNo}
+		  AND file_purpose = 'S';
+	</select>
 	
 	
 	

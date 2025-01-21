@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.pettopia.dto.EmpUserDetails;
 import com.example.pettopia.util.TeamColor;
@@ -46,9 +47,15 @@ public class EmployeeFileRest {
 	
 	// employeeOne : 서명 등록 (이미 존재하는 서명은 삭제 -> 새로운 서명 등록)
 	@PostMapping("/rest/addEmployeeSignFile")
-	public ResponseEntity<String> addEmployeeSignFile(HttpSession session, @RequestParam String sign) {
+	public ResponseEntity<String> addEmployeeSignFile(HttpSession session, @RequestParam String sign, @RequestParam MultipartFile empSignFile, Authentication auth) {
+		log.debug(TeamColor.KMJ+" EmployeeFileRest : Post addEmployeeSignFile()" + TeamColor.RESET);
 		
 		String path = session.getServletContext().getRealPath("/employeeFile/");
+		EmpUserDetails empUserDetails = (EmpUserDetails)auth.getPrincipal();
+		String empNo = empUserDetails.getUsername();
+		
+		log.debug(TeamColor.KMJ+" empNo : " + empNo + TeamColor.RESET);
+		
 		
 //		int row = employeeFileService.
 		

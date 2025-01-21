@@ -205,7 +205,7 @@
 									<canvas style="border:1px solid black; width:250px;"></canvas>        
 									       
 									<button type="button" id="btnClear" class="text-green-500 bg-white btn hover:bg-green-100">지우기</button>         
-									<button type="button" id="btnAdd" class="text-green-500 bg-white btn hover:bg-green-100">저장</button>        
+									<!-- <button type="button" id="btnAdd" class="text-green-500 bg-white btn hover:bg-green-100">등록</button>  -->       
 								</div>
 							    
 							</div>
@@ -321,43 +321,71 @@ $.ajax({
 
 
 
-/* signature_pad */
-// API 소스코드가 canvas배열형태로 접근하도록 되어있음
-// --> $('canvas') 이런식의 직접호출은 error 발생 
-let canvas = $("#pad canvas")[0];
-
-let sign = new SignaturePad(canvas, {
-	minWidth : 2, // 펜굵기
-	maxWidth : 2, // 펜굵기
-	penColor : '#000000' // 펜색상
-});
-
-// 지우기 버튼
-$('#btnClear').click(function(){
-	sign.clear();
-});
-
-$('#btnAdd').click(function(){
-	if(sign.isEmpty()) {
-		alert('사인이 없습니다');
-	} else {
-		$.ajax({
-		
-			 url : '/pettopia/rest/addEmployeeSignFile'
-			, method : 'POST'
-			, data : {sign:sign.toDataURL()}
-		}).done(function(result){
-			alert(result);
-			sign.clear();
-		}).fail(function(request, status, error){
-			alert('실패');
-		});
-	}
-});
 
 
-$('#signPadBtn').click(function() {
-	$('#pad').removeClass("hidden");
+// ----------------------------------------------------------------------------------------------------------
+$(document).ready(function () {
+    // Canvas와 SignaturePad 초기화
+    const canvas = $('#pad canvas')[0]; // 실제 DOM 요소
+    const signaturePad = new SignaturePad(canvas, {
+        minWidth: 2, 
+        maxWidth: 2, 
+        penColor: '#000000'
+    });
+    const $fileInput = $('#empSignFile'); // 파일 첨부 input
+
+    // **1. 파일 첨부 시 서명 패드 비활성화**
+    $fileInput.on('change', function () {
+        if (this.files.length > 0) { // 파일이 첨부되었는지 확인
+            if (!signaturePad.isEmpty()) {
+                alert('이미 서명이 작성되어 있습니다. 파일을 첨부할 수 없습니다.');
+                $fileInput.val(''); // 파일 첨부 초기화
+            } else {
+                // 파일 첨부 시 서명 패드 비활성화
+                $('#pad').addClass('hidden'); // 서명 영역 숨김
+                signaturePad.clear(); // 서명 초기화
+            }
+        }
+    });
+
+    // **2. 서명 작성 시 파일 첨부 초기화**
+    $(canvas).on('mouseup', function () {
+        if (!signaturePad.isEmpty()) { // 서명이 작성되었는지 확인
+            if ($fileInput.val()) {
+                alert('이미 파일이 첨부되어 있습니다. 서명을 사용할 수 없습니다.');
+                $fileInput.val(''); // 파일 첨부 초기화
+            }
+        }
+    });
+
+    // **3. 지우기 버튼**
+    $('#btnClear').on('click', function () {
+        signaturePad.clear();
+    });
+
+    // **4. 서명 등록 버튼**
+    $('#addEmpSignBtn').on('click', function () {
+        if (signaturePad.isEmpty()) {
+            alert('서명이 없습니다. 서명을 작성해주세요.');
+        } else {
+            const signDataURL = signaturePad.toDataURL(); // 서명을 Base64로 저장
+            $.ajax({
+                url: '/pettopia/rest/addEmployeeSignFile',
+                method: 'POST',
+                data: { sign: signDataURL }
+            }).done(function (result) {
+                alert(result); // 성공 메시지
+                signaturePad.clear(); // 서명 초기화
+            }).fail(function () {
+                alert('서명 등록에 실패했습니다.');
+            });
+        }
+    });
+
+    // **5. 서명하기 버튼 (서명 패드 활성화)**
+    $('#signPadBtn').on('click', function () {
+        $('#pad').removeClass('hidden'); // 서명 영역 표시
+    });
 });
 
 </script>
