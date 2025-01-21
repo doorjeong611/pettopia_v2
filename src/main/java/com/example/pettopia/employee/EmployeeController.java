@@ -187,7 +187,7 @@ public class EmployeeController {
 		employee.setEmpEmail(empEmail);
 		
 		Employee empInfo = new Employee();
-		empInfo = employeeService.getSimpleEmpInfo(employee); // 일치한다면 사번, 이름, 이메일 가져옴
+		empInfo = employeeService.getSimpleEmpInfo(employee); // 일치한다면 사번, 이름, 이메일, 팀장여부 가져옴
 		
 		String msg = "임시 비밀번호 발급 성공!";
 		
@@ -200,6 +200,7 @@ public class EmployeeController {
 			log.debug(TeamColor.KMJ + "임시 비밀번호 발급 : " + tempPw);
 			
 			employee.setEmpPw(tempPw);
+			employee.setIsTeamLeader(empInfo.getIsTeamLeader());
 			
 			// 발급받은 임시 비밀번호로 db 수정 
 			boolean result = employeeService.modifyEmployeeTempPw(employee); // update 성공하면 true 
@@ -249,6 +250,8 @@ public class EmployeeController {
 		log.debug(TeamColor.KMJ+" empNo : "+ empNo + TeamColor.RESET);
 		
 		Map<String, Object> empInfo = employeeService.getEmployeeOne(empNo);
+		log.debug(TeamColor.KMJ+" empInfo : "+ empInfo.toString() + TeamColor.RESET);
+		
 		
 		model.addAttribute("empInfo", empInfo);
 		
@@ -264,6 +267,7 @@ public class EmployeeController {
 		log.debug(TeamColor.KMJ+" empNo : "+ empNo + TeamColor.RESET);
 		
 		Map<String, Object> empInfo = employeeService.getEmployeeOne(empNo);
+		log.debug(TeamColor.KMJ+" empInfo : "+ empInfo.toString() + TeamColor.RESET);
 		
 		// 수정 페이지에 맞춰서 employeeForm에 담아주기.
 		EmployeeForm empForm = new EmployeeForm();
@@ -317,23 +321,25 @@ public class EmployeeController {
 		model.addAttribute("fileName", fileName);
 		model.addAttribute("empFileNo", empFileNo);
 		model.addAttribute("empForm", empForm);
+		model.addAttribute("isTeamLeader", empInfo.get("isTeamLeader"));
 		
 		return "employee/modifyEmployeeOne";
 	}
 	
 	// modifyEmployeeOne : 직원 개인 정보 수정
 	@PostMapping("/employee/modifyEmployeeOne")
-	public String modifyEmployeeOne(EmployeeForm employeeForm, @RequestParam String empFileNo, @RequestParam String empStatus, HttpSession session) {
+	public String modifyEmployeeOne(EmployeeForm employeeForm, @RequestParam String empFileNo, @RequestParam String empStatus, @RequestParam String isTeamLeader,  HttpSession session) {
 		log.debug(TeamColor.KMJ+" EmployeeController : POST modifyEmployeeOne()" + TeamColor.RESET);
 		
 		log.debug(TeamColor.KMJ+" empFileNo : "+ empFileNo + TeamColor.RESET);
 		log.debug(TeamColor.KMJ+" empStatus : "+ empStatus + TeamColor.RESET);
+		log.debug(TeamColor.KMJ+" isTeamLeader : "+ isTeamLeader + TeamColor.RESET);
 		log.debug(TeamColor.KMJ+" employeeForm : "+ employeeForm.toString() + TeamColor.RESET);
 		
 		String path = session.getServletContext().getRealPath("/employeeFile/");
 		
 		// 직원 정보 수정
-		boolean result = employeeService.modifyEmployeeOne(employeeForm, path, empFileNo, empStatus);
+		boolean result = employeeService.modifyEmployeeOne(employeeForm, path, empFileNo, empStatus, isTeamLeader);
 		
 		
 		
@@ -374,15 +380,39 @@ public class EmployeeController {
 	
 	// employeeSummary : 직원 부서, 직급, 재직 상태 수정
 	@PostMapping("/employee/modifyEmployeSummary")
-	public String modifyEmployeSummary(@RequestParam(required = false) String empDeptCode, @RequestParam(required = false) String empRankNo, @RequestParam(required = false) String empStatusVal ) {
+	public String modifyEmployeSummary(@RequestParam(required = false) String empDeptCode, @RequestParam(required = false) String empRankNo, @RequestParam(required = false) String empStatusVal, @RequestParam String sendEmpNo ) {
 		
-		log.debug(TeamColor.KMJ+" EmployeeController : GET modifyEmployeSummary()" + TeamColor.RESET);
+		log.debug(TeamColor.KMJ+" EmployeeController : POST modifyEmployeSummary()" + TeamColor.RESET);
+		log.debug(TeamColor.KMJ+" sendEmpNo : "+ sendEmpNo + TeamColor.RESET);
 		log.debug(TeamColor.KMJ+" empDeptCode : "+ empDeptCode + TeamColor.RESET);
 		log.debug(TeamColor.KMJ+" empRankNo : "+ empRankNo + TeamColor.RESET);
 		log.debug(TeamColor.KMJ+" empStatusVal : "+ empStatusVal + TeamColor.RESET);
 		
+		// 직원 부서, 직급(팀장여부), 재직 상태 정보 수정
+		Employee employee = new Employee();
 		
-		return "";
+		employee.setEmpNo(sendEmpNo);
+		
+		
+		if(empDeptCode != null && empDeptCode != "null") {
+			employee.setDeptCode(empDeptCode);
+		}
+		
+		if(empRankNo != null && empRankNo != "null") {
+			Integer rankNo = Integer.parseInt(empRankNo);
+			employee.setRankNo(rankNo);
+		}
+		
+		if(empStatusVal != null && empStatusVal != "null") {
+			employee.setEmpStatus(empStatusVal);
+		}
+		
+		boolean result = employeeService.modifyEmployeeSummary(employee);
+		
+		log.debug(TeamColor.KMJ+" result : "+ result + TeamColor.RESET);
+		
+		
+		return "redirect:/employee/employeeSummary?empNo="+sendEmpNo;
 	}
 	
 	

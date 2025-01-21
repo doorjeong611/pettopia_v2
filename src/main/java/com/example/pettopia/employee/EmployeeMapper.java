@@ -31,7 +31,9 @@ public interface EmployeeMapper {
     // sendTempPassword : 입력한 사번, 이메일 일치 여부 조회
     Employee selectSimpleEmpInfo(Employee employee);
     
-    // modifyEmployeeOne : 직원 정보 수정 sendTmepPassword - 직원 비밀번호 수정
+    // modifyEmployeeOne : 직원 정보 수정, 
+    // sendTmepPassword : 직원 비밀번호 수정
+    // modifyEmployeeSummary : 직원 직급(팀장여부), 부서, 재직상태 수정
     Integer updateEmployee(Employee employee);
     
     // employeeOne : 직원 개인 정보 상세보기

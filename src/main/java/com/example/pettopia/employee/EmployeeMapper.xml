@@ -104,6 +104,7 @@
 		SELECT emp_no  AS empNo
 				, emp_name AS empName
 				, emp_email AS empEmail
+				, is_team_leader AS isTeamLeader
 		FROM employee
 		WHERE emp_no LIKE #{empNo}
 		AND emp_email LIKE #{empEmail}	
@@ -154,10 +155,6 @@
 	            emp_status = #{empStatus},
 	        </if>
 	
-	        <if test="isTeamLeader != null">
-	            is_team_leader = #{isTeamLeader},
-	        </if>
-	
 	        <if test="deptCode != null and deptCode != ''">
 	            dept_code = #{deptCode},
 	        </if>
@@ -174,10 +171,21 @@
 	            hire_date = #{hireDate},
 	        </if>
 	
-	        <if test="resignationDate != null">
-	            resignation_date = #{resignationDate},
-	        </if>
-	
+            <if test="resignationDate != null and resignationDate != ''">
+                resignation_date = now(),
+            </if>
+            
+            <if test="resignationDate == null and resignationDate == ''">
+                resignation_date = null,
+            </if>
+
+	        <if test="isTeamLeader == ''">
+	        	is_team_leader = null,
+	    	</if>
+	    	
+	    	<if test="isTeamLeader != null and isTeamLeader != '' ">
+	    		is_team_leader = #{isTeamLeader},
+	    	</if>
 	        update_datetime = now()
 	    </set>
 	    WHERE emp_no = #{empNo}
@@ -192,6 +200,7 @@
 				, e.emp_email AS empEmail
 				, e.emp_birth AS empBirth
 				, e.emp_status AS empStatus
+				, e.is_team_leader AS isTeamLeader
 				, CASE WHEN e.emp_gender = 'F' THEN '여자' ELSE '남자'END AS empGender
 				, e.emp_phone AS empPhone
 				, e.postal_code AS postalCode

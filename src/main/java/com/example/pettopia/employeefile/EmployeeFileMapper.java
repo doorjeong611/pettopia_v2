@@ -15,5 +15,10 @@ public interface EmployeeFileMapper {
 	
 	// modifyEmployeeOne : 물리적 파일 삭제를 위해 db에 저장된 이름 가져오기
 	EmployeeFile selectEmployeeFile(Integer empFileNo);
+	
+	// employeeOne : employeeFileRest - getEmployeeSignFile (db에 저장된 서명 파일 가져오기)
+	EmployeeFile selectEmployeeSignFile(String empNo);
+	
+	
 
 }
