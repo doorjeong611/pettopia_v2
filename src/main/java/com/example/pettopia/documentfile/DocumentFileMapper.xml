@@ -26,5 +26,10 @@
 		       file_ext fileExt, file_type fileType, file_size fileSize, create_datetime createDatetime, update_datetime updateDatetime
 		FROM document_file WHERE doc_no = #{docNo}
 	</select>
+	
+	<!-- selectDocFileNoList : 문서 영구삭제 시 파일 삭제를 위한 파일 No 조회 -->
+	<select id="selectDocFileNoList" parameterType="Integer" resultType="Integer">
+		SELECT doc_file_no docFileNo FROM document_file WHERE doc_no = ${docNo}
+	</select>
 
 </mapper>
