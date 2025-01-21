@@ -14,7 +14,10 @@ import com.example.pettopia.vo.Rank;
 @Mapper
 public interface MessageMapper {
 	
-	// 오자윤 : /employee/messageNote 쪽지보내기-->
+	// 오자윤 : 페이지네이션 총 total count 
+	Integer getMessageCount(String empNo);
+	
+	// 오자윤 : /employee/messageNote 쪽지보내기
 	void insertMessage(Message message);
 	
 	// 오자윤 : /employee/messageNote 팀 검색 (쪽지쓰기 모달창) -->
@@ -35,8 +38,9 @@ public interface MessageMapper {
 	// 오자윤 : /employee/messageOne 쪽지 상세보기
 	Map<String, Object>getMessageById(String messageNo);
 	
+	
 	// 오자윤 : /employee/messageList 쪽지리스트
-	List<Map<String, Object>>getMessageList(String empNo);
+	List<Map<String, Object>>getMessageList(String empNo, int limit, int offset);
 	
 	// 오자윤 : /employee/messageList 쪽지 휴지통 이동
 	Integer updateMessage(String messageNo);

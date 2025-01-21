@@ -14,12 +14,17 @@ import com.example.pettopia.vo.Attendance;
 public class AttendanceSerivce {
 	@Autowired AttendanceMapper attendanceMapper;
 
+	// 오자윤 : /employee/attendance 페이지네이션 카운트
+	public int countAttendance(Map<String, Object> params) {
+	    return attendanceMapper.countAttendance(params);
+	}
+	
 	// 오자윤 : /employee/attendanceList 근태상태 조회
 	public List<Map<String, Object>> selectAttendance(Map<String, Object> params) {
 		return attendanceMapper.selectAttendanceList(params);
 	}
 	
-	// 오자윤 : /employee/attendanceList 근태상태 조회
+	// 오자윤 : /employee/attendanceList 근태상태 카운트
 	public Map<String, Object> countEmployeeStatus(Attendance attendance) {
 		return attendanceMapper.countEmployeeStatus(attendance);
 	}

@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
@@ -96,7 +97,8 @@ public class AttendanceController {
 	// 오자윤 : /common/petTopiaMain 퇴근등록
     @PostMapping("/employee/attendanceOff")
     public String attendanceOff(Model model, HttpSession session, Attendance attendance, Authentication auth) {
-        // Security를 통해 empNo 가져오기
+        
+    	// Security를 통해 empNo 가져오기
         EmpUserDetails empUserDetails = (EmpUserDetails) auth.getPrincipal();
         String empNo = empUserDetails.getUsername(); // 또는 empUserDetails.getEmpNo() 사용 가능
         log.debug(TeamColor.OJY + "empNo------>" + empNo + TeamColor.RESET);
@@ -135,7 +137,11 @@ public class AttendanceController {
     
     // 오자윤 : 관리자 - 직원 근태조회
     @GetMapping("employee/attendanceList")
-    public String getAttendanceListByAdmin(Model model, Attendance attendance) {
+    public String getAttendanceListByAdmin( @RequestParam(required = false) String empNo,
+    										@RequestParam(required = false) String attendanceDate,
+    										@RequestParam(defaultValue = "1") int page, // 기본 페이지
+    							            @RequestParam(defaultValue = "10") int size, // 페이지 단위
+    										Model model, Attendance attendance) {
     	
         // 직원 근태 상태 카운트 조회
     	Map<String, Object> employeeStatusCount = attendanceService.countEmployeeStatus(attendance);
@@ -145,7 +151,34 @@ public class AttendanceController {
         model.addAttribute("annualLeaveCount", employeeStatusCount.get("V"));
         model.addAttribute("halfDayLeaveCount", employeeStatusCount.get("H"));
         
-    	
+        // 쿼리 파라미터 생성
+        Map<String, Object> params = new HashMap<>();
+        params.put("empNo", empNo);
+        params.put("attendanceDate", attendanceDate);
+        
+        // 전체 개수 
+        int totalRecords = attendanceService.countAttendance(params);
+
+        // 전체 페이지
+        int totalPages = (int) Math.ceil((double) totalRecords / size);
+
+        // 시작 페이지 계산
+        int offset = (page - 1) * size;
+        
+        // 페이지 파라미터
+        params.put("offset", offset);
+        params.put("limit", size);
+        
+    	// 직원 리스트
+        List<Map<String, Object>> attendanceList = attendanceService.selectAttendance(params);
+        log.debug(TeamColor.OJY + "attendanceList------> " + attendanceList + TeamColor.RESET);
+        // 직원리스트, 직원출석, 페이징
+        model.addAttribute("attendanceList", attendanceList);
+        model.addAttribute("employeeStatusCount", employeeStatusCount);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("totalResults", totalRecords);
+
         return "employee/attendanceList";
     }
     
