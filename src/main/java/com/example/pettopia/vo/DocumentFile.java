@@ -14,6 +14,7 @@ public class DocumentFile {
 	private String fileName;
 	private String fileExt;
 	private String fileType;
+	private Long fileSize;
 	private String createDatetime;
 	private String updateDatetime;
 	private List<MultipartFile> documentFile;
