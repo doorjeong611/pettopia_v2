@@ -196,26 +196,21 @@
 	                                        <textarea name="docRemarks" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" id="docRemarks" placeholder="비고" rows="3"></textarea>
 	                                    </div>
                                     </div>
-                                    
-                                    <!-- 파일 다운로드 -->
+								</div>
+                                <!-- 파일 다운로드 -->
+                            	<div class="grid grid-cols-1 gap-2 lg:grid-cols-1 xl:grid-cols-12 m-2 mt-4">
                                     <div class="lg:col-span-2 xl:col-span-12">
-                                            <label for="fileUpload" class="inline-block mb-2 text-base font-medium">파일 업로드</label>
-                                            <div class="flex items-center justify-center bg-white border border-dashed rounded-md cursor-pointer dropzone border-slate-300 dropzone2 dz-clickable">
-                                                
-                                                <div class="w-full py-5 text-lg text-center dz-message needsclick">
-                                                    <div class="mb-3">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="upload-cloud" class="lucide lucide-upload-cloud block mx-auto size-12 text-slate-500 fill-slate-200"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"></path><path d="M12 12v9"></path><path d="m16 16-4-4-4 4"></path></svg>
-                                                    </div>
-
-                                                    <h5 class="mb-0 font-normal text-slate-500 dark:text-zink-200 text-15">Drag and drop your product file</h5>
-                                                </div>
-                                            </div>
-
-                                            <ul class="flex flex-wrap mb-0 gap-x-5" id="dropzone-preview2">
-                                                
-                                            </ul>
-                                      </div>
-                           		</div>
+                                        <label for="fileUpload" class="inline-block text-base font-medium">파일 업로드</label>
+                                	</div>
+                                	<div class="lg:col-span-2 xl:col-span-12">
+                                		<button type="button" id="btnAddFile"class="mr-1 p-2 bg-white text-custom-500 btn btn-sm hover:text-custom-500 hover:bg-custom-100 focus:text-custom-500 focus:bg-custom-100 active:text-custom-500 active:bg-custom-100">파일 추가</button>
+                                		<button type="button" id="btnRemoveFile" class="p-2 text-red-500 bg-white btn hover:text-red-500 hover:bg-red-100 focus:text-red-500 focus:bg-red-100 active:text-red-500 active:bg-red-100">파일 삭제</button>
+									</div>
+								</div>
+								<div id="fileDiv" class="grid grid-cols-1 gap-2 lg:grid-cols-1 xl:grid-cols-12 m-2">
+									<!-- 파일 input append 부분 -->
+								</div>
+                           		
                                 <div class="flex justify-end gap-2 mt-4">
                                 	<button type="reset" class="text-red-500 bg-white btn hover:text-red-500 hover:bg-red-100 focus:text-red-500 focus:bg-red-100 active:text-red-500 active:bg-red-100 dark:bg-zink-700 dark:hover:bg-red-500/10 dark:focus:bg-red-500/10 dark:active:bg-red-500/10">리셋</button>
                                     <button type="button" id="tempAddDocumentBtn" class="bg-white text-sky-500 btn border-sky-500 hover:text-white hover:bg-sky-600 hover:border-sky-600 focus:text-white focus:bg-sky-600 focus:border-sky-600 focus:ring focus:ring-sky-100 active:text-white active:bg-sky-600 active:border-sky-600 active:ring active:ring-sky-100">임시 저장</button>
@@ -308,26 +303,22 @@
 	                                        <textarea name="docRemarks" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" id="docRemarks" placeholder="비고" rows="3"></textarea>
 	                                    </div>
                                     </div>
-                                    
-                                    <!-- 파일 다운로드 -->
-                                    <div class="lg:col-span-2 xl:col-span-12">
-                                            <label for="fileUpload" class="inline-block mb-2 text-base font-medium">파일 업로드</label>
-                                            <div class="flex items-center justify-center bg-white border border-dashed rounded-md cursor-pointer dropzone border-slate-300 dropzone2 dz-clickable">
-                                                
-                                                <div class="w-full py-5 text-lg text-center dz-message needsclick">
-                                                    <div class="mb-3">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="upload-cloud" class="lucide lucide-upload-cloud block mx-auto size-12 text-slate-500 fill-slate-200"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"></path><path d="M12 12v9"></path><path d="m16 16-4-4-4 4"></path></svg>
-                                                    </div>
-
-                                                    <h5 class="mb-0 font-normal text-slate-500 dark:text-zink-200 text-15">Drag and drop your product file</h5>
-                                                </div>
-                                            </div>
-
-                                            <ul class="flex flex-wrap mb-0 gap-x-5" id="dropzone-preview2">
-                                                
-                                            </ul>
-                                      </div>
                            		</div>
+                           		
+                           		<!-- 파일 다운로드 -->
+                            	<div class="grid grid-cols-1 gap-2 lg:grid-cols-1 xl:grid-cols-12 m-2 mt-4">
+                                    <div class="lg:col-span-2 xl:col-span-12">
+                                        <label for="fileUpload" class="inline-block text-base font-medium">파일 업로드</label>
+                                	</div>
+                                	<div class="lg:col-span-2 xl:col-span-12">
+                                		<button type="button" id="btnAddFile"class="mr-1 p-2 bg-white text-custom-500 btn btn-sm hover:text-custom-500 hover:bg-custom-100 focus:text-custom-500 focus:bg-custom-100 active:text-custom-500 active:bg-custom-100">파일 추가</button>
+                                		<button type="button" id="btnRemoveFile" class="p-2 text-red-500 bg-white btn hover:text-red-500 hover:bg-red-100 focus:text-red-500 focus:bg-red-100 active:text-red-500 active:bg-red-100">파일 삭제</button>
+									</div>
+								</div>
+								<div id="fileDiv" class="grid grid-cols-1 gap-2 lg:grid-cols-1 xl:grid-cols-12 m-2">
+									<!-- 파일 input append 부분 -->
+								</div>
+								
                                 <div class="flex justify-end gap-2 mt-4">
                                 	<button type="reset" class="text-red-500 bg-white btn hover:text-red-500 hover:bg-red-100 focus:text-red-500 focus:bg-red-100 active:text-red-500 active:bg-red-100 dark:bg-zink-700 dark:hover:bg-red-500/10 dark:focus:bg-red-500/10 dark:active:bg-red-500/10">리셋</button>
                                     <button type="button" id="tempAddDocumentBtn" class="bg-white text-sky-500 btn border-sky-500 hover:text-white hover:bg-sky-600 hover:border-sky-600 focus:text-white focus:bg-sky-600 focus:border-sky-600 focus:ring focus:ring-sky-100 active:text-white active:bg-sky-600 active:border-sky-600 active:ring active:ring-sky-100">임시 저장</button>
@@ -473,26 +464,22 @@
 	                                        <textarea name="docRemarks" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" id="docRemarks" placeholder="비고" rows="3"></textarea>
 	                                    </div>
                                     </div>
-                                    
-                                    <!-- 파일 다운로드 -->
-                                    <div class="lg:col-span-2 xl:col-span-12">
-                                            <label for="fileUpload" class="inline-block mb-2 text-base font-medium">파일 업로드</label>
-                                            <div class="flex items-center justify-center bg-white border border-dashed rounded-md cursor-pointer dropzone border-slate-300 dropzone2 dz-clickable">
-                                                
-                                                <div class="w-full py-5 text-lg text-center dz-message needsclick">
-                                                    <div class="mb-3">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="upload-cloud" class="lucide lucide-upload-cloud block mx-auto size-12 text-slate-500 fill-slate-200"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"></path><path d="M12 12v9"></path><path d="m16 16-4-4-4 4"></path></svg>
-                                                    </div>
-
-                                                    <h5 class="mb-0 font-normal text-slate-500 dark:text-zink-200 text-15">Drag and drop your product file</h5>
-                                                </div>
-                                            </div>
-
-                                            <ul class="flex flex-wrap mb-0 gap-x-5" id="dropzone-preview2">
-                                                
-                                            </ul>
-                                      </div>
                            		</div>
+                           		                           		
+                           		<!-- 파일 다운로드 -->
+                            	<div class="grid grid-cols-1 gap-2 lg:grid-cols-1 xl:grid-cols-12 m-2 mt-4">
+                                    <div class="lg:col-span-2 xl:col-span-12">
+                                        <label for="fileUpload" class="inline-block text-base font-medium">파일 업로드</label>
+                                	</div>
+                                	<div class="lg:col-span-2 xl:col-span-12">
+                                		<button type="button" id="btnAddFile"class="mr-1 p-2 bg-white text-custom-500 btn btn-sm hover:text-custom-500 hover:bg-custom-100 focus:text-custom-500 focus:bg-custom-100 active:text-custom-500 active:bg-custom-100">파일 추가</button>
+                                		<button type="button" id="btnRemoveFile" class="p-2 text-red-500 bg-white btn hover:text-red-500 hover:bg-red-100 focus:text-red-500 focus:bg-red-100 active:text-red-500 active:bg-red-100">파일 삭제</button>
+									</div>
+								</div>
+								<div id="fileDiv" class="grid grid-cols-1 gap-2 lg:grid-cols-1 xl:grid-cols-12 m-2">
+									<!-- 파일 input append 부분 -->
+								</div>
+								
                                 <div class="flex justify-end gap-2 mt-4">
                                 	<button type="reset" class="text-red-500 bg-white btn hover:text-red-500 hover:bg-red-100 focus:text-red-500 focus:bg-red-100 active:text-red-500 active:bg-red-100 dark:bg-zink-700 dark:hover:bg-red-500/10 dark:focus:bg-red-500/10 dark:active:bg-red-500/10">리셋</button>
                                     <button type="button" id="tempAddDocumentBtn" class="bg-white text-sky-500 btn border-sky-500 hover:text-white hover:bg-sky-600 hover:border-sky-600 focus:text-white focus:bg-sky-600 focus:border-sky-600 focus:ring focus:ring-sky-100 active:text-white active:bg-sky-600 active:border-sky-600 active:ring active:ring-sky-100">임시 저장</button>
@@ -618,26 +605,22 @@
 	                                        <textarea name="docRemarks" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" id="docRemarks" placeholder="비고" rows="3"></textarea>
 	                                    </div>
                                     </div>
-                                    
-                                    <!-- 파일 다운로드 -->
-                                    <div class="lg:col-span-2 xl:col-span-12">
-                                           <label for="fileUpload" class="inline-block mb-2 text-base font-medium">파일 업로드</label>
-                                           <div class="flex items-center justify-center bg-white border border-dashed rounded-md cursor-pointer dropzone border-slate-300 dropzone2 dz-clickable">
-                                               
-                                               <div class="w-full py-5 text-lg text-center dz-message needsclick">
-                                                   <div class="mb-3">
-                                                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="upload-cloud" class="lucide lucide-upload-cloud block mx-auto size-12 text-slate-500 fill-slate-200"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"></path><path d="M12 12v9"></path><path d="m16 16-4-4-4 4"></path></svg>
-                                                   </div>
-
-                                                   <h5 class="mb-0 font-normal text-slate-500 dark:text-zink-200 text-15">Drag and drop your product file</h5>
-                                               </div>
-                                           </div>
-
-                                           <ul class="flex flex-wrap mb-0 gap-x-5" id="dropzone-preview2">
-                                               
-                                           </ul>
-                                     </div>
                            		</div>
+                           		                           		
+                           		<!-- 파일 다운로드 -->
+                            	<div class="grid grid-cols-1 gap-2 lg:grid-cols-1 xl:grid-cols-12 m-2 mt-4">
+                                    <div class="lg:col-span-2 xl:col-span-12">
+                                        <label for="fileUpload" class="inline-block text-base font-medium">파일 업로드</label>
+                                	</div>
+                                	<div class="lg:col-span-2 xl:col-span-12">
+                                		<button type="button" id="btnAddFile"class="mr-1 p-2 bg-white text-custom-500 btn btn-sm hover:text-custom-500 hover:bg-custom-100 focus:text-custom-500 focus:bg-custom-100 active:text-custom-500 active:bg-custom-100">파일 추가</button>
+                                		<button type="button" id="btnRemoveFile" class="p-2 text-red-500 bg-white btn hover:text-red-500 hover:bg-red-100 focus:text-red-500 focus:bg-red-100 active:text-red-500 active:bg-red-100">파일 삭제</button>
+									</div>
+								</div>
+								<div id="fileDiv" class="grid grid-cols-1 gap-2 lg:grid-cols-1 xl:grid-cols-12 m-2">
+									<!-- 파일 input append 부분 -->
+								</div>
+								
                        	    	<div class="flex justify-end gap-2 mt-4">
                                 	<button type="reset" class="text-red-500 bg-white btn hover:text-red-500 hover:bg-red-100 focus:text-red-500 focus:bg-red-100 active:text-red-500 active:bg-red-100 dark:bg-zink-700 dark:hover:bg-red-500/10 dark:focus:bg-red-500/10 dark:active:bg-red-500/10">리셋</button>
                                     <button type="button" id="tempAddDocumentBtn" class="bg-white text-sky-500 btn border-sky-500 hover:text-white hover:bg-sky-600 hover:border-sky-600 focus:text-white focus:bg-sky-600 focus:border-sky-600 focus:ring focus:ring-sky-100 active:text-white active:bg-sky-600 active:border-sky-600 active:ring active:ring-sky-100">임시 저장</button>
@@ -751,26 +734,22 @@
 	                                        <textarea name="docRemarks" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" id="docRemarks" placeholder="비고" rows="3"></textarea>
 	                                    </div>
                                     </div>
-                                    
-                                    <!-- 파일 다운로드 -->
-                                    <div class="lg:col-span-2 xl:col-span-12">
-                                           <label for="fileUpload" class="inline-block mb-2 text-base font-medium">파일 업로드</label>
-                                           <div class="flex items-center justify-center bg-white border border-dashed rounded-md cursor-pointer dropzone border-slate-300 dropzone2 dz-clickable">
-                                               
-                                               <div class="w-full py-5 text-lg text-center dz-message needsclick">
-                                                   <div class="mb-3">
-                                                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="upload-cloud" class="lucide lucide-upload-cloud block mx-auto size-12 text-slate-500 fill-slate-200"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"></path><path d="M12 12v9"></path><path d="m16 16-4-4-4 4"></path></svg>
-                                                   </div>
-
-                                                   <h5 class="mb-0 font-normal text-slate-500 dark:text-zink-200 text-15">Drag and drop your product file</h5>
-                                               </div>
-                                           </div>
-
-                                           <ul class="flex flex-wrap mb-0 gap-x-5" id="dropzone-preview2">
-                                               
-                                           </ul>
-                                     </div>
                             	</div>
+                            	                           		
+                           		<!-- 파일 다운로드 -->
+                            	<div class="grid grid-cols-1 gap-2 lg:grid-cols-1 xl:grid-cols-12 m-2 mt-4">
+                                    <div class="lg:col-span-2 xl:col-span-12">
+                                        <label for="fileUpload" class="inline-block text-base font-medium">파일 업로드</label>
+                                	</div>
+                                	<div class="lg:col-span-2 xl:col-span-12">
+                                		<button type="button" id="btnAddFile"class="mr-1 p-2 bg-white text-custom-500 btn btn-sm hover:text-custom-500 hover:bg-custom-100 focus:text-custom-500 focus:bg-custom-100 active:text-custom-500 active:bg-custom-100">파일 추가</button>
+                                		<button type="button" id="btnRemoveFile" class="p-2 text-red-500 bg-white btn hover:text-red-500 hover:bg-red-100 focus:text-red-500 focus:bg-red-100 active:text-red-500 active:bg-red-100">파일 삭제</button>
+									</div>
+								</div>
+								<div id="fileDiv" class="grid grid-cols-1 gap-2 lg:grid-cols-1 xl:grid-cols-12 m-2">
+									<!-- 파일 input append 부분 -->
+								</div>
+								
                             	<div class="flex justify-end gap-2 mt-4">
                                 	<button type="reset" class="text-red-500 bg-white btn hover:text-red-500 hover:bg-red-100 focus:text-red-500 focus:bg-red-100 active:text-red-500 active:bg-red-100 dark:bg-zink-700 dark:hover:bg-red-500/10 dark:focus:bg-red-500/10 dark:active:bg-red-500/10">리셋</button>
                                     <button type="button" id="tempAddDocumentBtn" class="bg-white text-sky-500 btn border-sky-500 hover:text-white hover:bg-sky-600 hover:border-sky-600 focus:text-white focus:bg-sky-600 focus:border-sky-600 focus:ring focus:ring-sky-100 active:text-white active:bg-sky-600 active:border-sky-600 active:ring active:ring-sky-100">임시 저장</button>
@@ -1415,6 +1394,25 @@
 	            // addDocumentBtn 클릭
 	            $("#addDocumentBtn").click(); // 이 줄이 자동으로 클릭합니다.
 	        });
+	        
+	        $('#btnAddFile').click(function() {
+	    	    if ($('.documentFile').last().val() == '') { // 마지막 input=file값이 공백이라면
+	    	        alert('첨부하지 않은 파일이 이미 존재');
+	    	    } else if ($('.documentFile').length >= 3) { // 파일 개수가 3개 이상이면
+	    	        alert('파일은 최대 3개까지 첨부할 수 있습니다.');
+	    	    } else {
+	    	        let html = '<div class="lg:col-span-4 xl:col-span-4 mx-2 mb-2"><input type="file" name="documentFile" class="documentFile cursor-pointer form-file form-file-sm border-slate-200 focus:outline-none focus:border-custom-500"></div>';
+	    	        $('#fileDiv').append(html);
+	    	    }
+	    	});
+	    	
+			$('#btnRemoveFile').click(function() {
+				if($('.documentFile').length == 0) {
+					alert('삭제 할 파일이 존재하지 않습니다');
+				} else {
+					$('.documentFile').last().closest('div').remove();	
+				}
+			});
 	     	
 	
 	        var date = new Date();
@@ -1654,6 +1652,25 @@
     	        alert('직원 조회 실패');
     	    });
     	});
+    	 
+    	$('#btnAddFile').click(function() {
+    	    if ($('.documentFile').last().val() == '') { // 마지막 input=file값이 공백이라면
+    	        alert('첨부하지 않은 파일이 이미 존재');
+    	    } else if ($('.documentFile').length >= 3) { // 파일 개수가 3개 이상이면
+    	        alert('파일은 최대 3개까지 첨부할 수 있습니다.');
+    	    } else {
+    	        let html = '<div class="lg:col-span-4 xl:col-span-4 mx-2 mb-2"><input type="file" name="documentFile" class="documentFile cursor-pointer form-file form-file-sm border-slate-200 focus:outline-none focus:border-custom-500"></div>';
+    	        $('#fileDiv').append(html);
+    	    }
+    	});
+    	
+		$('#btnRemoveFile').click(function() {
+			if($('.documentFile').length == 0) {
+				alert('삭제 할 파일이 존재하지 않습니다');
+			} else {
+				$('.documentFile').last().closest('div').remove();	
+			}
+		});
         
 	});
 </script>
