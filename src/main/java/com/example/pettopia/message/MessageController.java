@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.pettopia.dto.EmpUserDetails;
 import com.example.pettopia.employee.EmployeeService;
+import com.example.pettopia.util.Page;
 import com.example.pettopia.util.TeamColor;
 import com.example.pettopia.vo.Employee;
 import com.example.pettopia.vo.Message;
@@ -70,18 +71,25 @@ public class MessageController {
 	    return "redirect:/message/messageList";
 	}
 	
-	// 오자윤 : /employee/messageList 메시지 목록 조회
+	// 오자윤 : /employee/messageList 쪽지 목록 조회
 	@GetMapping("message/messageList")
-	public String getMethodName(Authentication auth, Model model) {
+	public String getMethodName(Authentication auth, Model model, @RequestParam(defaultValue = "1") Integer currentPage) {
 		// 시큐리티 empNo 가져오기
 		EmpUserDetails empUserDetails = (EmpUserDetails)auth.getPrincipal();
 		log.debug(TeamColor.OJY + "empUserDetails------>" + empUserDetails + TeamColor.RESET);
 		String empNo = empUserDetails.getUsername();
 	
-		// 쪽지 목록 조회
-		List<Map<String, Object>> messageList = messageService.getMessageList(empNo);
-		model.addAttribute("messageList", messageList);
-		log.debug(TeamColor.OJY + "messageList------>" + messageList + TeamColor.RESET);
+		// 페이지네이션
+	    Page page = new Page();
+	    page.setCurrentPage(currentPage);
+
+	    // 페이지 된 쪽지목록
+	    List<Map<String, Object>> messageList = messageService.getMessageList(empNo, page);
+
+	    // model 추가
+	    model.addAttribute("messageList", messageList);
+	    model.addAttribute("page", page);
+	    
 	    return "message/messageList";
 	}
 	
@@ -94,14 +102,14 @@ public class MessageController {
 
 	// 오자윤 : /employee/messageBin 휴지통 페이지
 	@GetMapping("message/messageBin")
-	public String messageBin(Authentication auth, Model model) {
+	public String messageBin(Authentication auth, Model model, Page page) {
 		// 시큐리티 empNo 가져오기
 		EmpUserDetails empUserDetails = (EmpUserDetails)auth.getPrincipal();
 		log.debug(TeamColor.OJY + "empUserDetails------>" + empUserDetails + TeamColor.RESET);
 		String empNo = empUserDetails.getUsername();
 	
 		// 쪽지 목록 조회
-		List<Map<String, Object>> messageList = messageService.getMessageList(empNo);
+		List<Map<String, Object>> messageList = messageService.getMessageList(empNo, page);
 		model.addAttribute("messageList", messageList);
 		log.debug(TeamColor.OJY + "messageList------>" + messageList + TeamColor.RESET);
 		
@@ -110,7 +118,7 @@ public class MessageController {
 	
 	// 오자윤 : /employee/messageBin 휴지통 영구삭제 -->
 	@PostMapping("message/messageDelete")
-	public String messageBin(@RequestParam List<Integer> messageNo, Authentication auth, Model model) {
+	public String messageBin(@RequestParam List<Integer> messageNo, Authentication auth, Model model, Page page) {
 		
 		// 시큐리티 empNo 가져오기
 		EmpUserDetails empUserDetails = (EmpUserDetails)auth.getPrincipal();
@@ -122,7 +130,7 @@ public class MessageController {
 		log.debug(TeamColor.OJY + "messageNo------>" + messageNo + TeamColor.RESET);
 		
 		// 쪽지 목록 조회
-		List<Map<String, Object>> messageList = messageService.getMessageList(empNo);
+		List<Map<String, Object>> messageList = messageService.getMessageList(empNo, page);
 		model.addAttribute("messageList", messageList);
 		return "redirect:/message/messageBin";
 	}

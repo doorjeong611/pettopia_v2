@@ -102,13 +102,53 @@
                             
                         </div><!--end grid-->
                         
-                        <div class="overflow-x-auto">
+                        <div>
                             <table class="w-full whitespace-nowrap">
-                                    <thead>
-			        </thead>
-			        <tbody>
-        </tbody>
+                          <thead>
+                    <tr>
+                        <th class="px-3.5 py-1.5 border-y border-slate-200 text-center">직원이름</th>
+                        <th class="px-3.5 py-1.5 border-y border-slate-200 text-center">출근날짜</th>
+                        <th class="px-3.5 py-1.5 border-y border-slate-200 text-center">출근시간</th>
+                        <th class="px-3.5 py-1.5 border-y border-slate-200 text-center">퇴근시간</th>
+                        <th class="px-3.5 py-1.5 border-y border-slate-200 text-center">근태상태</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <c:forEach var="a" items="${attendanceList}">
+                        <tr>
+                            <td class="px-3.5 py-2 border-y border-slate-200 text-center">${a.empName}</td>
+                            <td class="px-3.5 py-2 border-y border-slate-200 text-center">${a.attendanceDate}</td>
+                            <td class="px-3.5 py-2 border-y border-slate-200 text-center">${a.clockInTime}</td>
+                            <td class="px-3.5 py-2 border-y border-slate-200 text-center">${a.clockOutTime}</td>
+                            <td class="px-3.5 py-2 border-y border-slate-200 text-center">${a.attendanceStatus}</td>
+                        </tr>
+                    </c:forEach>
+                </tbody>
+            </table>
         
+    			 <div id="paginationItems">
+		            <div>
+		                <p>
+		                </p>
+		            </div>
+        <!-- Pagination controls -->
+            <div class="pagination">
+                <c:if test="${currentPage > 1}">
+                    <a href="${pageContext.request.contextPath}/employee/attendanceList?page=${currentPage - 1}" class="prev">이전</a>
+                </c:if>
+
+                <c:forEach var="pageNum" begin="1" end="${totalPages}">
+                    <a href="${pageContext.request.contextPath}/employee/attendanceList?page=${pageNum}" class="page-num">${pageNum}</a>
+                </c:forEach>
+
+                <c:if test="${currentPage < totalPages}">
+                    <a href="${pageContext.request.contextPath}/employee/attendanceList?page=${currentPage + 1}" class="next">다음</a>
+                </c:if>
+            </div>
+        </div>
+        </div>
+    </div></div>
+    
             <!-- container-fluid -->
         </div>
         <!-- End Page-content -->

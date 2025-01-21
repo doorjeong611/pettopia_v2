@@ -2,6 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.pettopia.attendance.AttendanceMapper">
 
+<!-- 오자윤 : /employee/attendance 페이지네이션 카운트-->
+<select id="countAttendance" resultType="int">
+    SELECT COUNT(*)
+    FROM attendance a
+    JOIN employee e ON a.emp_no = e.emp_no
+    WHERE (#{empNo} IS NULL OR a.emp_no = #{empNo})
+      AND (#{attendanceDate} IS NULL OR a.attendance_date = #{attendanceDate});
+</select>
+
 <!-- 오자윤 : /employee/attendance 관리자 : 근태조회 리스트 -->
 <select id="selectAttendanceList" resultType="map">
 	SELECT a.emp_no AS empNo,
@@ -16,7 +25,8 @@
 	JOIN employee e ON a.emp_no = e.emp_no
 	WHERE (#{empNo} IS NULL OR a.emp_no = #{empNo})
 	  AND (#{attendanceDate} IS NULL OR a.attendance_date = #{attendanceDate})
-	ORDER BY a.attendance_date DESC;
+	ORDER BY a.attendance_date DESC
+	LIMIT #{limit} OFFSET #{offset}; <!-- 페이지네이션 -->
 </select>
 
 <!-- 오자윤 : /employee/attendanceList 직원 상태 카운트 -->

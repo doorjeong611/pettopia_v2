@@ -82,9 +82,9 @@
                                     </div><!--end col-->
                                 </div><!--end grid-->
                             </div>
-                			<div class="!pt-0 card-body flex-grow overflow-y-auto">
+                			<div>
                                 <!-- 보낸 사람 시작하는 부분 -->
-                                    <div class="overflow-x-auto">
+                                    <div>
                                     	<br>
                                         <!-- 테이블 시작 부분 -->
                                        <form id="messageForm" action="${pageContext.request.contextPath}/message/messageDelete" method="post">
@@ -95,7 +95,7 @@
 									            <span class="text-slate-500 dark:text-zink-200" style="margin-right: 24px;">읽음</span>
 									            <span class="text-slate-500 dark:text-zink-200" style="margin-right: 50px;">보낸사람</span>
 									            <span class="text-slate-500 dark:text-zink-200" style="margin-right: 0px;"></span>
-							           	 		<span class="text-slate-500 dark:text-zink-200" style="margin-left: 980px;">날짜</span>
+							           	 		<span class="text-slate-500 dark:text-zink-200" style="margin-left: 830px;">날짜</span>
 								        	</td>
 								    	</tr>
 							   		    <tbody class="elmLoader" id="mail-list">
@@ -103,13 +103,13 @@
 								        <c:forEach var="message" items="${messageList}">
 								        <c:if test="${message.messageBin == '1'}">
 								            <tr>
-								              <td class="px-3.5 py-2.5 border-y text-slate-500" style="padding: 10px;">
+								              <td class="px-3.5 py-2.5 border-y text-slate-500" style="width: 600px;">
 								                <input type="hidden" class="messageNo" value="${message.messageNo}" />
-											    <input style="margin-left: 19px;"  type="checkbox" class="deleteMessage" name="messageNo" value="${message.messageNo}" /> 
-											    <span style="margin-left: 48px; display: inline-block;">${message.messageState}</span>
-											    <span style="margin-left: 38px; display: inline-block; width: 300px;">${message.senderName}</span> <!-- 보낸 사람 -->
-											    <a href="${pageContext.request.contextPath}/message/messageOne?messageNo=${message.messageNo}" style="margin-left: 38px; display: inline-block; width: 300px;">${message.messageTitle}</a>
-											    <span style="margin-left: 395px; display: inline-block; width: 150px;">${message.createDatetime}</span> <!-- 날짜 -->
+											    <input style="margin-left: 17px;"  type="checkbox" class="deleteMessage" name="messageNo" value="${message.messageNo}" /> 
+											    <span style="margin-left: 44px; display: inline-block;">${message.messageState}</span>
+											    <span style="margin-left: 37px; display: inline-block; width: 300px;">${message.senderName}</span> <!-- 보낸 사람 -->
+											    <a href="${pageContext.request.contextPath}/message/messageOne?messageNo=${message.messageNo}" style="margin-left: -125px; display: inline-block; width: 300px;">${message.messageTitle}</a>
+											    <span style="margin-left: 408px; display: inline-block; width: 150px;">${message.createDatetime}</span> <!-- 날짜 -->
 											</td>
 								            </tr>
 								            </c:if>
@@ -119,43 +119,6 @@
 								</form>
                              </div>
                           </div>
-                          <div class="flex flex-col items-center gap-4 px-4 mt-4 md:flex-row" id="pagination-element">
-                        <div class="grow">
-                            <p> Results</p>
-                        </div>
-
-                        <div class="col-sm-auto mt-sm-0">
-                            <div class="flex flex-col items-center gap-5 mb-5 md:flex-row" id="paginationItems">
-                    <div class="grow">
-                        <p class="text-slate-500 dark:text-zink-200">Showing <b>8</b> of <b>44</b> Results</p>
-                    </div>
-                    <ul class="flex flex-wrap items-center gap-2">
-                        <li>
-                            <a href="#!" class="inline-flex items-center justify-center bg-white dark:bg-zink-700 size-8 transition-all duration-150 ease-linear border border-slate-200 dark:border-zink-500 rounded text-slate-500 dark:text-zink-200 hover:text-custom-500 dark:hover:text-custom-500 hover:bg-custom-50 dark:hover:bg-custom-500/10 focus:bg-custom-50 dark:focus:bg-custom-500/10 focus:text-custom-500 dark:focus:text-custom-500 [&amp;.active]:text-custom-50 dark:[&amp;.active]:text-custom-50 [&amp;.active]:bg-custom-500 dark:[&amp;.active]:bg-custom-500 [&amp;.active]:border-custom-500 dark:[&amp;.active]:border-custom-500 [&amp;.disabled]:text-slate-400 dark:[&amp;.disabled]:text-zink-300 [&amp;.disabled]:cursor-auto"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="chevron-left" class="lucide lucide-chevron-left size-4 rtl:rotate-180"><path d="m15 18-6-6 6-6"></path></svg></a>
-                        </li>
-                        <li>
-                            <a href="#!" class="inline-flex items-center justify-center bg-white dark:bg-zink-700 size-8 transition-all duration-150 ease-linear border border-slate-200 dark:border-zink-500 rounded text-slate-500 dark:text-zink-200 hover:text-custom-500 dark:hover:text-custom-500 hover:bg-custom-50 dark:hover:bg-custom-500/10 focus:bg-custom-50 dark:focus:bg-custom-500/10 focus:text-custom-500 dark:focus:text-custom-500 [&amp;.active]:text-custom-50 dark:[&amp;.active]:text-custom-50 [&amp;.active]:bg-custom-500 dark:[&amp;.active]:bg-custom-500 [&amp;.active]:border-custom-500 dark:[&amp;.active]:border-custom-500 [&amp;.disabled]:text-slate-400 dark:[&amp;.disabled]:text-zink-300 [&amp;.disabled]:cursor-auto">1</a>
-                        </li>
-                        <li>
-                            <a href="#!" class="inline-flex items-center justify-center bg-white dark:bg-zink-700 size-8 transition-all duration-150 ease-linear border border-slate-200 dark:border-zink-500 rounded text-slate-500 dark:text-zink-200 hover:text-custom-500 dark:hover:text-custom-500 hover:bg-custom-50 dark:hover:bg-custom-500/10 focus:bg-custom-50 dark:focus:bg-custom-500/10 focus:text-custom-500 dark:focus:text-custom-500 [&amp;.active]:text-custom-50 dark:[&amp;.active]:text-custom-50 [&amp;.active]:bg-custom-500 dark:[&amp;.active]:bg-custom-500 [&amp;.active]:border-custom-500 dark:[&amp;.active]:border-custom-500 [&amp;.disabled]:text-slate-400 dark:[&amp;.disabled]:text-zink-300 [&amp;.disabled]:cursor-auto">2</a>
-                        </li>
-                        <li>
-                            <a href="#!" class="inline-flex items-center justify-center bg-white dark:bg-zink-700 size-8 transition-all duration-150 ease-linear border border-slate-200 dark:border-zink-500 rounded text-slate-500 dark:text-zink-200 hover:text-custom-500 dark:hover:text-custom-500 hover:bg-custom-50 dark:hover:bg-custom-500/10 focus:bg-custom-50 dark:focus:bg-custom-500/10 focus:text-custom-500 dark:focus:text-custom-500 [&amp;.active]:text-custom-50 dark:[&amp;.active]:text-custom-50 [&amp;.active]:bg-custom-500 dark:[&amp;.active]:bg-custom-500 [&amp;.active]:border-custom-500 dark:[&amp;.active]:border-custom-500 [&amp;.disabled]:text-slate-400 dark:[&amp;.disabled]:text-zink-300 [&amp;.disabled]:cursor-auto active">3</a>
-                        </li>
-                        <li>
-                            <a href="#!" class="inline-flex items-center justify-center bg-white dark:bg-zink-700 size-8 transition-all duration-150 ease-linear border border-slate-200 dark:border-zink-500 rounded text-slate-500 dark:text-zink-200 hover:text-custom-500 dark:hover:text-custom-500 hover:bg-custom-50 dark:hover:bg-custom-500/10 focus:bg-custom-50 dark:focus:bg-custom-500/10 focus:text-custom-500 dark:focus:text-custom-500 [&amp;.active]:text-custom-50 dark:[&amp;.active]:text-custom-50 [&amp;.active]:bg-custom-500 dark:[&amp;.active]:bg-custom-500 [&amp;.active]:border-custom-500 dark:[&amp;.active]:border-custom-500 [&amp;.disabled]:text-slate-400 dark:[&amp;.disabled]:text-zink-300 [&amp;.disabled]:cursor-auto">4</a>
-                        </li>
-                        <li>
-                            <a href="#!" class="inline-flex items-center justify-center bg-white dark:bg-zink-700 size-8 transition-all duration-150 ease-linear border border-slate-200 dark:border-zink-500 rounded text-slate-500 dark:text-zink-200 hover:text-custom-500 dark:hover:text-custom-500 hover:bg-custom-50 dark:hover:bg-custom-500/10 focus:bg-custom-50 dark:focus:bg-custom-500/10 focus:text-custom-500 dark:focus:text-custom-500 [&amp;.active]:text-custom-50 dark:[&amp;.active]:text-custom-50 [&amp;.active]:bg-custom-500 dark:[&amp;.active]:bg-custom-500 [&amp;.active]:border-custom-500 dark:[&amp;.active]:border-custom-500 [&amp;.disabled]:text-slate-400 dark:[&amp;.disabled]:text-zink-300 [&amp;.disabled]:cursor-auto">5</a>
-                        </li>
-                        <li>
-                            <a href="#!" class="inline-flex items-center justify-center bg-white dark:bg-zink-700 size-8 transition-all duration-150 ease-linear border border-slate-200 dark:border-zink-500 rounded text-slate-500 dark:text-zink-200 hover:text-custom-500 dark:hover:text-custom-500 hover:bg-custom-50 dark:hover:bg-custom-500/10 focus:bg-custom-50 dark:focus:bg-custom-500/10 focus:text-custom-500 dark:focus:text-custom-500 [&amp;.active]:text-custom-50 dark:[&amp;.active]:text-custom-50 [&amp;.active]:bg-custom-500 dark:[&amp;.active]:bg-custom-500 [&amp;.active]:border-custom-500 dark:[&amp;.active]:border-custom-500 [&amp;.disabled]:text-slate-400 dark:[&amp;.disabled]:text-zink-300 [&amp;.disabled]:cursor-auto"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="chevron-right" class="lucide lucide-chevron-right size-4 rtl:rotate-180"><path d="m9 18 6-6-6-6"></path></svg></a>
-                        </li>
-                    </ul>
-                </div>
-
-                        </div>
-                    </div>
                       </div><div class="simplebar-placeholder" style="width: 1176px; height: 93px;"></div></div><div class="simplebar-track simplebar-horizontal" style="visibility: hidden;"><div class="simplebar-scrollbar" style="width: 0px; display: none;"></div></div><div class="simplebar-track simplebar-vertical" style="visibility: hidden;"><div class="simplebar-scrollbar" style="height: 0px; display: none;"></div></div></div>
                   
                 
