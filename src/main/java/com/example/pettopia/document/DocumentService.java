@@ -56,6 +56,7 @@ public class DocumentService {
 				documentFile.setFileName(fileName);
 				documentFile.setFileExt(ext);
 				documentFile.setFileType(mf.getContentType());
+				documentFile.setFileSize(mf.getSize());
 				
 				int addDocumentFileRow = documentFileMapper.insertDocumentFile(documentFile);
 				if(addDocumentFileRow == 1) {

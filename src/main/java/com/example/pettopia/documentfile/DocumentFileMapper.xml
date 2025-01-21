@@ -4,14 +4,14 @@
 
 	<!-- insertDocumentFile : addDocument → 문서 작성 시 파일 추가 -->
 	<insert id="insertDocumentFile" parameterType="com.example.pettopia.vo.DocumentFile">
-		INSERT INTO document_file(doc_no, origin_file_name, file_name, file_ext, file_type) 
-		VALUES(#{docNo}, #{originFileName}, #{fileName}, #{fileExt}, #{fileType})
+		INSERT INTO document_file(doc_no, origin_file_name, file_name, file_ext, file_type, file_size) 
+		VALUES(#{docNo}, #{originFileName}, #{fileName}, #{fileExt}, #{fileType}, #{fileSize})
 	</insert>
 	
 	<!-- selectDocumentFileOne : 파일 삭제할 때 파일 정보 가져오기 -->
 	<select id="selectDocumentFileOne" parameterType="Integer" resultType="com.example.pettopia.vo.DocumentFile">
 		SELECT doc_file_no docFileNo, doc_no docNo, origin_file_name originFileName, file_name fileName, file_ext fileExt,  
-			   file_type fileType, create_datetime createDatetime, update_datetime updateDatetime
+			   file_type fileType, file_size fileSize, create_datetime createDatetime, update_datetime updateDatetime
 		FROM document_file WHERE doc_file_no = #{docFileNo}
 	</select>
 	
@@ -23,7 +23,7 @@
 	<!-- selectDocumentFileList : 파일 리스트 조회 -->
 	<select id="selectDocumentFileList" parameterType="Integer" resultType="com.example.pettopia.vo.DocumentFile">
 		SELECT doc_file_no docFileNo, doc_no docNo, origin_file_name originFileName, file_name fileName,
-		       file_ext fileExt, file_type fileType, create_datetime createDatetime, update_datetime updateDatetime
+		       file_ext fileExt, file_type fileType, file_size fileSize, create_datetime createDatetime, update_datetime updateDatetime
 		FROM document_file WHERE doc_no = #{docNo}
 	</select>
 

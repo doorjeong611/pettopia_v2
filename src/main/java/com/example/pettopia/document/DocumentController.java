@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.pettopia.documentfile.DocumentFileService;
 import com.example.pettopia.dto.EmpUserDetails;
 import com.example.pettopia.util.Page;
 import com.example.pettopia.util.TeamColor;
@@ -28,6 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 public class DocumentController {
 	
 	@Autowired DocumentService documentService;
+	@Autowired DocumentFileService documentFileService;
 	
 	// addDocument Form
 	@GetMapping("/document/addDocument")
@@ -60,6 +62,7 @@ public class DocumentController {
 		}
 		
 		List<MultipartFile> documentFileList = documentFile.getDocumentFile();
+		log.debug(TeamColor.KDH + documentFileList.get(0).getSize()); // 파일 사이즈
 		
 		// 상품정보만 입력하고 File은 첨부 안했을 때
 		if(documentFileList == null || documentFileList.isEmpty()) {
@@ -285,17 +288,23 @@ public class DocumentController {
 		Map<String, Object> documentOne = documentService.getDocumentOne(docNo);
 		log.debug(TeamColor.KDH + "documentOne: " + documentOne.toString() + TeamColor.RESET);
 		
+		List<DocumentFile> documentFile = documentFileService.getDocumentFileList(docNo);
+		
+		model.addAttribute("documentFile", documentFile);
 		model.addAttribute("documentOne", documentOne);
 		
-		if ("D".equals(docType)) {
-	        return "document/draftOne"; 
-	    } else if ("V".equals(docType)) {
-	    	return "document/vacationOne";
-	    } else if ("M".equals(docType)) {
-	    	return "document/materialOne";
-	    } else if ("R".equals(docType)) {
-	    	return "document/resignationOne";
-	    }
+		// 문서 유형에 따라 페이지 이동
+		switch (docType) {
+	    case "D":
+	        return "document/draftOne";
+	    case "V":
+	        return "document/vacationOne";
+	    case "M":
+	        return "document/materialOne";
+	    case "R":
+	        return "document/resignationOne";
+		}
+		
 		return "document/documentList";
 	}
 
