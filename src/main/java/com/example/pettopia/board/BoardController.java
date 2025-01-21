@@ -39,27 +39,14 @@ public class BoardController {
 								) {
 	    Map<String, Object> map = new HashMap<>();
 	   
-	    
 	    // 조회수 증가
 	    int successViewByBoard = boardService.addBoardView(board);
 	    
 	    // 상세 글보기 셀렉트
 	    Map<String, Object> boardOneMap = boardService.getListByBoardOne(boardNo);
 	    
-
-		List<Division> divisionList = boardService.getDivisionList();
-		
-		Map<String, Object> categoryByBoardOne = new HashMap<>();
-		
 		// 보드헤더 값
 	    String boardHeader = (String) boardOneMap.get("boardHeader");
-		
-		categoryByBoardOne.put("division", divisionCode);
-		categoryByBoardOne.put("divisionList", divisionList);
-		
-		model.addAttribute("division", categoryByBoardOne);
-	    
-	    
 	    
 	    // 로그인 세션
 	    EmpUserDetails empUserDetails = (EmpUserDetails) auth.getPrincipal();
@@ -70,8 +57,9 @@ public class BoardController {
 	    	return "redirect:/board/boardList";
 	    }
 	    // 모델값 
+	    
 	    model.addAttribute("boardCategory", boardHeader);
-	    model.addAttribute("divisionCode",divisionCode);
+	    log.debug(TeamColor.LJH + "boardMap : " + boardOneMap + TeamColor.RESET);
 	    model.addAttribute("boardWriterNo",boardWriterNo);
 	    model.addAttribute("empNo", empNo);
 		model.addAttribute("boardMap",boardOneMap);
@@ -102,12 +90,13 @@ public class BoardController {
 	    board.setBoardWriterNo(boardWriterNo);
 	    
 	    
+	 
 	    
 	    // boardContent가 제대로 전달되었는지 확인
 	    if (board.getBoardContent() == null || board.getBoardContent().isEmpty()) {
-	        log.debug("boardContent is empty or null");
+	    	log.debug(TeamColor.LJH + "boardContent is empty or null" + TeamColor.RESET);
 	    } else {
-	        log.debug("boardContent: " + board.getBoardContent());
+	    	log.debug(TeamColor.LJH + "boardContent: " + board.getBoardContent() + TeamColor.RESET);
 	    }
 
 	    // Board 삽입
@@ -154,6 +143,7 @@ public class BoardController {
 		return "board/addBoard";
 	}
 	
+    
 	
 	// 게시판 리스트 구현 /board/boardList 작업자 : 이준호
 	@PostMapping("/board/boardList")
@@ -164,30 +154,42 @@ public class BoardController {
 	
 	@GetMapping("/board/boardList")
 	public String boardList(Model model,
-							Board board,
-							Authentication auth,
+	                        Board board,
+	                        Authentication auth,
+	                        @RequestParam(defaultValue = "1") Integer currentPage,
+	                        @RequestParam(defaultValue = "10") Integer rowPerPage,
 	                        @RequestParam(value = "category", defaultValue = "ALL") String boardCategory,
-	                        @RequestParam(required = false) Integer boardNo) {
-	    Map<String, Object> map = new HashMap<>();
+	                        @RequestParam(required = false) Integer boardNo,
+	                        @RequestParam(required = false) String searchBoard) {
+	    // 게시판 목록과 페이징 정보 조회
+	    Map<String, Object> result = boardService.getBoardList(currentPage, rowPerPage, boardCategory, new HashMap<>(), searchBoard);
 	    
+	    // 페이징 정보 추출
+	    Integer startPagingNum = (Integer) result.get("startPagingNum");
+	    Integer endPagingNum = (Integer) result.get("endPagingNum");
+	    int lastPage = (int) result.get("lastPage");
+	    @SuppressWarnings("unchecked")
+		List<Map<String, Object>> boardList = (List<Map<String, Object>>) result.get("boardList");
 	    
-	    
+	    // 로그인된 사용자 정보
 	    EmpUserDetails empUserDetails = (EmpUserDetails) auth.getPrincipal();
 	    String empNo = empUserDetails.getUsername();
-	    String boardWriterNo = board.getBoardWriterNo();
-	    
-	    // 게시판 목록 조회
-	    List<Map<String, Object>> boardList = boardService.getBoardList(boardCategory, map);
-	    
-	 
+
+	    // 모델에 데이터 추가
+	    model.addAttribute("currentPage", currentPage);
+	    model.addAttribute("lastPage", lastPage);
 	    model.addAttribute("empNo", empNo);
 	    model.addAttribute("boardList", boardList);
 	    model.addAttribute("boardNo", boardNo);
 	    model.addAttribute("boardCategory", boardCategory);
-	    model.addAttribute("boardWriterNo",boardWriterNo);
-	 
-	    return "board/boardList";  // 전체 페이지 뷰 반환
+	    model.addAttribute("startPagingNum", startPagingNum);
+	    model.addAttribute("endPagingNum", endPagingNum);  // endPagingNum 추가
+
+	    return "board/boardList";  // 게시판 목록 페이지 반환
 	}
+
+
+
 	
 	//	게시글 댓글 통합 삭제 /board/removeBoard 작업자 : 이준호
 	@GetMapping("/board/removeBoard")

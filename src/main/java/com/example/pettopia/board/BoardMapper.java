@@ -11,6 +11,14 @@ import com.example.pettopia.vo.Division;
 @Mapper
 public interface BoardMapper {
 
+// 게시판 카운트 쿼리 /board/boardList 작업자 : 이준호
+	Integer selectBoardCount();
+	
+// 게시글 카테고리 셀렉트 /board/boardList 작업자 : 이준호
+	List<Map<String, Object>> selectHeaderListByBoard(String boardCategory);
+	
+// 게시글 검색 /board/boardList 작업자 : 이준호
+	List<Map<String, Object>> searchBoardContent(String searchBoard);
 	
 // 작성글 셀렉트 /board/boardOne 작업자 : 이준호
 	Map<String, Object> selectBoardByBoardOne(Integer boardNo);
@@ -22,7 +30,7 @@ public interface BoardMapper {
 	Integer insertBoard (Board board);
 	
 //	게시판 리스트 /board/getBoardList 작업자 : 이준호	
-	List<Map<String, Object>> selectBoardList (String boardCategory, Map<String, Object> boardMap);
+	List<Map<String, Object>> selectBoardList (Map<String, Object> combinedMap);
 
 //	게시글 삭제 쿼리 /board/removeBoard 작업자 : 이준호 
 	Integer deleteBoard (int boardNo);
