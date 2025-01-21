@@ -372,6 +372,18 @@ public class EmployeeController {
 	}
 	
 	
+	// employeeSummary : 직원 부서, 직급, 재직 상태 수정
+	@PostMapping("/employee/modifyEmployeSummary")
+	public String modifyEmployeSummary(@RequestParam(required = false) String empDeptCode, @RequestParam(required = false) String empRankNo, @RequestParam(required = false) String empStatusVal ) {
+		
+		log.debug(TeamColor.KMJ+" EmployeeController : GET modifyEmployeSummary()" + TeamColor.RESET);
+		log.debug(TeamColor.KMJ+" empDeptCode : "+ empDeptCode + TeamColor.RESET);
+		log.debug(TeamColor.KMJ+" empRankNo : "+ empRankNo + TeamColor.RESET);
+		log.debug(TeamColor.KMJ+" empStatusVal : "+ empStatusVal + TeamColor.RESET);
+		
+		
+		return "";
+	}
 	
 	
 	
