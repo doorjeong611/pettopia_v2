@@ -78,7 +78,7 @@ public Map<String, Object> getBoardList(Integer currentPage, Integer rowPerPage,
     Integer beginRow = (currentPage - 1) * rowPerPage;
 
     // 한 페이지 당 페이징 갯수가 5개씩이라 가정
-    Integer numPerPage = 5;
+    Integer numPerPage = 10;
     
     // 페이징 첫 번째 페이지 넘버 (5개씩 증가)
     Integer startPagingNum = ((currentPage - 1) / numPerPage) * numPerPage + 1;
@@ -112,6 +112,7 @@ public Map<String, Object> getBoardList(Integer currentPage, Integer rowPerPage,
 
     // 게시판 목록과 페이징 정보를 포함한 결과 반환
     resultMap.put("boardList", boardList);
+    
     return resultMap;
 }
 

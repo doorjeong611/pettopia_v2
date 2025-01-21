@@ -52,7 +52,7 @@ public class BoardController {
 	    EmpUserDetails empUserDetails = (EmpUserDetails) auth.getPrincipal();
 	    String empNo = empUserDetails.getUsername();
 	    String boardWriterNo = board.getBoardWriterNo();
-	    
+	
 	    if(successViewByBoard != 1) {
 	    	return "redirect:/board/boardList";
 	    }
@@ -161,7 +161,9 @@ public class BoardController {
 	                        @RequestParam(value = "category", defaultValue = "ALL") String boardCategory,
 	                        @RequestParam(required = false) Integer boardNo,
 	                        @RequestParam(required = false) String searchBoard) {
-	    // 게시판 목록과 페이징 정보 조회
+	  
+		
+		// 게시판 목록과 페이징 정보 조회
 	    Map<String, Object> result = boardService.getBoardList(currentPage, rowPerPage, boardCategory, new HashMap<>(), searchBoard);
 	    
 	    // 페이징 정보 추출
@@ -184,10 +186,16 @@ public class BoardController {
 	    model.addAttribute("boardCategory", boardCategory);
 	    model.addAttribute("startPagingNum", startPagingNum);
 	    model.addAttribute("endPagingNum", endPagingNum);  // endPagingNum 추가
+	    
+		/* 수정 욧함
+		 * if (searchBoard == null || searchBoard.trim().isEmpty()) {
+		 * model.addAttribute("alertMessage", "검색어를 입력해 주세요."); // 리다이렉트 할 URL로 설정
+		 * return "board/boardList"; // 리다이렉트 (필요에 따라 URL 변경 가능) }
+		 */
+		
 
 	    return "board/boardList";  // 게시판 목록 페이지 반환
 	}
-
 
 
 	
