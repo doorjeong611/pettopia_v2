@@ -1,11 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<!-- 시큐리티 세션 사용을 위한 taglib %@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>-->
 
-<!-- 시큐리티 세션정보 접근 -->
-<!-- 
-<sec:authorize access="isAuthenticated()"><sec:authentication property="principal" var=""/></sec:authorize>
- -->
 <!DOCTYPE html>
 <html lang="en" class="light scroll-smooth group" data-layout="vertical" data-sidebar="light" data-sidebar-size="lg" data-mode="light" data-topbar="light" data-skin="default" data-navbar="sticky" data-content="fluid" dir="ltr">
 
@@ -21,12 +16,21 @@
     <script src="${pageContext.request.contextPath}/assets/js/layout.js"></script>
     <!-- Tailwind CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tailwind2.css">
-	<!--  -->
-	
+	<!-- f -->
 </head>
 <style>
-	.editor-container_classic-editor .editor-container__editor {    min-width: 795px; max-width:1280px;}
+	.listHeader {width: 100%; height: 50px; }
 	
+	.listHeader .selectBox{width: 8%;float: left; margin-right: 0.5%;}
+	.listHeader .selectBox option:hover{background-color: #666;}
+	
+	
+	.listHeader .searchBox {max-width: 35%; min-width: 20%; float: left;}
+	.listHeader .searchBox input {}
+	.listHeader .searchBox btn {  }
+	.listHeader .addBox {float: right;}
+	
+	.boardList {width: 100%;}
 </style>
 <body class="text-base bg-body-bg text-body font-public dark:text-zink-100 dark:bg-zink-800 group-data-[skin=bordered]:bg-body-bordered group-data-[skin=bordered]:dark:bg-zink-700">
 <div class="group-data-[sidebar-size=sm]:min-h-sm group-data-[sidebar-size=sm]:relative">
@@ -47,10 +51,9 @@
             <div class="container-fluid group-data-[content=boxed]:max-w-boxed mx-auto">
                 <div class="flex flex-col gap-2 py-4 md:flex-row md:items-center print:hidden">
                     <div class="grow">
-                        <h5 class="text-16">사내 게시판</h5>
+                       <h5 class="text-16">사내 게시판</h5>
                     </div>
-                    
-                    <ul class="flex items-center gap-2 text-sm font-normal shrink-0">
+                     <ul class="flex items-center gap-2 text-sm font-normal shrink-0">
                         <li class="relative before:content-['\ea54'] before:font-remix ltr:before:-right-1 rtl:before:-left-1  before:absolute before:text-[18px] before:-top-[3px] ltr:pr-4 rtl:pl-4 before:text-slate-400 dark:text-zink-200">
                             <a href="#!" class="text-slate-400 dark:text-zink-200">사내 게시판</a>
                         </li>
@@ -58,31 +61,17 @@
                             게시판 리스트
                         </li>
                     </ul>
-                    
-                    
                 </div>
                 <!-- Main content -->
                 
-                <div>
-        	
-           		
-                   
-                     
-                    <div class="card">
-                    <div class="card-body">
-                    	
-                    
-                  			   <div class="ltr:lg:text-right rtl:lg:text-left">
-                                    <a href="${pageContext.request.contextPath}/board/addBoard" type="button" class="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20"><i data-lucide="plus" class="inline-block size-4"></i> <span class="align-middle">글쓰기</span></a>
-                                </div>
-                  		
-                  		<div id="boardListContainer">	
-                        	<form action="${pageContext.request.contextPath}/board/boardList" method="get" id="formCategory">
-								
-								
-								
-								
-								<select name="category" class="form-select" id="boardCategory">
+                 <div class="card" >
+                	 <div class="card-body" >
+                	 <!-- listHeader 시작 -->
+                	 	<div class="listHeader">
+                	 	<!-- 카테고리별 분류 기능 -->
+                	 	<div class="selectBox">
+               	 			<form action="${pageContext.request.contextPath}/board/boardList" method="get" id="formCategory">
+							    <select id="boardCategory" name="category" class="form-select border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" id="boardCategory">
 									<option value="ALL" ${boardCategory == 'ALL' ? 'selected' : ''}>전체</option>
 									<option value="SG" ${boardCategory == 'SG' ? 'selected' : ''}>건의사항</option>
 									<option value="DS" ${boardCategory == 'DS' ? 'selected' : ''}>토론</option>
@@ -91,82 +80,100 @@
 									<option value="QA" ${boardCategory == 'QA' ? 'selected' : ''}>질문</option>
 									<option value="CP" ${boardCategory == 'CP' ? 'selected' : ''}>칭찬</option>
 								</select>
-								
 							</form>
-                        <table id="basic_tables" class="display stripe group" style="width:100%">
-                            <thead>
-                                <tr>
-	                         		<th class="text-center ltr:!text-left rtl:!text-right">번호</th>
-	                                <th class="text-center" >제목</th>
-								    <th class="text-center" >조회수</th>
-								    <th class="text-center" >추천</th>
-								    <th class="text-center" >작성일</th>
-								    <th class=""></th>   
-                                </tr>
-                            </thead>
-                            <tbody>
-                            
-	                           <c:forEach var="bl" items="${boardList}">
-								    <tr>
-								        <td class="text-center">${bl.boardNum}</td>
-								        <td class="text-center">
-								            <a href="${pageContext.request.contextPath}/board/getBoardOne?boardNo=${bl.boardNo}">[${bl.boardHeader}]&nbsp;${bl.boardTitle}</a>
-								            <!-- 댓글 수가 0이 아니면 댓글 수 표시 -->
-								            <c:if test="${bl.commentCnt != 0}">
-								                &nbsp;[${bl.commentCnt}]
-								            </c:if>
-								        </td>
-								        <td class="text-center">${bl.boardView}</td>
-								        <td class="text-center">${bl.boardLike}</td>
-								        <td class="text-center">${bl.createDate}</td>
-								        
-								        <!-- 로그인한 사용자(empNo)와 게시물 작성자(bl.boardWriterNo)가 같은 경우에만 삭제 버튼 표시 -->
-								        <c:if test="${bl.boardWriterNo == empNo}">
-								            <td class="text-center"><a href="${pageContext.request.contextPath}/board/removeBoard?boardNo=${bl.boardNo}">삭제</a></td>
-								        </c:if>
-								        
-								        <!-- 작성자가 아닌 경우 빈 칸 표시 -->
-								        <c:if test="${bl.boardWriterNo != empNo}">
-								            <td class="text-center">&nbsp;</td>
-								        </c:if>
-								    </tr>
-								</c:forEach>
-							</tbody>
-                        </table>
-                    </div>
-                </div>
-               </div>	 
-                </div>
-       		</div>
+               	 		</div>
+	                	<!-- 검색 기능 -->
+	                	 	<div class="searchBox">
+		                	 	<div class="relative">
+									<form method="get" action="${pageContext.request.contextPath}/board/boardList" >
+										<input type="text" id="searchBoard" name="searchBoard" value="" class="ltr:pl-8 search form-input border-slate-200 focus:outline-none focus:border-custom-500 placeholder:text-slate-400" placeholder="검색어를 입력하세요" autocomplete="off">
+	                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="search" class="lucide lucide-search inline-block size-4 absolute ltr:left-2.5 top-2.5 text-slate-500 fill-slate-100" ><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+	                                </form>
+								</div>
+							</div>
+	                	<!-- 글 작성 기능 --> 	
+	                	 	<div class="ltr:lg:text-right rtl:lg:text-left addBox">
+	                        	<a href="${pageContext.request.contextPath}/board/addBoard" type="button" class="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20"><i data-lucide="plus" class="inline-block size-4"></i> <span class="align-middle">글 작성</span></a>
+	                        </div>
+                	 	</div>
+                	 	<!-- listHeader 종료 -->
+                	 	
+                	 
+                	 <!-- boardList 시작 -->
+				<div class="boardList overflow-x-auto">
+				    <table class="w-full whitespace-nowrap">
+				        <thead class="bg-slate-100">
+				            <tr>
+				                <th class="px-3.5 py-3 font-semibold border-b border-slate-200 ltr:text-center" style="width:10%;">글 번호</th>
+				                <th class="px-3.5 py-3 font-semibold border-b border-slate-200 ltr:text-center" style="width:40%;">제목</th>
+				                <th class="px-3.5 py-3 font-semibold border-b border-slate-200 ltr:text-center" style="width:15%;">조회수</th>
+				                <th class="px-3.5 py-3 font-semibold border-b border-slate-200 ltr:text-center" style="width:15%;">추천</th>
+				                <th class="px-3.5 py-3 font-semibold border-b border-slate-200 ltr:text-center" style="width:20%;">작성일</th>
+				            </tr>
+				        </thead>
+				
+				
+				            <c:forEach var="bl" items="${boardList}">
+				                <tr>
+				                    <td class="px-3.5 py-3 border-y border-slate-200 text-center">${bl.boardNo}</td>
+				                    <td class="px-3.5 py-3 border-y border-slate-200 text-center">
+				                        <a href="${pageContext.request.contextPath}/board/getBoardOne?boardNo=${bl.boardNo}">[${bl.boardHeader}]&nbsp;${bl.boardTitle}
+				                            <!-- 댓글 수가 0이 아니면 댓글 수 표시 -->
+				                            <c:if test="${bl.commentCnt != 0}">
+				                                &nbsp;[${bl.commentCnt}]
+				                            </c:if>
+				                        </a>
+				                    </td>
+				                    <td class="px-3.5 py-3 border-y border-slate-200 text-center">${bl.boardView}</td>
+				                    <td class="px-3.5 py-3 border-y border-slate-200 text-center">${bl.boardLike}</td>
+				                    <td class="px-3.5 py-3 border-y border-slate-200 text-center">${bl.createDate}</td>
+				                </tr>
+				            </c:forEach>
+				       
+				    </table>
+				    
+				    <div class="pagingBox">
+				    	<c:if test="${currentPage > 5}">
+				    		<a href="${pageContext.request.contextPath}/board/boardList?currentPage=${currentPage-5}">[&lt;&lt;]</a>
+			    		</c:if>
+			    		<c:forEach var="num" begin="${startPagingNum}" end="${endPagingNum}">
+			    			<c:if test="${num == currentPage}">
+			    				${num}&nbsp;
+			    			</c:if>
+			    			<c:if test="${num != currentPage}">
+								<a href="${pageContext.request.contextPath}/board/boardList?currentPage=${num}">${num}</a>
+								&nbsp;
+							</c:if>	
+			    		</c:forEach>
+			    		<c:if test="${endPagingNum < lastPage}">
+							<a href="${pageContext.request.contextPath}/board/boardList?currentPage=${currentPage+5}">
+								[&gt;&gt;]
+							</a>				
+						</c:if>	
+				    </div>
+				</div>
+				<!-- boardList 종료 -->
+			                	 
+			            <!-- Start Footer -->
+					        <footer class="ltr:md:left-vertical-menu rtl:md:right-vertical-menu group-data-[sidebar-size=md]:ltr:md:left-vertical-menu-md group-data-[sidebar-size=md]:rtl:md:right-vertical-menu-md group-data-[sidebar-size=sm]:ltr:md:left-vertical-menu-sm group-data-[sidebar-size=sm]:rtl:md:right-vertical-menu-sm absolute right-0 bottom-0 px-4 h-14 group-data-[layout=horizontal]:ltr:left-0  group-data-[layout=horizontal]:rtl:right-0 left-0 border-t py-3 flex items-center dark:border-zink-600">
+					        	<c:import url="/WEB-INF/view/inc/footer.jsp"></c:import>    
+					        </footer>
+				        <!-- End Footer -->
+                	 </div>
+               	 </div> 
             </div>
+            
             <!-- container-fluid -->
         </div>
         <!-- End Page-content -->
 
-		<!-- Start Footer -->
-        <footer class="ltr:md:left-vertical-menu rtl:md:right-vertical-menu group-data-[sidebar-size=md]:ltr:md:left-vertical-menu-md group-data-[sidebar-size=md]:rtl:md:right-vertical-menu-md group-data-[sidebar-size=sm]:ltr:md:left-vertical-menu-sm group-data-[sidebar-size=sm]:rtl:md:right-vertical-menu-sm absolute right-0 bottom-0 px-4 h-14 group-data-[layout=horizontal]:ltr:left-0  group-data-[layout=horizontal]:rtl:right-0 left-0 border-t py-3 flex items-center dark:border-zink-600">
-        	<c:import url="/WEB-INF/view/inc/footer.jsp"></c:import>    
-        </footer>
-        <!-- End Footer -->
+		
+       
+        
     </div>
 </div>
 <!-- End Main Content -->
-
 <c:import url="/WEB-INF/view/inc/customizerButton.jsp"></c:import>
-
-
-<script src="${pageContext.request.contextPath}/assets/js/datatables/jquery-3.7.0.js"></script>
-<script src="${pageContext.request.contextPath}/assets/js/datatables/data-tables.min.js"></script>
-<script src="${pageContext.request.contextPath}/assets/js/datatables/data-tables.tailwindcss.min.js"></script>
-<!--buttons dataTables-->
-<script src="${pageContext.request.contextPath}/assets/js/datatables/datatables.buttons.min.js"></script>
-<script src="${pageContext.request.contextPath}/assets/js/datatables/jszip.min.js"></script>
-<script src="${pageContext.request.contextPath}/assets/js/datatables/pdfmake.min.js"></script>
-<script src="${pageContext.request.contextPath}/assets/js/datatables/buttons.html5.min.js"></script>
-<script src="${pageContext.request.contextPath}/assets/js/datatables/buttons.print.min.js"></script>
-
-<script src="${pageContext.request.contextPath}/assets/js/datatables/datatables.init.js"></script>
-
 
 <script src='${pageContext.request.contextPath}/assets/libs/choices.js/public/assets/scripts/choices.min.js'></script>
 <script src="${pageContext.request.contextPath}/assets/libs/@popperjs/core/umd/popper.min.js"></script>
@@ -183,22 +190,11 @@
 
 <!-- App js -->
 <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
-
 <script>
 $(document).ready(function(){
-	$('#boardCategory').change(function(){
-		$('#formCategory').submit();
-	});
-	
-	if ($.fn.dataTable.isDataTable('#basic_tables')) {
-	    $('#basic_tables').DataTable().destroy();
-	}
-
-	// DataTable 초기화
-	const table = new DataTable('#basic_tables', {
-	    order: [[0, 'desc']] // 첫 번째 열을 내림차순으로 기본 설정
-	});
-	
+    $('#boardCategory').change(function(){
+        $('#formCategory').submit();
+    });
 });
 
 </script>
