@@ -22,6 +22,12 @@
     <script src="${pageContext.request.contextPath}/assets/js/layout.js"></script>
     <!-- Tailwind CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tailwind2.css">
+    
+    <!-- Jquery -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="${pageContext.request.contextPath}/assets/js/signature_pad/signature_pad.min.js"></script>
+    
+    
 </head>
 
 <body class="text-base bg-body-bg text-body font-public dark:text-zink-100 dark:bg-zink-800 group-data-[skin=bordered]:bg-body-bordered group-data-[skin=bordered]:dark:bg-zink-700">
@@ -62,11 +68,18 @@
 				        <!-- 에러메세지 -->
 				        <div id="alert-error-msg" class="hidden px-4 py-3 text-sm text-red-500 border border-transparent rounded-md bg-red-50 dark:bg-red-500/20"></div>
 				
+								        
+						<!-- 서명 관리 -->
+						<div class="flex justify-end gap-2 mt-4"s>
+							<button type="button" id="signBtn" class="text-green-500 bg-white btn hover:bg-green-100">서명 관리</button>
+						</div>
+						
+				
 				        <!-- 직원 프로필 사진  -->
 				        <div class="relative mx-auto mb-4 rounded-full shadow-md size-24 bg-slate-100 profile-user dark:bg-zink-500">
 				          <img id="profileImg" src="${pageContext.request.contextPath }/employeeFile/${empInfo.empFileName}" alt="" class="object-cover w-15 h-15 rounded-full user-profile-image">
 				        </div>
-				
+
 				        <!-- 직원 정보 입력 -->
 				        <div class="grid grid-cols-1 gap-4 xl:grid-cols-12 " style="padding-left: 100px;">
 				          <!-- 사번 : 자동입력 -->
@@ -157,8 +170,53 @@
 				    </div>
 				  </div>
 				</div>
-               
 				<!-- 끝 : Main content -->
+				
+				
+				
+				<!-- 서명관리 모달창 --> 				
+				<div id="signModalContainer" class="hidden">
+				
+					<div id="signModalBackground"class="fixed inset-0" style="background-color: rgba(0, 0, 0, 0.75); z-index: 40;"></div>
+					               	
+					<div id="signFormModal" class="fixed left-1/2 transform -translate-x-1/2 z-[1000]" style="top: 40%; transform: translate(-50%, -40%); z-index: 1000;">
+					
+						<div class="w-screen md:w-[30rem] bg-white shadow rounded-md dark:bg-zink-600 flex flex-col h-full">
+							<div class="flex items-center justify-between p-4 dark:border-zink-500  ml-auto">    
+								<button type="button" id="closeSignModalBtn" class="transition-all duration-200 ease-linear text-slate-500 hover:text-red-500 dark:text-zink-200 dark:hover:text-red-500">
+									&#10060;
+								</button>
+							</div>
+							<div class="max-h-[calc(theme('height.screen')_-_180px)] p-4 overflow-y-auto">
+								<div id="signView">
+									
+								</div>
+								<!-- 업로드 -->
+								<div>
+									<div class="relative w-full max-w-sm">
+										<input type="file" id="empSignFile" name="empSignFile" accept="image/*">
+									</div>
+								</div>
+								<!-- signature_pad -->
+								<div>
+									<button type="button" id="signPadBtn" class="text-green-500 bg-white btn hover:bg-green-100">서명하기</button>
+								</div>
+								<div id="pad" class="hidden" >
+									<canvas style="border:1px solid black; width:250px;"></canvas>        
+									       
+									<button type="button" id="btnClear" class="text-green-500 bg-white btn hover:bg-green-100">지우기</button>         
+									<button type="button" id="btnAdd" class="text-green-500 bg-white btn hover:bg-green-100">저장</button>        
+								</div>
+							    
+							</div>
+							<div class="flex items-center justify-between p-4 mt-auto 0 dark:border-zink-500 ml-auto">
+								<button id="addEmpSignBtn"  type="button" class="text-white btn bg-custom-500 hover:bg-custom-600">등록</button>
+							</div>
+						</div>
+					</div> 
+				</div> 
+				<!-- 서명관리 모달 끝: modalContainer -->
+				
                 
                 
             </div>
@@ -191,6 +249,123 @@
 
 <!-- App js -->
 <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
+
+<script type="text/javascript">
+
+/* 서명 관리 버튼을 클릭 -> 모달창 */
+// 재직상태 모달창 관련 id 가져오기 
+const signModalContainer = $("#signModalContainer");
+const signModalBackground = $("#signModalBackground");
+const signFormModal = $("#signFormModal");
+const closeSignModalBtn = $("#closeSignModalBtn");
+const addEmpSignBtn = $("#addEmpSignBtn");
+
+// 모달창 띄우기
+$("#signBtn").click(function() {
+   
+	// 모달 배경과 모달 창을 보이게 하기
+	signModalContainer.removeClass("hidden");   
+    
+});
+
+// 모달 닫기 함수
+function closeSignModal() {
+	signModalContainer.addClass("hidden");
+    $('body').removeClass('overflow-hidden');
+    
+    // 모달 안의 파일 입력 초기화
+    $('#signModalContainer input[type="file"]').val('');
+    
+    // sign_pad 초기화
+    $('#pad').addClass("hidden");
+    sign.clear();
+
+}
+
+// 닫기 버튼
+closeSignModalBtn.click(closeSignModal);
+
+// 수정 버튼 -> 모달창 닫기
+addEmpSignBtn.click(function() {
+	closeSignModal();
+});
+
+// 배경 클릭시 닫기
+signModalBackground.click(function(event) {
+    if (event.target === this) {
+    	closeSignModal();
+    }
+});
+
+/* 끝 : 서명 관리 모달창  */
+
+/* 존재하는 서명 가져오기 */
+console.log("서명 ajax 실행")
+
+$.ajax({
+	url : '/pettopia/rest/employeeSignFile',
+	method : 'GET'
+}).done(function(result) {
+	console.log("응답받은 결과:", result);
+	const fileName = result.fileName + result.fileExt;
+	
+	if(result != null && result != ''){
+		$('#signView').append('<img src="${pageContext.request.contextPath}/employeeFile/"' + fileName + 'style="width: 250px;">');
+	}else{
+		$('#signView').append('<img src="${pageContext.request.contextPath}/employeeFile/noSign.png" style="width: 250px;">');
+	}
+
+}).fail(function() {
+	alert('서명 호출 실패');
+});
+
+
+
+/* signature_pad */
+// API 소스코드가 canvas배열형태로 접근하도록 되어있음
+// --> $('canvas') 이런식의 직접호출은 error 발생 
+let canvas = $("#pad canvas")[0];
+
+let sign = new SignaturePad(canvas, {
+	minWidth : 2, // 펜굵기
+	maxWidth : 2, // 펜굵기
+	penColor : '#000000' // 펜색상
+});
+
+// 지우기 버튼
+$('#btnClear').click(function(){
+	sign.clear();
+});
+
+$('#btnAdd').click(function(){
+	if(sign.isEmpty()) {
+		alert('사인이 없습니다');
+	} else {
+		$.ajax({
+		
+			 url : '/pettopia/rest/addEmployeeSignFile'
+			, method : 'POST'
+			, data : {sign:sign.toDataURL()}
+		}).done(function(result){
+			alert(result);
+			sign.clear();
+		}).fail(function(request, status, error){
+			alert('실패');
+		});
+	}
+});
+
+
+$('#signPadBtn').click(function() {
+	$('#pad').removeClass("hidden");
+});
+
+</script>
+
+
+
+
+
 
 </body>
 

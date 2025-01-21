@@ -110,7 +110,7 @@ public class EmployeeService {
 		
 		// 팀 리더 여부
 		String isTeamLeader = "";
-		if(employeeForm.getRankNo() >= 50) {
+		if(employeeForm.getRankNo() == 50) {
 			isTeamLeader = "H";
 			employee.setIsTeamLeader(isTeamLeader);
 		}else {
@@ -418,7 +418,7 @@ public class EmployeeService {
 	
 	
 	// modifyEmployeeOne : 마이페이지 - 직원 정보 수정
-	public boolean modifyEmployeeOne(EmployeeForm empForm, String path, String empFileNo, String empStatus) {
+	public boolean modifyEmployeeOne(EmployeeForm empForm, String path, String empFileNo, String empStatus, String isTeamLeader) {
 		
 		log.debug(TeamColor.KMJ + "EmployeeService - modifyEmployeeOne() " );
 		
@@ -428,6 +428,16 @@ public class EmployeeService {
 		// employee 테이블 직원 등록
 		Employee employee = new Employee();
 		employee.setEmpNo(empForm.getEmpNo());
+		
+		
+		log.debug(TeamColor.KMJ + "isTeamLeader : " + isTeamLeader);
+		if(isTeamLeader == null || isTeamLeader == "") {
+			employee.setIsTeamLeader(null);
+		}else {
+			employee.setIsTeamLeader(isTeamLeader);
+		}
+		
+		
 		log.debug(TeamColor.KMJ + "employeeForm.getEmpNo() : " + empForm.getEmpNo());
 		log.debug(TeamColor.KMJ + "employeeForm.getEmpPw() : " + empForm.getEmpPw());
 		
@@ -567,7 +577,42 @@ public class EmployeeService {
 	}
 	
 	
+	// modifyEmployeeSummary : 직원 부서, 직급, 재직상태 수정
+	public boolean modifyEmployeeSummary(Employee employee) {
+		
+		log.debug(TeamColor.KMJ + "EmployeeService - getEmployeeSummary() " );
+		log.debug(TeamColor.KMJ + "empNo:" + employee.getEmpNo() + TeamColor.KMJ);
+		
+		boolean result = false; // 수정 성공시 true
 	
+		if(employee.getRankNo() != null) { 
+			if(employee.getRankNo() == 50) { // 직급이 50일 경우 팀장 'H'
+				employee.setIsTeamLeader("H");
+			}else {
+				employee.setIsTeamLeader("");
+			}
+			
+		}
+		if(employee.getEmpStatus().equals("R")) {
+			employee.setResignationDate("123");
+		}
+		
+		
+		log.debug(TeamColor.KMJ + "수정 할 employee:" + employee.toString() + TeamColor.KMJ);
+		
+		Integer row = employeeMapper.updateEmployee(employee);
+		
+		if(row == 1) {
+			result = true;
+		}
+		
+		log.debug(TeamColor.KMJ + "row : " + row + TeamColor.KMJ);
+		log.debug(TeamColor.KMJ + "result" + result + TeamColor.KMJ);
+		
+		
+		return result;
+		
+	}
 	
 
 }// employeeService

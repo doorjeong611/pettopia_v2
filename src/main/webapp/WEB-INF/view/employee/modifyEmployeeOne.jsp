@@ -152,6 +152,8 @@
 
   <!-- Main Form -->
   <form action="${pageContext.request.contextPath}/employee/modifyEmployeeOne" class="create-form" method="post" enctype="multipart/form-data" id="modifyEmployeeForm">
+    <input type="hidden" name="isTeamLeader" value="${isTeamLeader }">
+    
     <div class="xl:col-span-9">
       <div class="card">
         <div class="card-body">

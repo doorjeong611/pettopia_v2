@@ -51,5 +51,22 @@
 		WHERE emp_file_no = #{empFileNo}		
 	</select>
 	
+	<!-- employeeOne : employeeFileRest - getEmployeeSignFile (db에 저장된 서명 파일 가져오기) -->
+	<select id="selectEmployeeSignFile" parameterType="String" resultType="com.example.pettopia.vo.EmployeeFile">
+		SELECT emp_file_no AS empFileNo
+				, emp_no AS empNo
+				, file_purpose AS filePurpose
+				, origin_file_name AS originFileName
+				, file_name AS fileName
+				, file_ext AS fileExt
+				, file_type AS fileType
+		FROM employee_file
+		WHERE emp_no = #{empNo} 
+		AND file_purpose = 'S'
+	</select>
+	
+	
+	
+	
 	
 </mapper>

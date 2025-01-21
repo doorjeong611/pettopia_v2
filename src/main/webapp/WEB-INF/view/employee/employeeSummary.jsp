@@ -69,10 +69,7 @@
 			        <div class="card-body">
 			          <div class="max-h-[calc(theme('height.screen')_-_180px)] p-4 overflow-y-auto">
 			
-			            <!-- Hidden Fields -->
-			            <input type="hidden" value="" name="id" id="id">
-			            <input type="hidden" value="add" name="action" id="action">
-			            <input type="hidden" id="id-field">
+			        
 			
 			            <!-- 에러메세지 -->
 			            <div id="alert-error-msg" class="hidden px-4 py-3 text-sm text-red-500 border border-transparent rounded-md bg-red-50 dark:bg-red-500/20"></div>
@@ -87,7 +84,7 @@
 			              <!-- 사번 -->
 			              <div class="xl:col-span-4">
 			                <label for="employeeId" class="inline-block mb-2 text-base font-medium">직원 번호</label>
-			                <input type="number" name="empNo" id="employeeId" class="form-input border-slate-200 dark:border-zink-500" value="${loginEmp.username}" readOnly>
+			                <input type="number" name="empNo" id="employeeId" class="form-input border-slate-200 dark:border-zink-500" value="${empInfo.empNo}" readOnly>
 			              </div>
 			
 			              <!-- 이름 -->
@@ -130,6 +127,8 @@
 
 						<form action="${pageContext.request.contextPath}/employee/modifyEmployeSummary" method="post" id="modifyEmpSumForm" >  
 				          
+				          <input type="hidden" name="sendEmpNo" value="${empInfo.empNo }">
+				          
 				          <!-- 부서 -->
 				          <div class="xl:col-span-4 ">
 				            <label id="divisionDiv" for="designationSelect" class="inline-block mb-2 text-base font-medium">소속 부서</label>
@@ -156,14 +155,14 @@
 				            </div>
 				          </div>
 				         
-				         
+				       <c:if test="${isAdmin }">
 				        <div class="xl:col-span-12 ">
 			             	<button type="button" id="modifyEmpSumBtn" class="text-white btn bg-custom-500 hover:bg-custom-600 ml-auto">수정</button>
 			            </div>
 				        <div class="xl:col-span-12 ">
-			             	<button type="button" id="reset" class="text-white btn bg-custom-500 hover:bg-custom-600 ml-auto">되돌리기</button>
+			             	<button type="button" id="reset" class="text-red-500 bg-white btn hover:bg-red-100">되돌리기</button>
 			            </div>
-				         
+				       </c:if>    
 				      </form> 
 	
 			          </div>
@@ -205,7 +204,7 @@
 			            </div>
 			        </div>
 			        <div class="flex items-center justify-between p-4 mt-auto 0 dark:border-zink-500 ml-auto">
-			            <button id="modifyDeptBtn"  type="button" class="text-white btn bg-custom-500 hover:bg-custom-600"> 부서 수정</button>
+			            <button id="modifyDeptBtn"  type="button" class="text-white btn bg-custom-500 hover:bg-custom-600">수정</button>
 			        </div>
 			    </div>
 			</div> 
@@ -237,7 +236,7 @@
 		                </select>
 			        </div>
 			        <div class="flex items-center justify-between p-4 mt-auto 0 dark:border-zink-500 ml-auto">
-			            <button id="modifyRankBtn"  type="button" class="text-white btn bg-custom-500 hover:bg-custom-600"> 직급 수정</button>
+			            <button id="modifyRankBtn"  type="button" class="text-white btn bg-custom-500 hover:bg-custom-600">수정</button>
 			        </div>
 			    </div>
 			</div> 
@@ -274,7 +273,7 @@
 		                </select>
 			        </div>
 			        <div class="flex items-center justify-between p-4 mt-auto 0 dark:border-zink-500 ml-auto">
-			            <button id="modifyEmpStatusBtn"  type="button" class="text-white btn bg-custom-500 hover:bg-custom-600"> 직급 수정</button>
+			            <button id="modifyEmpStatusBtn"  type="button" class="text-white btn bg-custom-500 hover:bg-custom-600">수정</button>
 			        </div>
 			    </div>
 			</div> 
@@ -646,6 +645,17 @@ $(document).ready(function() {
         
         if(empDeptCodeExists.val() == 'null' || empRankNoExists.val() == 'null' || empStatusValExists.val() == 'null'){
         	 alert("수정 사항이 없습니다.");
+        	// 입력 필드를 초기값으로 되돌리기
+             $("input[name='divisionCode']").val(originalValues.division); // 부서 복원
+             $("input[name='deptCode']").val(originalValues.dept);         // 팀 복원
+             $("input[name='rankNo']").val(originalValues.rank);         // 직급 복원
+             $("input[name='empStatus']").val(originalValues.status);         // 재직상태 복원
+
+             // hidden 삭제
+             $("input[name='empDeptCode']").remove(); // 기존 hidden input 제거
+             $("input[name='empRankNo']").remove();  // 기존 hidden input 제거
+             $("input[name='empStatusVal']").remove();  // 기존 hidden input 제거
+        	 
              return; // 폼 제출 X
         }
 
