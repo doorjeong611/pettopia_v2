@@ -1,19 +1,24 @@
 package com.example.pettopia.document;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.example.pettopia.documentfile.DocumentFileMapper;
 import com.example.pettopia.util.Page;
 import com.example.pettopia.util.TeamColor;
 import com.example.pettopia.vo.Department;
 import com.example.pettopia.vo.Division;
 import com.example.pettopia.vo.Document;
 import com.example.pettopia.vo.DocumentApprovers;
+import com.example.pettopia.vo.DocumentFile;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,15 +29,46 @@ import lombok.extern.slf4j.Slf4j;
 public class DocumentService {
 	
 	@Autowired DocumentMapper documentMapper;
+	@Autowired DocumentFileMapper documentFileMapper;
 	
 	// addDocument → 문서 작성
-	public Integer addDocument(Document document, DocumentApprovers documentApprovers) {
-		documentMapper.insertDocument(document);
+	public Integer addDocument(Document document, DocumentApprovers documentApprovers, DocumentFile documentFile, String path) {
+		int addDocRow = documentMapper.insertDocument(document);
 		
 		documentApprovers.setDocNo(document.getDocNo());
 		log.debug(TeamColor.KDH + "DocNo : " + document.getDocNo() + TeamColor.RESET);
 		
-		documentMapper.insertDocumentApprovers(documentApprovers);
+		int addApproversRow = documentMapper.insertDocumentApprovers(documentApprovers);
+		
+		Integer docNo = document.getDocNo(); // selectKey 값
+		
+		if(addDocRow == 1 && addApproversRow == 1 && documentFile.getDocumentFile() != null) {
+			// GoodsFile 입력
+			List<MultipartFile> documentFileList = documentFile.getDocumentFile();
+			for (MultipartFile mf : documentFileList) {
+				int dotIdx = mf.getOriginalFilename().lastIndexOf(".");
+				String orginName = mf.getOriginalFilename().substring(0, dotIdx);
+				String fileName = UUID.randomUUID().toString().replace("-", "").substring(0, 16);
+				String ext = mf.getOriginalFilename().substring(dotIdx + 1);
+				
+				documentFile.setDocNo(docNo);
+				documentFile.setOriginFileName(orginName);
+				documentFile.setFileName(fileName);
+				documentFile.setFileExt(ext);
+				documentFile.setFileType(mf.getContentType());
+				
+				int addDocumentFileRow = documentFileMapper.insertDocumentFile(documentFile);
+				if(addDocumentFileRow == 1) {
+					// 물리적 파일 저장
+					try {
+						mf.transferTo(new File(path + fileName + "." + ext));
+					} catch (Exception e) {
+						e.printStackTrace();
+						throw new RuntimeException();
+					}
+				}
+			}
+		}
 		return 1;
 	}
 	

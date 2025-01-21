@@ -1,6 +1,7 @@
 package com.example.pettopia.document;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,12 +11,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.pettopia.dto.EmpUserDetails;
 import com.example.pettopia.util.Page;
 import com.example.pettopia.util.TeamColor;
 import com.example.pettopia.vo.Document;
 import com.example.pettopia.vo.DocumentApprovers;
+import com.example.pettopia.vo.DocumentFile;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
@@ -48,11 +51,25 @@ public class DocumentController {
 	
 	// addDocument Action
 	@PostMapping("/document/addDocument")
-	public String addDocument(Model model, Document document, DocumentApprovers documentApprovers) {
+	public String addDocument(Model model, HttpSession session, Document document, DocumentApprovers documentApprovers, DocumentFile documentFile) {
 		
 		log.debug(TeamColor.KDH + "document : " + document.toString() + TeamColor.RESET);
 		
-		int insertDocRow = documentService.addDocument(document, documentApprovers);
+		if(documentFile.getDocumentFile() != null) {
+			log.debug(TeamColor.KDH + "documentFile.getDocumentFile().size() : " + documentFile.getDocumentFile().size() + TeamColor.RESET); // debug
+		}
+		
+		List<MultipartFile> documentFileList = documentFile.getDocumentFile();
+		
+		// 상품정보만 입력하고 File은 첨부 안했을 때
+		if(documentFileList == null || documentFileList.isEmpty()) {
+			String path = null;
+			documentService.addDocument(document, documentApprovers, documentFile, path);
+			return "redirect:/document/documentList";
+		}
+		
+		String path = session.getServletContext().getRealPath("/documentFile/");
+		documentService.addDocument(document, documentApprovers, documentFile, path);
 		
 		return "redirect:/document/documentList";
 	}
