@@ -19,6 +19,7 @@ public interface EmployeeFileMapper {
 	// employeeOne : employeeFileRest - getEmployeeSignFile (db에 저장된 서명 파일 가져오기)
 	EmployeeFile selectEmployeeSignFile(String empNo);
 	
-	
+	// employeeOne : 이미 존재하는 sign 삭제
+	Integer deleteEmployeeSignFile(String empNo);
 
 }
