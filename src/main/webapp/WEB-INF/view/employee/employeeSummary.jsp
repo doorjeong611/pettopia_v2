@@ -64,105 +64,114 @@
                 
                 <!-- Main content -->
 
-    <div class="xl:col-span-9">
-      <div class="card">
-        <div class="card-body">
-          <div class="max-h-[calc(theme('height.screen')_-_180px)] p-4 overflow-y-auto">
+			    <div class="xl:col-span-9">
+			      <div class="card">
+			        <div class="card-body">
+			          <div class="max-h-[calc(theme('height.screen')_-_180px)] p-4 overflow-y-auto">
+			
+			            <!-- Hidden Fields -->
+			            <input type="hidden" value="" name="id" id="id">
+			            <input type="hidden" value="add" name="action" id="action">
+			            <input type="hidden" id="id-field">
+			
+			            <!-- 에러메세지 -->
+			            <div id="alert-error-msg" class="hidden px-4 py-3 text-sm text-red-500 border border-transparent rounded-md bg-red-50 dark:bg-red-500/20"></div>
+			
+			            <!-- 직원 프로필 사진  -->
+						<div class="relative mx-auto mb-4 shadow-md size-24 bg-slate-100 profile-user dark:bg-zink-500">
+						    <img id="profileImg" src="${pageContext.request.contextPath }/employeeFile/${empInfo.fileName == null ? 'placeholder.png' : empInfo.fileName }" alt="" class="object-cover w-full h-full user-profile-image">
+						</div>
+			
+			            <!-- 직원 정보 -->
+			            <div class="grid grid-cols-1 gap-4 xl:grid-cols-12">
+			              <!-- 사번 -->
+			              <div class="xl:col-span-4">
+			                <label for="employeeId" class="inline-block mb-2 text-base font-medium">직원 번호</label>
+			                <input type="number" name="empNo" id="employeeId" class="form-input border-slate-200 dark:border-zink-500" value="${loginEmp.username}" readOnly>
+			              </div>
+			
+			              <!-- 이름 -->
+			              <div class="xl:col-span-4 ">
+				            <label for="employeeInput" class="inline-block mb-2 text-base font-medium">이름</label>
+				            <input type="text" name="empName" id="employeeInput" class="form-input border-slate-200 dark:border-zink-500 px-5 focus:outline-none" value="${empInfo.empName}" readonly>
+				          </div>
+			
+			              <!-- 이메일 -->
+			              <div class="xl:col-span-4">
+				            <label for="emailInput" class="inline-block mb-2 text-base font-medium">이메일</label>
+				            <input type="text" name="empEmail" class="form-input border-slate-200 dark:border-zink-500 px-5 focus:outline-none " value="${empInfo.empEmail}" readonly>
+				          </div>
+			              
+			              <!-- 연락처 -->
+				          <div class="xl:col-span-4 ">
+				            <label for="phoneNumberInput" class="inline-block mb-2 text-base font-medium">연락처</label>
+				            <div class="flex items-center space-x-4">
+				              <input type="text" name="empPhone" id="phoneNumberInput2" class="form-input border-slate-200 dark:border-zink-500 px-5 focus:outline-none" value="${empInfo.empPhone}" readonly>
+				            </div>
+				          </div>
+				          
+			              <!-- 내선번호 -->
+				          <div class="xl:col-span-4 ">
+				            <label for="phoneNumberInput" class="inline-block mb-2 text-base font-medium">내선번호</label>
+				            <div class="flex items-center space-x-4">
+				              <input type="text" name="empPhone" id="phoneNumberInput2" class="form-input border-slate-200 dark:border-zink-500 px-5 focus:outline-none" value="${empInfo.deptExt}" readonly>
+				            </div>
+				          </div>
+			              
+			              
+			            <!-- 입사일 -->
+						<div class="xl:col-span-4 ">
+							<label for="joiningDateInput"
+								class="inline-block mb-2 text-base font-medium">입사일</label>
+							<div class="gap-2">
+								<input type="text" name="hireDate" class="border border-gray-300 rounded-md px-5 py-2 mb-2 focus:outline-none" value="${empInfo.hireDate}" readonly>
+							</div>
+						</div>
 
-            <!-- Hidden Fields -->
-            <input type="hidden" value="" name="id" id="id">
-            <input type="hidden" value="add" name="action" id="action">
-            <input type="hidden" id="id-field">
-
-            <!-- 에러메세지 -->
-            <div id="alert-error-msg" class="hidden px-4 py-3 text-sm text-red-500 border border-transparent rounded-md bg-red-50 dark:bg-red-500/20"></div>
-
-            <!-- 직원 프로필 사진  -->
-			<div class="relative mx-auto mb-4 shadow-md size-24 bg-slate-100 profile-user dark:bg-zink-500">
-			    <img id="profileImg" src="${pageContext.request.contextPath }/employeeFile/${empInfo.fileName == null ? 'placeholder.png' : empInfo.fileName }" alt="" class="object-cover w-full h-full user-profile-image">
-			</div>
-
-            <!-- 직원 정보 -->
-            <div class="grid grid-cols-1 gap-4 xl:grid-cols-12">
-              <!-- 사번 -->
-              <div class="xl:col-span-4">
-                <label for="employeeId" class="inline-block mb-2 text-base font-medium">직원 번호</label>
-                <input type="number" name="empNo" id="employeeId" class="form-input border-slate-200 dark:border-zink-500" value="${loginEmp.username}" readOnly>
-              </div>
-
-              <!-- 이름 -->
-              <div class="xl:col-span-4 ">
-	            <label for="employeeInput" class="inline-block mb-2 text-base font-medium">이름</label>
-	            <input type="text" name="empName" id="employeeInput" class="form-input border-slate-200 dark:border-zink-500 px-5 focus:outline-none" value="${empInfo.empName}" readonly>
-	          </div>
-
-              <!-- 이메일 -->
-              <div class="xl:col-span-4">
-	            <label for="emailInput" class="inline-block mb-2 text-base font-medium">이메일</label>
-	            <input type="text" name="empEmail" class="form-input border-slate-200 dark:border-zink-500 px-5 focus:outline-none " value="${empInfo.empEmail}" readonly>
-	          </div>
-              
-              <!-- 연락처 -->
-	          <div class="xl:col-span-4 ">
-	            <label for="phoneNumberInput" class="inline-block mb-2 text-base font-medium">연락처</label>
-	            <div class="flex items-center space-x-4">
-	              <input type="text" name="empPhone" id="phoneNumberInput2" class="form-input border-slate-200 dark:border-zink-500 px-5 focus:outline-none" value="${empInfo.empPhone}" readonly>
-	            </div>
-	          </div>
-	          
-              <!-- 내선번호 -->
-	          <div class="xl:col-span-4 ">
-	            <label for="phoneNumberInput" class="inline-block mb-2 text-base font-medium">내선번호</label>
-	            <div class="flex items-center space-x-4">
-	              <input type="text" name="empPhone" id="phoneNumberInput2" class="form-input border-slate-200 dark:border-zink-500 px-5 focus:outline-none" value="${empInfo.deptExt}" readonly>
-	            </div>
-	          </div>
-              
-              
-              <!-- 입사일 -->
-               <div class="xl:col-span-4 ">
-	            <label for="joiningDateInput" class="inline-block mb-2 text-base font-medium">입사일</label>
-	            <div class="gap-2">
-	              <input type="text" name="hireDate" class="border border-gray-300 rounded-md px-5 py-2 mb-2 focus:outline-none" value="${empInfo.hireDate}" readonly>
-	            </div>
-	          </div>
-            
-            <form action="${pageContext.request.contextPath}/admin/modifyEmployeSummary" method="post" id="modifyEmpSumForm" >  
-	          
-	          <!-- 부서 -->
-	          <div class="xl:col-span-4 ">
-	            <label id="divisionDiv" for="designationSelect" class="inline-block mb-2 text-base font-medium">소속 부서</label>
-	            <div class="gap-2">
-	              <input type="text" name="divisionCode" class="border border-gray-300 rounded-md px-5 py-2 mb-2 focus:outline-none " value="${empInfo.divisionName}" readonly>
-	              <input type="text" name="deptCode" class="border border-gray-300 rounded-md px-5 py-2 mb-2 focus:outline-none " value="${empInfo.deptName}" readonly>
-	            </div>
-	          </div>
-	          
-	          <!-- 직급, 팀장여부 -->
-	          <div class="xl:col-span-4 ">
-	            <label for="designationSelect" class="inline-block mb-2 text-base font-medium">직급</label>
-	            <div class="gap-2">
-	              <input type="text" name="rankNo" class="border border-gray-300 rounded-md px-5 py-2 mb-2 focus:outline-none" value="${empInfo.rankName}" readonly>
-	              <input type="text" name="isTeamLeader" class="border border-gray-300 rounded-md px-5 py-2 mb-2 focus:outline-none" value="${empInfo.isTeamLeader == 'H' ? '팀장' : '팀원'}" readonly>
-	            </div>
-	          </div>
-	          
-	          <!-- 재직 상태 -->
-	          <div class="xl:col-span-4 ">
-	            <label for="designationSelect" class="inline-block mb-2 text-base font-medium">재직 상태</label>
-	            <div class="gap-2">
-	              <input type="text" name="empStatus" class="border border-gray-300 rounded-md px-5 py-2 mb-2 focus:outline-none" value="${empInfo.empStatus}" readonly>
-	            </div>
-	          </div>
-	         
-	         
-	         <div class="xl:col-span-12 ">
-             	<button type="button" id="modifyEmpSumBtn" class="text-white btn bg-custom-500 hover:bg-custom-600 ml-auto">수정</button>
-            </div>
-	         
-	        </form> 
-	     
-	     
+						<form action="${pageContext.request.contextPath}/employee/modifyEmployeSummary" method="post" id="modifyEmpSumForm" >  
+				          
+				          <!-- 부서 -->
+				          <div class="xl:col-span-4 ">
+				            <label id="divisionDiv" for="designationSelect" class="inline-block mb-2 text-base font-medium">소속 부서</label>
+				            <div class="gap-2">
+				              <input type="text" name="divisionCode" class="border border-gray-300 rounded-md px-5 py-2 mb-2 focus:outline-none " value="${empInfo.divisionName}" readonly>
+				              <input type="text" name="deptCode" class="border border-gray-300 rounded-md px-5 py-2 mb-2 focus:outline-none " value="${empInfo.deptName}" readonly>
+				            </div>
+				          </div>
+				          
+				          <!-- 직급 -->
+				          <div class="xl:col-span-4 ">
+				            <label for="designationSelect" class="inline-block mb-2 text-base font-medium">직급</label>
+				            <div class="gap-2">
+				              <input type="text" name="rankNo" class="border border-gray-300 rounded-md px-5 py-2 mb-2 focus:outline-none" value="${empInfo.rankName}" readonly>
+				              <input type="text" name="isTeamLeader" class="border border-gray-300 rounded-md px-5 py-2 mb-2 focus:outline-none" value="${empInfo.isTeamLeader == 'H' ? '팀장' : '팀원'}" readonly>
+				            </div>
+				          </div>
+				          
+				          <!-- 재직 상태 -->
+				          <div class="xl:col-span-4 ">
+				            <label for="designationSelect" class="inline-block mb-2 text-base font-medium">재직 상태</label>
+				            <div class="gap-2">
+				              <input type="text" name="empStatus" class="border border-gray-300 rounded-md px-5 py-2 mb-2 focus:outline-none" value="${empInfo.empStatus}" readonly>
+				            </div>
+				          </div>
+				         
+				         
+				        <div class="xl:col-span-12 ">
+			             	<button type="button" id="modifyEmpSumBtn" class="text-white btn bg-custom-500 hover:bg-custom-600 ml-auto">수정</button>
+			            </div>
+				        <div class="xl:col-span-12 ">
+			             	<button type="button" id="reset" class="text-white btn bg-custom-500 hover:bg-custom-600 ml-auto">되돌리기</button>
+			            </div>
+				         
+				      </form> 
+	
+			          </div>
+			          </div>
+			        </div>
+			      </div>
+			    </div>
+	<!-- 끝 : main content -->
 	     
 	     
 	     
@@ -188,10 +197,10 @@
 			            <h5 class="mb-3 text-16">부서 변경하기</h5>
 			            <div>
 			            	<select name="divisionCode" id="divisionSelect" class="form-input border-slate-200 dark:border-zink-500">
-			                    <option value="">부서 선택</option>
+			                    <option value="null">부서 선택</option>
 			                </select>
 			                <select name="deptCode" id="departSelect" class="form-input border-slate-200 dark:border-zink-500">
-			                    <option value="">팀 선택</option>
+			                    <option value="null">팀 선택</option>
 			                </select>
 			            </div>
 			        </div>
@@ -202,10 +211,7 @@
 			</div> 
 
 		</div><!-- 끝: modalContainer -->	
-		
-		
-		
-		
+
 		
 		<!-- 직급 수정 modalContainer -->	  
 		<div id="rankModalContainer" class="hidden">
@@ -239,19 +245,43 @@
 		</div><!-- 직급 끝: modalContainer -->
 		
 		
-		
-		
-		
-		
-		
-							  
-					
-          </div>
-          </div>
-        </div>
-      </div>
-    </div>
-	<!-- 끝 : main content -->
+		<!-- 재직 상태 수정 modalContainer -->	  
+		<div id="empStatusModalContainer" class="hidden">
+			<!-- 모달 배경 : 바깥 부분 클릭해서 모달창 닫기 -->
+			<div id="empStatusModalBackground"class="fixed inset-0" style="background-color: rgba(0, 0, 0, 0.75); z-index: 40;">
+			</div>
+
+            
+			<!-- 수정 버튼을 통한 부서 수정 모달창 -->                 	
+ 			<div id="empStatusModifyFormModal" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[1000]">
+				
+				<div class="w-screen md:w-[30rem] bg-white shadow rounded-md dark:bg-zink-600 flex flex-col h-full">
+				  <div class="flex items-center justify-between p-4 dark:border-zink-500  ml-auto">
+				         
+				         <button type="button" id="closeEmpStatusModalBtn" class="transition-all duration-200 ease-linear text-slate-500 hover:text-red-500 dark:text-zink-200 dark:hover:text-red-500">
+				         	&#10060;
+				         </button>
+				  </div>
+			        <div class="max-h-[calc(theme('height.screen')_-_180px)] p-4 overflow-y-auto">
+			            <h5 class="mb-3 text-16">재직 상태 변경하기</h5>
+			            <select name="empStatus" id="empStatusSelect" class="form-input border-slate-200 dark:border-zink-500">
+		                    <option value="null">재직 상태</option>
+		                    <option value="E">재직</option>
+		                    <option value="H">대기</option>
+		                    <option value="L">휴직</option>
+		                    <option value="R">퇴직</option>
+		                    <option value="T">임시</option>
+		                </select>
+			        </div>
+			        <div class="flex items-center justify-between p-4 mt-auto 0 dark:border-zink-500 ml-auto">
+			            <button id="modifyEmpStatusBtn"  type="button" class="text-white btn bg-custom-500 hover:bg-custom-600"> 직급 수정</button>
+			        </div>
+			    </div>
+			</div> 
+
+		</div><!-- 직급 끝: modalContainer -->
+						  
+
         
 
                 
@@ -284,7 +314,7 @@
 <%-- <script src="${pageContext.request.contextPath}/assets/js/pages/dashboards-ecommerce.init.js"></script> --%>
 
 <!-- App js -->
-<%-- <script src="${pageContext.request.contextPath}/assets/js/app.js"></script> --%>
+<script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
 
 <!-- 모달창 스크립트 -->
 <script type="text/javascript">
@@ -293,6 +323,40 @@ $(document).ready(function() {
 	const isAdmin = ${isAdmin};
 	
 	console.log('isAdmin : ' + isAdmin);
+	
+	
+	// 되돌리기 버튼을 위해 초기값 저장
+    const originalValues = {
+        division: $("input[name='divisionCode']").val(), // 부서
+        dept: $("input[name='deptCode']").val(),         // 팀
+        rank: $("input[name='rankNo']").val(), // 직급
+        status: $("input[name='empStatus']").val() // 재직 상태
+
+    };
+
+    // 되돌리기 버튼 클릭 이벤트
+    $("#reset").click(function () {
+        // 입력 필드를 초기값으로 되돌리기
+        $("input[name='divisionCode']").val(originalValues.division); // 부서 복원
+        $("input[name='deptCode']").val(originalValues.dept);         // 팀 복원
+        $("input[name='rankNo']").val(originalValues.rank);         // 직급 복원
+        $("input[name='empStatus']").val(originalValues.status);         // 재직상태 복원
+
+        // hidden 삭제
+        $("input[name='empDeptCode']").remove(); // 기존 hidden input 제거
+        $("input[name='empRankNo']").remove();  // 기존 hidden input 제거
+        $("input[name='empStatusVal']").remove();  // 기존 hidden input 제거
+
+        // 모달 선택값 초기화 (필요한 경우 추가)
+        $("#divisionSelect").val("").change(); // 부서 select 초기화
+        $("#departSelect").val("").change();   // 팀 select 초기화
+
+        alert("되돌리기 완료.");
+    });
+	
+
+ // --------------------------------------------------------------------------------------------------------------------------------
+	
 	
 	/* 부서 모달창 관련 id 가져오기 */
     const modalContainer = $("#modalContainer");
@@ -342,17 +406,23 @@ $(document).ready(function() {
         console.log('selectedDeptCode : ' + selectedDeptCode); 
 
         $('#modifyDeptBtn').click(function() {
-        	  
+        	 
+        	
             // 선택된 부서 및 팀 값을 input에 업데이트
             $("input[name='divisionCode']").val(selectedDivision);  // 부서 input 값
             $("input[name='deptCode']").val(selectedDept);          // 팀 input 값
             
-        	 // 기존에 empDeptCode가 존재하면 삭제하고 새로 추가
+        	// 기존에 empDeptCode가 존재하면 삭제하고 새로 추가
             $("input[name='empDeptCode']").remove();  // 기존 hidden input 제거
             
             
-            // hidden으로 전달
-            $("#modifyEmpSumForm").append($('<input>', {type: 'hidden', name: 'empDeptCode', value: selectedDeptCode}));
+            if($('#divisionSelect').val() == 'null' || $('#departSelect').val() == 'null'){
+            	 // hidden으로 전달
+            	$("#modifyEmpSumForm").append($('<input>', {type: 'hidden', name: 'empDeptCode', value: 'null'}));
+            	
+            }else{
+            	$("#modifyEmpSumForm").append($('<input>', {type: 'hidden', name: 'empDeptCode', value: selectedDeptCode}));
+            }
             
             closeModal();
         });
@@ -384,7 +454,7 @@ $(document).ready(function() {
     }
 
     // 닫기 버튼
-    closeModalBtn.click(closeRankModal);
+    closeRankModalBtn.click(closeRankModal);
 
     // 수정 버튼
     modifyRankBtn.click(function() {
@@ -412,14 +482,90 @@ $(document).ready(function() {
             $("input[name='rankNo']").val(selectedRank);  // 직급 input 값
            
             
-            // hidden으로 전달
-            $("#modifyEmpSumForm").append($('<input>', {type: 'hidden', name: 'empRankNo', value: selectedRankNo}));
+         	// 기존에 hidden 존재하면 삭제하고 새로 추가
+            $("input[name='empRankNo']").remove();  // 기존 hidden input 제거
+            
+            
+           if($('#rankSelect').val() == ''){
+           		// hidden으로 전달
+           		$("#modifyEmpSumForm").append($('<input>', {type: 'hidden', name: 'empRankNo', value: 'null'}));
+           	
+           }else{
+           		$("#modifyEmpSumForm").append($('<input>', {type: 'hidden', name: 'empRankNo', value: selectedRankNo}));
+           }
+           
             
             closeRankModal();
         });
     
         
     }); /* 끝 : 직급 모달창  */
+    
+    
+    
+ 	// --------------------------------------------------------------------------------------------------------------------------------
+    
+    /* 재직상태 모달창 관련 id 가져오기 */
+    const empStatusModalContainer = $("#empStatusModalContainer");
+    const empStatusModalBackground = $("#empStatusModalBackground");
+    const empStatusModifyFormModal = $("#empStatusModifyFormModal");
+    const closeEmpStatusModalBtn = $("#closeEmpStatusModalBtn");
+    const modifyEmpStatusBtn = $("#modifyEmpStatusBtn");
+
+    // 모달창 띄우기
+    $("input[name='empStatus']").click(function() {
+        if (isAdmin) {
+            // 모달 배경과 모달 창을 보이게 하기
+            empStatusModalContainer.removeClass("hidden");   
+        }
+    });
+    
+    // 모달 닫기 함수
+    function closeEmpStatusModal() {
+    	empStatusModalContainer.addClass("hidden");
+        $('body').removeClass('overflow-hidden');
+    }
+
+    // 닫기 버튼
+    closeEmpStatusModalBtn.click(closeEmpStatusModal);
+
+    // 수정 버튼
+    modifyEmpStatusBtn.click(function() {
+    	closeEmpStatusModal();
+    });
+
+    // 배경 클릭시 닫기
+    empStatusModalBackground.click(function(event) {
+        if (event.target === this) {
+        	closeEmpStatusModal();
+        }
+    });
+    
+    // 재직 상태 선택 후 input에 값 넣기
+    $("#empStatusSelect").change(function() {
+        const selectedEmpStatus = $("#empStatusSelect option:selected").html();
+        console.log('selectedEmpStatus : ' + selectedEmpStatus); 
+        
+        const selectedEmpStatusVal = $("#empStatusSelect").val();
+        console.log('selectedEmpStatusVal : ' + selectedEmpStatusVal); 
+
+        $('#modifyEmpStatusBtn').click(function() {
+        	  
+            // 선택된 값을 input에 업데이트
+            $("input[name='empStatus']").val(selectedEmpStatus);  // 직급 input 값
+           
+         	// 기존에 hidden 존재하면 삭제하고 새로 추가
+            $("input[name='empStatusVal']").remove();  // 기존 hidden input 제거
+            
+            // hidden으로 전달
+            $("#modifyEmpSumForm").append($('<input>', {type: 'hidden', name: 'empStatusVal', value: selectedEmpStatusVal}));
+            
+            closeEmpStatusModal();
+        });
+    
+        
+    }); /* 끝 : 재직 상태 모달창  */
+    
     
     
     
@@ -483,8 +629,29 @@ $(document).ready(function() {
 		alert('직급 호출 실패');
 	});
     
+	
+	// --------------------------------------------------------------------------------------------------------------------------------
     
-    
+	$("#modifyEmpSumBtn").click(function () {
+        // hidden 태그가 존재하는지 확인
+        const empDeptCodeExists = $("input[name='empDeptCode']");
+        const empRankNoExists = $("input[name='empRankNo']");
+        const empStatusValExists = $("input[name='empStatusVal']");
+
+        // 모두 존재하지 않으면 폼 제출 X
+        if (empDeptCodeExists.length === 0 && empRankNoExists.length === 0 && empStatusValExists.length === 0) {
+	        alert("수정 사항이 없습니다.");
+	        return; // 폼 제출 X
+    	}
+        
+        if(empDeptCodeExists.val() == 'null' || empRankNoExists.val() == 'null' || empStatusValExists.val() == 'null'){
+        	 alert("수정 사항이 없습니다.");
+             return; // 폼 제출 X
+        }
+
+        // 하나라도 존재하면 폼 제출
+        $("#modifyEmpSumForm").submit();
+    });
     
 	
 });
