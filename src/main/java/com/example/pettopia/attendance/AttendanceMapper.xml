@@ -12,21 +12,35 @@
 </select>
 
 <!-- 오자윤 : /employee/attendance 관리자 : 근태조회 리스트 -->
-<select id="selectAttendanceList" resultType="map">
-	SELECT a.emp_no AS empNo,
-	       e.emp_name AS empName,
-	       a.attendance_date AS attendanceDate,
-	       a.attendance_status AS attendanceStatus,
-	       a.clock_in_time AS clockInTime,
-	       a.clock_out_time AS clockOutTime,
-	       a.create_datetime AS createDatetime,
-	       a.update_datetime AS updateDatetime
-	FROM attendance a
-	JOIN employee e ON a.emp_no = e.emp_no
-	WHERE (#{empNo} IS NULL OR a.emp_no = #{empNo})
-	  AND (#{attendanceDate} IS NULL OR a.attendance_date = #{attendanceDate})
-	ORDER BY a.attendance_date DESC
-	LIMIT #{limit} OFFSET #{offset}; <!-- 페이지네이션 -->
+ <select id="selectAttendanceList" resultType="map">
+    SELECT 
+        a.emp_no AS empNo,
+        e.emp_name AS empName,
+        a.attendance_date AS attendanceDate,
+        a.attendance_status AS attendanceStatus,
+        a.clock_in_time AS clockInTime,
+        a.clock_out_time AS clockOutTime,
+        a.create_datetime AS createDatetime,
+        a.update_datetime AS updateDatetime,
+        d.dept_name AS deptName, 
+        dv.division_name AS divisionName
+    FROM 
+        attendance a
+    JOIN 
+        employee e ON a.emp_no = e.emp_no
+    JOIN 
+        department d ON e.dept_code = d.dept_code
+    JOIN 
+        division dv ON d.division_code = dv.division_code
+    WHERE 
+        (#{empNo} IS NULL OR a.emp_no = #{empNo}) 
+        AND (#{attendanceDate} IS NULL OR a.attendance_date = #{attendanceDate}) 
+        AND (#{deptCode} IS NULL OR e.dept_code = #{deptCode})
+        AND (#{divisionCode} IS NULL OR d.division_code = #{divisionCode})
+        AND (#{empName} IS NULL OR e.emp_name LIKE CONCAT('%', #{empName}, '%')) 
+    ORDER BY 
+        a.attendance_date DESC
+    LIMIT #{limit} OFFSET #{offset};
 </select>
 
 <!-- 오자윤 : /employee/attendanceList 직원 상태 카운트 -->
