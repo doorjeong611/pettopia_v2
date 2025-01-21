@@ -71,7 +71,7 @@
                 	 	<!-- 카테고리별 분류 기능 -->
                 	 	<div class="selectBox">
                	 			<form action="${pageContext.request.contextPath}/board/boardList" method="get" id="formCategory">
-							    <select id="boardCategory" name="category" class="form-select border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" id="boardCategory">
+							    <select id="boardCategory" name="category"  class="form-select border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200">
 									<option value="ALL" ${boardCategory == 'ALL' ? 'selected' : ''}>전체</option>
 									<option value="SG" ${boardCategory == 'SG' ? 'selected' : ''}>건의사항</option>
 									<option value="DS" ${boardCategory == 'DS' ? 'selected' : ''}>토론</option>
@@ -81,6 +81,8 @@
 									<option value="CP" ${boardCategory == 'CP' ? 'selected' : ''}>칭찬</option>
 								</select>
 							</form>
+							
+							
                	 		</div>
 	                	<!-- 검색 기능 -->
 	                	 	<div class="searchBox">
@@ -182,23 +184,22 @@
 <script src="${pageContext.request.contextPath}/assets/libs/prismjs/prism.js"></script>
 <script src="${pageContext.request.contextPath}/assets/libs/lucide/umd/lucide.js"></script>
 <script src="${pageContext.request.contextPath}/assets/js/tailwick.bundle.js"></script>
-<!--apexchart js-->
-<script src="${pageContext.request.contextPath}/assets/libs/apexcharts/apexcharts.min.js"></script>
-
+<!-- jquery -->
+<script src="${pageContext.request.contextPath}/assets/js/datatables/jquery-3.7.0.js"></script>
 <!--dashboard ecommerce init js-->
 <script src="${pageContext.request.contextPath}/assets/js/pages/dashboards-ecommerce.init.js"></script>
-
 <!-- App js -->
 <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
 <script>
 $(document).ready(function(){
+    //console.log($('#boardCategory')); 
     $('#boardCategory').change(function(){
         $('#formCategory').submit();
+        
+		
     });
 });
-
 </script>
-
 </body>
 
 </html>
