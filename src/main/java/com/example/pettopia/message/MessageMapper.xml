@@ -2,7 +2,32 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.pettopia.message.MessageMapper">
 	
-	<!-- 오자윤 : /employee/messageList 페이징-->
+	<!-- 오자윤 : /message/messageList 쪽지 검색 -->
+	<select id="searchMessages" resultType="map"> 
+		    SELECT 
+			    m.message_no messageNo,
+			    m.sender_emp_no senderEmpNo,
+			    e.emp_name senderName,
+			    m.recipient_emp_no recipientEmpNo,
+			    m.message_title messageTitle,
+			    m.message_content messageContent,
+			    m.message_state messageState,
+			    m.message_bin messageBin,
+			    DATE_FORMAT(m.create_datetime, '%Y-%m-%d %H:%i') createDatetime,
+			    DATE_FORMAT(m.update_datetime, '%Y-%m-%d %H:%i') updateDatetime
+			FROM 
+			    message m
+			JOIN 
+			    employee e ON m.sender_emp_no = e.emp_no
+			WHERE 
+			    e.emp_name LIKE CONCAT('%', #{searchQuery}, '%')
+			AND (m.message_title LIKE CONCAT('%', #{searchQuery}, '%')
+			     OR m.message_content LIKE CONCAT('%', #{searchQuery}, '%'))
+			ORDER BY m.message_no ASC
+	</select>
+	
+	
+	<!-- 오자윤 : /message/messageList 페이징-->
 	<select id="getMessageCount" resultType="int">
 	    SELECT 
 	        COUNT(*)
@@ -13,13 +38,13 @@
 	        AND message_bin = '0'
     </select>
 	
-	<!-- 오자윤 : /employee/messageNote 쪽지보내기-->
+	<!-- 오자윤 : /message/messageNote 쪽지보내기-->
 	<insert id="insertMessage" parameterType="com.example.pettopia.vo.Message">
 	    INSERT INTO message (sender_emp_no, recipient_emp_no, message_title, message_content, message_state, message_bin, create_datetime, update_datetime) 
 	    VALUES (#{senderEmpNo},#{recipientEmpNo},#{messageTitle},#{messageContent},'N','0',NOW(),NOW());
     </insert>
     
-	<!-- 오자윤 : /employee/messageNote 쪽지쓰기 모달창 팀검색 -->
+	<!-- 오자윤 : /message/messageNote 쪽지쓰기 모달창 팀검색 -->
 	<select id="selectDeparmentNameInModal" parameterType="String">
 	    SELECT 
 	    	dept_code deptCode,
@@ -32,7 +57,7 @@
 		ORDER BY deptName
 	</select>
 	
-	<!-- 오자윤 : /employee/messageNote 쪽지쓰기 모달창 부서검색 -->
+	<!-- 오자윤 : /message/messageNote 쪽지쓰기 모달창 부서검색 -->
 	<select id="selectDivisionNameInModal" parameterType="String">
 	    SELECT 
 		    division_code divisionCode,
@@ -40,14 +65,14 @@
 		FROM division;
 	</select>
 	
-	<!-- 오자윤 : /employee/messageBin 휴지통-> 쪽지보관함으로 복구하기 -->
+	<!-- 오자윤 : /message/messageBin 휴지통-> 쪽지보관함으로 복구하기 -->
 	<update id="restoreMessage" parameterType="Integer">
 	    UPDATE message
 	    SET messageBin = '0'
 	    WHERE message_no = #{messageNo}
 	</update>
 	
-	<!-- 오자윤 : /employee/messageBin 휴지통 리스트 영구삭제 -->
+	<!-- 오자윤 : /message/messageBin 휴지통 리스트 영구삭제 -->
 	<delete id="deleteMessage" parameterType="java.util.List">
 	    DELETE FROM message
 	    WHERE message_no IN
@@ -57,7 +82,7 @@
 	</delete>
 
 
-	<!-- 오자윤 : /employee/messageNote (모달)직원 선택 조회 -->
+	<!-- 오자윤 : /message/messageNote (모달)직원 선택 조회 -->
 	<select id="getEmployeeList" parameterType="String" resultType="map">
 		SELECT  
 		    d.division_name divisionName, 
@@ -79,7 +104,7 @@
     		AND (#{empName} IS NULL OR e.emp_name LIKE CONCAT('%', #{empName}, '%'));
 	</select>
 	
-	<!-- 오자윤 : /employee/messageList 쪽지리스트 조회 -->
+	<!-- 오자윤 : /message/messageList 쪽지리스트 조회 -->
 	<select id="getMessageById" parameterType="String" resultType="map">
 	    SELECT 
 	        m.message_no messageNo,
@@ -100,7 +125,7 @@
 	        m.message_no = #{messageNo}; <!-- 메시지 번호로 필터링 -->
 	</select>
 
-	<!-- 오자윤 : /employee/messageList 쪽지리스트 조회 -->
+	<!-- 오자윤 : /message/messageList 쪽지리스트 조회 -->
 	<select id="getMessageList" resultType="map"> 
 		    SELECT 
 			    m.message_no messageNo,
@@ -125,14 +150,14 @@
         		#{limit} OFFSET #{offset} <!-- 페이지네이션 -->
 	</select>
 	
-	<!-- 오자윤 : /employee/messageList 쪽지 휴지통 이동 -->
+	<!-- 오자윤 : /message/messageList 쪽지 휴지통 이동 -->
 	<update id="updateMessage">
 	    UPDATE message
 	    SET message_bin = '1' 
 	    WHERE message_no = #{messageNo}
 	</update>
 	
-	<!-- 오자윤 : /employee/messageList 메시지 읽음 상태 변환 -->
+	<!-- 오자윤 : /message/messageList 메시지 읽음 상태 변환 -->
 	<update id="updateMessageState">
 	    UPDATE message
 	    SET message_state = 'Y'
