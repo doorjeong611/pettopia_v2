@@ -91,4 +91,22 @@
     WHERE emp_no = #{empNo}
 </update>
  
+<!-- 마이페이지 : 본인 출,퇴근 기록 조회 -->
+<select id="selectMyAttendanceList" parameterType="map" resultType="com.example.pettopia.vo.Attendance">
+	SELECT attendance_date AS attendanceDate
+			, emp_no AS empNo
+			, attendance_status AS attendanceStatus
+			, clock_in_time AS clockInTime
+			, clock_out_time AS clockOutTime	
+	FROM attendance
+	WHERE emp_no = #{empNo}
+	<if test="attendanceStatus != 'null'">
+		AND attendance_status = #{attendanceStatus}
+	</if>
+	ORDER BY attendanceDate DESC
+</select>
+
+ 
+ 
+ 
 </mapper>

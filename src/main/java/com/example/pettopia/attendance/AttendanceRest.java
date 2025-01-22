@@ -7,13 +7,16 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.pettopia.dto.EmpUserDetails;
 import com.example.pettopia.message.MessageService;
 import com.example.pettopia.util.TeamColor;
+import com.example.pettopia.vo.Attendance;
 import com.example.pettopia.vo.Department;
 import com.example.pettopia.vo.Division;
 
@@ -66,4 +69,64 @@ public class AttendanceRest {
         // 직원리스트 반환
         return attendanceService.selectAttendance(params);
     }
+    
+    
+    
+	// employeeOne : 본인 출,퇴근(근태) 조회
+	@GetMapping("/rest/myAttendanceList/{attendanceStatus}")
+	public List<Attendance> getMyAttendanceList(Authentication auth, @PathVariable(required = false) String attendanceStatus) {
+		
+		log.debug(TeamColor.KMJ+" AttendanceRest : GET getMyAttendanceList()" + TeamColor.RESET);
+
+		EmpUserDetails empUserDetails = (EmpUserDetails) auth.getPrincipal();
+		String empNo = empUserDetails.getUsername();
+		
+		log.debug(TeamColor.KMJ+" empNo : " + empNo + TeamColor.RESET);
+		log.debug(TeamColor.KMJ+" attendanceStatus : " + attendanceStatus + TeamColor.RESET);
+		
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("empNo", empNo);
+		
+		// 공백일때 전체 목록 (출근 상태 선택)
+		if (attendanceStatus == null || attendanceStatus == "") {
+	        paramMap.put("attendanceStatus", null); // 전체 검색
+	    } else {
+	        paramMap.put("attendanceStatus", attendanceStatus);
+	    }
+		
+		List<Attendance> myAttenList = attendanceService.getMyAttendanceList(paramMap);
+		
+		if(myAttenList.size() >0) {
+			log.debug(TeamColor.KMJ + "myAttenList [0]" + myAttenList.get(0).toString());			
+		}else {
+			log.debug(TeamColor.KMJ + "조회 결과 없음" );	
+		}
+		
+		return myAttenList;
+	}
+	
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }

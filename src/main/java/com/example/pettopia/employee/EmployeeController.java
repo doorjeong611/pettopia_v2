@@ -35,7 +35,7 @@ public class EmployeeController {
 	
 	@Autowired EmployeeService employeeService;
 
-
+	// 직원 등록
 	@GetMapping("/admin/addEmployee")
 	public String addEmployee( Model model) {
 		log.debug(TeamColor.KMJ+"[EmployeeController - GET addEmployee()]");
@@ -249,6 +249,7 @@ public class EmployeeController {
 		log.debug(TeamColor.KMJ+" EmployeeController : POST employeeOne()" + TeamColor.RESET);
 		log.debug(TeamColor.KMJ+" empNo : "+ empNo + TeamColor.RESET);
 		
+		// 직원 개인 정보 
 		Map<String, Object> empInfo = employeeService.getEmployeeOne(empNo);
 		log.debug(TeamColor.KMJ+" empInfo : "+ empInfo.toString() + TeamColor.RESET);
 		
