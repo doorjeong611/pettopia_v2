@@ -21,8 +21,6 @@
     <!-- Tailwind CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tailwind2.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="${pageContext.request.contextPath}/assets/libs/flatpickr/flatpickr.min.js"></script>
-    
 </head>
 
 <body class="text-base bg-body-bg text-body font-public dark:text-zink-100 dark:bg-zink-800 group-data-[skin=bordered]:bg-body-bordered group-data-[skin=bordered]:dark:bg-zink-700">
@@ -702,8 +700,8 @@
 									<div id="resignationDiv" class="lg:col-span-2 xl:col-span-12">
 										<div class="grid grid-cols-12 gap-4 mb-3">
 											<!-- 사직 유형 선택 -->
-									        <div class="xl:col-span-3 radioDiv">
-										    	<label for="vacationType" class="inline-block mb-4 text-base font-medium">사직 유형 선택</label>
+									        <div class="xl:col-span-2 radioDiv">
+										    	<label for="vacationType" class="inline-block mb-4 text-base font-medium">퇴사 유형 선택</label>
 										        <div class="flex gap-4">
 										        	<div class="flex items-center gap-2">
 										                <input id="resignationTypeV" name="resignationType" class="border rounded-full appearance-none cursor-pointer size-4 bg-slate-100 border-slate-200 checked:bg-custom-500 checked:border-custom-500" type="radio" value="V">
@@ -715,10 +713,12 @@
 										            </div>
 										        </div>
 										    </div>
+										    <div class="resignationEndDate xl:col-span-2 flex flex-col">
+										        <label for="resignationEndDate" class="inline-block mb-2 text-base font-medium">퇴사일 선택</label>
+					                            <input type="text" name="endDate" id="resignationEndDate" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400 flatpickr-input" data-provider="flatpickr" data-date-format="Y-m-d" data-default-date="16 Oct, 2023" readonly="readonly" placeholder="날짜를 선택하세요">
+										    </div>
 									        <div class="xl:col-span-4 col-span-12"></div><!--end 빈 공간-->
-									        
 									    </div><!--end grid-->
-										
 									
 									    <!-- 사직 사유 -->
 									    <div class="xl:col-span-12">
@@ -1066,6 +1066,17 @@
 	        
 	    	// 문서 유형 변경 후, 부서 목록 다시 요청
             loadDivisionList();
+	    	
+            let today = new Date();
+            let options = { timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit' };
+            let todayFormatted = today.toLocaleDateString('en-CA', options).replace(/-/g, '-'); // YYYY-MM-DD 형식
+            console.log('오늘 날짜: ' + todayFormatted);
+
+	        // Flatpickr 초기화
+	        flatpickr("#resignationEndDate", {
+			    dateFormat: "Y-m-d",
+			    minDate: todayFormatted, // 기본적으로 오늘 날짜
+			});
 	        
 	        $(document).on('change', 'input[name="vacationType"]', function() {
 	            let selectedValue = $(this).val(); // selectedValue를 let으로 선언
@@ -1074,7 +1085,9 @@
 	
 	            // 오늘 날짜를 가져오기
 	            let today = new Date();
-	            let todayFormatted = today.toISOString().split('T')[0]; // YYYY-MM-DD 형식
+	            let options = { timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit' };
+	            let todayFormatted = today.toLocaleDateString('en-CA', options).replace(/-/g, '-'); // YYYY-MM-DD 형식
+	            console.log('오늘 날짜: ' + todayFormatted);
 	
 	            if (selectedValue === 'AL') {
 	                $('.ALDiv, .HLDiv').remove();
@@ -1107,7 +1120,6 @@
 	                    minDate: todayFormatted, // 시작 날짜는 오늘보다 작을 수 없음
 	                });
 	            }
-	            
 	        });
 	        
 	        // 모달창 관리

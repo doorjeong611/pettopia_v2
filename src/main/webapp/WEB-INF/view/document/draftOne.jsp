@@ -177,46 +177,79 @@
 											            <td style="text-align: center; padding: 5px; border: 1px solid black;">최종 결재자</td>
 											        </tr>
 											        <tr style="height: 100px;">
-											            <td style="text-align: center; padding: 15px; border: 1px solid black;">
+											        	<!-- 작성자 -->
+											            <td style="text-align: center; padding: 5px; border: 1px solid black;">
 											            	<c:if test="${not empty writerSignFile}">
-															    <img src="${pageContext.request.contextPath}/employeeFile/${writerSignFile.fileName}${writerSignFile.fileExt}" 
-															         style="max-width: 90%; max-height: 90%; width: 90%; height: auto; object-fit: contain; margin: 10px;">
+															    <div style="display: flex; justify-content: center; align-items: center;">
+															        <img src="${pageContext.request.contextPath}/employeeFile/${writerSignFile.fileName}${writerSignFile.fileExt}" 
+															             style="max-width: 65%; max-height: 65%; width: auto; height: auto; object-fit: contain;">
+															    </div>
 															</c:if>
 															<c:if test="${empty writerSignFile}">
 																${documentOne.docWriterName}
 															</c:if>
 														</td>
-											            <td style="text-align: center; padding: 15px; border: 1px solid black;">
-											            	<c:if test="${empty documentOne.initApprovalStatus}">
-											            		${documentOne.initApproverName}
+														
+														<!-- 최초 결재자 -->
+											            <td style="text-align: center; padding: 5px; border: 1px solid black;">
+											            	<c:if test="${empty documentOne.initApprovalStatus || empty initSignFile}">
+											            		<div style="display: flex; justify-content: center; align-items: center;">
+											    					${documentOne.initApproverName}       		
+															    </div>
 											            	</c:if>
-											            	<c:if test="${documentOne.initApprovalStatus == 'A'}">
-											            		승인 사인
+											            	<c:if test="${documentOne.initApprovalStatus == 'A' && not empty initSignFile}">
+											            		<div style="display: flex; justify-content: center; align-items: center;">
+															        <img src="${pageContext.request.contextPath}/employeeFile/${initSignFile.fileName}${initSignFile.fileExt}" 
+															             style="max-width: 65%; max-height: 65%; width: auto; height: auto; object-fit: contain;">
+															    </div>
 											            	</c:if>
-											            	<c:if test="${documentOne.initApprovalStatus == 'R'}">
-											            		반려 사인
+											            	<c:if test="${documentOne.initApprovalStatus == 'R' && not empty initSignFile}">
+											            		<div style="display: flex; justify-content: center; align-items: center;">
+															        <img src="${pageContext.request.contextPath}/employeeFile/${initSignFile.fileName}${initSignFile.fileExt}" 
+															             style="max-width: 65%; max-height: 65%; width: auto; height: auto; object-fit: contain;">
+															    </div>
 											            	</c:if>
 											            </td>
-											            <td style="text-align: center; padding: 15px; border: 1px solid black;">
-											            	<c:if test="${empty documentOne.midApprovalStatus}">
-											            		${documentOne.midApproverName}
+											            
+											            <!-- 중간 결재자 -->
+											            <td style="text-align: center; padding: 5px; border: 1px solid black;">
+											            	<c:if test="${empty documentOne.midApprovalStatus || empty midSignFile}">
+											            		<div style="display: flex; justify-content: center; align-items: center;">
+											    					${documentOne.midApproverName}       		
+															    </div>
 											            	</c:if>
-											            	<c:if test="${documentOne.midApprovalStatus == 'A'}">
-											            		승인 사인
+											            	<c:if test="${documentOne.midApprovalStatus == 'A' && not empty midSignFile}">
+											            		<div style="display: flex; justify-content: center; align-items: center;">
+															        <img src="${pageContext.request.contextPath}/employeeFile/${midSignFile.fileName}${midSignFile.fileExt}" 
+															             style="max-width: 65%; max-height: 65%; width: auto; height: auto; object-fit: contain;">
+															    </div>
 											            	</c:if>
-											            	<c:if test="${documentOne.midApprovalStatus == 'R'}">
-											            		반려 사인
+											            	<c:if test="${documentOne.midApprovalStatus == 'R' && not empty midSignFile}">
+											            		<div style="display: flex; justify-content: center; align-items: center;">
+															        <img src="${pageContext.request.contextPath}/employeeFile/${midSignFile.fileName}${midSignFile.fileExt}" 
+															             style="max-width: 65%; max-height: 65%; width: auto; height: auto; object-fit: contain;">
+															    </div>
 											            	</c:if>
 											            </td>
-											            <td style="text-align: center; padding: 15px; border: 1px solid black;">
-											            	<c:if test="${empty documentOne.finalApprovalStatus}">
-											            		${documentOne.finalApproverName}
+											            
+											            <!-- 최종 결재자 -->
+											            <td style="text-align: center; padding: 5px; border: 1px solid black;">
+											            	<c:if test="${empty documentOne.finalApprovalStatus || empty finalSignFile}">
+											            		<div style="display: flex; justify-content: center; align-items: center;">
+											    					${documentOne.finalApproverName}       		
+															    </div>
 											            	</c:if>
-											            	<c:if test="${documentOne.finalApprovalStatus == 'A'}">
-											            		승인 사인
+											            	<c:if test="${documentOne.finalApprovalStatus == 'A' && not empty finalSignFile}">
+											            		<div style="display: flex; justify-content: center; align-items: center;">
+															        <img src="${pageContext.request.contextPath}/employeeFile/${finalSignFile.fileName}${finalSignFile.fileExt}" 
+															             style="max-width: 65%; max-height: 65%; width: auto; height: auto; object-fit: contain;">
+															    </div>
 											            	</c:if>
-											            	<c:if test="${documentOne.finalApprovalStatus == 'R'}">
-											            		반려 사인
+											            	<c:if test="${documentOne.finalApprovalStatus == 'R' && not empty finalSignFile}">
+											            		<div style="display: flex; justify-content: center; align-items: center;">
+															        <img src="${pageContext.request.contextPath}/employeeFile/${finalSignFile.fileName}${finalSignFile.fileExt}" 
+															             style="max-width: 65%; max-height: 65%; width: auto; height: auto; object-fit: contain;">
+															    </div>
 											            	</c:if>
 											            </td>
 											        </tr>
