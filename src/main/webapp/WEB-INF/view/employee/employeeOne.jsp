@@ -156,6 +156,9 @@
 				            <div class="gap-2">
 				              <input type="text" name="divisionCode" class="border border-gray-300 rounded-md px-5 py-2 mb-2 focus:outline-none" value="${empInfo.divisionName}" readonly>
 				              <input type="text" name="deptCode" class="border border-gray-300 rounded-md px-5 py-2 mb-2 focus:outline-none" value="${empInfo.deptName}" readonly>
+				           	</div>
+				            <label for="designationSelect" class="inline-block mb-2 text-base font-medium">직급</label>
+				            <div class="gap-2">
 				              <input type="text" name="rankNo" class="border border-gray-300 rounded-md px-5 py-2 mb-2 focus:outline-none" value="${empInfo.rankName}" readonly>
 				            </div>
 				          </div>
@@ -328,7 +331,7 @@ $.ajax({
 	const fileName = result.fileName + result.fileExt;
 	console.log('filename : ' + fileName);
 	if(result != null && result != ''){
-		$('#signView').append('<img src="${pageContext.request.contextPath}/employeeFile/"' + fileName + 'style="width: 250px;">');
+		$('#signView').append('<img src="${pageContext.request.contextPath}/employeeFile/' + fileName + '" style="width: 250px;">');
 	}else{
 		$('#signView').append('<img src="${pageContext.request.contextPath}/employeeFile/noSign.png" style="width: 250px;">');
 	}
