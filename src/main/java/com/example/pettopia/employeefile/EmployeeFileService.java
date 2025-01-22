@@ -38,7 +38,7 @@ public class EmployeeFileService {
 		if(empSignFile != null) {
 			log.debug(TeamColor.KMJ+" empNo : " + empSignFile.toString() + TeamColor.RESET);
 		}
-			log.debug(TeamColor.KMJ+" 서명 없음 "  + TeamColor.RESET);
+			log.debug(TeamColor.KMJ+" 등록된 서명 없음 "  + TeamColor.RESET);
 
 		return empSignFile;
 	}
@@ -201,6 +201,17 @@ public class EmployeeFileService {
 		
 		// db 입력
 		row = employeeFileMapper.insertEmployeeFile(empFile);
+		
+		if(row == 1) {
+			// 물리적 파일 저장하기
+			try {
+				employeeFile.transferTo(new File(path + fileName + ext)); // /employeeFile/manggom.jpg
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw new RuntimeException();
+			}
+		}
+		
 		
 		return row;
 	}

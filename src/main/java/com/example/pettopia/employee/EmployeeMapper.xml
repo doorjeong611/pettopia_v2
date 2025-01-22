@@ -219,6 +219,7 @@
 		JOIN division di ON d.division_code = di.division_code
 		JOIN `rank` r ON e.rank_no = r.rank_no
 		WHERE e.emp_no LIKE #{empNo}
+		AND ef.file_purpose = 'P'
 	</select>
 
 	<!-- employeeSummary : 직원 공식 정보 상세보기 -->
