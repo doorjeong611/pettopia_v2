@@ -19,6 +19,7 @@
 	<!-- f -->
 </head>
 <style>
+	a,p {font-size: 14px;}
 	.listHeader {width: 100%; height: 50px; }
 	
 	.listHeader .selectBox{width: 8%;float: left; margin-right: 0.5%;}
@@ -31,6 +32,14 @@
 	.listHeader .addBox {float: right;}
 	
 	.boardList {width: 100%;}
+	
+	.pagingBox { width: 50%; height: 40px; min-width: 30%; margin: 2% auto;}
+	.pagingBox .pageBox {float: left; width: 7.8%; text-align: center; margin-left: 1%;}
+	.pagingBox .arrowPage:first-child{width: 9%;}
+	.pagingBox .arrowPage:last-child{width: 9%;}
+	.pagingBox .pageBox a {display: block; transition:all 0.2s; padding: 8px; border-radius:8px; border: 1px solid #94A3B8;}
+	.pagingBox .onpage a{color:#fff; background-color: #3b82f6;}
+	.pagingBox .pageBox a:hover {border: 1px solid #3b82f6;}
 </style>
 <body class="text-base bg-body-bg text-body font-public dark:text-zink-100 dark:bg-zink-800 group-data-[skin=bordered]:bg-body-bordered group-data-[skin=bordered]:dark:bg-zink-700">
 <div class="group-data-[sidebar-size=sm]:min-h-sm group-data-[sidebar-size=sm]:relative">
@@ -71,6 +80,9 @@
                 	 	<!-- 카테고리별 분류 기능 -->
                 	 	<div class="selectBox">
                	 			<form action="${pageContext.request.contextPath}/board/boardList" method="get" id="formCategory">
+							    <input type="hidden" name="searchBoard" value="${searchBoard}" />
+   								<input type="hidden" name="currentPage" value="${currentPage}" />
+							    
 							    <select id="boardCategory" name="category"  class="form-select border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200">
 									<option value="ALL" ${boardCategory == 'ALL' ? 'selected' : ''}>전체</option>
 									<option value="SG" ${boardCategory == 'SG' ? 'selected' : ''}>건의사항</option>
@@ -88,6 +100,8 @@
 	                	 	<div class="searchBox">
 		                	 	<div class="relative">
 									<form method="get" action="${pageContext.request.contextPath}/board/boardList" >
+									    <input type="hidden" name="boardCategory" value="${boardCategory}" />
+   										<input type="hidden" name="currentPage" value="${currentPage}" />
 										<input type="text" id="searchBoard" name="searchBoard" value="" class="ltr:pl-8 search form-input border-slate-200 focus:outline-none focus:border-custom-500 placeholder:text-slate-400" placeholder="검색어를 입력하세요" autocomplete="off">
 	                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="search" class="lucide lucide-search inline-block size-4 absolute ltr:left-2.5 top-2.5 text-slate-500 fill-slate-100" ><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
 	                                </form>
@@ -134,26 +148,45 @@
 				       
 				    </table>
 				    
-				    <div class="pagingBox">
-				    	<c:if test="${currentPage > 5}">
-				    		<a href="${pageContext.request.contextPath}/board/boardList?currentPage=${currentPage-5}">[&lt;&lt;]</a>
-			    		</c:if>
-			    		<c:forEach var="num" begin="${startPagingNum}" end="${endPagingNum}">
-			    			<c:if test="${num == currentPage}">
-			    				${num}&nbsp;
-			    			</c:if>
-			    			<c:if test="${num != currentPage}">
-								<a href="${pageContext.request.contextPath}/board/boardList?currentPage=${num}">${num}</a>
-								&nbsp;
-							</c:if>	
-			    		</c:forEach>
-			    		<c:if test="${endPagingNum < lastPage}">
-							<a href="${pageContext.request.contextPath}/board/boardList?currentPage=${currentPage+5}">
-								[&gt;&gt;]
-							</a>				
-						</c:if>	
-				    </div>
+					<!-- 검색 및 카테고리별 페이지 기준 -->
+					  <c:if test="${not empty boardList}">
+					   <div class="pagingBox">
+						    <!-- 이전 페이지 버튼 -->
+						    <c:if test="${currentPage > 10}">
+						        <div class="pageBox arrowPage">
+						            <a href="${pageContext.request.contextPath}/board/boardList?searchBoard=${searchBoard}&category=${boardCategory}&currentPage=${currentPage-1}">[이전]</a>
+						        </div>
+						    </c:if>
+						    <!-- 페이지 번호 버튼들 -->
+						    <c:if test="${currentPage <= endPagingNum}">
+						    	<c:forEach var="num" begin="${startPagingNum}" end="${endPagingNum}">
+							        <c:if test="${num == currentPage}">
+							            <div class="pageBox onpage">
+							                <a href="#">${num}</a>
+							            </div>
+							        </c:if>
+							        <c:if test="${num != currentPage}">
+							            <div class="pageBox">
+							                <a href="${pageContext.request.contextPath}/board/boardList?searchBoard=${searchBoard}&category=${boardCategory}&currentPage=${num}">${num}</a>
+							            </div>
+							        </c:if>
+							    </c:forEach>
+						    </c:if>
+						  
+						  	
+						  
+						    <!-- 다음 페이지 버튼 -->
+						    <c:if test="${endPagingNum < lastPage}">
+						        <div class="pageBox arrowPage">
+						            <a href="${pageContext.request.contextPath}/board/boardList?searchBoard=${searchBoard}&category=${boardCategory}&currentPage=${currentPage+1}">[다음]</a>
+						        </div>
+						    </c:if>
+						</div>
+					</c:if>
+				
 				</div>
+				
+				
 				<!-- boardList 종료 -->
 			                	 
 			            <!-- Start Footer -->
@@ -192,12 +225,16 @@
 <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
 <script>
 $(document).ready(function(){
-    //console.log($('#boardCategory')); 
+    // #boardCategory가 변경될 때
     $('#boardCategory').change(function(){
+        // currentPage를 1로 설정
+        $("input[name='currentPage']").val(1);
+
+        // #formCategory 폼을 제출하여 페이지를 갱신
         $('#formCategory').submit();
-        
-		
     });
+
+
 });
 </script>
 </body>

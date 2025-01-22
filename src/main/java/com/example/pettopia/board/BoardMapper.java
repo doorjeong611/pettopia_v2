@@ -12,7 +12,7 @@ import com.example.pettopia.vo.Division;
 public interface BoardMapper {
 
 // 게시판 카운트 쿼리 /board/boardList 작업자 : 이준호
-	Integer selectBoardCount();
+	Integer selectBoardCount(Map<String, Object> lastMap);
 	
 // 게시글 카테고리 셀렉트 /board/boardList 작업자 : 이준호
 	List<Map<String, Object>> selectHeaderListByBoard(String boardCategory);
