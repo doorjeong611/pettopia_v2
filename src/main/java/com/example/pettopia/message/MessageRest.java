@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.pettopia.util.TeamColor;
 import com.example.pettopia.vo.Department;
 import com.example.pettopia.vo.Division;
-import com.example.pettopia.vo.Rank;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,19 +22,25 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class MessageRest {
 	@Autowired MessageService messageService;
 	
-	// 오자윤 : /employee/messageNote 팀 검색 (쪽지쓰기 모달창) -->
+	// 오자윤 : /message/messageList 쪽지 검색.
+	@GetMapping("message/search")
+	public List<Map<String, Object>> searchMessages(@RequestParam(required = false) String searchQuery) {
+		return messageService.searchMessages(searchQuery); // JSON 응답 반환
+	}
+	
+	// 오자윤 : /message/messageNote 팀 검색 (쪽지쓰기 모달창) -->
 	@GetMapping("message/departmentList/{divisionCode}")
 	public List<Department> getDepartmentName(@PathVariable String divisionCode) {
 		return messageService.getDepartmentName(divisionCode);
 	}
 	
-	// 오자윤 : /employee/messageNote 부서검색 (쪽지쓰기 모달창) -->
+	// 오자윤 : /message/messageNote 부서검색 (쪽지쓰기 모달창) -->
 	@GetMapping("message/divisionList")
 	public List<Division> getDivisionNameInModal() {
 		return messageService.getDivisionName();
 	}
 	
-	// 오자윤 : /employee/messageNote 직원리스트 반환 (쪽지쓰기 모달창)
+	// 오자윤 : /message/messageNote 직원리스트 반환 (쪽지쓰기 모달창)
 	@GetMapping("message/messageNote/employees")
 	public List<Map<String, Object>> employeeList
 		(@RequestParam(value = "empStatus", defaultValue = "E") String empStatus, 

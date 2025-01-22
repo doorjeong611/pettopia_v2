@@ -8,11 +8,13 @@ import org.apache.ibatis.annotations.Mapper;
 import com.example.pettopia.vo.Department;
 import com.example.pettopia.vo.Division;
 import com.example.pettopia.vo.Message;
-import com.example.pettopia.vo.Rank;
 
 
 @Mapper
 public interface MessageMapper {
+	
+	// 오자윤 : 쪽지 검색
+	List<Map<String, Object>> searchMessages(String searchQuery);
 	
 	// 오자윤 : 페이지네이션 총 total count 
 	Integer getMessageCount(String empNo);
