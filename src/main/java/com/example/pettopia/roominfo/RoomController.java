@@ -112,9 +112,32 @@ public class RoomController {
 		
 		// 객실 리스트에 이미지 뿌려주기
 		@GetMapping("/room/getRoomList")
-		public String getRoomList(Model model) {
+		public String getRoomList(Model model,
+								@RequestParam(defaultValue = "1") int currentPage, // 현재 페이지 번호
+						        @RequestParam(defaultValue = "6") int pageSize // 페이지 크기
+								) {
+			// 전체 객실 리스트 가져오기
 		    List<Map<String, Object>> roomListImg = roomService.getRoomListWithImages(); 
+		    // 총 객실 수
+		    int totalRecords = roomListImg.size();
+
+		    // 총 페이지 수 계산
+		    int totalPages = (int) Math.ceil((double) totalRecords / pageSize);
+
+		    // 페이지 시작과 끝
+		    int startIdx = (currentPage - 1) * pageSize;
+		    int endIdx = Math.min(startIdx + pageSize, totalRecords);
+
+		    // 현재 페이지 데이터 추출
+		    List<Map<String, Object>> paginatedList = roomListImg.subList(startIdx, endIdx);
+		    
+		    // 모델에 데이터 추가
 		    model.addAttribute("roomListImg", roomListImg); 
+		    model.addAttribute("roomListImg", paginatedList); // 현재 페이지의 데이터
+		    model.addAttribute("currentPage", currentPage); // 현재 페이지 번호
+		    model.addAttribute("totalPages", totalPages); // 총 페이지 수
+		    model.addAttribute("totalRecords", totalRecords); // 총 데이터 수
+		    
 		    return "room/roomList"; 
 		}
 		

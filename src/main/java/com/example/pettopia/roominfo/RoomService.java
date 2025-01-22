@@ -29,6 +29,11 @@ public class RoomService {
 	
 	@Autowired
 	private ServletContext servletContext;
+	
+	// 객실 페이징
+	public int countRoomList(Map<String, Object> params) {
+	    return roomMapper.countRoomList(params);
+	}
 
 	// 객실 수정
 	public void updateRoomWithImage(RoomInfo roomInfo, MultipartFile roomImg, String uploadPath) throws Exception {

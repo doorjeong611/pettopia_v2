@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
 <html lang="en" class="light scroll-smooth group" data-layout="vertical" data-sidebar="light" data-sidebar-size="lg" data-mode="light" data-topbar="light" data-skin="default" data-navbar="sticky" data-content="fluid" dir="ltr">
@@ -97,49 +98,73 @@
 										    	</a>
 							                </div>
 							                <p class="text-sm text-slate-500 mt-1">타입: <span>${room.roomType}</span></p>
-							                <p class="text-sm text-slate-500">수용 인원: <span>${room.roomCapacity}</span></p>
-							                <p class="text-sm text-slate-500">1박 당 가격: <span>${room.pricePerNight}</span></p>
+							                <p class="text-sm text-slate-500">수용 인원: <span>${room.roomCapacity}</span> 명 </p>
+							                <p class="text-sm text-slate-500">1박 당 가격: <span><fmt:formatNumber value="${room.pricePerNight}" type="number" groupingUsed="true" /></span> 원 </p>
 							                <p class="text-sm text-slate-500">설명: <span>${room.roomDesc}</span></p>
 							            </div>
 							        </div>
 							    </c:forEach>
 							</div>
 	                    </div>
-	                </div>
-                 </div>
-                 <!-- MAIN END -->
-		        <!-- 페이지 네이션 -->
-                        <div class="flex justify-end mt-4">
+	                    <!-- 페이징 시작 -->
+						<div class="flex justify-end mt-4">
 						    <div class="flex gap-2 pagination-wrap">
 						        <!-- 이전 페이지 -->
-						        <c:if test="${!(page.currentPage > 1)}">
-						            <a class="inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 focus:bg-custom-50 focus:text-custom-500 [&amp;.active]:text-custom-500 [&amp;.active]:bg-custom-50 [&amp;.active]:border-custom-50 [&amp;.active]:hover:text-custom-700 [&amp;.disabled]:text-slate-400 [&amp;.disabled]:cursor-auto page-item pagination-prev pagination-prev disabled" href="#">이전</a>
+						        <c:if test="${currentPage > 1}">
+						            <a class="inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 focus:bg-custom-50 focus:text-custom-500"
+						               href="?currentPage=${currentPage - 1}&pageSize=${pageSize}">
+						                이전
+						            </a>
 						        </c:if>
-						        <c:if test="${page.currentPage > 1}">
-						            <a class="inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 focus:bg-custom-50 focus:text-custom-500 [&amp;.active]:text-custom-500 [&amp;.active]:bg-custom-50 [&amp;.active]:border-custom-50 [&amp;.active]:hover:text-custom-700 [&amp;.disabled]:text-slate-400 [&amp;.disabled]:cursor-auto page-item pagination-prev pagination-next" href="${pageContext.request.contextPath}/document/documentList?currentPage=${page.currentPage - 1}">이전</a>
+						        <c:if test="${currentPage == 1}">
+						            <a class="inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 disabled:cursor-auto disabled:text-slate-400">
+						                이전
+						            </a>
 						        </c:if>
 						
-						        <!-- 페이지 번호 링크 -->
+						        <!-- 페이지 번호 -->
 						        <ul class="flex gap-2 mb-0">
-						            <c:forEach var="num" begin="${page.getStartPagingNum()}" end="${page.getEndPagingNum()}">
-						                <c:if test="${num == page.currentPage}">
-						                    <li class="active"><a class="inline-flex items-center justify-center bg-custom-500 border border-custom-500 text-custom-50 h-8 px-3 rounded" href="#">${num}</a></li>
-						                </c:if>
-						                <c:if test="${num != page.currentPage}">
-						                    <li><a class="inline-flex items-center justify-center bg-white border border-slate-200 text-slate-500 hover:text-custom-500 h-8 px-3 rounded" href="${pageContext.request.contextPath}/document/documentList?currentPage=${num}">${num}</a></li>
-						                </c:if>
+						            <c:forEach var="num" begin="1" end="${totalPages}">
+						                <c:choose>
+						                    <c:when test="${num == currentPage}">
+						                        <!-- 현재 페이지 -->
+						                        <li class="active">
+						                            <span class="inline-flex items-center justify-center bg-custom-500 border border-custom-500 text-white h-8 px-3 rounded">
+						                                ${num}
+						                            </span>
+						                        </li>
+						                    </c:when>
+						                    <c:otherwise>
+						                        <!-- 다른 페이지 -->
+						                        <li>
+						                            <a class="inline-flex items-center justify-center bg-white border border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 h-8 px-3 rounded"
+						                               href="?currentPage=${num}&pageSize=${pageSize}">
+						                                ${num}
+						                            </a>
+						                        </li>
+						                    </c:otherwise>
+						                </c:choose>
 						            </c:forEach>
 						        </ul>
 						
 						        <!-- 다음 페이지 -->
-						        <c:if test="${page.currentPage < page.lastPage}">
-						            <a class="inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 dark:hover:bg-custom-500/10 focus:bg-custom-50 focus:text-custom-500 dark:focus:text-custom-500 [&amp;.active]:text-custom-500 [&amp;.active]:bg-custom-50 [&amp;.active]:border-custom-50 [&amp;.active]:hover:text-custom-700 [&amp;.disabled]:text-slate-400 [&amp;.disabled]:cursor-auto page-item pagination-prev pagination-next" href="${pageContext.request.contextPath}/document/documentList?currentPage=${page.currentPage + 1}">다음</a>
+						        <c:if test="${currentPage < totalPages}">
+						            <a class="inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 focus:bg-custom-50 focus:text-custom-500"
+						               href="?currentPage=${currentPage + 1}&pageSize=${pageSize}">
+						                다음
+						            </a>
 						        </c:if>
-						        <c:if test="${page.currentPage >= page.lastPage}">
-						            <a class="inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 focus:bg-custom-50 focus:text-custom-500 [&amp;.active]:text-custom-500 [&amp;.active]:bg-custom-50 [&amp;.active]:border-custom-50 [&amp;.active]:hover:text-custom-700 [&amp;.disabled]:text-slate-400 [&amp;.disabled]:cursor-auto page-item pagination-prev pagination-prev disabled" href="#">다음</a>
+						        <c:if test="${currentPage >= totalPages}">
+						            <a class="inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 disabled:cursor-auto disabled:text-slate-400">
+						                다음
+						            </a>
 						        </c:if>
 						    </div>
 						</div>
+						<!-- 페이징 끝 -->
+		            </div>
+		          </div>
+               <!-- MAIN END -->
         	</div>
         </div>
         <!-- End Page-content -->
