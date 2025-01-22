@@ -63,7 +63,7 @@ public class EmployeeFileRest {
 			log.debug(TeamColor.KMJ+" sign : " + sign + TeamColor.RESET);
 			log.debug(TeamColor.KMJ+" sign " + TeamColor.RESET);
 			
-//			row = employeeFileService.addEmpSignFileSignPad(sign, path, empNo);
+			row = employeeFileService.addEmpSignFileSignPad(sign, path, empNo);
 			
 			
 		}else {
@@ -74,17 +74,17 @@ public class EmployeeFileRest {
 			log.debug(TeamColor.KMJ+" empSignFile : " + empSignFile + TeamColor.RESET);
 			
 			
-//			row = employeeFileService.addEmpSignFileSignImage(empSignFile, path, empNo);
+			row = employeeFileService.addEmpSignFileSignImage(empSignFile, path, empNo);
 			
 		}else {
 			log.debug(TeamColor.KMJ+" 첨부 파일 없음: " +TeamColor.RESET);
 		}
 		
 		if(row == 1) {
+			return  ResponseEntity.ok("서명 등록 성공");
 		}
-		return  ResponseEntity.ok("등록 성공");
 		
-//		return ResponseEntity.badRequest();
+		return  ResponseEntity.badRequest().body("등록 실패: 잘못된 요청입니다.");
 		
 		
 	}

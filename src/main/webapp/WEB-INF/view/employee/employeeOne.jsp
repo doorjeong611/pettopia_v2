@@ -326,7 +326,7 @@ $.ajax({
 }).done(function(result) {
 	console.log("응답받은 결과:", result);
 	const fileName = result.fileName + result.fileExt;
-	
+	console.log('filename : ' + fileName);
 	if(result != null && result != ''){
 		$('#signView').append('<img src="${pageContext.request.contextPath}/employeeFile/"' + fileName + 'style="width: 250px;">');
 	}else{
@@ -410,8 +410,9 @@ $.ajax({
     	if(fileInput.files.length > 0){
         	const file = fileInput.files[0]; 			// 첨부된 첫 번째 파일
     		
-    		const formData = new FormData();			// 파일 전달을 위한 formData
-    		formData.append('empSignFile', file); 		// 파일 추가
+    		const empSignFile = new FormData();			// 파일 전달을 위한 formData
+    		
+    		empSignFile.append('empSignFile', file); 		// 파일 추가
     		console.log('첨부 파일 : ', file);
             console.log('첨부 파일이 formData에 추가되었습니다.');
     		
@@ -419,11 +420,11 @@ $.ajax({
             $.ajax({
                 url: '/pettopia/rest/addEmployeeSignFile',
                 method: 'POST',
-                data: formData,
+                data: empSignFile,
                 contentType: false, 					// 자동으로 content-type 설정하지 않도록
                 processData: false, 					// 데이터 자동 변환 방지
                 success: function(result) {
-                    alert('서명 등록 성공'); 	
+                    alert(result); 	
                     
                 },
                 error: function() {
@@ -431,7 +432,22 @@ $.ajax({
                 }
             });
     		
-    		
+    	// sign은 있고 첨부된 파일이 없다면	
+    	}else if(fileInput.files.length === 0 && !signaturePad.isEmpty()){
+    		 console.log('등록할 수 있는 서명이 있음.');
+    	        $.ajax({
+    	            url: '/pettopia/rest/addEmployeeSignFile',
+    	            method: 'POST',
+    	            data: { sign: signaturePad.toDataURL() }
+    	        }).done(function (result) {
+    	            alert("서명 등록 성공");
+    	            
+    	        }).fail(function (request, status, error) {
+    	            alert('서명 등록 실패');
+    	        });
+    	}else{
+    		alert('파일과 서명을 동시에 등록할 수 없습니다. 하나만 등록해주세요.');
+            return;  // 함수 실행 중지
     	}
     
     	

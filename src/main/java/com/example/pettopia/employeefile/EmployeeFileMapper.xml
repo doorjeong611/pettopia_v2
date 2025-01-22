@@ -67,12 +67,12 @@
 	</select>
 	
 	<!-- employeeOne : 이미 존재하는 sign 삭제 -->
-	<select id="deleteEmployeeSignFile" parameterType="String">
+	<delete id="deleteEmployeeSignFile" parameterType="String">
 		DELETE 
 		FROM employee_file
 		WHERE emp_no = #{empNo}
 		  AND file_purpose = 'S';
-	</select>
+	</delete>
 	
 	
 	
