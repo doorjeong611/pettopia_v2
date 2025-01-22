@@ -17,7 +17,8 @@ import lombok.extern.slf4j.Slf4j;
 public class CustomerController {
     @Autowired
     private CustomerService customerService;
-
+    
+    // 객실 조회
     @GetMapping("/customer/getCustomerList")
     public String getCustomerList(Model model,
                                   @RequestParam(defaultValue = "1") int currentPage,

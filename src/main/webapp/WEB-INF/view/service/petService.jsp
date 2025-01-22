@@ -102,25 +102,68 @@
                                 </div>
                             </div>
                         </div>
-
-                        <div class="flex justify-end mt-4">
-                            <div class="flex gap-2 pagination-wrap">
-                                <a class="inline-flex items-center justify-center bg-white dark:bg-zink-700 h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 dark:border-zink-500 text-slate-500 dark:text-zink-200 hover:text-custom-500 dark:hover:text-custom-500 hover:bg-custom-50 dark:hover:bg-custom-500/10 focus:bg-custom-50 dark:focus:bg-custom-500/10 focus:text-custom-500 dark:focus:text-custom-500 [&.active]:text-custom-500 dark:[&.active]:text-custom-500 [&.active]:bg-custom-50 dark:[&.active]:bg-custom-500/10 [&.active]:border-custom-50 dark:[&.active]:border-custom-500/10 [&.active]:hover:text-custom-700 dark:[&.active]:hover:text-custom-700 [&.disabled]:text-slate-400 dark:[&.disabled]:text-zink-300 [&.disabled]:cursor-auto page-item pagination-prev disabled pagination-prev disabled" href="#">
-                                    Previous
-                                </a>
-                                <ul class="flex gap-2 mb-0 pagination listjs-pagination"></ul>
-                                <a class="inline-flex items-center justify-center bg-white dark:bg-zink-700 h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 dark:border-zink-500 text-slate-500 dark:text-zink-200 hover:text-custom-500 dark:hover:text-custom-500 hover:bg-custom-50 dark:hover:bg-custom-500/10 focus:bg-custom-50 dark:focus:bg-custom-500/10 focus:text-custom-500 dark:focus:text-custom-500 [&.active]:text-custom-500 dark:[&.active]:text-custom-500 [&.active]:bg-custom-50 dark:[&.active]:bg-custom-500/10 [&.active]:border-custom-50 dark:[&.active]:border-custom-500/10 [&.active]:hover:text-custom-700 dark:[&.active]:hover:text-custom-700 [&.disabled]:text-slate-400 dark:[&.disabled]:text-zink-300 [&.disabled]:cursor-auto page-item pagination-prev disabled pagination-next" href="#">
-                                    Next
-                                </a>
-                            </div>
-                        </div>
+                           <!-- 페이징 시작 -->
+						<div class="flex justify-end mt-4">
+						    <div class="flex gap-2 pagination-wrap">
+						        <!-- 이전 페이지 -->
+						        <c:if test="${currentPage > 1}">
+						            <a class="inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 focus:bg-custom-50 focus:text-custom-500"
+						               href="?currentPage=${currentPage - 1}&pageSize=${pageSize}">
+						                이전
+						            </a>
+						        </c:if>
+						        <c:if test="${currentPage == 1}">
+						            <a class="inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 disabled:cursor-auto disabled:text-slate-400">
+						                이전
+						            </a>
+						        </c:if>
+						
+						        <!-- 페이지 번호 -->
+						        <ul class="flex gap-2 mb-0">
+						            <c:forEach var="num" begin="1" end="${totalPages}">
+						                <c:choose>
+						                    <c:when test="${num == currentPage}">
+						                        <!-- 현재 페이지 -->
+						                        <li class="active">
+						                            <span class="inline-flex items-center justify-center bg-custom-500 border border-custom-500 text-white h-8 px-3 rounded">
+						                                ${num}
+						                            </span>
+						                        </li>
+						                    </c:when>
+						                    <c:otherwise>
+						                        <!-- 다른 페이지 -->
+						                        <li>
+						                            <a class="inline-flex items-center justify-center bg-white border border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 h-8 px-3 rounded"
+						                               href="?currentPage=${num}&pageSize=${pageSize}">
+						                                ${num}
+						                            </a>
+						                        </li>
+						                    </c:otherwise>
+						                </c:choose>
+						            </c:forEach>
+						        </ul>
+						
+						        <!-- 다음 페이지 -->
+						        <c:if test="${currentPage < totalPages}">
+						            <a class="inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 focus:bg-custom-50 focus:text-custom-500"
+						               href="?currentPage=${currentPage + 1}&pageSize=${pageSize}">
+						                다음
+						            </a>
+						        </c:if>
+						        <c:if test="${currentPage >= totalPages}">
+						            <a class="inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 disabled:cursor-auto disabled:text-slate-400">
+						                다음
+						            </a>
+						        </c:if>
+						    </div>
+						</div>
+						<!-- 페이징 끝 -->
                     </div>
                 </div>
               </div>
         	</div>
         
         <!-- End Page-content -->
-        <div class="self-center col-span-12 lg:place-self-end lg:col-span-6"><div class="dataTables_paginate paging_simple_numbers" id="basic_tables_paginate"><div class="text-center dark:text-slate-100"><a aria-controls="basic_tables" aria-disabled="true" role="link" data-dt-idx="previous" tabindex="-1" class="relative inline-flex justify-center items-center space-x-2 border px-4 py-2 -mr-px leading-6 hover:z-10 focus:z-10 active:z-10 border-slate-200 active:border-slate-200 active:shadow-none dark:border-zink-500 dark:active:border-zink-400 bg-white dark:bg-zink-700 text-slate-300 dark:text-slate-300 rounded-l-lg" id="basic_tables_previous">Previous</a><a href="#" aria-controls="basic_tables" role="link" aria-current="page" data-dt-idx="0" tabindex="0" class="relative inline-flex justify-center items-center space-x-2 border px-4 py-2 -mr-px leading-6 hover:z-10 focus:z-10 active:z-10 border-slate-200 active:border-slate-200 active:shadow-none dark:border-zink-500 dark:active:border-zink-400 font-semibold bg-slate-100 dark:bg-zink-600 text-slate-800 hover:text-slate-900 hover:border-slate-200 hover:shadow-sm focus:ring focus:ring-slate-300 focus:ring-opacity-25 dark:text-slate-100 dark:hover:border-zink-500 dark:hover:text-zink-50 dark:focus:ring-zink-500 dark:focus:ring-opacity-40">1</a><a href="#" aria-controls="basic_tables" role="link" data-dt-idx="1" tabindex="0" class="relative inline-flex justify-center items-center space-x-2 border px-4 py-2 -mr-px leading-6 hover:z-10 focus:z-10 active:z-10 border-slate-200 active:border-slate-200 active:shadow-none dark:border-zink-500 dark:active:border-zink-400 bg-white dark:bg-zink-700 text-slate-800 hover:text-slate-900 hover:border-slate-200 hover:shadow-sm focus:ring focus:ring-slate-300 focus:ring-opacity-25 dark:text-slate-100 dark:hover:border-zink-500 dark:hover:text-zink-50 dark:focus:ring-zink-500 dark:focus:ring-opacity-40">2</a><a href="#" aria-controls="basic_tables" role="link" data-dt-idx="2" tabindex="0" class="relative inline-flex justify-center items-center space-x-2 border px-4 py-2 -mr-px leading-6 hover:z-10 focus:z-10 active:z-10 border-slate-200 active:border-slate-200 active:shadow-none dark:border-zink-500 dark:active:border-zink-400 bg-white dark:bg-zink-700 text-slate-800 hover:text-slate-900 hover:border-slate-200 hover:shadow-sm focus:ring focus:ring-slate-300 focus:ring-opacity-25 dark:text-slate-100 dark:hover:border-zink-500 dark:hover:text-zink-50 dark:focus:ring-zink-500 dark:focus:ring-opacity-40">3</a><a href="#" aria-controls="basic_tables" role="link" data-dt-idx="3" tabindex="0" class="relative inline-flex justify-center items-center space-x-2 border px-4 py-2 -mr-px leading-6 hover:z-10 focus:z-10 active:z-10 border-slate-200 active:border-slate-200 active:shadow-none dark:border-zink-500 dark:active:border-zink-400 bg-white dark:bg-zink-700 text-slate-800 hover:text-slate-900 hover:border-slate-200 hover:shadow-sm focus:ring focus:ring-slate-300 focus:ring-opacity-25 dark:text-slate-100 dark:hover:border-zink-500 dark:hover:text-zink-50 dark:focus:ring-zink-500 dark:focus:ring-opacity-40">4</a><a href="#" aria-controls="basic_tables" role="link" data-dt-idx="4" tabindex="0" class="relative inline-flex justify-center items-center space-x-2 border px-4 py-2 -mr-px leading-6 hover:z-10 focus:z-10 active:z-10 border-slate-200 active:border-slate-200 active:shadow-none dark:border-zink-500 dark:active:border-zink-400 bg-white dark:bg-zink-700 text-slate-800 hover:text-slate-900 hover:border-slate-200 hover:shadow-sm focus:ring focus:ring-slate-300 focus:ring-opacity-25 dark:text-slate-100 dark:hover:border-zink-500 dark:hover:text-zink-50 dark:focus:ring-zink-500 dark:focus:ring-opacity-40">5</a><a href="#" aria-controls="basic_tables" role="link" data-dt-idx="5" tabindex="0" class="relative inline-flex justify-center items-center space-x-2 border px-4 py-2 -mr-px leading-6 hover:z-10 focus:z-10 active:z-10 border-slate-200 active:border-slate-200 active:shadow-none dark:border-zink-500 dark:active:border-zink-400 bg-white dark:bg-zink-700 text-slate-800 hover:text-slate-900 hover:border-slate-200 hover:shadow-sm focus:ring focus:ring-slate-300 focus:ring-opacity-25 dark:text-slate-100 dark:hover:border-zink-500 dark:hover:text-zink-50 dark:focus:ring-zink-500 dark:focus:ring-opacity-40">6</a><a href="#" aria-controls="basic_tables" role="link" data-dt-idx="next" tabindex="0" class="relative inline-flex justify-center items-center space-x-2 border px-4 py-2 -mr-px leading-6 hover:z-10 focus:z-10 active:z-10 border-slate-200 active:border-slate-200 active:shadow-none dark:border-zink-500 dark:active:border-zink-400 bg-white dark:bg-zink-700 text-slate-800 hover:text-slate-900 hover:border-slate-200 hover:shadow-sm focus:ring focus:ring-slate-300 focus:ring-opacity-25 dark:text-slate-100 dark:hover:border-zink-500 dark:hover:text-zink-50 dark:focus:ring-zink-500 dark:focus:ring-opacity-40 rounded-r-lg" id="basic_tables_next">Next</a></div></div></div>
 
 		<!-- Start Footer -->
         <footer class="ltr:md:left-vertical-menu rtl:md:right-vertical-menu group-data-[sidebar-size=md]:ltr:md:left-vertical-menu-md group-data-[sidebar-size=md]:rtl:md:right-vertical-menu-md group-data-[sidebar-size=sm]:ltr:md:left-vertical-menu-sm group-data-[sidebar-size=sm]:rtl:md:right-vertical-menu-sm absolute right-0 bottom-0 px-4 h-14 group-data-[layout=horizontal]:ltr:left-0  group-data-[layout=horizontal]:rtl:right-0 left-0 border-t py-3 flex items-center dark:border-zink-600">
