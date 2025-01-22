@@ -303,11 +303,17 @@ public class DocumentController {
 		
 		List<DocumentFile> documentFile = documentFileService.getDocumentFileList(docNo);
 		
-		EmployeeFile writerSignFile =  employeeFileService.getEmployeeSignFile(empNo);
+		EmployeeFile writerSignFile =  employeeFileService.getEmployeeSignFile((String)documentOne.get("docWriterNo"));
+		EmployeeFile initSignFile =  employeeFileService.getEmployeeSignFile((String)documentOne.get("initApproverNo"));
+		EmployeeFile midSignFile =  employeeFileService.getEmployeeSignFile((String)documentOne.get("midApproverNo"));
+		EmployeeFile finalSignFile =  employeeFileService.getEmployeeSignFile((String)documentOne.get("finalApproverNo"));
 		
-		model.addAttribute("writerSignFile", writerSignFile);
-		model.addAttribute("documentFile", documentFile);
 		model.addAttribute("documentOne", documentOne);
+		model.addAttribute("documentFile", documentFile);
+		model.addAttribute("writerSignFile", writerSignFile);
+		model.addAttribute("initSignFile", initSignFile);
+		model.addAttribute("midSignFile", midSignFile);
+		model.addAttribute("finalSignFile", finalSignFile);
 		
 		// 문서 유형에 따라 페이지 이동
 		switch (docType) {

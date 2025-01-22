@@ -384,6 +384,8 @@
 	<select id="selectDocumentOne" parameterType="Integer" resultType="Map">
 	SELECT d.doc_no docNo, d.doc_type docType, d.doc_writer_no docWriterNo, e1.emp_name docWriterName, de.dept_name docWriterDept, 
 		   d.create_datetime createDatetime, d.approval_status approvalStatus, d.doc_title docTitle, d.doc_content docContent, d.doc_remarks docRemarks,
+		   d.vacation_type vacationType, d.vacation_backup vacationBackup, e5.emp_name vacationBackupName, de2.dept_name vacationBackupDept, d.start_date startDate, d.end_date endDate,
+		   d.doc_purpose docPurpose, d.doc_price docPrice, d.material_name materialName, d.material_quantity materialQuantity, d.resignation_type resignationType,
 		   e2.emp_name initApproverName, e3.emp_name midApproverName, e4.emp_name finalApproverName, da.doc_approvers_no docApproversNo,
 		   da.init_approver_no initApproverNo, da.init_approval_status initApprovalStatus, da.init_approval_datetime initApprovalDatetime, da.init_reject_reason initRejectReason,
 		   da.mid_approver_no midApproverNo, da.mid_approval_status midApprovalStatus, da.mid_approval_datetime midApprovalDatetime, da.mid_reject_reason midRejectReason,
@@ -395,6 +397,8 @@
 	INNER JOIN employee e2 ON e2.emp_no = da.init_approver_no
 	INNER JOIN employee e3 ON e3.emp_no = da.mid_approver_no
 	INNER JOIN employee e4 ON e4.emp_no = da.final_approver_no
+	LEFT JOIN employee e5 ON e5.emp_no = d.vacation_backup
+	LEFT JOIN department de2 ON e5.dept_code = de2.dept_code
 	WHERE d.doc_no = #{docNo}
 	</select>
 	

@@ -67,7 +67,7 @@
 						   		<tbody>
 									<tr>
 										<td style="padding: 20px; padding-bottom:60px; padding-top:55px; border: 0px currentColor; border-image: none; height: 70px; text-align: center; color: black; font-size: 36px; font-weight: bold; vertical-align: top;" colspan="2" class="dext_table_border_t dext_table_border_r dext_table_border_b dext_table_border_l">
-											기&nbsp;&nbsp;&nbsp;안&nbsp;&nbsp;&nbsp;문&nbsp;&nbsp;&nbsp;서
+											연&nbsp;&nbsp;&nbsp;차&nbsp;&nbsp;&nbsp;신&nbsp;&nbsp;&nbsp;청&nbsp;&nbsp;&nbsp;서
 										</td>
 									</tr>
 									<tr>
@@ -177,16 +177,137 @@
 											            <td style="text-align: center; padding: 5px; border: 1px solid black;">최종 결재자</td>
 											        </tr>
 											        <tr style="height: 100px;">
-											            <td style="text-align: center; padding: 15px; border: 1px solid black;">${documentOne.docWriterName}</td>
-											            <td style="text-align: center; padding: 15px; border: 1px solid black;">${documentOne.initApproverName}</td>
-											            <td style="text-align: center; padding: 15px; border: 1px solid black;">사인/이름</td>
-											            <td style="text-align: center; padding: 15px; border: 1px solid black;">사인/이름</td>
+											        	<!-- 작성자 -->
+											            <td style="text-align: center; padding: 5px; border: 1px solid black;">
+											            	<c:if test="${not empty writerSignFile}">
+															    <div style="display: flex; justify-content: center; align-items: center;">
+															        <img src="${pageContext.request.contextPath}/employeeFile/${writerSignFile.fileName}${writerSignFile.fileExt}" 
+															             style="max-width: 65%; max-height: 65%; width: auto; height: auto; object-fit: contain;">
+															    </div>
+															</c:if>
+															<c:if test="${empty writerSignFile}">
+																${documentOne.docWriterName}
+															</c:if>
+														</td>
+														
+														<!-- 최초 결재자 -->
+											            <td style="text-align: center; padding: 5px; border: 1px solid black;">
+											            	<c:if test="${empty documentOne.initApprovalStatus || empty initSignFile}">
+											            		<div style="display: flex; justify-content: center; align-items: center;">
+											    					${documentOne.initApproverName}       		
+															    </div>
+											            	</c:if>
+											            	<c:if test="${documentOne.initApprovalStatus == 'A' && not empty initSignFile}">
+											            		<div style="display: flex; justify-content: center; align-items: center;">
+															        <img src="${pageContext.request.contextPath}/employeeFile/${initSignFile.fileName}${initSignFile.fileExt}" 
+															             style="max-width: 65%; max-height: 65%; width: auto; height: auto; object-fit: contain;">
+															    </div>
+											            	</c:if>
+											            	<c:if test="${documentOne.initApprovalStatus == 'R' && not empty initSignFile}">
+											            		<div style="display: flex; justify-content: center; align-items: center;">
+															        <img src="${pageContext.request.contextPath}/employeeFile/${initSignFile.fileName}${initSignFile.fileExt}" 
+															             style="max-width: 65%; max-height: 65%; width: auto; height: auto; object-fit: contain;">
+															    </div>
+											            	</c:if>
+											            </td>
+											            
+											            <!-- 중간 결재자 -->
+											            <td style="text-align: center; padding: 5px; border: 1px solid black;">
+											            	<c:if test="${empty documentOne.midApprovalStatus || empty midSignFile}">
+											            		<div style="display: flex; justify-content: center; align-items: center;">
+											    					${documentOne.midApproverName}       		
+															    </div>
+											            	</c:if>
+											            	<c:if test="${documentOne.midApprovalStatus == 'A' && not empty midSignFile}">
+											            		<div style="display: flex; justify-content: center; align-items: center;">
+															        <img src="${pageContext.request.contextPath}/employeeFile/${midSignFile.fileName}${midSignFile.fileExt}" 
+															             style="max-width: 65%; max-height: 65%; width: auto; height: auto; object-fit: contain;">
+															    </div>
+											            	</c:if>
+											            	<c:if test="${documentOne.midApprovalStatus == 'R' && not empty midSignFile}">
+											            		<div style="display: flex; justify-content: center; align-items: center;">
+															        <img src="${pageContext.request.contextPath}/employeeFile/${midSignFile.fileName}${midSignFile.fileExt}" 
+															             style="max-width: 65%; max-height: 65%; width: auto; height: auto; object-fit: contain;">
+															    </div>
+											            	</c:if>
+											            </td>
+											            
+											            <!-- 최종 결재자 -->
+											            <td style="text-align: center; padding: 5px; border: 1px solid black;">
+											            	<c:if test="${empty documentOne.finalApprovalStatus || empty finalSignFile}">
+											            		<div style="display: flex; justify-content: center; align-items: center;">
+											    					${documentOne.finalApproverName}       		
+															    </div>
+											            	</c:if>
+											            	<c:if test="${documentOne.finalApprovalStatus == 'A' && not empty finalSignFile}">
+											            		<div style="display: flex; justify-content: center; align-items: center;">
+															        <img src="${pageContext.request.contextPath}/employeeFile/${finalSignFile.fileName}${finalSignFile.fileExt}" 
+															             style="max-width: 65%; max-height: 65%; width: auto; height: auto; object-fit: contain;">
+															    </div>
+											            	</c:if>
+											            	<c:if test="${documentOne.finalApprovalStatus == 'R' && not empty finalSignFile}">
+											            		<div style="display: flex; justify-content: center; align-items: center;">
+															        <img src="${pageContext.request.contextPath}/employeeFile/${finalSignFile.fileName}${finalSignFile.fileExt}" 
+															             style="max-width: 65%; max-height: 65%; width: auto; height: auto; object-fit: contain;">
+															    </div>
+											            	</c:if>
+											            </td>
 											        </tr>
 											        <tr style="height: 10px;">
-											            <td style="text-align: center; padding: 5px; border: 1px solid black;">${fn:substring(documentOne.createDatetime, 0, 10)}</td>
-											            <td style="text-align: center; padding: 5px; border: 1px solid black;">2025-01-21</td>
-											            <td style="text-align: center; padding: 5px; border: 1px solid black;">2025-01-23</td>
-											            <td style="text-align: center; padding: 5px; border: 1px solid black;">2025-01-31</td>
+											            <td style="text-align: center; padding: 5px; border: 1px solid black;">
+											            	<span class="text-custom-600 font-bold">작성 ${fn:substring(documentOne.createDatetime, 0, 10)}</span>
+											            </td>
+											            <td style="text-align: center; padding: 5px; border: 1px solid black;">
+											            	<c:if test="${empty documentOne.initApprovalStatus && documentOne.initApproverNo == empNo && documentOne.approvalStatus != 'T'}">
+											            		<a href="${pageContext.request.contextPath}/document/approveDocument?docApproversNo=${documentOne.docApproversNo}&initApproverNo=${empNo}&docNo=${documentOne.docNo}&docType=${documentOne.docType}" id="initApproveBtn" class="approveBtn px-2 py-0 font-bold text-xs text-green-500 bg-white btn hover:text-green-500 hover:bg-text-green-500 focus:text-green-500 active:text-green-500">승인</a>
+											            		<span>/</span>
+											            		<a href="${pageContext.request.contextPath}/document/rejectDocument?docApproversNo=${documentOne.docApproversNo}&initApproverNo=${empNo}&docNo=${documentOne.docNo}&docType=${documentOne.docType}"" id="initRejectBtn" class="rejectBtn px-2 py-0 font-bold text-xs text-red-500 bg-white btn hover:text-red-500 focus:text-red-500 active:text-red-500">반려</a>
+											            	</c:if>
+											            	<c:if test="${documentOne.initApprovalStatus == 'A'}">
+											            		<span class="text-green-600 font-bold">승인&nbsp;&nbsp;&nbsp;${fn:substring(documentOne.initApprovalDatetime, 0, 10)}</span>
+											            	</c:if>
+											            	<c:if test="${documentOne.initApprovalStatus == 'R'}">
+											            		<a href="#" id="initRejectReasonBtn" data-reject-reason="${documentOne.initRejectReason}">
+											            			<span class="text-red-600 font-bold">반려&nbsp;&nbsp;&nbsp;${fn:substring(documentOne.initApprovalDatetime, 0, 10)}</span>
+											            		</a>
+										            		</c:if>
+											            </td>
+											            <td style="text-align: center; padding: 5px; border: 1px solid black;">
+											            	<c:if test="${empty documentOne.midApprovalStatus && documentOne.initApprovalStatus == 'A' && documentOne.midApproverNo == empNo && documentOne.approvalStatus != 'T'}">
+											            		<a href="${pageContext.request.contextPath}/document/approveDocument?docApproversNo=${documentOne.docApproversNo}&midApproverNo=${empNo}&docNo=${documentOne.docNo}&docType=${documentOne.docType}" id="midApproveBtn" class="approveBtn px-2 py-0 font-bold text-xs text-green-500 bg-white btn hover:text-green-500 hover:bg-text-green-500 focus:text-green-500 active:text-green-500">승인</a>
+											            		<span>/</span>
+											            		<a href="${pageContext.request.contextPath}/document/rejectDocument?docApproversNo=${documentOne.docApproversNo}&midApproverNo=${empNo}&docNo=${documentOne.docNo}&docType=${documentOne.docType}"" id="midRejectBtn" class="rejectBtn px-2 py-0 font-bold text-xs text-red-500 bg-white btn hover:text-red-500 focus:text-red-500 active:text-red-500">반려</a>
+											            	</c:if>
+											            	<c:if test="${documentOne.midApprovalStatus == 'A'}">
+											            		<span class="text-green-600 font-bold">승인&nbsp;&nbsp;&nbsp;${fn:substring(documentOne.midApprovalDatetime, 0, 10)}</span>
+											            	</c:if>
+											            	<c:if test="${documentOne.midApprovalStatus == 'R'}">
+											            		<a href="#" id="midRejectReasonBtn" data-reject-reason="${documentOne.midRejectReason}">
+											            			<span class="text-red-600 font-bold">반려&nbsp;&nbsp;&nbsp;${fn:substring(documentOne.midApprovalDatetime, 0, 10)}</span>
+											            		</a>
+										            		</c:if>
+											            	<c:if test="${documentOne.initApprovalStatus == 'R'}">
+											            		<span></span>
+											            	</c:if>
+											            </td>
+											            <td style="text-align: center; padding: 5px; border: 1px solid black;">
+											            	<c:if test="${(empty documentOne.finalApprovalStatus) && documentOne.initApprovalStatus == 'A' && documentOne.midApprovalStatus == 'A' && documentOne.finalApproverNo == empNo && documentOne.approvalStatus != 'T'}">
+											            		<a href="${pageContext.request.contextPath}/document/approveDocument?docApproversNo=${documentOne.docApproversNo}&finalApproverNo=${empNo}&docNo=${documentOne.docNo}&docType=${documentOne.docType}" id="finalApproveBtn" class="approveBtn px-2 py-0 font-bold text-xs text-green-500 bg-white btn hover:text-green-500 hover:bg-text-green-500 focus:text-green-500 active:text-green-500">승인</a>
+											            		<span>/</span>
+											            		<a href="${pageContext.request.contextPath}/document/rejectDocument?docApproversNo=${documentOne.docApproversNo}&finalApproverNo=${empNo}&docNo=${documentOne.docNo}&docType=${documentOne.docType}"" id="finalRejectBtn" class="rejectBtn px-2 py-0 font-bold text-xs text-red-500 bg-white btn hover:text-red-500 focus:text-red-500 active:text-red-500">반려</a>
+											            	</c:if>
+											            	<c:if test="${documentOne.finalApprovalStatus == 'A'}">
+											            		<span class="text-green-600 font-bold">승인&nbsp;&nbsp;&nbsp;${fn:substring(documentOne.finalApprovalDatetime, 0, 10)}</span>
+											            	</c:if>
+											            	<c:if test="${documentOne.finalApprovalStatus == 'R'}">
+											            		<a href="#" id="finalRejectReasonBtn" data-reject-reason="${documentOne.finalRejectReason}">
+											            			<span class="text-red-600 font-bold">반려&nbsp;&nbsp;&nbsp;${fn:substring(documentOne.finalApprovalDatetime, 0, 10)}</span>
+											            		</a>
+											            	</c:if>
+											            	<c:if test="${documentOne.initApprovalStatus == 'R' || documentOne.midApprovalStatus == 'R'}">
+											            		<span></span>
+											            	</c:if>
+											            </td>
 											        </tr>
 											    </tbody>
 											</table>
@@ -204,19 +325,60 @@
 										<td style="background: rgb(221, 221, 221); padding: 5px; border: 1px solid black; height: 40px; text-align: center; color: rgb(0, 0, 0); font-size: 13px; font-weight: bold; vertical-align: middle;">
 											제&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;목
 										</td>
-										<td style="background: rgb(255, 255, 255); padding: 5px;border:1px solid black; height: 40px; text-align: left; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;">
+										<td style="background: rgb(255, 255, 255); padding: 5px;border:1px solid black; height: 40px; text-align: left; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;" colspan="3">
 											<span id="docTitle" data-title="${documentOne.docTitle}" style="width: 100%; font-family: &quot;malgun gothic&quot;, dotum, arial, tahoma; font-size: 10pt; line-height: normal; margin-top: 0px; margin-bottom: 0px; padding-left: 10px; vertical-align: middle;">
 												${documentOne.docTitle}
 											</span>
 										</td>
 									</tr>
 									<tr>
-										<td style="background: rgb(221, 221, 221); padding: 5px;border:1px solid black; height: 40px; text-align: center; color: rgb(0, 0, 0); font-size: 13px; font-weight: bold; vertical-align: middle;" colspan="2">
-											상&nbsp;&nbsp;세&nbsp;&nbsp;내&nbsp;&nbsp;용
+										<td style="background: rgb(221, 221, 221); padding: 5px; border: 1px solid black; height: 40px; text-align: center; color: rgb(0, 0, 0); font-size: 13px; font-weight: bold; vertical-align: middle; min-width: 160px;">
+											연 차&nbsp;&nbsp;유 형
+										</td>
+										<td style="background: rgb(255, 255, 255); padding: 5px;border:1px solid black; height: 40px; text-align: left; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle; width: 300px;">
+											<span id="vacationType" data-title="${documentOne.vacationType}" style="width: 100%; font-family: &quot;malgun gothic&quot;, dotum, arial, tahoma; font-size: 10pt; line-height: normal; margin-top: 0px; margin-bottom: 0px; padding-left: 10px; vertical-align: middle;">
+												<c:if test="${documentOne.vacationType == 'AL'}">
+													<span>연차</span>
+												</c:if>
+												<c:if test="${documentOne.vacationType == 'HLA'}">
+													<span>반차&nbsp;(오전)</span>
+												</c:if>
+												<c:if test="${documentOne.vacationType == 'HLP'}">
+													<span>반차&nbsp;(오후)</span>
+												</c:if>
+											</span>
+										</td>
+										<td style="background: rgb(221, 221, 221); padding: 5px; border: 1px solid black; height: 40px; text-align: center; color: rgb(0, 0, 0); font-size: 13px; font-weight: bold; vertical-align: middle; min-width: 160px;">
+											기&nbsp;&nbsp;&nbsp;간
+										</td>
+										<td style="background: rgb(255, 255, 255); padding: 5px;border:1px solid black; height: 40px; text-align: left; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle; min-width: 300px;">
+											<span id="vacationDate" style="width: 100%; font-family: &quot;malgun gothic&quot;, dotum, arial, tahoma; font-size: 10pt; line-height: normal; margin-top: 0px; margin-bottom: 0px; padding-left: 10px; vertical-align: middle;">
+												<c:if test="${documentOne.vacationType == 'AL'}">
+													<span>${documentOne.startDate} ~ ${documentOne.endDate}</span>
+												</c:if>
+												<c:if test="${documentOne.vacationType == 'HLA' || documentOne.vacationType == 'HLP'}">
+													<span>${documentOne.startDate}</span>
+												</c:if>
+											</span>
 										</td>
 									</tr>
 									<tr>
-										<td style="background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; height: 600px; text-align: left; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;" colspan="2">
+										<td style="background: rgb(221, 221, 221); padding: 5px; border: 1px solid black; height: 40px; text-align: center; color: rgb(0, 0, 0); font-size: 13px; font-weight: bold; vertical-align: middle;">
+											대&nbsp;체&nbsp;&nbsp;근&nbsp;무&nbsp;자
+										</td>
+										<td style="background: rgb(255, 255, 255); padding: 5px;border:1px solid black; height: 40px; text-align: left; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;"  colspan="3">
+											<span id="vacationBackup" data-title="${documentOne.vacationBackup}" style="width: 100%; font-family: &quot;malgun gothic&quot;, dotum, arial, tahoma; font-size: 10pt; line-height: normal; margin-top: 0px; margin-bottom: 0px; padding-left: 10px; vertical-align: middle;">
+												${documentOne.vacationBackup} / ${documentOne.vacationBackupDept} / ${documentOne.vacationBackupName} 
+											</span>
+										</td>
+									</tr>
+									<tr>
+										<td style="background: rgb(221, 221, 221); padding: 5px;border:1px solid black; height: 40px; text-align: center; color: rgb(0, 0, 0); font-size: 13px; font-weight: bold; vertical-align: middle;" colspan="4">
+											문&nbsp;&nbsp;서&nbsp;&nbsp;내&nbsp;&nbsp;용
+										</td>
+									</tr>
+									<tr>
+										<td style="background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; height: 520px; text-align: left; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;" colspan="4">
 									        <div style="width: 100%; font-family: 'malgun gothic', dotum, arial, tahoma; font-size: 11pt; line-height: 2; margin-top: 0px; margin-bottom: 0px; padding: 30px; padding-left: 50px; white-space: pre-line; max-width: 100%; word-wrap: break-word; text-indent: 0;">
 									            ${documentOne.docContent}
 									        </div>
@@ -226,7 +388,7 @@
 										<td style="background: rgb(221, 221, 221); padding: 5px; border: 1px solid black; height: 36px; text-align: center; color: rgb(0, 0, 0); font-size: 13px; font-weight: bold; vertical-align: middle;">
 											비&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;고
 										</td>
-										<td style="background: rgb(255, 255, 255); padding: 5px;border:1px solid black; height: 70px; text-align: left; color: rgb(0, 0, 0); font-size: 13px; font-weight: normal; vertical-align: middle;">
+										<td style="background: rgb(255, 255, 255); padding: 5px;border:1px solid black; height: 70px; text-align: left; color: rgb(0, 0, 0); font-size: 13px; font-weight: normal; vertical-align: middle;" colspan="3">
 											<div style="width: 100%; font-family: &quot;malgun gothic&quot;, dotum, arial, tahoma; font-size: 10pt; line-height: normal; margin-top: 0px; margin-bottom: 0px; padding:5px; padding-left: 10px;">
 												${documentOne.docRemarks}
 											</div>
@@ -242,7 +404,7 @@
 						   		<tbody>
 						   			<tr>
 										<td style="padding: 20px; padding-top:50px; border: 0px currentColor; border-image: none; height: 50px; text-align: center; color: black; font-size: 20px; font-weight: bold; vertical-align: top;" colspan="2" class="dext_table_border_t dext_table_border_r dext_table_border_b dext_table_border_l">
-											상기와 같이 기안서를 제출합니다.
+											상기와 같이 연차 신청서를 제출합니다.
 										</td>
 									</tr>
 									<tr>
@@ -331,6 +493,156 @@
             <!-- container-fluid -->
         </div>
         <!-- End Page-content -->
+        
+        <!-- 반려 사유 입력 모달창 -->
+        <div id="insertInitRejectModal" modal-center="" class="insertInitRejectModal fixed flex flex-col transition-all duration-300 ease-in-out left-2/4 z-drawer -translate-x-2/4 -translate-y-2/4 hidden">
+		    <div class="w-screen bg-white shadow rounded-md flex flex-col h-full" style="width: 550px">
+		        <!-- Modal Header -->
+		        <div class="flex items-center justify-between p-4 bg-slate-100 border-b">
+		            <h4 class="text-16 mr-auto">최초 결재자 반려 사유 입력</h4> <!-- 제목 왼쪽 정렬을 위한 mr-auto 추가 -->
+		        </div>
+		         
+		        <!-- Modal Content -->
+		        <div class="max-h-[calc(theme('height.screen')_-_180px)] p-4 overflow-y-auto">
+		            <div class="flex items-center mb-2">
+		            	<textarea id="initRejectReason" class="w-full h-40 p-3 border border-gray-300 rounded mb-2" style="resize: none;" placeholder="반려 사유를 입력하세요"></textarea>
+					</div>
+		        </div>
+		
+		        <!-- Modal Footer -->
+		        <div class="flex items-center justify-end p-1 mt-auto border-t border-slate-200">
+		            <button id=submitInitRejectBtn type="button" class="mr-2 text-red-500 bg-white btn hover:text-red-500 hover:bg-red-100 focus:text-red-500 focus:bg-red-100 active:text-red-500 active:bg-red-100">
+		                문서 반려
+		            </button>
+		            <button id="cancelInitBtn" type="button" class="text-custom-500 bg-white btn hover:text-custom-500 hover:bg-custom-100 focus:text-custom-500 focus:bg-custom-100 active:text-custom-500 active:bg-custom-100">
+		                취소<i class="align-baseline ltr:pl-1 ri-close-line"></i>
+		            </button>
+		        </div>
+		    </div>
+		</div>
+		
+		<div id="insertMidRejectModal" modal-center="" class="insertMidRejectModal fixed flex flex-col transition-all duration-300 ease-in-out left-2/4 z-drawer -translate-x-2/4 -translate-y-2/4 hidden">
+		    <div class="w-screen bg-white shadow rounded-md flex flex-col h-full" style="width: 550px">
+		        <!-- Modal Header -->
+		        <div class="flex items-center justify-between p-4 bg-slate-100 border-b">
+		            <h4 class="text-16 mr-auto">중간 결재자 반려 사유 입력</h4> <!-- 제목 왼쪽 정렬을 위한 mr-auto 추가 -->
+		        </div>
+		         
+		        <!-- Modal Content -->
+		        <div class="max-h-[calc(theme('height.screen')_-_180px)] p-4 overflow-y-auto">
+		            <div class="flex items-center mb-2">
+		            	<textarea id="midRejectReason" class="w-full h-40 p-3 border border-gray-300 rounded mb-2" style="resize: none;" placeholder="반려 사유를 입력하세요"></textarea>
+					</div>
+		        </div>
+		
+		        <!-- Modal Footer -->
+		        <div class="flex items-center justify-end p-1 mt-auto border-t border-slate-200">
+		            <button id=submitMidRejectBtn type="button" class="mr-2 text-red-500 bg-white btn hover:text-red-500 hover:bg-red-100 focus:text-red-500 focus:bg-red-100 active:text-red-500 active:bg-red-100">
+		                문서 반려
+		            </button>
+		            <button id="cancelMidBtn" type="button" class="text-custom-500 bg-white btn hover:text-custom-500 hover:bg-custom-100 focus:text-custom-500 focus:bg-custom-100 active:text-custom-500 active:bg-custom-100">
+		                취소<i class="align-baseline ltr:pl-1 ri-close-line"></i>
+		            </button>
+		        </div>
+		    </div>
+		</div>
+		
+		<div id="insertFinalRejectModal" modal-center="" class="insertFinalRejectModal fixed flex flex-col transition-all duration-300 ease-in-out left-2/4 z-drawer -translate-x-2/4 -translate-y-2/4 hidden">
+		    <div class="w-screen bg-white shadow rounded-md flex flex-col h-full" style="width: 550px">
+		        <!-- Modal Header -->
+		        <div class="flex items-center justify-between p-4 bg-slate-100 border-b">
+		            <h4 class="text-16 mr-auto">최종 결재자 반려 사유 입력</h4> <!-- 제목 왼쪽 정렬을 위한 mr-auto 추가 -->
+		        </div>
+		         
+		        <!-- Modal Content -->
+		        <div class="max-h-[calc(theme('height.screen')_-_180px)] p-4 overflow-y-auto">
+		            <div class="flex items-center mb-2">
+		            	<textarea id="finalRejectReason" class="w-full h-40 p-3 border border-gray-300 rounded mb-2" style="resize: none;" placeholder="반려 사유를 입력하세요"></textarea>
+					</div>
+		        </div>
+		
+		        <!-- Modal Footer -->
+		        <div class="flex items-center justify-end p-1 mt-auto border-t border-slate-200">
+		            <button id=submitFinalRejectBtn type="button" class="mr-2 text-red-500 bg-white btn hover:text-red-500 hover:bg-red-100 focus:text-red-500 focus:bg-red-100 active:text-red-500 active:bg-red-100">
+		                문서 반려
+		            </button>
+		            <button id="cancelFinalBtn" type="button" class="text-custom-500 bg-white btn hover:text-custom-500 hover:bg-custom-100 focus:text-custom-500 focus:bg-custom-100 active:text-custom-500 active:bg-custom-100">
+		                취소<i class="align-baseline ltr:pl-1 ri-close-line"></i>
+		            </button>
+		        </div>
+		    </div>
+		</div>
+
+		
+		<!-- 반려 사유 조회 모달창 -->
+		<div id="initRejectModal" modal-center="" class="initRejectModal fixed flex flex-col transition-all duration-300 ease-in-out left-2/4 z-drawer -translate-x-2/4 -translate-y-2/4 hidden">
+		    <div class="w-screen bg-white shadow rounded-md flex flex-col h-full" style="width: 550px">
+		        <!-- Modal Header -->
+		        <div class="flex items-center justify-between p-4 bg-slate-100 border-b">
+		            <h4 class="text-16 mr-auto">최초 결재자 반려 사유</h4> <!-- 제목 왼쪽 정렬을 위한 mr-auto 추가 -->
+		        </div>
+		         
+		        <!-- Modal Content -->
+		        <div class="max-h-[calc(theme('height.screen')_-_180px)] p-4 overflow-y-auto">
+		            <div class="flex items-center w-full h-40 border rounded p-3">
+		            	<p id="initReasonText" class="text-gray-700" style="white-space: pre-line;"></p>
+					</div>
+		        </div>
+		
+		        <!-- Modal Footer -->
+		        <div class="flex items-center justify-end p-1 mt-auto border-t border-slate-200">
+		            <button id="closeInitModal" type="button" class="mr-2 text-red-500 bg-white btn hover:text-red-500 hover:bg-red-100 focus:text-red-500 focus:bg-red-100 active:text-red-500 active:bg-red-100">
+		                닫기<i class="align-baseline ltr:pl-1 ri-close-line"></i>
+		            </button>
+		        </div>
+		    </div>
+		</div>
+		
+		<div id="midRejectModal" modal-center="" class="midRejectModal fixed flex flex-col transition-all duration-300 ease-in-out left-2/4 z-drawer -translate-x-2/4 -translate-y-2/4 hidden">
+		    <div class="w-screen bg-white shadow rounded-md flex flex-col h-full" style="width: 550px">
+		        <!-- Modal Header -->
+		        <div class="flex items-center justify-between p-4 bg-slate-100 border-b">
+		            <h4 class="text-16 mr-auto">중간 결재자 반려 사유</h4> <!-- 제목 왼쪽 정렬을 위한 mr-auto 추가 -->
+		        </div>
+		         
+		        <!-- Modal Content -->
+		        <div class="max-h-[calc(theme('height.screen')_-_180px)] p-4 overflow-y-auto">
+		            <div class="flex items-center w-full h-40 border rounded p-3">
+		            	<p id="midReasonText" class="text-gray-700" style="white-space: pre-line;"></p>
+					</div>
+		        </div>
+		
+		        <!-- Modal Footer -->
+		        <div class="flex items-center justify-end p-1 mt-auto border-t border-slate-200">
+		            <button id="closeMidModal" type="button" class="mr-2 text-red-500 bg-white btn hover:text-red-500 hover:bg-red-100 focus:text-red-500 focus:bg-red-100 active:text-red-500 active:bg-red-100">
+		                닫기<i class="align-baseline ltr:pl-1 ri-close-line"></i>
+		            </button>
+		        </div>
+		    </div>
+		</div>
+		
+		<div id="finalRejectModal" modal-center="" class="finalRejectModal fixed flex flex-col transition-all duration-300 ease-in-out left-2/4 z-drawer -translate-x-2/4 -translate-y-2/4 hidden">
+		    <div class="w-screen bg-white shadow rounded-md flex flex-col h-full" style="width: 550px">
+		        <!-- Modal Header -->
+		        <div class="flex items-center justify-between p-4 bg-slate-100 border-b">
+		            <h4 class="text-16 mr-auto">최종 결재자 반려 사유</h4> <!-- 제목 왼쪽 정렬을 위한 mr-auto 추가 -->
+		        </div>
+		         
+		        <!-- Modal Content -->
+		        <div class="max-h-[calc(theme('height.screen')_-_180px)] p-4 overflow-y-auto">
+		            <div class="flex items-center w-full h-40 border rounded p-3">
+		            	<p id="finalReasonText" class="text-gray-700" style="white-space: pre-line;"></p>
+					</div>
+		        </div>
+		
+		        <!-- Modal Footer -->
+		        <div class="flex items-center justify-end p-1 mt-auto border-t border-slate-200">
+		            <button id="closeFinalModal" type="button" class="mr-2 text-red-500 bg-white btn hover:text-red-500 hover:bg-red-100 focus:text-red-500 focus:bg-red-100 active:text-red-500 active:bg-red-100">
+		                닫기<i class="align-baseline ltr:pl-1 ri-close-line"></i>
+		            </button>
+		        </div>
+		    </div>
+		</div>
 
 		<!-- Start Footer -->
         <footer class="ltr:md:left-vertical-menu rtl:md:right-vertical-menu group-data-[sidebar-size=md]:ltr:md:left-vertical-menu-md group-data-[sidebar-size=md]:rtl:md:right-vertical-menu-md group-data-[sidebar-size=sm]:ltr:md:left-vertical-menu-sm group-data-[sidebar-size=sm]:rtl:md:right-vertical-menu-sm absolute right-0 bottom-0 px-4 h-14 group-data-[layout=horizontal]:ltr:left-0  group-data-[layout=horizontal]:rtl:right-0 left-0 border-t py-3 flex items-center dark:border-zink-600">
@@ -412,6 +724,253 @@ $(document).ready(function() {
             window.location.href = $(this).attr('href');
             alert("파일이 삭제되었습니다.");
         } 
+    });
+    
+	// 반려 버튼 클릭 시 모달 열기
+    $('#initRejectBtn').on('click', function(event) {
+        event.preventDefault(); // 링크의 기본 동작을 막기
+        
+        // confirm 다이얼로그로 사용자의 반려 의사를 묻기
+        if (!confirm("결재 문서를 반려하시겠습니까?")) {
+            return; // 취소를 클릭하면 동작을 멈추고 함수 종료
+        }
+        // 반려 사유를 입력 받는 모달을 띄우기
+        if (!confirm("반려 사유를 적어주세요.")) {
+            return; // 취소를 클릭하면 동작을 멈추고 함수 종료
+        }
+        $('#insertInitRejectModal').removeClass('hidden'); // 모달 열기
+    });
+	
+    $('#midRejectBtn').on('click', function(event) {
+        event.preventDefault(); // 링크의 기본 동작을 막기
+        
+        // confirm 다이얼로그로 사용자의 반려 의사를 묻기
+        if (!confirm("결재 문서를 반려하시겠습니까?")) {
+            return; // 취소를 클릭하면 동작을 멈추고 함수 종료
+        }
+        // 반려 사유를 입력 받는 모달을 띄우기
+        if (!confirm("반려 사유를 적어주세요.")) {
+            return; // 취소를 클릭하면 동작을 멈추고 함수 종료
+        }
+        $('#insertMidRejectModal').removeClass('hidden'); // 모달 열기
+    });
+    
+    $('#finalRejectBtn').on('click', function(event) {
+        event.preventDefault(); // 링크의 기본 동작을 막기
+        
+        // confirm 다이얼로그로 사용자의 반려 의사를 묻기
+        if (!confirm("결재 문서를 반려하시겠습니까?")) {
+            return; // 취소를 클릭하면 동작을 멈추고 함수 종료
+        }
+        // 반려 사유를 입력 받는 모달을 띄우기
+        if (!confirm("반려 사유를 적어주세요.")) {
+            return; // 취소를 클릭하면 동작을 멈추고 함수 종료
+        }
+        $('#insertFinalRejectModal').removeClass('hidden'); // 모달 열기
+    });
+
+    // 취소 버튼 클릭 시 모달 닫기
+    $('#cancelInitBtn').on('click', function() {
+        $('#insertInitRejectModal').addClass('hidden'); // 모달 닫기
+    });
+    
+    $('#cancelMidBtn').on('click', function() {
+        $('#insertMidRejectModal').addClass('hidden'); // 모달 닫기
+    });
+    
+    $('#cancelFinalBtn').on('click', function() {
+        $('#insertFinalRejectModal').addClass('hidden'); // 모달 닫기
+    });
+    
+    $(document).on('keydown', function(event) {
+        if (event.key === 'Escape') {  // ESC 키 눌렀을 때
+            // 각 모달이 열려 있는지 확인하고 닫기
+            $('#insertInitRejectModal').addClass('hidden');
+            $('#insertMidRejectModal').addClass('hidden');
+            $('#insertFinalRejectModal').addClass('hidden');
+        }
+    });
+
+    // 반려 버튼 클릭 시
+    $('#submitInitRejectBtn').on('click', function() {
+        var initRejectReason = $('#initRejectReason').val(); // 반려 사유 가져오기
+        
+        if (initRejectReason.trim() === '') {
+            alert('반려 사유를 입력하세요.');
+            return;
+        }
+
+        // URL 파라미터 설정
+        var docApproversNo = '${documentOne.docApproversNo}';
+        var initApproverNo = '${empNo}';
+        var docNo = '${documentOne.docNo}';
+        var docType = '${documentOne.docType}';
+
+		// URL 생성
+		var url = '/pettopia/document/rejectDocument?docApproversNo=' + docApproversNo +
+		          '&initApproverNo=' + initApproverNo + 
+		          '&docNo=' + docNo + 
+		          '&docType=' + docType + 
+		          '&initRejectReason=' + encodeURIComponent(initRejectReason);
+
+        // 페이지 이동 (서버로 전송)
+        window.location.href = url; // 페이지 이동 방식
+    });
+    
+    $('#submitMidRejectBtn').on('click', function() {
+        var midRejectReason = $('#midRejectReason').val(); // 반려 사유 가져오기
+        
+        if (midRejectReason.trim() === '') {
+            alert('반려 사유를 입력하세요.');
+            return;
+        }
+
+        // URL 파라미터 설정
+        var docApproversNo = '${documentOne.docApproversNo}';
+        var midApproverNo = '${empNo}';
+        var docNo = '${documentOne.docNo}';
+        var docType = '${documentOne.docType}';
+
+		// URL 생성
+		var url = '/pettopia/document/rejectDocument?docApproversNo=' + docApproversNo +
+		          '&midApproverNo=' + midApproverNo + 
+		          '&docNo=' + docNo + 
+		          '&docType=' + docType + 
+		          '&midRejectReason=' + encodeURIComponent(midRejectReason);
+
+        // 페이지 이동 (서버로 전송)
+        window.location.href = url; // 페이지 이동 방식
+    });
+    
+    $('#submitFinalRejectBtn').on('click', function() {
+        var finalRejectReason = $('#finalRejectReason').val(); // 반려 사유 가져오기
+        
+        if (finalRejectReason.trim() === '') {
+            alert('반려 사유를 입력하세요.');
+            return;
+        }
+
+        // URL 파라미터 설정
+        var docApproversNo = '${documentOne.docApproversNo}';
+        var finalApproverNo = '${empNo}';
+        var docNo = '${documentOne.docNo}';
+        var docType = '${documentOne.docType}';
+
+		// URL 생성
+		var url = '/pettopia/document/rejectDocument?docApproversNo=' + docApproversNo +
+		          '&finalApproverNo=' + finalApproverNo + 
+		          '&docNo=' + docNo + 
+		          '&docType=' + docType + 
+		          '&finalRejectReason=' + encodeURIComponent(finalRejectReason);
+
+        // 페이지 이동 (서버로 전송)
+        window.location.href = url; // 페이지 이동 방식
+    });
+    
+	// 반려 버튼 클릭 시
+    $('#initRejectReasonBtn').on('click', function(event) {
+        event.preventDefault(); // 기본 동작 방지
+        
+        // 반려 사유를 data-reject-reason 속성에서 가져오기
+        var rejectReason = $(this).data('reject-reason');
+        
+        // 모달에 반려 사유 표시
+        $('#initReasonText').text(rejectReason || "반려 사유가 없습니다.");
+        
+        // 모달 열기
+        $('#initRejectModal').removeClass('hidden');
+    });
+
+    // 모달 닫기 버튼 클릭 시
+    $('#closeInitModal').on('click', function() {
+        $('#initRejectModal').addClass('hidden'); // 모달 닫기
+    });
+    
+    $(document).on('keydown', function(event) {
+        if (event.key === 'Escape') {  // ESC 키 눌렀을 때
+            $('#initRejectModal').addClass('hidden'); // 모달 닫기
+        }
+    });
+    
+    $('#midRejectReasonBtn').on('click', function(event) {
+        event.preventDefault(); // 기본 동작 방지
+        
+        // 반려 사유를 data-reject-reason 속성에서 가져오기
+        var rejectReason = $(this).data('reject-reason');
+        
+        // 모달에 반려 사유 표시
+        $('#midReasonText').text(rejectReason || "반려 사유가 없습니다.");
+        
+        // 모달 열기
+        $('#midRejectModal').removeClass('hidden');
+    });
+
+    // 모달 닫기 버튼 클릭 시
+    $('#closeMidModal').on('click', function() {
+        $('#midRejectModal').addClass('hidden'); // 모달 닫기
+    });
+    
+    $(document).on('keydown', function(event) {
+        if (event.key === 'Escape') {  // ESC 키 눌렀을 때
+            $('#midRejectModal').addClass('hidden'); // 모달 닫기
+        }
+    });
+    
+    $('#finalRejectReasonBtn').on('click', function(event) {
+        event.preventDefault(); // 기본 동작 방지
+        
+        // 반려 사유를 data-reject-reason 속성에서 가져오기
+        var rejectReason = $(this).data('reject-reason');
+        
+        // 모달에 반려 사유 표시
+        $('#finalReasonText').text(rejectReason || "반려 사유가 없습니다.");
+        
+        // 모달 열기
+        $('#finalRejectModal').removeClass('hidden');
+    });
+
+    // 모달 닫기 버튼 클릭 시
+    $('#closeFinalModal').on('click', function() {
+        $('#finalRejectModal').addClass('hidden'); // 모달 닫기
+    });
+    
+    $(document).on('keydown', function(event) {
+        if (event.key === 'Escape') {  // ESC 키 눌렀을 때
+            $('#finalRejectModal').addClass('hidden'); // 모달 닫기
+        }
+    });
+    
+    // 초기 결재자 승인 버튼 클릭 시
+    $('#initApproveBtn').on('click', function(event) {
+        event.preventDefault(); // 링크의 기본 동작을 막기
+        
+        if (!confirm("결재 문서를 승인하시겠습니까?")) {
+            return; // 취소
+        }
+        
+        window.location.href = $(this).attr('href');
+    });
+    
+	 // 중간 결재자 승인 버튼 클릭 시
+    $('#midApproveBtn').on('click', function(event) {
+        event.preventDefault(); // 링크의 기본 동작을 막기
+        
+        if (!confirm("결재 문서를 승인하시겠습니까?")) {
+            return; // 취소
+        }
+        
+        window.location.href = $(this).attr('href');
+    });
+	 
+	 // 최종 결재자 승인 버튼 클릭 시
+    $('#finalApproveBtn').on('click', function(event) {
+        event.preventDefault(); // 링크의 기본 동작을 막기
+        
+        if (!confirm("결재 문서를 승인하시겠습니까?")) {
+            return; // 취소
+        }
+        
+        window.location.href = $(this).attr('href');
     });
     
 });
