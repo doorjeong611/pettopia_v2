@@ -39,5 +39,8 @@ public interface RoomMapper {
     int deleteRoomImages(int roomNo);
     List<RoomImg> selectRoomImages(int roomNo);
     int deleteRoom(int roomNo);
+    
+    // 객실 페이징
+    int countRoomList(Map<String, Object> params);
 
 }

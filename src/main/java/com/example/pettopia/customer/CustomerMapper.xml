@@ -1,16 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.pettopia.customer.CustomerMapper">
-	<select id="selectCustomerList" resultType="com.example.pettopia.vo.Customer">
-		SELECT 
-				customer_no customerNo,
-				customer_name customerName,
-				postal_code postalCode,
-				basic_address basicAddress,
-				detail_address detailAddress,
-				customer_phone customerPhone,
-				create_datetime createDatetime,
-				update_datetime updateDatetime
-		FROM customer
-	</select>
+    
+    <!-- 페이징된 고객 리스트 조회 -->
+    <select id="selectCustomerList" resultType="com.example.pettopia.vo.Customer">
+        SELECT 
+            customer_no AS customerNo,
+            customer_name AS customerName,
+            postal_code AS postalCode,
+            basic_address AS basicAddress,
+            detail_address AS detailAddress,
+            customer_phone AS customerPhone,
+            create_datetime AS createDatetime,
+            update_datetime AS updateDatetime
+        FROM customer
+        LIMIT #{pageSize} OFFSET #{offset}
+    </select>
+
+    <!-- 총 고객 수 조회 -->
+    <select id="countCustomerList" resultType="int">
+        SELECT COUNT(*) FROM customer
+    </select>
 </mapper>
