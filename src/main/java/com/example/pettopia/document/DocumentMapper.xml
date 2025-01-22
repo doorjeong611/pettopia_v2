@@ -384,7 +384,10 @@
 	<select id="selectDocumentOne" parameterType="Integer" resultType="Map">
 	SELECT d.doc_no docNo, d.doc_type docType, d.doc_writer_no docWriterNo, e1.emp_name docWriterName, de.dept_name docWriterDept, 
 		   d.create_datetime createDatetime, d.approval_status approvalStatus, d.doc_title docTitle, d.doc_content docContent, d.doc_remarks docRemarks,
-		   e2.emp_name initApproverName, e3.emp_name midApproverName, e4.emp_name finalApproverName
+		   e2.emp_name initApproverName, e3.emp_name midApproverName, e4.emp_name finalApproverName, da.doc_approvers_no docApproversNo,
+		   da.init_approver_no initApproverNo, da.init_approval_status initApprovalStatus, da.init_approval_datetime initApprovalDatetime, da.init_reject_reason initRejectReason,
+		   da.mid_approver_no midApproverNo, da.mid_approval_status midApprovalStatus, da.mid_approval_datetime midApprovalDatetime, da.mid_reject_reason midRejectReason,
+		   da.final_approver_no finalApproverNo, da.final_approval_status finalApprovalStatus, da.final_approval_datetime finalApprovalDatetime, da.final_reject_reason finalRejectReason
 	FROM document d
 	INNER JOIN employee e1 ON e1.emp_no = d.doc_writer_no
 	INNER JOIN department de ON e1.dept_code = de.dept_code
@@ -394,6 +397,54 @@
 	INNER JOIN employee e4 ON e4.emp_no = da.final_approver_no
 	WHERE d.doc_no = #{docNo}
 	</select>
+	
+	<!-- updateApproveDocument : 문서 승인 -->
+	<update id="updateApproveDocument" parameterType="Integer">
+		UPDATE document_approvers da INNER JOIN document d ON d.doc_no = da.doc_no
+		<set>
+			<if test="initApproverNo != null">
+				da.init_approval_status = 'A',
+            	da.init_approval_datetime = NOW()
+			</if>
+			<if test="midApproverNo != null">
+				da.mid_approval_status = 'A',
+            	da.mid_approval_datetime = NOW()
+			</if>
+			<if test="finalApproverNo != null">
+				da.final_approval_status = 'A',
+            	da.final_approval_datetime = NOW(),
+            	d.approval_status = 'A'
+			</if>
+		</set>
+		WHERE doc_approvers_no = #{docApproversNo}
+	</update>
+	
+	<!-- updateRejectDocument : 문서 반려 -->
+	<update id="updateRejectDocument" parameterType="com.example.pettopia.vo.DocumentApprovers">
+	    UPDATE document_approvers da 
+	    INNER JOIN document d ON d.doc_no = da.doc_no
+	    <set>
+	        <if test="initApproverNo != null and initRejectReason != null and initRejectReason.trim() != ''">
+	            da.init_approval_status = 'R',
+	            da.init_approval_datetime = NOW(),
+	            da.init_reject_reason = #{initRejectReason},
+	            d.approval_status = 'R'
+	        </if>
+	        <if test="midApproverNo != null and midRejectReason != null and midRejectReason.trim() != ''">
+	            da.mid_approval_status = 'R',
+	            da.mid_approval_datetime = NOW(),
+	            da.mid_reject_reason = #{midRejectReason},
+	            d.approval_status = 'R'
+	        </if>
+	        <if test="finalApproverNo != null and finalRejectReason != null and finalRejectReason.trim() != ''">
+	            da.final_approval_status = 'R',
+	            da.final_approval_datetime = NOW(),
+	            da.final_reject_reason = #{finalRejectReason},
+	            d.approval_status = 'R'
+	        </if>
+	    </set>
+	    WHERE da.doc_approvers_no = #{docApproversNo}
+	</update>
 	
 	
 	

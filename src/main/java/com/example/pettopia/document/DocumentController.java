@@ -15,11 +15,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.pettopia.documentfile.DocumentFileService;
 import com.example.pettopia.dto.EmpUserDetails;
+import com.example.pettopia.employeefile.EmployeeFileService;
 import com.example.pettopia.util.Page;
 import com.example.pettopia.util.TeamColor;
 import com.example.pettopia.vo.Document;
 import com.example.pettopia.vo.DocumentApprovers;
 import com.example.pettopia.vo.DocumentFile;
+import com.example.pettopia.vo.EmployeeFile;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +32,7 @@ public class DocumentController {
 	
 	@Autowired DocumentService documentService;
 	@Autowired DocumentFileService documentFileService;
+	@Autowired EmployeeFileService employeeFileService;
 	
 	// addDocument Form
 	@GetMapping("/document/addDocument")
@@ -57,22 +60,26 @@ public class DocumentController {
 		
 		log.debug(TeamColor.KDH + "document : " + document.toString() + TeamColor.RESET);
 		
-		if(documentFile.getDocumentFile() != null) {
-			log.debug(TeamColor.KDH + "documentFile.getDocumentFile().size() : " + documentFile.getDocumentFile().size() + TeamColor.RESET); // debug
-		}
-		
-		List<MultipartFile> documentFileList = documentFile.getDocumentFile();
-		log.debug(TeamColor.KDH + documentFileList.get(0).getSize()); // 파일 사이즈
-		
-		// 상품정보만 입력하고 File은 첨부 안했을 때
-		if(documentFileList == null || documentFileList.isEmpty()) {
-			String path = null;
-			documentService.addDocument(document, documentApprovers, documentFile, path);
-			return "redirect:/document/documentList";
-		}
-		
-		String path = session.getServletContext().getRealPath("/documentFile/");
-		documentService.addDocument(document, documentApprovers, documentFile, path);
+		// documentFile이 null인지 체크
+	    if (documentFile != null && documentFile.getDocumentFile() != null) {
+	        List<MultipartFile> documentFileList = documentFile.getDocumentFile();
+	        log.debug(TeamColor.KDH + "documentFileList.size() : " + documentFileList.size() + TeamColor.RESET); // 파일 사이즈
+	        
+	        // 상품정보만 입력하고 파일이 첨부되지 않은 경우
+	        if (documentFileList.isEmpty()) {
+	            String path = null;
+	            documentService.addDocument(document, documentApprovers, documentFile, path);
+	            return "redirect:/document/documentList";
+	        }
+
+	        // 파일이 첨부된 경우
+	        String path = session.getServletContext().getRealPath("/documentFile/");
+	        documentService.addDocument(document, documentApprovers, documentFile, path);
+	    } else {
+	        // 파일이 첨부되지 않은 경우
+	        String path = null;
+	        documentService.addDocument(document, documentApprovers, documentFile, path);
+	    }
 		
 		return "redirect:/document/documentList";
 	}
@@ -284,13 +291,21 @@ public class DocumentController {
 	
 	// documentOne Form
 	@GetMapping("/document/documentOne")
-	public String getDocumentOne(Model model, @RequestParam Integer docNo, @RequestParam String docType) {
+	public String getDocumentOne(Model model, Authentication authentication, @RequestParam Integer docNo, @RequestParam String docType) {
+		
+		EmpUserDetails empUserDetails = (EmpUserDetails)authentication.getPrincipal();
+		String empNo = empUserDetails.getUsername();
+		
+		model.addAttribute("empNo", empNo);
 		
 		Map<String, Object> documentOne = documentService.getDocumentOne(docNo);
 		log.debug(TeamColor.KDH + "documentOne: " + documentOne.toString() + TeamColor.RESET);
 		
 		List<DocumentFile> documentFile = documentFileService.getDocumentFileList(docNo);
 		
+		EmployeeFile writerSignFile =  employeeFileService.getEmployeeSignFile(empNo);
+		
+		model.addAttribute("writerSignFile", writerSignFile);
 		model.addAttribute("documentFile", documentFile);
 		model.addAttribute("documentOne", documentOne);
 		
@@ -307,6 +322,33 @@ public class DocumentController {
 		}
 		
 		return "document/documentList";
+	}
+	
+	// documentOne Form → 문서 승인 action
+	@GetMapping("/document/approveDocument") 
+	public String approveDocument(Model model, @RequestParam Integer docNo, @RequestParam String docType, @RequestParam Integer docApproversNo, 
+											   @RequestParam(required = false) Integer initApproverNo,
+											   @RequestParam(required = false) Integer midApproverNo,
+											   @RequestParam(required = false) Integer finalApproverNo) {
+		
+		documentService.approveDocument(docApproversNo, initApproverNo, midApproverNo, finalApproverNo);
+		
+		return "redirect:/document/documentOne?docNo=" + docNo + "&docType=" + docType;
+	}
+	
+	// documentOne Form  → 문서 반려 action
+	@GetMapping("/document/rejectDocument") 
+	public String rejectDocument(Model model, @RequestParam Integer docNo, @RequestParam String docType, @RequestParam Integer docApproversNo, 
+											  @RequestParam(required = false) Integer initApproverNo,
+											  @RequestParam(required = false) Integer midApproverNo,
+											  @RequestParam(required = false) Integer finalApproverNo,
+											  @RequestParam(required = false) String initRejectReason,
+											  @RequestParam(required = false) String midRejectReason,
+											  @RequestParam(required = false) String finalRejectReason) {
+
+		documentService.rejectDocument(docApproversNo, initApproverNo, midApproverNo, finalApproverNo, initRejectReason, midRejectReason, finalRejectReason);
+		
+		return "redirect:/document/documentOne?docNo=" + docNo + "&docType=" + docType;
 	}
 
 	

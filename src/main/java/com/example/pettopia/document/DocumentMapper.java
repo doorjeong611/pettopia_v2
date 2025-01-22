@@ -55,6 +55,12 @@ public interface DocumentMapper {
 	// documentOne → 문서 상세보기
 	Map<String, Object> selectDocumentOne(Integer docNo);
 	
+	// documentOne → 문서 승인
+	Integer updateApproveDocument(Integer docApproversNo, Integer initApproverNo, Integer midApproverNo, Integer finalApproverNo);
+	
+	// documentOne → 문서 반려
+	Integer updateRejectDocument(Integer docApproversNo, Integer initApproverNo, Integer midApproverNo, Integer finalApproverNo, String initRejectReason, String midRejectReason, String finalRejectReason);
+	
 	
 
 }

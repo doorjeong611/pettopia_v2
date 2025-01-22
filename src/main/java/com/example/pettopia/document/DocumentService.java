@@ -220,5 +220,15 @@ public class DocumentService {
 		return documentMapper.selectDocumentOne(docNo);
 	}
 	
+	// documentOne → 문서 승인
+	public Integer approveDocument(Integer docApproversNo, Integer initApproverNo, Integer midApproverNo, Integer finalApproverNo) {
+		return documentMapper.updateApproveDocument(docApproversNo, initApproverNo, midApproverNo, finalApproverNo);
+	}
+	
+	// documentOne → 문서 승인
+	public Integer rejectDocument(Integer docApproversNo, Integer initApproverNo, Integer midApproverNo, Integer finalApproverNo, String initRejectReason, String midRejectReason, String finalRejectReason) {
+		return documentMapper.updateRejectDocument(docApproversNo, initApproverNo, midApproverNo, finalApproverNo, initRejectReason, midRejectReason, finalRejectReason);
+	}
+	
 
 }
