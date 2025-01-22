@@ -27,4 +27,10 @@ public interface AttendanceMapper {
 	
 	// 오자윤 : /employee/attendanceOn 근태 : 퇴근
 	Integer insertAttendanceOff(Attendance attendance);
+	
+	
+	// /employee/employeeOne : 본인 출,퇴근(근태) 조회
+	List<Attendance> selectMyAttendanceList(Map<String, Object> paramMap);
+	
+	
 }

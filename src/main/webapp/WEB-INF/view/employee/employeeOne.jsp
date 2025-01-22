@@ -26,7 +26,14 @@
     <!-- Jquery -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="${pageContext.request.contextPath}/assets/js/signature_pad/signature_pad.min.js"></script>
-    
+    <script src="${pageContext.request.contextPath}/assets/libs/gridjs/gridjs.production.min.js"></script><!-- gridjs는 jquery 아래에 위치해야함! -->
+
+
+<style>
+    .gridjs-summary {
+        display: none;
+    }
+</style>    
     
 </head>
 
@@ -173,6 +180,173 @@
 				    </div>
 				  </div>
 				</div>
+				
+				<div>
+					<h5 class="text-16"> 근태 기록 </h5>
+				</div>
+				
+				<!-- 나의 근태 기록 -->
+				<!-- gridjs 출력 -->
+				<div class="xl:col-span-4">
+				            <div class="flex gap-2">
+				                <select name="attendanceStatus" id="attendanceSelect" class="form-input border-slate-200 dark:border-zink-500">
+				                    <option value="">전체</option>
+				                    <option value="P">출근</option>
+				                    <option value="L">지각</option>
+				                    <option value="E">조퇴</option>
+				                    <option value="A">결근</option>
+				                    <option value="V">연차</option>
+				                    <option value="H">반차</option>
+				                </select>
+				            </div>
+				        </div>
+                <div id="myAttendanceTable"></div>
+				<script type="text/javascript">
+				/* gridjs 시작 */
+				// 전역 변수로 선언
+				let gridInstance = null; // 초기값 null
+				let attendanceStatus = 'null'; // 처음은 null -> 전체 조회
+				
+				$(document).ready(function () {
+				    // 초기 선택된 값 가져오기
+				    attendanceStatus = $('#attendanceSelect').val() || 'null'; // 기본 값 설정
+				
+				    console.log('초기 선택 attendanceStatus:', attendanceStatus);
+				
+				    // 데이터 조회 및 테이블 렌더링
+				    fetchAttendanceStatusData();
+				
+				    // select 값 변경 이벤트 핸들러 추가
+				    $('#attendanceSelect').on('change', function () {
+				        attendanceStatus = $(this).val() || 'null'; // 선택된 값 업데이트
+				        console.log('선택된 attendanceStatus:', attendanceStatus);
+				
+				        // 데이터 다시 가져오기 및 테이블 업데이트
+				        fetchAttendanceStatusData();
+				    });
+				});
+				
+				// 데이터를 가져오는 함수
+				function fetchAttendanceStatusData() {
+				    var container = $('#myAttendanceTable'); // jQuery로 컨테이너 참조
+				
+				    console.log('데이터 요청 attendanceStatus:', attendanceStatus);
+				
+				    // 기존 그리드 인스턴스를 파괴
+				    if (gridInstance) {
+				        gridInstance.destroy();
+				    }
+				
+				    // 기존 컨테이너 내용을 비움
+				    container.empty();
+				
+				    // 데이터 요청
+				    fetch('/pettopia/rest/myAttendanceList/' + attendanceStatus)
+				        .then(function (response) {
+				            return response.json();
+				        })
+				        .then(function (data) {
+				            console.log('가져온 데이터:', data);
+				
+				            // 데이터가 없을 경우 "조회 결과 없음" 메시지 표시
+				            if (!data || data.length === 0) {
+				                container.html(
+				                    '<div style="display: flex; justify-content: center; align-items: center; height: 200px; font-size: 18px; color: #6c757d;">' +
+				                    '조회 결과 없음' +
+				                    '</div>'
+				                );
+				                return;
+				            }
+				
+				            // 필터링 (attendanceStatus)
+				            var filteredData = data.filter(function (atte) {
+				                return attendanceStatus === 'null' || atte.attendanceStatus === attendanceStatus;
+				                
+				            });
+				            
+				            
+					        // 데이터를 수정하여
+				            const modifiedData = filteredData.map(atte => {
+				            	
+				                let statusText = "";
+				                switch (atte.attendanceStatus) {
+				                    case "P":
+				                        statusText = "출근";
+				                        break;
+				                    case "L":
+				                        statusText = "지각";
+				                        break;
+				                    case "E":
+				                        statusText = "조퇴";
+				                        break;
+				                    case "A":
+				                        statusText = "결근";
+				                        break;
+				                    case "V":
+				                        statusText = "연차";
+				                        break;
+				                    case "H":
+				                        statusText = "반차";
+				                        break;
+				                    default:
+				                        statusText = "알 수 없음";
+				                }
+				
+				                return {
+				                    ...atte,
+				                    attendanceDate : atte.attendanceDate,
+				                    attendanceStatus : statusText,
+				                    clockInTime : atte.clockInTime,
+				                   	clockOutTime : atte.clockOutTime,
+				
+				                };
+					          });
+				            
+				            
+				
+				            console.log("필터링된 데이터:", filteredData);
+				
+				            // Grid.js에 데이터를 전달
+				            gridInstance = new gridjs.Grid({
+				                columns: ["날짜", "상태", "출근 시각", "퇴근 시각"],
+				                data: modifiedData.map(function (atte) {
+				                    return [
+				                        atte.attendanceDate,
+				                        atte.attendanceStatus,
+				                        atte.clockInTime,
+				                        atte.clockOutTime
+				                    ];
+				                }),
+				                pagination: {
+				                    limit: 7 // 페이지 당 항목 수
+				                },
+				                style: {
+				                    th: {
+				                        background: '#f8f9fa',
+				                        color: '#495057'
+				                    },
+				                    td: {
+				                        padding: '0.75rem',
+				                        borderBottom: '1px solid #e0e0e0'
+				                    }
+				                }
+				            }).render(container[0]);
+				
+				            console.log('그리드 렌더링 완료');
+				        })
+				        .catch(function (error) {
+				            console.error('데이터 가져오기 실패:', error);
+				            container.html(
+				                '<div style="display: flex; justify-content: center; align-items: center; height: 200px; font-size: 18px; color: #dc3545;">' +
+				                '데이터 가져오기 실패' +
+				                '</div>'
+				            );
+				        });
+				}
+				/* gridjs 끝 */
+				</script>
+				
+				<!-- 끝 : gridjs -->
 				<!-- 끝 : Main content -->
 				
 				
@@ -253,6 +427,7 @@
 
 <!-- App js -->
 <script src="${pageContext.request.contextPath}/assets/js/app.js"></script> 
+
 
 <script type="text/javascript">
 $(document).ready(function () {
@@ -458,10 +633,12 @@ $.ajax({
     });
 
 
+    
+    
 });
 
-</script>
 
+</script>
 
 
 

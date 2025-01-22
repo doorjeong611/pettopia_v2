@@ -42,4 +42,16 @@ public class AttendanceSerivce {
 	public Integer attendanceOff(Attendance attendance) {
 		return attendanceMapper.insertAttendanceOff(attendance);
 	}
+	
+	
+	// /employee/employeeOne : 본인 출,퇴근(근태) 조회
+	public List<Attendance> getMyAttendanceList(Map<String, Object> paramMap){
+		return attendanceMapper.selectMyAttendanceList(paramMap);
+	}
+	
+	
+	
+	
+	
+	
 }
