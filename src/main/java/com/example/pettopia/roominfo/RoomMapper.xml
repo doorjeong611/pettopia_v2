@@ -71,6 +71,7 @@
         room_img rimg
     ON 
         ri.room_no = rimg.room_no
+    				
 </select>
 <!-- 객실 등록 -->
  <insert id="insertRoomInfo" parameterType="com.example.pettopia.vo.RoomInfo">
@@ -99,7 +100,6 @@
 				update_datetime updateDatetime
 		FROM
 				room_info
-		
 	</select>
 	
 	<!-- 전체 객실 이미지 조회 -->
