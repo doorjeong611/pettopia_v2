@@ -8,12 +8,24 @@
 				, division_name divisionName
 		FROM division
 	</select>
-	
-	<!-- 게시판 카운트 쿼리 -->
-	<select id="selectBoardCount">
-		SELECT count(*)
-		FROM board
-	</select>
+<select id="selectBoardCount" parameterType="Map" resultType="Integer">
+    SELECT count(*)
+    FROM board
+    <where>
+        <!-- 카테고리가 'ALL'이 아니면 board_Header로 필터링 -->
+        <if test="boardCategory != 'ALL'">
+            AND board_Header = #{boardCategory}
+        </if>
+
+        <!-- 검색어가 주어지면, board_title과 board_content에서 대소문자 구분 없이 검색 -->
+        <if test="searchBoard != null and searchBoard != ''">
+            AND (
+                LOWER(board_title) LIKE CONCAT('%', LOWER(#{searchBoard}), '%')
+                OR LOWER(board_content) LIKE CONCAT('%', LOWER(#{searchBoard}), '%')
+            )
+        </if>
+    </where>
+</select>
 	
 	<!-- 게시글 카테고리 셀렉트 쿼리 /board/boardList 작업자 : 이준호 -->
 	<select id="selectHeaderListByBoard" parameterType="String" resultType="map">

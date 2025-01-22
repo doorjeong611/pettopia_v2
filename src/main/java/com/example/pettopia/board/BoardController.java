@@ -161,7 +161,12 @@ public class BoardController {
 	                        @RequestParam(value = "category", defaultValue = "ALL") String boardCategory,
 	                        @RequestParam(required = false) Integer boardNo,
 	                        @RequestParam(required = false) String searchBoard) {
-	  
+		 // searchBoard 값이 존재하면 currentPage를 1로 설정
+	    if (searchBoard != null && !searchBoard.isEmpty()) {
+	        currentPage = 1;  // 검색을 했으면 currentPage를 1로 설정
+	    }
+		
+
 		
 		// 게시판 목록과 페이징 정보 조회
 	    Map<String, Object> result = boardService.getBoardList(currentPage, rowPerPage, boardCategory, new HashMap<>(), searchBoard);
@@ -169,7 +174,8 @@ public class BoardController {
 	    // 페이징 정보 추출
 	    Integer startPagingNum = (Integer) result.get("startPagingNum");
 	    Integer endPagingNum = (Integer) result.get("endPagingNum");
-	    int lastPage = (int) result.get("lastPage");
+	    Integer lastPage = boardService.getLastPage(rowPerPage, boardCategory, searchBoard);
+	    
 	    @SuppressWarnings("unchecked")
 		List<Map<String, Object>> boardList = (List<Map<String, Object>>) result.get("boardList");
 	    
@@ -178,6 +184,7 @@ public class BoardController {
 	    String empNo = empUserDetails.getUsername();
 
 	    // 모델에 데이터 추가
+	    model.addAttribute("searchBoard",searchBoard);
 	    model.addAttribute("currentPage", currentPage);
 	    model.addAttribute("lastPage", lastPage);
 	    model.addAttribute("empNo", empNo);
@@ -187,12 +194,7 @@ public class BoardController {
 	    model.addAttribute("startPagingNum", startPagingNum);
 	    model.addAttribute("endPagingNum", endPagingNum);  // endPagingNum 추가
 	    
-		/* 수정 욧함
-		 * if (searchBoard == null || searchBoard.trim().isEmpty()) {
-		 * model.addAttribute("alertMessage", "검색어를 입력해 주세요."); // 리다이렉트 할 URL로 설정
-		 * return "board/boardList"; // 리다이렉트 (필요에 따라 URL 변경 가능) }
-		 */
-		
+	
 
 	    return "board/boardList";  // 게시판 목록 페이지 반환
 	}
