@@ -47,7 +47,7 @@ public class EmployeeFileRest {
 	
 	// employeeOne : 서명 등록 (이미 존재하는 서명은 삭제 -> 새로운 서명 등록)
 	@PostMapping("/rest/addEmployeeSignFile")
-	public ResponseEntity<String> addEmployeeSignFile(HttpSession session, @RequestParam String sign, @RequestParam MultipartFile empSignFile, Authentication auth) {
+	public ResponseEntity<String> addEmployeeSignFile(HttpSession session, @RequestParam(required = false) String sign, @RequestParam(required = false) MultipartFile empSignFile, Authentication auth) {
 		log.debug(TeamColor.KMJ+" EmployeeFileRest : Post addEmployeeSignFile()" + TeamColor.RESET);
 		
 		String path = session.getServletContext().getRealPath("/employeeFile/");
@@ -56,8 +56,29 @@ public class EmployeeFileRest {
 		
 		log.debug(TeamColor.KMJ+" empNo : " + empNo + TeamColor.RESET);
 		
+		int row = 0;
 		
-//		int row = employeeFileService.
+		// 넘어온 값이 signPad인지 확인
+		if(sign != null) {
+			log.debug(TeamColor.KMJ+" sign : " + sign + TeamColor.RESET);
+			log.debug(TeamColor.KMJ+" sign " + TeamColor.RESET);
+			
+//			row = employeeFileService.addEmpSignFileSignPad(sign, path, empNo);
+			
+			
+		}
+		// 넘어온 값이 첨부파일인지 확인
+		if(empSignFile != null && !empSignFile.isEmpty()){
+			log.debug(TeamColor.KMJ+" empSignFile : " + empSignFile + TeamColor.RESET);
+			log.debug(TeamColor.KMJ+" 첨부 파일 : " +TeamColor.RESET);
+			
+//			row = employeeFileService.addEmpSignFileSignImage(empSignFile, path, empNo);
+			
+		}
+		
+		
+		
+		
 		
 		return  ResponseEntity.ok("등록 성공");
 	}
