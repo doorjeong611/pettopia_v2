@@ -211,7 +211,7 @@
 							    
 							</div>
 							<div class="flex items-center justify-between p-4 mt-auto 0 dark:border-zink-500 ml-auto">
-								<button id="addEmpSignBtn"  type="button" class="text-white btn bg-custom-500 hover:bg-custom-600">등록</button>
+								<button id="addEmpSignBtn"  type="button" class="text-white btn bg-custom-500 hover:bg-custom-600 addFileBtn">등록</button>
 							</div>
 						</div>
 					</div> 
@@ -246,10 +246,10 @@
 <%-- <script src="${pageContext.request.contextPath}/assets/libs/apexcharts/apexcharts.min.js"></script> --%>
 
 <!--dashboard ecommerce init js-->
-<%-- <script src="${pageContext.request.contextPath}/assets/js/pages/dashboards-ecommerce.init.js"></script> --%>
+<script src="${pageContext.request.contextPath}/assets/js/pages/dashboards-ecommerce.init.js"></script>
 
 <!-- App js -->
-<%-- <script src="${pageContext.request.contextPath}/assets/js/app.js"></script> --%>
+<script src="${pageContext.request.contextPath}/assets/js/app.js"></script> 
 
 <script type="text/javascript">
 $(document).ready(function () {
@@ -265,7 +265,8 @@ const addEmpSignBtn = $("#addEmpSignBtn");
 $("#signBtn").click(function() {
    
 	// 모달 배경과 모달 창을 보이게 하기
-	signModalContainer.removeClass("hidden");   
+	signModalContainer.removeClass("hidden");  
+	 $('#empSignFile').val('');  // 파일 선택 초기화
     
 });
 
@@ -275,11 +276,11 @@ function closeSignModal() {
     $('body').removeClass('overflow-hidden');
     
     // 모달 안의 파일 입력 초기화
-    $('#signModalContainer input[type="file"]').val('');
+    //$('#signModalContainer input[type="file"]').val('');
     
     // sign_pad 초기화
     $('#pad').addClass("hidden");
-    signaturePad.clear();
+    //signaturePad.clear();
 
 }
 
@@ -361,6 +362,7 @@ $.ajax({
     	
     });	
     	
+
     	
     /* 서명 작성 시 이미 첨부된 파일이 존재할 경우 */  	
    	signPadBtn.on('click', function () {
@@ -390,72 +392,50 @@ $.ajax({
         
     });
 
+    // 파일 첨부 확인
+    $('#empSignFile').on('change', function () {
+        const fileInput = $('#empSignFile')[0];
+        console.log('첨부된 파일:', fileInput.files[0]);
+    });
+    
+    
+    
 
     /* 서명 등록 버튼 */
     $('#addEmpSignBtn').on('click', function () {
-    	 // 첨부된 파일 가져오기
-        const fileInput = $('#empSignFile')[0]; 	// 파일 입력 요소
-        console.log('첨부된 파일 목록:', fileInput.files); 
-        const file = fileInput.files[0]; 			// 첨부된 첫 번째 파일
-		console.log('첨부 파일 : ' + fileInput);
-		console.log('file : ' + file);
+    	
+    	const fileInput = $('#empSignFile')[0]; 	// 파일 입력 요소
 
-		
-		// 첨부 파일이 있는지 확인
-		if (file) {
-		    console.log('첨부 파일 : ', file);
-		} else {
-		    console.log('첨부 파일이 선택되지 않았습니다.');
-		}
-        
-        // signpad 값 가져오기
-        const signDataURL = signaturePad.toDataURL(); // 서명을 Base64로 저장
-
-        
-		// 첨부 파일이 있는지 확인
-		if (signDataURL) {
-		    console.log('싸인 : ', signDataURL);
-		} else {
-		    console.log('싸인 없음');
-		}
-        
-        // 파일을 전달하기 위해서 FormData 객체 생성
-        const formData = new FormData();
-
-        // 첨부 파일만 전달
-        if (file) {
-            formData.append('empSignFile', file); 	// 파일 추가
+    	// sign이 없고 첨부된 파일이 있다면
+    	if(fileInput.files.length > 0){
+        	const file = fileInput.files[0]; 			// 첨부된 첫 번째 파일
+    		
+    		const formData = new FormData();			// 파일 전달을 위한 formData
+    		formData.append('empSignFile', file); 		// 파일 추가
+    		console.log('첨부 파일 : ', file);
             console.log('첨부 파일이 formData에 추가되었습니다.');
-        }
-
-        // signpad만 전달
-        if (signDataURL && !file) { 				// 파일이 없고 서명이 있을 때
-            formData.append('sign', signDataURL); 	// 서명 데이터 추가
-            console.log('첨부 파일이 formData에 추가되었습니다.');
-        }
-
-        // 파일도 signpad도 없으면 alert
-        if (!file && !signDataURL) {
-            alert('서명은 반드시 필요합니다.');
-            return;
-        }
-
-        // AJAX 요청
-        $.ajax({
-            url: '/pettopia/rest/addEmployeeSignFile',
-            method: 'POST',
-            data: formData,
-            contentType: false, 					// 자동으로 content-type 설정하지 않도록
-            processData: false, 					// 데이터 자동 변환 방지
-            success: function(result) {
-                alert('서명 등록 성공'); 				// 성공 메시지
-                signaturePad.clear(); 				// 서명 초기화
-                $('#empSignFile').val(''); 			// 파일 첨부 초기화
-            },
-            error: function() {
-                alert('서명 등록에 실패했습니다.');
-            }
-        });
+    		
+    		// ajax 요청
+            $.ajax({
+                url: '/pettopia/rest/addEmployeeSignFile',
+                method: 'POST',
+                data: formData,
+                contentType: false, 					// 자동으로 content-type 설정하지 않도록
+                processData: false, 					// 데이터 자동 변환 방지
+                success: function(result) {
+                    alert('서명 등록 성공'); 	
+                    
+                },
+                error: function() {
+                    alert('서명 등록 실패');
+                }
+            });
+    		
+    		
+    	}
+    
+    	
+    	
     });
 
 
