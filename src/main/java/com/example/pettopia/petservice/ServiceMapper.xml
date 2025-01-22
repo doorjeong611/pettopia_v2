@@ -27,5 +27,11 @@
 				service_desc serviceDesc
 		FROM 
 				pet_service
+		LIMIT #{pageSize} OFFSET #{offset}
 	</select>
+	
+	<!-- 총 서비스 갯수 조회 -->
+    <select id="countServiceList" resultType="int">
+        SELECT COUNT(*) FROM pet_service
+    </select>
 </mapper>

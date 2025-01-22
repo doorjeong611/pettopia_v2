@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.example.pettopia.util.TeamColor;
 import com.example.pettopia.vo.PetService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -55,26 +56,25 @@ public class ServiceController {
         }
         return "redirect:/service/getServiceList"; // 등록 페이지로 리다이렉트
     }
-    
 
-    /**
-     * JSON 형식으로 PetService 데이터 반환
-     */
-//    @GetMapping("/api/pet-services")
-//    public List<PetService> getAllPetServices() {
-//        List<PetService> serviceList = serviceService.getAllServices();
-//        log.debug("Fetched serviceList: {}", serviceList); // 디버깅 로그
-//        return serviceList;
-//    }
-
-    /**
-     * PetService View 연결 및 데이터 전달
-     */
+    // 펫 서비스 조회
     @GetMapping("/service/getServiceList")
-    public String getServiceList(Model model) {
-        List<PetService> serviceList = serviceService.getAllServices();
-        log.debug("Adding serviceList to model: {}", serviceList); // 디버깅 로그
+    public String getServiceList(Model model,
+    		@RequestParam(defaultValue = "1") int currentPage,
+            @RequestParam(defaultValue = "10") int pageSize) {
+    	
+        List<PetService> serviceList = serviceService.getAllServices(pageSize, currentPage);
+        int totalRecords = serviceService.countServiceList(); // 총 고객 수 조회
+        int totalPages = (int) Math.ceil((double) totalRecords / pageSize);
+        log.debug(TeamColor.WJ + "총 서비스 갯수 ========> " + totalRecords + TeamColor.RESET);
+        
+        
         model.addAttribute("serviceList", serviceList);
+        model.addAttribute("currentPage", currentPage); // 현재 페이지 번호
+        model.addAttribute("totalPages", totalPages); // 총 페이지 수
+        log.debug(TeamColor.WJ + "총 페이지 갯수 ========> " + totalPages + TeamColor.RESET);
+        model.addAttribute("totalRecords", totalRecords); // 총 고객 수
+        model.addAttribute("pageSize", pageSize); // 페이지 크기
         return "service/petService"; // View 경로
     }
 }
