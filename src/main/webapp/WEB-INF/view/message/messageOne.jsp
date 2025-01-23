@@ -65,7 +65,7 @@
 							<div class="mt-4">
 							<textarea class="w-full p-2 border border-slate-300 rounded focus:outline-none focus:ring focus:ring-slate-200 dark:bg-zink-700 dark:border-zink-600 dark:text-zink-200" rows="25" readonly>${selectedMessage.messageContent}</textarea>
 							 <div class="flex justify-end gap-2 mt-5">
-								<a href="${pageContext.request.contextPath}/message/messageNote" class="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20">
+								<a href="${pageContext.request.contextPath}/message/messageNote?recipientName=${selectedMessage.senderName}&recipientEmpNo=${selectedMessage.recipientEmpNo}" class="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20">
 								    <i class="ri-mail-send-line inline-block mr-1" style="font-size: 1.05rem;"></i> <!-- 크기 조정 -->
 								    <span class="align-middle">답장하기</span>
 								</a>

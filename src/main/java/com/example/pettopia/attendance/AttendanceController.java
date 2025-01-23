@@ -141,6 +141,7 @@ public class AttendanceController {
     										@RequestParam(required = false) String attendanceDate,
     										@RequestParam(defaultValue = "1") int page, // 기본 페이지
     							            @RequestParam(defaultValue = "10") int size, // 페이지 단위
+    							            @RequestParam(required = false) String empName,
     										Model model, Attendance attendance) {
     	
         // 직원 근태 상태 카운트 조회
@@ -155,6 +156,7 @@ public class AttendanceController {
         Map<String, Object> params = new HashMap<>();
         params.put("empNo", empNo);
         params.put("attendanceDate", attendanceDate);
+        params.put("empName", empName);
         
         // 전체 개수 
         int totalRecords = attendanceService.countAttendance(params);
@@ -178,6 +180,7 @@ public class AttendanceController {
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("totalResults", totalRecords);
+        model.addAttribute("empName", empName);
 
         return "employee/attendanceList";
     }

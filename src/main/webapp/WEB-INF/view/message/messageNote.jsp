@@ -117,15 +117,15 @@
                 
                 <div class="card">
                     <div class="card-body">
-							<form method="POST" action="${pageContext.request.contextPath}/message/sendMessage">
+							<form method="POST" id="messageForm" action="${pageContext.request.contextPath}/message/sendMessage">
 							<div class="mb-4">
 							    <span class="font-semibold">받는사람 :</span>
-							    <input id="recipientInput" type="text" name="recipient" class="text-slate-500 border-b-0 focus:outline-none focus:ring focus:ring-slate-200 dark:bg-zink-700 dark:border-zink-600 dark:text-zink-200 text-center" placeholder="직원을 검색하세요." readonly/>
+							    <input id="recipientInput" type="text" name="recipient" value="${recipientName != null ? recipientName : ''}"class="text-slate-500 border-b-0 focus:outline-none focus:ring focus:ring-slate-200 dark:bg-zink-700 dark:border-zink-600 dark:text-zink-200 text-center" placeholder="직원을 검색하세요." readonly/>
 							    <button type="button" id="openModalBtn" class="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20">
 							    	직원검색
 							    </button>
 							 <!-- message 전송을 위한 hidden값 -->
-						  	<input type="hidden" id="recipientEmpNo" name="emp_No" />  
+						  	<input type="hidden" id="recipientEmpNo" value="${recipientEmpNo != null ? recipientEmpNo : ''}" name="emp_No" />  
 						  	
 							</div>
 							<div class="mb-2 pb-2">
@@ -215,15 +215,6 @@
 				
 			    </div>
 			    
-			    <!-- 메시지 전송 모달창 -->
-				<div id="messageSentModal" class="modal hidden">
-				    <div class="modal-content">
-				        <h2>쪽지발송</h2>
-				        <p>쪽지 전송이 완료 되었습니다.</p>
-				        <button id="closeModalBtn">닫기</button>
-				    </div>
-				</div>
-
 			</div>
             <!-- container-fluid -->
         </div>
@@ -454,11 +445,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
         form.addEventListener('submit', function(event) {
             event.preventDefault();
-            modal.classList.remove('hidden');
-            document.getElementById("recipientInput").value = '';
-            document.getElementById("recipientEmpNo").value = '';
-            document.getElementById("messageTitle").value = '';
-            document.getElementById("messageContent").value = '';
+            
+            const userConfirmation = confirm("쪽지를 전송하시겠습니까?");
+            
+            if (userConfirmation) {
+            	
+          		form.submit();
+          		
+          		alert("쪽지가 성공적으로 전송 되었습니다.")
+          		
+	            modal.classList.remove('hidden');
+	            document.getElementById("recipientInput").value = '';
+	            document.getElementById("recipientEmpNo").value = '';
+	            document.getElementById("messageTitle").value = '';
+	            document.getElementById("messageContent").value = '';
+            }
         });
 
         closeModalBtn.addEventListener('click', function() {
