@@ -135,6 +135,8 @@ public class RoomController {
 								) {
 			// 전체 객실 리스트 가져오기
 		    List<Map<String, Object>> roomListImg = roomService.getRoomListWithImages(); 
+		    log.debug(TeamColor.WJ + "roomListImg =======> " + roomListImg + TeamColor.RESET);
+		    
 		    // 총 객실 수
 		    int totalRecords = roomListImg.size();
 

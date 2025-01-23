@@ -77,12 +77,14 @@
                                         </th>
                                         <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right">No</th>
                                         <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right">룸 번호</th>
-                                        <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right">예약자</th>
+                                        <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right">예약자번호</th>
+                                        <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right">예약자이름</th>
                                         <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right">가격</th>
-                                        <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right">예약자</th>
                                         <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right">상태</th>
                                         <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right">체크인 날짜</th>
                                         <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right">체크아웃 날짜</th>
+                                        <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right">최초 예약 날짜</th>
+                                        <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right">마지막 수정 날짜</th>
                                     </tr>
                                 </thead>
                                  <tbody>
@@ -96,10 +98,11 @@
 		                                        </td>
 		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${r.roomNo}</td>
 		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${r.customerNo}</td>
+		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${r.customerName}</td>
 		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${r.pricePerNight}</td>
+		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${r.rsvStatus}</td>
 		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${r.checkInDatetime}</td>
 		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${r.checkOutDatetime}</td>
-		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${r.rsvStatus}</td>
 		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${r.createDatetime}</td>
 		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${r.updateDatetime}</td>
 		                                        
