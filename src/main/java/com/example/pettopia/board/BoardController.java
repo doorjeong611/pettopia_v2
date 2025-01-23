@@ -13,15 +13,19 @@ import org.springframework.ui.Model;
 import com.example.pettopia.dto.EmpUserDetails;
 import com.example.pettopia.util.TeamColor;
 import com.example.pettopia.vo.Board;
+import com.example.pettopia.vo.BoardFile;
 import com.example.pettopia.vo.Division;
 import com.example.pettopia.vo.Employee;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 @Controller
@@ -30,6 +34,7 @@ public class BoardController {
 	@Autowired BoardService boardService;
 	
 	
+
 	@GetMapping("/board/getBoardOne")
 	public String getBoardOne(Model model,
 								Board board,
@@ -71,13 +76,12 @@ public class BoardController {
 	@PostMapping("/board/addBoard")
 	public String addBoard(Model model,
 	        Board board,
+	        HttpSession session,
+	        @RequestParam("boardImg") MultipartFile boardImg,
 	        @RequestParam(value = "category", defaultValue = "ALL") String boardCategory,
 	        @RequestParam(value = "content", defaultValue = "빈 값입니다.") String boardContent,
 	        Authentication auth) {
 	    
-	    // divisionList 조회
-	    List<Division> divisionList = boardService.getDivisionList();
-
 	    // boardCategory를 boardHeader로 설정
 	    board.setBoardHeader(boardCategory);  // boardCategory 값이 boardHeader로 사용됨
 	    
@@ -89,7 +93,12 @@ public class BoardController {
 	    board.setBoardWriterNo(boardWriterNo);
 	    
 	    
-	 
+	    
+	    
+	    String boardImagePath = session.getServletContext().getRealPath("/boardFile/");
+	    boardService.addBoardWithImage(board, boardImg, boardImagePath);
+
+	    
 	    
 	    // boardContent가 제대로 전달되었는지 확인
 	    if (board.getBoardContent() == null || board.getBoardContent().isEmpty()) {

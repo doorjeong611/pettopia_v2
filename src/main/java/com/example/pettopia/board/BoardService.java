@@ -8,6 +8,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.pettopia.boardcomment.CommentMapper;
 import com.example.pettopia.util.Page;
@@ -23,6 +24,14 @@ import lombok.extern.slf4j.Slf4j;
 public class BoardService {
 	@Autowired BoardMapper boardMapper;
 	@Autowired CommentMapper commentMapper;
+	
+	
+// 게시판 이미지 추가
+	
+	public void addBoardWithImage(Board board, MultipartFile boardImg, String boardImagePath) {
+		
+
+	}
 	
 // 부서 번호 카테고리 작업자 : 이준호
 	public List<Division> getDivisionList(){
