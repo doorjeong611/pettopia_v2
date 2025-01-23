@@ -1,5 +1,6 @@
 package com.example.pettopia.message;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -56,21 +57,20 @@ public class MessageService {
 	}
 	
 	// 오자윤 : /message/messageList 쪽지리스트 조횐
-	public List<Map<String, Object>> getMessageList(String empNo, Page page) {
-		
-		// 페이징
-		Integer beginRow = page.getBeginRow();
-		Integer rowPerPage = page.getRowPerPage();
-		
-		// 전체 쪽지 개수 카운트
-	    int totalCount = messageMapper.getMessageCount(empNo);  // Assuming you have this method
+	public List<Map<String, Object>> getMessageList(String empNo, Page page, String searchKeyword) {
+	    Integer beginRow = page.getBeginRow();
+	    Integer rowPerPage = page.getRowPerPage();
 
-	    // 총 페이지 계산
-	    int lastPage = (int) Math.ceil((double) totalCount / rowPerPage);
-	    page.setLastPage(lastPage);
+	    // 파라미터 추가
+	    Map<String, Object> params = new HashMap<>();
+	    params.put("empNo", empNo);
+	    params.put("limit", rowPerPage);
+	    params.put("offset", beginRow);
+	    params.put("searchKeyword", searchKeyword); // 검색어가 없으면 null 전달
 
-		return messageMapper.getMessageList(empNo, rowPerPage, beginRow);
+	    return messageMapper.getMessageList(params);
 	}
+
 	
 	// 오자윤 : /message/messageList 쪽지 휴지통 이동 -->
 	public void moveToBin(List<String> messageNo) { 

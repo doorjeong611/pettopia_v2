@@ -74,11 +74,14 @@
                                         </div>
                                     </div><!--end col-->
                                     <br>
+                                    <form action="${pageContext.request.contextPath}/message/messageBin">
                                     <div class="flex items-center gap-2 2xl:col-span-4 2xl:col-start-9">
                                         <div class="relative grow">
-                                            <input type="text" id="searchResultList" value="" class="ltr:pl-8 rtl:pr-8 search form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="메일 검색" autocomplete="off">
+                                            <input type="text" name="searchKeyword" value="${searchKeyword}" id="searchKeyword" class="ltr:pl-8 rtl:pr-8 search form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="이름 / 제목을 입력하세요.">
+                                             <button type="submit" class="absolute right-0 top-0 h-full px-4 text-slate-500">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="search" class="lucide lucide-search inline-block size-4 absolute ltr:left-2.5 rtl:right-2.5 top-2.5 text-slate-500 dark:text-zink-200 fill-slate-100 dark:fill-zink-600"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
-                                        </div>
+                                            </button>
+                                        </div></form>
                                     </div><!--end col-->
                                 </div><!--end grid-->
                             </div>
@@ -87,14 +90,19 @@
                                     <div>
                                     	<br>
                                         <!-- 테이블 시작 부분 -->
-                                       <form id="messageForm" action="${pageContext.request.contextPath}/message/messageDelete" method="post">
+                                       <form id="messageForm" action="${pageContext.request.contextPath}/message/messageMoveOrRestore" method="post">
                                        <table class="w-full whitespace-nowrap">
 							    		<tr>
 								        	<td style="padding: 10px;">
-									            <span class="text-slate-500 dark:text-zink-200 deleteMessages" style="margin-right: 20px; cursor: pointer;">영구삭제</span>
+										        <button type="submit" id="deleteButton" class="text-slate-500 dark:text-zink-200" style="margin-right: 20px; cursor: pointer;">
+								                    영구삭제
+								                </button>
 									            <span class="text-slate-500 dark:text-zink-200" style="margin-right: 24px;">읽음</span>
-									            <span class="text-slate-500 dark:text-zink-200" style="margin-right: 50px;">보낸사람</span>
-									            <span class="text-slate-500 dark:text-zink-200" style="margin-right: 0px;"></span>
+									            <span class="text-slate-500 dark:text-zink-200" style="margin-right: 0px;">보낸사람</span>
+									            <span class="mx-2 border-l border-slate-300 dark:border-zink-500 h-5" style="margin-right: 10px;"></span> <!-- 흐릿한 선 -->
+									            <button type="submit" id="restoreButton" class="text-slate-500 dark:text-zink-200" style="margin-right: 20px; cursor: pointer;">
+								                    쪽지복원
+								                </button>
 							           	 		<span class="text-slate-500 dark:text-zink-200" style="margin-left: 830px;">날짜</span>
 								        	</td>
 								    	</tr>
@@ -105,7 +113,7 @@
 								            <tr>
 								              <td class="px-3.5 py-2.5 border-y text-slate-500" style="width: 600px;">
 								                <input type="hidden" class="messageNo" value="${message.messageNo}" />
-											    <input style="margin-left: 17px;"  type="checkbox" class="deleteMessage" name="messageNo" value="${message.messageNo}" /> 
+											    <input style="margin-left: 17px;"  type="checkbox" class="deleteMessage" id="deleteMessage" name="messageNo" value="${message.messageNo}" /> 
 											    <span style="margin-left: 44px; display: inline-block;">${message.messageState}</span>
 											    <span style="margin-left: 37px; display: inline-block; width: 300px;">${message.senderName}</span> <!-- 보낸 사람 -->
 											    <a href="${pageContext.request.contextPath}/message/messageOne?messageNo=${message.messageNo}" style="margin-left: -125px; display: inline-block; width: 300px;">${message.messageTitle}</a>
@@ -163,32 +171,69 @@
 
 </body>
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    document.querySelector('.deleteMessages').addEventListener('click', function() {
-        const checkboxes = document.querySelectorAll('input[name="messageNo"]:checked'); // 체크된 체크박스 선택
+const checkboxes = document.querySelectorAll('#deleteMessage');
+const restoreButton = document.querySelector('#restoreButton');
+const allCheckbox = document.querySelector('#checkboxAll');
+const deleteButton = document.querySelector('#deleteButton');
+const messageForm = document.querySelector('#messageForm');
 
-        if (checkboxes.length === 0) {
-            alert('삭제할 쪽지를 선택하세요.'); // 선택된 메시지가 없을 경우 사용자에게 알림
-            return; // 체크된 메시지가 없으면 함수 종료
-        }
+// 전체 체크박스 체크
+allCheckbox.addEventListener('change', function () {
+    checkboxes.forEach(checkbox => {
+        checkbox.checked = allCheckbox.checked;
+    });
+});
 
-        // 확인 대화상자
-        if (confirm('선택한 쪽지를 영구 삭제 하시겠습니까?')) {
-        	 document.getElementById('messageForm').submit(); // 폼 
+// 전체 체크박스 상태 업데이트
+checkboxes.forEach(checkbox => {
+    checkbox.addEventListener('change', function () {
+        // 전체 체크박스 확인
+        if (Array.from(checkboxes).every(checkbox => checkbox.checked)) {
+            allCheckbox.checked = true;
+        } else {
+            allCheckbox.checked = false;
         }
     });
 });
 
-</script>
-
-<script>
-// 전체 체크박스 선택하기.
-function toggleCheckboxes(source) {
-    const checkboxes = document.querySelectorAll('.deleteMessage');
-    checkboxes.forEach(checkbox => {
-        checkbox.checked = source.checked;
-    });
+// 하나라도 체크 됐는지 확인
+function areMessagesSelected() {
+    return document.querySelectorAll('.deleteMessage:checked').length > 0 || allCheckbox.checked;
 }
+
+// Restore 버튼 클릭 시
+restoreButton.addEventListener('click', function (e) {
+    e.preventDefault(); // 제출 방지
+
+    if (!areMessagesSelected()) {
+        alert("복원할 쪽지를 선택하세요.");
+        return;
+    }
+
+    // 복원 전에 alert 창
+    if (confirm("선택한 쪽지를 복원 하시겠습니까?")) {
+        // 선택된 메시지를 복원하기 위한 action 설정
+        messageForm.action = "${pageContext.request.contextPath}/message/messageRestore";
+        messageForm.submit();
+    }
+});
+
+// Delete 버튼 클릭 시
+deleteButton.addEventListener('click', function (e) {
+    e.preventDefault(); // 제출 방지
+
+    if (!areMessagesSelected()) {
+        alert("삭제할 쪽지를 선택하세요.");
+        return;
+    }
+
+    // 삭제 전에 alert 창
+    if (confirm("선택한 쪽지를 영구 삭제 하시겠습니까?")) {
+        // 선택된 메시지를 영구 삭제하기 위한 action 설정
+        messageForm.action = "${pageContext.request.contextPath}/message/messageDelete";
+        messageForm.submit();
+    }
+});
 </script>
 
 </html>

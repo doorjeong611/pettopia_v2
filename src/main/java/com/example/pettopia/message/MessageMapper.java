@@ -42,7 +42,7 @@ public interface MessageMapper {
 	
 	
 	// 오자윤 : /employee/messageList 쪽지리스트
-	List<Map<String, Object>>getMessageList(String empNo, int limit, int offset);
+	List<Map<String, Object>>getMessageList(Map<String, Object> params);
 	
 	// 오자윤 : /employee/messageList 쪽지 휴지통 이동
 	Integer updateMessage(String messageNo);
