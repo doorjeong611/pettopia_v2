@@ -77,19 +77,21 @@
 		
 	}
 	.boardContent .fileContentBox {
-		width: 70%;
+		width: 84%;
 	}
-	
+	.boardContent .fileContentBox input {
+	margin-top: 1%;
+	}
 	.boardContent .fileBtnBox {
 		margin-left: 5%;
-		width: 25%;
+		width: 15%;
 	}
 	.boardContent .fileBtnBox .btn {
 		margin-right: 2%;
 	
 	}
 	.fileBtnRightBox {
-	margin-top: 20px;
+	margin-top: 28px;
 	}
 	.fileBtnRightBox button{
 	float: right;
@@ -140,7 +142,7 @@
                 	 	
                         
 	                    <!-- 게시글 작성 -->
-                        <form action="${pageContext.request.contextPath}/board/addBoard" method="post" >
+                        <form action="${pageContext.request.contextPath}/board/addBoard" method="post" enctype="multipart/form-data" >
 	                        <!-- boardHeader 시작 -->
 	                        <div class="boardHeader">
 		                        <div class="inputBox">
@@ -171,13 +173,12 @@
 			                        	<textarea name="boardContent" class="form-input" id=""></textarea>
 		                        	<div class="fileBox">
 			                        	<div class="fileContentBox">
-			                        		<label for="contentFile">파일 첨부</label>
-		                        			<input type="file" name="contentFile" class="form-file">
+			                        		<label for="boardImg">이미지 첨부</label>
+		                        			<input type="file" name="boardImg" class="form-file" multiple="multiple">
 			                        	</div>
 			                        	<div class="fileBtnBox">
 				                        	<div class="fileBtnRightBox">
-				                        		<button type="button" class="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20">파일추가</button>
-												<button type="button" class="text-red-500 cancel-btn bg-white btn hover:text-red-500 hover:bg-red-100 focus:text-red-500 focus:bg-red-100 active:text-red-500 active:bg-red-100 dark:bg-zink-700 dark:hover:bg-red-500/10 dark:focus:bg-red-500/10 dark:active:bg-red-500/10">파일삭제</button>
+				                        		<button type="button" class="text-red-500 cancel-btn bg-white btn hover:text-red-500 hover:bg-red-100 focus:text-red-500 focus:bg-red-100 active:text-red-500 active:bg-red-100 dark:bg-zink-700 dark:hover:bg-red-500/10 dark:focus:bg-red-500/10 dark:active:bg-red-500/10">파일삭제</button>
 		                        			</div>
 		                        		</div>
 			                        
