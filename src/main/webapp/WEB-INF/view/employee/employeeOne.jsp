@@ -494,6 +494,9 @@ signModalBackground.click(function(event) {
 });
 
 /* 끝 : 서명 관리 모달창  */
+
+
+
 /* 현재 첨부한 파일 삭제 */
 // 파일 삭제
 $('#removeSignFileBtn').click(function() {

@@ -26,7 +26,36 @@ public class DivisionService {
 		
 	}
 	
+	// 부서 등록 
+	public Integer addDivision(Division division) {
+		
+		Integer row = divisionMapper.insertDivision(division);
+		
+		return row;
+	}
 	
+	// 부서 수정
+	public Integer modifyDivisionName(Division division) {
+		
+		Integer row = divisionMapper.updateDivisionName(division);
+		
+		return row;
+	}
 	
+	// 부서 삭제
+	public Integer removeDivision(Division division) {
+		
+		Integer row = divisionMapper.deleteDivision(division);
+		
+		return row;
+	}
+	
+	// 부서 중복검사
+	public List<Division> confirmDivision(Division division){
+		
+		List<Division> diviList = divisionMapper.selectConfirmDivision(division);
+		
+		return diviList;
+	}
 
 }

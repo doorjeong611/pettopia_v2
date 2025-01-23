@@ -61,52 +61,57 @@
             <div class="container-fluid group-data-[content=boxed]:max-w-boxed mx-auto">
                 <div class="flex flex-col gap-2 py-4 md:flex-row md:items-center print:hidden">
                     <div class="grow">
-                        <h5 class="text-16">메인 화면</h5>
+                        <h5 class="text-16">직원 목록</h5>
                     </div>
                     <ul class="flex items-center gap-2 text-sm font-normal shrink-0">
                         <li class="relative before:content-['\ea54'] before:font-remix ltr:before:-right-1 rtl:before:-left-1  before:absolute before:text-[18px] before:-top-[3px] ltr:pr-4 rtl:pl-4 before:text-slate-400 dark:text-zink-200">
-                            <a href="#!" class="text-slate-400 dark:text-zink-200">메인 화면</a>
+                            <a href="#!" class="text-slate-400 dark:text-zink-200">직원 관리</a>
                         </li>
                         <li class="text-slate-700 dark:text-zink-100">
-                            템플릿
+                            직원목록
                         </li>
                     </ul>
                 </div>
                 
                 
                 <!-- Main content -->
-				<div class="xl:col-span-12 flex flex justify-end gap-4">
-				    <!-- 부서 선택 (전체) -->
-				    <div class="xl:col-span-4">
-				        <label for="divisionSelect" class="inline-block mb-2 text-base font-medium">부서</label>
-				        <div class="flex gap-2">
-				            <select name="divisionCode" id="divisionSelect" class="form-input border-slate-200 dark:border-zink-500">
-				                <option value="">부서 선택</option>
-				            </select>
-				        </div>
-				    </div>
-				    
-				    <!-- 재직 상태 선택 (인사부 관리자만) -->
-				    <c:if test="${isAllowedEmpStatus}">
-				        <div class="xl:col-span-4">
-				            <label for="empStatusSelect" class="inline-block mb-2 text-base font-medium">재직 상태</label>
-				            <div class="flex gap-2">
-				                <select name="empStatus" id="empStatusSelect" class="form-input border-slate-200 dark:border-zink-500">
-				                    <option value="">재직 상태 선택</option>
-				                    <option value="E">재직</option>
-				                    <option value="H">대기</option>
-				                    <option value="L">휴직</option>
-				                    <option value="R">퇴직</option>
-				                    <option value="T">임시</option>
-				                </select>
-				            </div>
-				        </div>
-				    </c:if>
-				</div>				
-				
-				
-                <!-- gridjs 출력 -->
-                <div id="employeeTable"></div>
+                <div class="card" >
+                    <div class="card-body">
+                
+						<div class="xl:col-span-12 flex flex justify-end gap-4">
+						    <!-- 부서 선택 (전체) -->
+						    <div class="xl:col-span-4">
+						        <!-- <label for="divisionSelect" class="inline-block mb-2 text-base font-medium">부서</label> -->
+						        <div class="flex gap-2">
+						            <select name="divisionCode" id="divisionSelect" class="form-input border-slate-200 dark:border-zink-500">
+						                <option value="">부서 </option>
+						            </select>
+						        </div>
+						    </div>
+						    
+						    <!-- 재직 상태 선택 (인사부 관리자만) -->
+						    <c:if test="${isAllowedEmpStatus}">
+						        <div class="xl:col-span-4">
+						            <!-- <label for="empStatusSelect" class="inline-block mb-2 text-base font-medium">재직 상태</label> -->
+						            <div class="flex gap-2">
+						                <select name="empStatus" id="empStatusSelect" class="form-input border-slate-200 dark:border-zink-500">
+						                    <option value="">재직 상태</option>
+						                    <option value="E">재직</option>
+						                    <option value="H">대기</option>
+						                    <option value="L">휴직</option>
+						                    <option value="R">퇴직</option>
+						                    <option value="T">임시</option>
+						                </select>
+						            </div>
+						        </div>
+						    </c:if>
+						</div>				
+						
+						<!-- gridjs 출력 -->
+		               <div id="employeeTable">			
+		               </div>
+                	</div>
+                </div>
 
 <script>
 //전역 변수로 선언
