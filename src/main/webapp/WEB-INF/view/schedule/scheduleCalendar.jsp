@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fn"uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <!DOCTYPE html>
 <html lang="en" class="light scroll-smooth group" data-layout="vertical" data-sidebar="light" data-sidebar-size="lg" data-mode="light" data-topbar="light" data-skin="default" data-navbar="sticky" data-content="fluid" dir="ltr">
@@ -39,314 +39,115 @@
             <div class="container-fluid group-data-[content=boxed]:max-w-boxed mx-auto">
                 <div class="flex flex-col gap-2 py-4 md:flex-row md:items-center print:hidden">
                     <div class="grow">
-                        <h5 class="text-16">문서 보관함</h5>
+                        <h5 class="text-16">일정 관리</h5>
                     </div>
                     <ul class="flex items-center gap-2 text-sm font-normal shrink-0">
                         <li class="relative before:content-['\ea54'] before:font-remix ltr:before:-right-1 rtl:before:-left-1  before:absolute before:text-[18px] before:-top-[3px] ltr:pr-4 rtl:pl-4 before:text-slate-400 dark:text-zink-200">
-                            <a href="${pageContext.request.contextPath}/document/documentList" class="text-slate-400 dark:text-zink-200">결재 문서</a>
+                            <a href="${pageContext.request.contextPath}/schedule/scheduleCalendar" class="text-slate-400 dark:text-zink-200">일정 관리</a>
                         </li>
                         <li class="text-slate-700">
-                            문서 보관함
+                            일정 (달력)
                         </li>
                     </ul>
                 </div>
                 <!-- Main content -->
                 
-                <div class="card" id="documentList">
-                    <div class="card-body">
-	                    <div class="mb-2">
-						    <ul class="flex">
-						        <li class="mr-4">
-						            <form action="${pageContext.request.contextPath}/document/documentList" method="POST">
-						            	<input type="hidden" name="highlight" value="all">
-						            	<input type="hidden" name="empNo" value="${empNo}">
-						                <button type="submit" class="py-2 px-4 text-gray-600 hover:text-custom-500 focus:outline-none 
-							            <c:if test='${highlight == "all"}'>text-custom-500 font-semibold</c:if>">
-							                전체 보관함	
-							            </button>
-						            </form>
-						        </li>
-						        <li class="mr-4">
-						            <form action="${pageContext.request.contextPath}/document/documentList" method="POST">
-						            	<input type="hidden" name="highlight" value="received">
-						                <input type="hidden" name="initApproverNo" value="${empNo}">
-						                <input type="hidden" name="midApproverNo" value="${empNo}">
-						                <input type="hidden" name="finalApproverNo" value="${empNo}">
-						                <button type="submit" class="py-2 px-4 text-gray-600 hover:text-custom-500 focus:outline-none 
-							            <c:if test='${highlight == "received"}'>text-custom-500 font-semibold</c:if>">
-							                수신 보관함
-							            </button>
-						            </form>
-						        </li>
-						        <li class="mr-4">
-						            <form action="${pageContext.request.contextPath}/document/documentList" method="POST">
-						             	<input type="hidden" name="highlight" value="sent">
-						                <input type="hidden" name="docWriterNo" value="${empNo}">
-						                <button type="submit" class="py-2 px-4 text-gray-600 hover:text-custom-500 focus:outline-none 
-							            <c:if test='${highlight == "sent"}'>text-custom-500 font-semibold</c:if>">
-							                발신 보관함
-							            </button>
-						            </form>
-						        </li>
-						        <li>
-						            <form action="${pageContext.request.contextPath}/document/documentList" method="POST">
-						            	<input type="hidden" name="highlight" value="temporary">
-						                <input type="hidden" name="approvalStatus" value="T">
-						                <button type="submit" class="py-2 px-4 text-gray-600 hover:text-custom-500 focus:outline-none 
-							            <c:if test='${highlight == "temporary"}'>text-custom-500 font-semibold</c:if>">
-							                임시 보관함
-							            </button>
-						            </form>
-						        </li>
-						    </ul>
-						</div>
-                        <div class="grid grid-cols-1 gap-5 mb-5 xl:grid-cols-2">
-                            <div>
-                               	<form id="searchForm" method="post" action="${pageContext.request.contextPath}/document/documentList">
-	                                <div class="relative xl:w-3/6">
-	                                	<input type="hidden" name="highlight" value="${highlight}">
-	                                	        <c:if test="${highlight == 'received'}">
-												    <input type="hidden" name="initApproverNo" value="${empNo}">
-									                <input type="hidden" name="midApproverNo" value="${empNo}">
-									                <input type="hidden" name="finalApproverNo" value="${empNo}">
-												</c:if>
-												<c:if test="${highlight == 'sent'}">
-												    <input type="hidden" name="docWriterNo" value="${empNo}">
-												</c:if>
-												<c:if test="${highlight == 'temporary'}">
-												    <input type="hidden" name="approvalStatus" value="T">
-												</c:if>
-												<c:if test="${highlight == 'all'}">
-												    <input type="hidden" name="empNo" value="${empNo}">
-												</c:if>
-	                                    <input type="text" id="searchWord" name="searchWord" value="${searchWord}" class="ltr:pl-8 search form-input border-slate-200 focus:outline-none focus:border-custom-500 placeholder:text-slate-400" placeholder="검색어를 입력하세요" autocomplete="off">
-	                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="search" class="lucide lucide-search inline-block size-4 absolute ltr:left-2.5 top-2.5 text-slate-500 fill-slate-100"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
-	                                </div>
-                                </form>
-                            </div>
-                            <div class="ltr:md:text-end">
-                            	<a href="${pageContext.request.contextPath}/document/addDocument" class="mr-1 bg-white text-custom-500 btn border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100"><i class="align-bottom ri-add-line me-1"></i> 문서 작성</a>
-                                <form id="binForm" action="${pageContext.request.contextPath}/document/documentBin" method="post" class="inline">
-								    <button type="button" id="binBtn" class="text-red-500 bg-white border-red-500 btn hover:text-white hover:bg-red-600 hover:border-red-600 focus:text-white focus:bg-red-600 focus:border-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:border-red-600 active:ring active:ring-red-100"><i class="ri-delete-bin-2-line"></i> 휴지통</button>
-								</form>
+                <div class="grid grid-cols-1 gap-x-5 xl:grid-cols-12">
+                    <div class="xl:col-span-9">
+                        <div class="card" style="min-height: 800px;">
+                            <div class="card-body">
+                                <div cursor-pointerid='calendar-container'>
+                                    <button type="hidden" id="calendarBtn" data-modal-target="event-modal"></button>
+                                    <div id='calendar'></div>
+                                </div>
                             </div>
                         </div>
-
-                        <div class="overflow-x-auto">
-                        	<c:if test="${not empty documentList}">
-                            <table class="w-full whitespace-nowrap" id="documentTable">
-                                <thead class="bg-slate-100">
-                                    <tr>
-                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200" style="width: 50px;">
-                                            <input id="selectAll" type="checkbox" class="border rounded-sm appearance-none cursor-pointer size-4 bg-slate-100 border-slate-200 checked:bg-custom-500 checked:border-custom-500">
-                                        </th>
-                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 ltr:text-center" style="width: 95px;">문서 번호</th>
-                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 ltr:text-center" style="width: 500px;">제목</th>
-                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 ltr:text-center" style="width: 170px;">작성자</th>
-                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 ltr:text-center" style="width: 70px;">결재 상태</th>
-                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 ltr:text-center" style="width: 170px;">초기 결재자</th>
-                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 ltr:text-center" style="width: 170px;">중간 결재자</th>
-                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 ltr:text-center" style="width: 170px;">최종 결재자</th>
-                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 ltr:text-center" style="width: 150px;">작성일</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                	<c:forEach var="d" items="${documentList}">
-	                                	 <tr onclick="window.location='${pageContext.request.contextPath}/document/documentOne?docNo=${d.docNo}&docType=${d.docType}'" style="cursor: pointer;">
-	                                        <td class="px-3.5 py-1.5 border-y border-slate-200 text-center checkBox">
-											    <input type="checkbox" value="${d.docNo}" class="border rounded-sm appearance-none cursor-pointer size-4 bg-slate-100 border-slate-200 checked:bg-custom-500 checked:border-custom-500">
-											</td>
-	                                        <td class="px-3.5 py-1.5 border-y border-slate-200 text-center">${d.docNo}</td>
-	                                        <td class="px-3.5 py-1.5 border-y border-slate-200 text-center"><span class="text-gray-500">[${d.docType == 'D' ? '기안 문서' : d.docType == 'V' ? '연차 신청서' : d.docType == 'M' ? '비품 신청서' : d.docType == 'R' ? '사직서' : d.docType}]</span> ${d.docTitle}</td>
-	                                        <td class="px-3.5 py-1.5 border-y border-slate-200 text-center">
-											    <div>
-											        <div>${d.docWriterName} <span style="font-size: 0.85em; color: gray;">[${d.docWriterRank}]</span></div>
-											        <div style="font-size: 0.85em; color: gray;">${d.writerDeptName}</div>
-											    </div>
-											</td>
-	                                        <td class="px-3.5 py-1.5 border-y border-slate-200 text-center">
-											    <span class="px-2.5 py-0.5 inline-block text-xs font-medium rounded 
-											        ${d.approvalStatus == 'T' ? 'custom-gray text-gray-500' : 
-											          d.approvalStatus == 'P' ? 'custom-blue' : 
-											          d.approvalStatus == 'A' ? 'bg-green-100 text-green-500' : 
-											          d.approvalStatus == 'R' ? 'bg-red-100 text-red-500' : ''} 
-											        border-transparent text-uppercase">
-											        ${d.approvalStatus == 'T' ? '임시' : 
-											          d.approvalStatus == 'P' ? '대기' : 
-											          d.approvalStatus == 'A' ? '승인' : 
-											          d.approvalStatus == 'R' ? '반려' : ''}
-											    </span>
-											</td>
-	                                        <td class="px-3.5 py-1.5 border-y border-slate-200 text-center">
-											    <div>
-											        <div>
-											        	${d.initApproversName}
-											        	<span style="font-size: 0.85em; color: gray;">[${d.initApproverRank}]</span>
-											        	<c:if test="${empty d.initApprovalStatus}">
-											                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#101ee5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-dashed" style="display: inline;">
-															    <path d="M10.1 2.182a10 10 0 0 1 3.8 0"/>
-															    <path d="M13.9 21.818a10 10 0 0 1-3.8 0"/>
-															    <path d="M17.609 3.721a10 10 0 0 1 2.69 2.7"/>
-															    <path d="M2.182 13.9a10 10 0 0 1 0-3.8"/>
-															    <path d="M20.279 17.609a10 10 0 0 1-2.7 2.69"/>
-															    <path d="M21.818 10.1a10 10 0 0 1 0 3.8"/>
-															    <path d="M3.721 6.391a10 10 0 0 1 2.7-2.69"/>
-															    <path d="M6.391 20.279a10 10 0 0 1-2.69-2.7"/>
-															</svg>
-											            </c:if>
-											            <c:if test="${d.initApprovalStatus == 'A'}">
-											                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2f8331" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check" style="display: inline;">
-												                <circle cx="12" cy="12" r="10"/>
-												                <path d="m9 12 2 2 4-4"/>
-											                </svg>
-											            </c:if>
-											            <c:if test="${d.initApprovalStatus == 'R'}">
-											                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e60000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-x" style="display: inline;">
-												                <circle cx="12" cy="12" r="10"/>
-												                <path d="m15 9-6 6"/><path d="m9 9 6 6"/>
-											                </svg>
-											            </c:if>
-											        </div>
-											        <div style="font-size: 0.85em; color: gray;">${d.initApproversDeptName}</div>
-											    </div>
-											</td>
-											<td class="px-3.5 py-1.5 border-y border-slate-200 text-center">
-											    <div>
-											        <div>
-											        	${d.midApproversName} 
-											        	<span style="font-size: 0.85em; color: gray;">[${d.midApproverRank}]</span>
-											        	<c:if test="${empty d.midApprovalStatus}">
-											                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#101ee5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-dashed" style="display: inline;">
-															    <path d="M10.1 2.182a10 10 0 0 1 3.8 0"/>
-															    <path d="M13.9 21.818a10 10 0 0 1-3.8 0"/>
-															    <path d="M17.609 3.721a10 10 0 0 1 2.69 2.7"/>
-															    <path d="M2.182 13.9a10 10 0 0 1 0-3.8"/>
-															    <path d="M20.279 17.609a10 10 0 0 1-2.7 2.69"/>
-															    <path d="M21.818 10.1a10 10 0 0 1 0 3.8"/>
-															    <path d="M3.721 6.391a10 10 0 0 1 2.7-2.69"/>
-															    <path d="M6.391 20.279a10 10 0 0 1-2.69-2.7"/>
-															</svg>
-											            </c:if>
-											            <c:if test="${d.midApprovalStatus == 'A'}">
-											                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2f8331" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check" style="display: inline;">
-												                <circle cx="12" cy="12" r="10"/>
-												                <path d="m9 12 2 2 4-4"/>
-											                </svg>
-											            </c:if>
-											            <c:if test="${d.midApprovalStatus == 'R'}">
-											                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e60000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-x" style="display: inline;">
-												                <circle cx="12" cy="12" r="10"/>
-												                <path d="m15 9-6 6"/><path d="m9 9 6 6"/>
-											                </svg>
-											            </c:if>
-											        </div>
-											        <div style="font-size: 0.85em; color: gray;">${d.midApproversDeptName}</div>
-											    </div>
-											</td>
-											<td class="px-3.5 py-1.5 border-y border-slate-200 text-center">
-											    <div>
-											        <div>
-											        	${d.finalApproversName} 
-											        	<span style="font-size: 0.85em; color: gray;">[${d.finalApproverRank}]</span>
-											        	<c:if test="${empty d.finalApprovalStatus}">
-											                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#101ee5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-dashed" style="display: inline;">
-															    <path d="M10.1 2.182a10 10 0 0 1 3.8 0"/>
-															    <path d="M13.9 21.818a10 10 0 0 1-3.8 0"/>
-															    <path d="M17.609 3.721a10 10 0 0 1 2.69 2.7"/>
-															    <path d="M2.182 13.9a10 10 0 0 1 0-3.8"/>
-															    <path d="M20.279 17.609a10 10 0 0 1-2.7 2.69"/>
-															    <path d="M21.818 10.1a10 10 0 0 1 0 3.8"/>
-															    <path d="M3.721 6.391a10 10 0 0 1 2.7-2.69"/>
-															    <path d="M6.391 20.279a10 10 0 0 1-2.69-2.7"/>
-															</svg>
-											            </c:if>
-											            <c:if test="${d.finalApprovalStatus == 'A'}">
-											                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2f8331" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check" style="display: inline;">
-												                <circle cx="12" cy="12" r="10"/>
-												                <path d="m9 12 2 2 4-4"/>
-											                </svg>
-											            </c:if>
-											            <c:if test="${d.finalApprovalStatus == 'R'}">
-											                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e60000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-x" style="display: inline;">
-												                <circle cx="12" cy="12" r="10"/>
-												                <path d="m15 9-6 6"/><path d="m9 9 6 6"/>
-											                </svg>
-											            </c:if>
-											        </div>
-											        <div style="font-size: 0.85em; color: gray;">${d.finalApproversDeptName}</div>
-											    </div>
-											</td>
-	                                        <td class="px-3.5 py-1.5 border-y border-slate-200 text-center">
-											    ${fn:substringBefore(d.updateDatetime, 'T')}
-											</td>
-	                                    </tr>
-                                	</c:forEach>
-                               	</tbody>
-                            </table>
-                            </c:if>
-							<c:if test="${empty documentList}">
-						            <table class="w-full whitespace-nowrap" id="documentTable">
-						                <thead class="bg-slate-100">
-						                    <tr>
-		                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200" style="width: 50px;">
-		                                            <input id="selectAll" type="checkbox" class="border rounded-sm appearance-none cursor-pointer size-4 bg-slate-100 border-slate-200 checked:bg-custom-500 checked:border-custom-500">
-		                                        </th>
-		                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 ltr:text-center" style="width: 95px;">문서 번호</th>
-		                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 ltr:text-center" style="width: 500px;">제목</th>
-		                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 ltr:text-center" style="width: 170px;">작성자</th>
-		                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 ltr:text-center" style="width: 70px;">결재 상태</th>
-		                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 ltr:text-center" style="width: 170px;">초기 결재자</th>
-		                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 ltr:text-center" style="width: 170px;">중간 결재자</th>
-		                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 ltr:text-center" style="width: 170px;">최종 결재자</th>
-		                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 ltr:text-center" style="width: 150px;">작성일</th>
-		                                    </tr>
-						                </thead>
-						            </table>
-						        <div class="noresult text-center p-7">
-						            <h5 class="mb-3">검색 결과가 없습니다.</h5>
-						            <p class="mb-0 text-slate-500">검색어에 맞는 문서가 없습니다.</p>
-					            </div>
-						    </c:if>
+                    </div><!--end col-->
+                    <div class="xl:col-span-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h6 class="mb-4 text-15">Draggable Events</h6>
+                                <div id='external-events' class="flex flex-col gap-3 mb-4">
+                                    <button data-modal-target="event-modal" data-class="transition-all w-[100%] text-custom-500 !bg-custom-100 dark:!bg-custom-500/20 border-none rounded-md py-1.5 px-3" class='external-event fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event text-custom-500 btn bg-custom-100 hover:text-white hover:bg-custom-600 focus:text-white focus:bg-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:ring active:ring-custom-100 dark:bg-custom-500/20 dark:text-custom-500 dark:hover:bg-custom-500 dark:hover:text-white dark:focus:bg-custom-500 dark:focus:text-white dark:active:bg-custom-500 dark:active:text-white dark:ring-custom-400/20'>
+                                        My Event 1
+                                    </button>
+                                    <button data-class="text-green-500 w-[100%] !bg-green-100 dark:!bg-green-500/20 border-none rounded-md py-1.5 px-3" class='text-green-500 bg-green-100 external-event fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event btn hover:text-white hover:bg-green-600 focus:text-white focus:bg-green-600 focus:ring focus:ring-green-100 active:text-white active:bg-green-600 active:ring active:ring-green-100 dark:bg-green-500/20 dark:text-green-4000'>
+                                        My Event 2
+                                    </button>
+                                    <button data-class="text-yellow-500 w-[100%] !bg-yellow-100 dark:!bg-yellow-500/20 border-none rounded-md py-1.5 px-3" class='text-yellow-500 bg-yellow-100 external-event fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event btn hover:text-white hover:bg-yellow-600 focus:text-white focus:bg-yellow-600 focus:ring focus:ring-yellow-100 active:text-white active:bg-yellow-600 active:ring active:ring-yellow-100 dark:bg-yellow-500/20 dark:text-yellow-500 dark:hover:bg-yellow-500 dark:hover:text-white dark:focus:bg-yellow-500 dark:focus:text-white dark:active:bg-yellow-500 dark:active:text-white dark:ring-yellow-400/20'>
+                                        My Event 3
+                                    </button>
+                                    <button data-class="text-sky-500 w-[100%] !bg-sky-100 dark:!bg-sky-500/20 border-none rounded-md py-1.5 px-3" class='external-event fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event text-sky-500 btn bg-sky-100 hover:text-white hover:bg-sky-600 focus:text-white focus:bg-sky-600 focus:ring focus:ring-sky-100 active:text-white active:bg-sky-600 active:ring active:ring-sky-100 dark:bg-sky-500/20 dark:text-sky-400 dark:hover:bg-sky-500 dark:hover:text-white dark:focus:bg-sky-500 dark:focus:text-white dark:active:bg-sky-500 dark:active:text-white dark:ring-sky-400/20'>
+                                        My Event 4
+                                    </button>
+                                    <button data-class="w-[100%] text-purple-500 !bg-purple-100 dark:!bg-purple-500/20 border-none rounded-md py-1.5 px-3" class='text-purple-500 bg-purple-100 external-event fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event btn hover:text-white hover:bg-purple-600 focus:text-white focus:bg-purple-600 focus:ring focus:ring-purple-100 active:text-white active:bg-purple-600 active:ring active:ring-purple-100 dark:bg-purple-500/20 dark:text-purple-500 dark:hover:bg-purple-500 dark:hover:text-white dark:focus:bg-purple-500 dark:focus:text-white dark:active:bg-purple-500 dark:active:text-white dark:ring-purple-400/20'>
+                                        My Event 5
+                                    </button>
+                                    <div class="flex items-center gap-2">
+                                        <input id='drop-remove' class="size-4 cursor-pointer bg-white border border-slate-200 checked:bg-none dark:bg-zink-700 dark:border-zink-500 rounded-sm appearance-none arrow-none relative after:absolute after:content-['\eb7b'] after:top-0 after:left-0 after:font-remix after:leading-none after:opacity-0 checked:after:opacity-100 after:text-custom-500 checked:border-custom-500 dark:after:text-custom-500 dark:checked:border-custom-800" type="checkbox">
+                                        <label for="drop-remove" class="align-middle cursor-pointer">
+                                            Remove after drop
+                                        </label>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <input id='businessCalendar' class="size-4 cursor-pointer bg-white border border-slate-200 checked:bg-none dark:bg-zink-700 dark:border-zink-500 rounded-sm appearance-none arrow-none relative after:absolute after:content-['\eb7b'] after:top-0 after:left-0 after:font-remix after:leading-none after:opacity-0 checked:after:opacity-100 after:text-custom-500 checked:border-custom-500 dark:after:text-custom-500 dark:checked:border-custom-800" type="checkbox">
+                                        <label for="businessCalendar" class="align-middle cursor-pointer">
+                                            Business Hours & Week
+                                        </label>
+                                    </div>
+        
+                                    <div class="flex items-center gap-2">
+                                        <input id='weekNumberCalendar' class="size-4 cursor-pointer bg-white border border-slate-200 checked:bg-none dark:bg-zink-700 dark:border-zink-500 rounded-sm appearance-none arrow-none relative after:absolute after:content-['\eb7b'] after:top-0 after:left-0 after:font-remix after:leading-none after:opacity-0 checked:after:opacity-100 after:text-custom-500 checked:border-custom-500 dark:after:text-custom-500 dark:checked:border-custom-800" type="checkbox">
+                                        <label for="weekNumberCalendar" class="align-middle cursor-pointer">
+                                            Week Number
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-						
-						<!-- 페이지 네이션 -->
-                        <div class="flex justify-end mt-4">
-						    <div class="flex gap-2 pagination-wrap">
-						        <!-- 이전 페이지 -->
-						        <c:if test="${!(page.currentPage > 1)}">
-						            <a class="inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 focus:bg-custom-50 focus:text-custom-500 [&amp;.active]:text-custom-500 [&amp;.active]:bg-custom-50 [&amp;.active]:border-custom-50 [&amp;.active]:hover:text-custom-700 [&amp;.disabled]:text-slate-400 [&amp;.disabled]:cursor-auto page-item pagination-prev pagination-prev disabled" href="#">이전</a>
-						        </c:if>
-						        <c:if test="${page.currentPage > 1}">
-						            <a class="inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 focus:bg-custom-50 focus:text-custom-500 [&amp;.active]:text-custom-500 [&amp;.active]:bg-custom-50 [&amp;.active]:border-custom-50 [&amp;.active]:hover:text-custom-700 [&amp;.disabled]:text-slate-400 [&amp;.disabled]:cursor-auto page-item pagination-prev pagination-next" href="${pageContext.request.contextPath}/document/documentList?currentPage=${page.currentPage - 1}">이전</a>
-						        </c:if>
-						
-						        <!-- 페이지 번호 링크 -->
-						        <ul class="flex gap-2 mb-0">
-						            <c:forEach var="num" begin="${page.getStartPagingNum()}" end="${page.getEndPagingNum()}">
-						                <c:if test="${num == page.currentPage}">
-						                    <li class="active"><a class="inline-flex items-center justify-center bg-custom-500 border border-custom-500 text-custom-50 h-8 px-3 rounded" href="#">${num}</a></li>
-						                </c:if>
-						                <c:if test="${num != page.currentPage}">
-						                    <li><a class="inline-flex items-center justify-center bg-white border border-slate-200 text-slate-500 hover:text-custom-500 h-8 px-3 rounded" href="${pageContext.request.contextPath}/document/documentList?currentPage=${num}">${num}</a></li>
-						                </c:if>
-						            </c:forEach>
-						        </ul>
-						
-						        <!-- 다음 페이지 -->
-						        <c:if test="${page.currentPage < page.lastPage}">
-						            <a class="inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 dark:hover:bg-custom-500/10 focus:bg-custom-50 focus:text-custom-500 dark:focus:text-custom-500 [&amp;.active]:text-custom-500 [&amp;.active]:bg-custom-50 [&amp;.active]:border-custom-50 [&amp;.active]:hover:text-custom-700 [&amp;.disabled]:text-slate-400 [&amp;.disabled]:cursor-auto page-item pagination-prev pagination-next" href="${pageContext.request.contextPath}/document/documentList?currentPage=${page.currentPage + 1}">다음</a>
-						        </c:if>
-						        <c:if test="${page.currentPage >= page.lastPage}">
-						            <a class="inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 focus:bg-custom-50 focus:text-custom-500 [&amp;.active]:text-custom-500 [&amp;.active]:bg-custom-50 [&amp;.active]:border-custom-50 [&amp;.active]:hover:text-custom-700 [&amp;.disabled]:text-slate-400 [&amp;.disabled]:cursor-auto page-item pagination-prev pagination-prev disabled" href="#">다음</a>
-						        </c:if>
-						    </div>
-						</div>
-                    </div>
-                </div>
+                    </div><!--end col-->
+                </div><!--end grid-->
+                
             </div>
             <!-- container-fluid -->
         </div>
         <!-- End Page-content -->
+        
+<div id="event-modal"  modal-center class="fixed flex flex-col hidden transition-all duration-300 ease-in-out left-2/4 z-drawer -translate-x-2/4 -translate-y-2/4 ">
+    <div class="w-screen md:w-[30rem] bg-white shadow rounded-md dark:bg-zink-600">
+        <div class="flex items-center justify-between p-4 border-b dark:border-zink-500">
+            <h5 class="text-16" id="modal-title">일정 추가</h5>
+            <button data-modal-close="event-modal" id="eventModal-close" class="transition-all duration-200 ease-linear text-slate-400 hover:text-red-500"><i data-lucide="x" class="w-5 h-5"></i></button>
+        </div>
+        <div class="max-h-[calc(theme('height.screen')_-_180px)] p-4 overflow-y-auto">
+            <form class="needs-validation" name="event-form" id="form-event" autocomplete="off">
+                <div class="grid grid-cols-1 gap-4 xl:grid-cols-12">
+                    <div class="xl:col-span-12">
+                        <label for="event-title" class="inline-block mb-2 text-base font-medium">Event Name</label>
+                        <input type="text" id="event-title" class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="Event name" required>
+                    </div>
+                    <div class="xl:col-span-12">
+                        <label for="event-category" class="inline-block mb-2 text-base font-medium">Category</label>
+                        <select required class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" name="event-category" id="event-category">
+                            <option >Select Category</option>
+                            <option selected value="fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event transition-all w-[100%] text-custom-500 !bg-custom-100 dark:!bg-custom-500/20 border-none rounded-md py-1.5 px-3">Primary</option>
+                            <option value="fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event text-green-500 w-[100%] !bg-green-100 dark:!bg-green-500/20 border-none rounded-md py-1.5 px-3">Success</option>
+                            <option value="fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event text-sky-500 w-[100%] !bg-sky-100 dark:!bg-sky-500/20 border-none rounded-md py-1.5 px-3">Info</option>
+                            <option value="fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event text-yellow-500 w-[100%] !bg-yellow-100 dark:!bg-yellow-500/20 border-none rounded-md py-1.5 px-3">Warning</option>
+                            <option value="fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event w-[100%] text-purple-500 !bg-purple-100 dark:!bg-purple-500/20 border-none rounded-md py-1.5 px-3">Purple</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="flex justify-end gap-2 mt-4">
+                    <button type="reset" data-modal-close="event-modal" class="text-red-500 bg-white btn hover:text-red-500 hover:bg-red-100 focus:text-red-500 focus:bg-red-100 active:text-red-500 active:bg-red-100 dark:bg-zink-600 dark:hover:bg-red-500/10 dark:focus:bg-red-500/10 dark:active:bg-red-500/10">Cancel</button>
+                    <button type="reset" id="btn-delete-event" data-modal-close="event-modal" class="hidden text-white bg-red-500 border-red-500 btn hover:text-white hover:bg-red-600 hover:border-red-600 focus:text-white focus:bg-red-600 focus:border-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:border-red-600 active:ring active:ring-red-100 dark:ring-custom-400/20">Delete</button>
+                    <button type="submit" id="btn-save-event" class="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20">Add Order</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- end event modal -->
 
 		<!-- Start Footer -->
         <footer class="ltr:md:left-vertical-menu rtl:md:right-vertical-menu group-data-[sidebar-size=md]:ltr:md:left-vertical-menu-md group-data-[sidebar-size=md]:rtl:md:right-vertical-menu-md group-data-[sidebar-size=sm]:ltr:md:left-vertical-menu-sm group-data-[sidebar-size=sm]:rtl:md:right-vertical-menu-sm absolute right-0 bottom-0 px-4 h-14 group-data-[layout=horizontal]:ltr:left-0  group-data-[layout=horizontal]:rtl:right-0 left-0 border-t py-3 flex items-center dark:border-zink-600">
@@ -376,6 +177,10 @@
 
 <!-- App js -->
 <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
+
+<!-- calendar min js -->
+<script src="${pageContext.request.contextPath}/assets/libs/fullcalendar/index.global.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/pages/schedule-calendar.init.js"></script>
 
 <script>
 $(document).ready(function() {

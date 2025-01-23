@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.pettopia.schedule.ScheduleMapper">
+	
+	<!-- selectScheduleList -->
+	<select id="selectScheduleList" parameterType="String" resultType="Map">
+		SELECT s.schedule_no scheduleNo, s.emp_no empNo, s.schedule_title scheduleTitle, s.schedule_type scheduleType,
+			   s.all_day allDay, s.start_datetime startDatetime, s.end_datetime endDatetime, 
+			   s.create_datetime createDatetime, s.update_datetime updateDatetime
+		FROM `schedule` s WHERE emp_no = #{empNo}
+	</select>
+	
+</mapper>
