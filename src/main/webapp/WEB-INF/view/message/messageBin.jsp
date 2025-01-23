@@ -103,7 +103,7 @@
 									            <button type="submit" id="restoreButton" class="text-slate-500 dark:text-zink-200" style="margin-right: 20px; cursor: pointer;">
 								                    쪽지복원
 								                </button>
-							           	 		<span class="text-slate-500 dark:text-zink-200" style="margin-left: 830px;">날짜</span>
+							           	 		<span class="text-slate-500 dark:text-zink-200" style="margin-left: 790px;">날짜</span>
 								        	</td>
 								    	</tr>
 							   		    <tbody class="elmLoader" id="mail-list">

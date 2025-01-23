@@ -98,7 +98,19 @@ public class MessageController {
 	
     // 오자윤 : /message/messageNote 쪽지 쓰기 페이지
     @GetMapping("message/messageNote")
-    public String writeMessage(Model model) {
+    public String writeMessage(@RequestParam(required = false) String recipientName,
+    						   @RequestParam(required = false) String recipientEmpNo, Model model,
+    						   Authentication auth) {
+        
+		// 시큐리티 empNo 가져오기
+		EmpUserDetails empUserDetails = (EmpUserDetails)auth.getPrincipal();
+		log.debug(TeamColor.OJY + "empUserDetails------>" + empUserDetails + TeamColor.RESET);
+		String empNo = empUserDetails.getUsername();
+		
+    	// recipientName 변수로 받아서 답장하기.
+        model.addAttribute("recipientName", recipientName);
+        model.addAttribute("recipientEmpNo", recipientEmpNo);
+        model.addAttribute("empNo", empNo);
     	
         return "message/messageNote"; 
     }
