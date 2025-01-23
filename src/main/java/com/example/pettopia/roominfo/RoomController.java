@@ -28,6 +28,12 @@ public class RoomController {
 		@Autowired
 		private RoomService roomService;
 		
+		// 객실 예약 리스트
+		@GetMapping("/room/getRoomRsvList")
+		public String getRoomRsvList() {
+			return "room/roomRsvList";
+		}
+		
 		// 객실 수정
 		@PostMapping("/room/updateRoom")
 		public String updateRoom(@ModelAttribute RoomInfo roomInfo,
