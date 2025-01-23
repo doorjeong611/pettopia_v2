@@ -13,8 +13,6 @@
     <!-- CKEditor5 -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/boardStyle.css">
 	<link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/44.1.0/ckeditor5.css" crossorigin>
-    <!-- bootStrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <!-- App favicon -->
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/assets/images/pettopia_favicon.ico">
     <!-- Layout config Js -->
@@ -24,8 +22,83 @@
 </head>
 
 <style>
-	.ck-editor__editable_inline {
+	.boardHeader {
+		width: 70%;
+		margin: 0 auto;
+	}
+	
+	.boardHeader .inputBox {width: 100%; }
+	.boardHeader .inputBox .categoryBox {width: 20%;margin-bottom: 1%; margin-right: 1%; float: left;}
+	.boardHeader .inputBox .titleBox {width: 79%; float: left; margin-bottom: 1%;}
+	
+	.boardContent {
+		width: 70%;
+		margin: 0 auto;
+	}
+	.boardContent .contentBox {
+	margin-top: 1%;
+	padding-bottom: 1%;
+	}
+	.boardContent .contentBox textarea {
 		height: 500px;
+		resize: none;
+		margin: 1% 0;
+	}
+	.boardContent .contentBox > input {
+		margin: 1% 0;
+		
+	}
+	.btnContentBox {
+		width: 70%;
+		margin: 0 auto;
+	}
+	
+	.btnContentBox .btnBox{
+	 	display: flex;
+	    justify-content: flex-end;
+	    width: 100%;
+	}
+	.btnContentBox .btnBox .btn {
+		margin-left: 1%;
+		float:left;
+	}
+	.cancel-btn{
+		border:1px solid #EF4444;
+		background-color: #fff;
+	}
+	.cancel-btn:hover {
+		background-color: #fff;
+	}
+	.boardContent .fileBox {
+		width: 100%; 
+		display: flex;
+		margin-bottom: 1%;
+	    justify-content: flex-end;
+		
+	}
+	.boardContent .fileContentBox {
+		width: 70%;
+	}
+	
+	.boardContent .fileBtnBox {
+		margin-left: 5%;
+		width: 25%;
+	}
+	.boardContent .fileBtnBox .btn {
+		margin-right: 2%;
+	
+	}
+	.fileBtnRightBox {
+	margin-top: 20px;
+	}
+	.fileBtnRightBox button{
+	float: right;
+	}
+	#contentThumbnail {
+		background-color: #f1f5f9;
+		width: 100%;
+		height: 150px;
+		border-radius:8px;
 	}
 	
 </style>
@@ -64,44 +137,70 @@
 
                 <div class="card" >
                 	 <div class="card-body" >
-	                	                        <form method="post" action="${pageContext.request.contextPath}/board/addBoard" class="formBoard">
-                            <!-- CKEditor5 Start -->
-                            <div class="main-container">
-                                <div class="col-sm-6 d-flex justify-content-center">
-                                    <select name="divisionCode" id="division">
-                                        <option value="">없음</option>
-                                        <c:forEach var="dvs" items="${division.divisionList}">
-                                            <option value="${dvs.divisionCode}">${dvs.divisionCode}</option>
-                                        </c:forEach>
-                                    </select>
-                                    <select name="category" class="form-select" id="boardCategory">
-                                        <option value="SG" ${boardCategory == 'SG' ? 'selected' : ''}>건의사항</option>
-                                        <option value="DS" ${boardCategory == 'DS' ? 'selected' : ''}>토론</option>
-                                        <option value="CT" ${boardCategory == 'CT' ? 'selected' : ''}>잡답</option>
-                                        <option value="IN" ${boardCategory == 'IN' ? 'selected' : ''}>정보</option>
-                                        <option value="QA" ${boardCategory == 'QA' ? 'selected' : ''}>질문</option>
-                                        <option value="CP" ${boardCategory == 'CP' ? 'selected' : ''}>칭찬</option>
-                                    </select>
-                                </div>
-                                
-                                <div class="title-container">
-                                    <input type="text" placeholder="제목을 입력해주세요" name="boardTitle">
-                                </div>
-
-                                <!-- CKEditor5 -->
-                                <div class="editor-container editor-container_classic-editor" id="editor-container">
-                                    <div class="editor-container__editor">
-                                        <textarea name="content" id="editor"></textarea>
-                                    </div>
-                                    <div class="editor_container__word-count" id="editor-word-count"></div>
-                                </div>
-
-                              
-                            </div>
-
-                            <button type="submit">작성하기</button>
+                	 	
+                        
+	                    <!-- 게시글 작성 -->
+                        <form action="${pageContext.request.contextPath}/board/addBoard" method="post" >
+	                        <!-- boardHeader 시작 -->
+	                        <div class="boardHeader">
+		                        <div class="inputBox">
+		                        	<div class="categoryBox">
+		                        		<label for="boardCategory">말머리</label>
+			                        		<select id="boardCategory" name="category"  class="form-select border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200">
+												<option value="ALL" ${boardCategory == 'ALL' ? 'selected' : ''}>전체</option>
+												<option value="SG" ${boardCategory == 'SG' ? 'selected' : ''}>건의사항</option>
+												<option value="DS" ${boardCategory == 'DS' ? 'selected' : ''}>토론</option>
+												<option value="CT" ${boardCategory == 'CT' ? 'selected' : ''}>잡답</option>
+												<option value="IN" ${boardCategory == 'IN' ? 'selected' : ''}>정보</option>
+												<option value="QA" ${boardCategory == 'QA' ? 'selected' : ''}>질문</option>
+												<option value="CP" ${boardCategory == 'CP' ? 'selected' : ''}>칭찬</option>
+											</select>
+								</div>
+			                        <div class="titleBox">
+			                        	<label for="boardTitle">제목</label>
+			                        		<input type="text" class="form-input" name="boardTitle" value="" placeholder="">
+		                        	</div>
+                        		</div>
+	                        </div>
+	                        <!-- boardHeader 종료 -->
+	                        
+	                        <!-- boardContent 시작 -->
+                        	<div class="boardContent">	
+	                        	<div class="contentBox">
+		                        	<label for="boardContent">내용</label>
+			                        	<textarea name="boardContent" class="form-input" id=""></textarea>
+		                        	<div class="fileBox">
+			                        	<div class="fileContentBox">
+			                        		<label for="contentFile">파일 첨부</label>
+		                        			<input type="file" name="contentFile" class="form-file">
+			                        	</div>
+			                        	<div class="fileBtnBox">
+				                        	<div class="fileBtnRightBox">
+				                        		<button type="button" class="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20">파일추가</button>
+												<button type="button" class="text-red-500 cancel-btn bg-white btn hover:text-red-500 hover:bg-red-100 focus:text-red-500 focus:bg-red-100 active:text-red-500 active:bg-red-100 dark:bg-zink-700 dark:hover:bg-red-500/10 dark:focus:bg-red-500/10 dark:active:bg-red-500/10">파일삭제</button>
+		                        			</div>
+		                        		</div>
+			                        
+		                        	
+                        			</div>
+	                        		<div id="contentThumbnail">
+		                        		
+                       				</div>
+	                        	</div>
+                        	</div>
+                        	<!-- boardContent 종료 -->
+                        	
+                       		<div class="btnContentBox ">
+	                        	<div class="btnBox">
+	                        		<button type="button" class="text-red-500 cancel-btn bg-white btn hover:text-red-500 hover:bg-red-100 focus:text-red-500 focus:bg-red-100 active:text-red-500 active:bg-red-100 dark:bg-zink-700 dark:hover:bg-red-500/10 dark:focus:bg-red-500/10 dark:active:bg-red-500/10"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="x" class="lucide lucide-x inline-block size-4"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg> <span class="align-middle">취소</span></button>
+	                        		<button type="submit" class="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20">작성하기</button>
+	                       		</div>
+                       		</div>
                         </form>
-				<!-- CKEditor5 End -->
+                        
+                        
+               	 		
+                    
                 	 </div>
                 </div>
               	
@@ -122,11 +221,6 @@
 </div>
 <!-- End Main Content -->
 <c:import url="/WEB-INF/view/inc/customizerButton.jsp"></c:import>
-	<script src="https://cdn.ckeditor.com/ckeditor5/44.1.0/ckeditor5.umd.js" crossorigin></script>
-	<script src="https://cdn.ckeditor.com/ckeditor5/44.1.0/translations/ko.umd.js" crossorigin></script>
-	<script src="${pageContext.request.contextPath}/assets/js/boardScript.js"></script>
-<!-- CKeditor5 -->
-
 <script src='${pageContext.request.contextPath}/assets/libs/choices.js/public/assets/scripts/choices.min.js'></script>
 <script src="${pageContext.request.contextPath}/assets/libs/@popperjs/core/umd/popper.min.js"></script>
 <script src="${pageContext.request.contextPath}/assets/libs/tippy.js/tippy-bundle.umd.min.js"></script>
@@ -134,16 +228,12 @@
 <script src="${pageContext.request.contextPath}/assets/libs/prismjs/prism.js"></script>
 <script src="${pageContext.request.contextPath}/assets/libs/lucide/umd/lucide.js"></script>
 <script src="${pageContext.request.contextPath}/assets/js/tailwick.bundle.js"></script>
-<!--apexchart js-->
-<script src="${pageContext.request.contextPath}/assets/libs/apexcharts/apexcharts.min.js"></script>
 <!--dashboard ecommerce init js-->
 <script src="${pageContext.request.contextPath}/assets/js/pages/dashboards-ecommerce.init.js"></script>
 <!-- App js -->
 <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
 <!-- jQuery library -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<!-- Latest compiled JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </body>
 
 </html>

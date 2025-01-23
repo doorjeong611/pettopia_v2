@@ -27,8 +27,6 @@
 	
 	
 	.listHeader .searchBox {max-width: 35%; min-width: 20%; float: left;}
-	.listHeader .searchBox input {}
-	.listHeader .searchBox btn {  }
 	.listHeader .addBox {float: right;}
 	
 	.boardList {width: 100%;}
@@ -152,7 +150,7 @@
 					  <c:if test="${not empty boardList}">
 					   <div class="pagingBox">
 						    <!-- 이전 페이지 버튼 -->
-						    <c:if test="${currentPage > 10}">
+						    <c:if test="${currentPage > 10 && currentPage <= lastPage}">
 						        <div class="pageBox arrowPage">
 						            <a href="${pageContext.request.contextPath}/board/boardList?searchBoard=${searchBoard}&category=${boardCategory}&currentPage=${currentPage-1}">[이전]</a>
 						        </div>
@@ -160,17 +158,17 @@
 						    <!-- 페이지 번호 버튼들 -->
 						    <c:if test="${currentPage <= endPagingNum}">
 						    	<c:forEach var="num" begin="${startPagingNum}" end="${endPagingNum}">
-							        <c:if test="${num == currentPage}">
-							            <div class="pageBox onpage">
-							                <a href="#">${num}</a>
-							            </div>
-							        </c:if>
-							        <c:if test="${num != currentPage}">
-							            <div class="pageBox">
-							                <a href="${pageContext.request.contextPath}/board/boardList?searchBoard=${searchBoard}&category=${boardCategory}&currentPage=${num}">${num}</a>
-							            </div>
-							        </c:if>
-							    </c:forEach>
+								    <c:if test="${num == currentPage}">
+								        <div class="pageBox onpage">
+								            <a href="#">${num}</a>
+								        </div>
+								    </c:if>
+								    <c:if test="${num != currentPage}">
+								        <div class="pageBox">
+								            <a href="${pageContext.request.contextPath}/board/boardList?searchBoard=${searchBoard}&category=${boardCategory}&currentPage=${num}">${num}</a>
+								        </div>
+								    </c:if>
+								</c:forEach>
 						    </c:if>
 						  
 						  	
@@ -183,7 +181,6 @@
 						    </c:if>
 						</div>
 					</c:if>
-				
 				</div>
 				
 				

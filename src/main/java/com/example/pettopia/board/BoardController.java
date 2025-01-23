@@ -80,12 +80,11 @@ public class BoardController {
 
 	    // boardCategory를 boardHeader로 설정
 	    board.setBoardHeader(boardCategory);  // boardCategory 값이 boardHeader로 사용됨
-
-	    String textContent = Jsoup.parse(boardContent).text();  // HTML 태그를 제거하고 텍스트만 추출
-	    board.setBoardContent(textContent);
+	    
 	    
 	    EmpUserDetails empUserDetails = (EmpUserDetails) auth.getPrincipal();
 	    String boardWriterNo = empUserDetails.getUsername();
+	    
 	    // 작성자ID 삽입 
 	    board.setBoardWriterNo(boardWriterNo);
 	    
@@ -106,12 +105,9 @@ public class BoardController {
 	    
 	    // 카테고리 모델에 추가
 	    model.addAttribute("boardCategory", boardCategory);
-	    // divisionList 모델에 추가
-	    model.addAttribute("divisionList", divisionList);
 	
 	    // 카테고리 정보 모델에 추가
 	    Map<String, Object> categoryByAddBoard = new HashMap<>();
-	    categoryByAddBoard.put("divisionList", divisionList);
 	    model.addAttribute("categoryByAddBoard", categoryByAddBoard);
 	    
 	    log.debug(TeamColor.LJH + "보드 헤더 : " + boardCategory + TeamColor.RESET);
@@ -161,44 +157,42 @@ public class BoardController {
 	                        @RequestParam(value = "category", defaultValue = "ALL") String boardCategory,
 	                        @RequestParam(required = false) Integer boardNo,
 	                        @RequestParam(required = false) String searchBoard) {
-		 // searchBoard 값이 존재하면 currentPage를 1로 설정
-	    if (searchBoard != null && !searchBoard.isEmpty()) {
-	        currentPage = 1;  // 검색을 했으면 currentPage를 1로 설정
-	    }
-		
 
-		
-		// 게시판 목록과 페이징 정보 조회
+	    // 게시판 목록과 페이징 정보 조회
 	    Map<String, Object> result = boardService.getBoardList(currentPage, rowPerPage, boardCategory, new HashMap<>(), searchBoard);
-	    
+
 	    // 페이징 정보 추출
 	    Integer startPagingNum = (Integer) result.get("startPagingNum");
 	    Integer endPagingNum = (Integer) result.get("endPagingNum");
 	    Integer lastPage = boardService.getLastPage(rowPerPage, boardCategory, searchBoard);
-	    
+
 	    @SuppressWarnings("unchecked")
-		List<Map<String, Object>> boardList = (List<Map<String, Object>>) result.get("boardList");
-	    
+	    List<Map<String, Object>> boardList = (List<Map<String, Object>>) result.get("boardList");
+
+	    // 게시판의 갯수가 10개 미만일 경우 currentPage를 1로 초기화하고, 다시 조회
+	    if (boardList.size() < 10) {
+	        currentPage = 1;  // currentPage를 1로 초기화
+	        result = boardService.getBoardList(currentPage, rowPerPage, boardCategory, new HashMap<>(), searchBoard);
+	        boardList = (List<Map<String, Object>>) result.get("boardList");  // 다시 boardList를 갱신
+	    }
+
 	    // 로그인된 사용자 정보
 	    EmpUserDetails empUserDetails = (EmpUserDetails) auth.getPrincipal();
 	    String empNo = empUserDetails.getUsername();
 
 	    // 모델에 데이터 추가
-	    model.addAttribute("searchBoard",searchBoard);
-	    model.addAttribute("currentPage", currentPage);
+	    model.addAttribute("searchBoard", searchBoard);
+	    model.addAttribute("currentPage", currentPage);  // currentPage 값 다시 모델에 추가
 	    model.addAttribute("lastPage", lastPage);
 	    model.addAttribute("empNo", empNo);
-	    model.addAttribute("boardList", boardList);
+	    model.addAttribute("boardList", boardList);  // boardList 모델에 추가
 	    model.addAttribute("boardNo", boardNo);
 	    model.addAttribute("boardCategory", boardCategory);
 	    model.addAttribute("startPagingNum", startPagingNum);
 	    model.addAttribute("endPagingNum", endPagingNum);  // endPagingNum 추가
-	    
-	
 
 	    return "board/boardList";  // 게시판 목록 페이지 반환
 	}
-
 
 	
 	//	게시글 댓글 통합 삭제 /board/removeBoard 작업자 : 이준호
