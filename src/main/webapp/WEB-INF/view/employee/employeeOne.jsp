@@ -180,27 +180,35 @@
 				    </div>
 				  </div>
 				</div>
-				
-				<div>
-					<h5 class="text-16"> 근태 기록 </h5>
+				<div class="grid grid-cols-1 gap-4 mb-5 xl:grid-cols-2">
+					<div class="xl:col-span-12">
+						<div>
+							<h5 class="text-16"> 근태 기록 </h5>
+						</div>
+					</div>
 				</div>
-				
-				<!-- 나의 근태 기록 -->
-				<!-- gridjs 출력 -->
-				<div class="xl:col-span-4">
-				            <div class="flex gap-2">
-				                <select name="attendanceStatus" id="attendanceSelect" class="form-input border-slate-200 dark:border-zink-500">
-				                    <option value="">전체</option>
-				                    <option value="P">출근</option>
-				                    <option value="L">지각</option>
-				                    <option value="E">조퇴</option>
-				                    <option value="A">결근</option>
-				                    <option value="V">연차</option>
-				                    <option value="H">반차</option>
-				                </select>
-				            </div>
+				<div class="card p-5">
+					<div class="grid grid-cols-1 gap-4 mb-5 xl:grid-cols-2">
+					<!-- 나의 근태 기록 -->
+					<!-- gridjs 출력 -->
+					<div class="xl:col-span-12">
+						<div class="xl:col-span-4 mb-3" style="width: 150px; margin-left: 250px;">
+			                <select name="attendanceStatus" id="attendanceSelect" class="form-input border-slate-200 dark:border-zink-500">
+			                    <option value="">전체</option>
+			                    <option value="P">출근</option>
+			                    <option value="L">지각</option>
+			                    <option value="E">조퇴</option>
+			                    <option value="A">결근</option>
+			                    <option value="V">연차</option>
+			                    <option value="H">반차</option>
+			                </select>
 				        </div>
-                <div id="myAttendanceTable"></div>
+				        
+						 
+		                	<div id="myAttendanceTable" style="width: 800px; justify-self: center;"></div>
+		                </div>
+	                </div>
+                </div>
 				<script type="text/javascript">
 				/* gridjs 시작 */
 				// 전역 변수로 선언
@@ -323,11 +331,19 @@
 				                style: {
 				                    th: {
 				                        background: '#f8f9fa',
-				                        color: '#495057'
+				                        color: '#495057',
+				                        textAlign: 'center'
 				                    },
 				                    td: {
 				                        padding: '0.75rem',
-				                        borderBottom: '1px solid #e0e0e0'
+				                        borderBottom: '1px solid #e0e0e0',
+				                        textAlign: 'center'
+				                    },
+				                    table: {
+				                        width: '200px',
+				                        maxWidth: '100%',  // 화면 크기에 맞춰 반응형
+				                        margin: '0 auto',  // 테이블을 화면 가운데로 정렬
+				                        borderCollapse: 'collapse'  // 테이블 경계선이 중복되지 않도록
 				                    }
 				                }
 				            }).render(container[0]);
