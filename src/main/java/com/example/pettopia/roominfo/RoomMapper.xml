@@ -2,6 +2,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.pettopia.roominfo.RoomMapper">
 
+	<!-- 객실 예약 조회 -->
+	<select id="selectRoomRsvList" resultType="java.util.Map">
+	SELECT
+			r.rsv_no rsvNo,
+			r.room_no roomNo,
+			r.customer_no customerNo,
+			r.check_in_datetime checkInDatetime,
+			r.check_out_datetime checkOutDatetime,
+			r.rsv_status rsvStatus,
+			r.create_datetime createDatetime,
+			r.update_datetime updateDatetime,
+			ri.price_per_night pricePerNight
+	FROM
+			room_rsv r
+	INNER JOIN
+			room_info ri
+	ON
+			r.room_no = ri.room_no 
+			<where></where>
+			
+	</select>
+
   <!-- 객실 삭제 -->
     <delete id="deleteRoomImages" parameterType="int">
         DELETE FROM room_img WHERE room_no = #{roomNo}
