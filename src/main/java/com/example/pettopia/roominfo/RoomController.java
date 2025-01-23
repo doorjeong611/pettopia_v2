@@ -16,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.pettopia.util.TeamColor;
 import com.example.pettopia.vo.RoomInfo;
+import com.example.pettopia.vo.RoomRsv;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +31,11 @@ public class RoomController {
 		
 		// 객실 예약 리스트
 		@GetMapping("/room/getRoomRsvList")
-		public String getRoomRsvList() {
+		public String selectRoomRsvList(Model model) {
+			// 전체 객실 리스트 가져오기
+			List<Map<String, Object>> roomRsvList = roomService.selectRoomRsvList(); 
+		    log.debug(TeamColor.WJ + "roomRsvList ====> " + roomRsvList + TeamColor.RESET);
+		    model.addAttribute("roomRsvList", roomRsvList); 
 			return "room/roomRsvList";
 		}
 		
@@ -60,6 +65,12 @@ public class RoomController {
 		@GetMapping("/room/getAddRoom")
 		public String getAddRoom() {
 			return "room/addRoom";
+		}
+		
+		// 객실 예약 추가
+		@GetMapping("/room/getAddRoomRsv")
+		public String getAddRoomRsv() {
+			return "room/addRoomRsv";
 		}
 
 		// 객실 등록 처리
@@ -124,6 +135,8 @@ public class RoomController {
 								) {
 			// 전체 객실 리스트 가져오기
 		    List<Map<String, Object>> roomListImg = roomService.getRoomListWithImages(); 
+		    log.debug(TeamColor.WJ + "roomListImg =======> " + roomListImg + TeamColor.RESET);
+		    
 		    // 총 객실 수
 		    int totalRecords = roomListImg.size();
 

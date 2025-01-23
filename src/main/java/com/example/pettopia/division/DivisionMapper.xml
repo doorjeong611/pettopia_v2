@@ -8,6 +8,34 @@
 				, division_name AS divisionName
 		FROM division
 	</select>
-
+	
+	<!-- 부서 등록 -->
+	<insert id="insertDivision" parameterType="com.example.pettopia.vo.Division">
+		INSERT INTO (division_code, division_name) 
+		VALUES(#{divisionCode}, #{divisionName})
+	</insert>
+	
+	<!-- 부서 수정 -->
+	<update id="updateDivisionName" parameterType="com.example.pettopia.vo.Division">
+		UPDATE division
+		SET division_name = #{divisionName}
+		WHERE division_code = #{divisionCode}
+	</update>
+	
+	<!-- 부서 삭제 -->
+	<delete id="deleteDivision" parameterType="com.example.pettopia.vo.Division">
+		DELETE FROM division
+		WHERE division_code = #{divisionCode}
+	</delete>
+	
+	<!-- 부서 중복 검사 -->
+	<select id="selectConfirmDivision" parameterType="com.example.pettopia.vo.Division" resultType="com.example.pettopia.vo.Division">
+		SELECT division_name AS divisionName
+				, division_code AS divisionCode
+		FROM division
+		WHERE division_name = #{divisionName}
+		OR division_code = #{divisionCode}
+	</select>
+	
 
 </mapper>
