@@ -73,7 +73,9 @@ public class MessageController {
 	
 	// 오자윤 : /employee/messageList 쪽지 목록 조회
 	@GetMapping("message/messageList")
-	public String getMethodName(Authentication auth, Model model, @RequestParam(defaultValue = "1") Integer currentPage) {
+	public String getMethodName(Authentication auth, Model model, @RequestParam(defaultValue = "1") Integer currentPage,
+														        @RequestParam(required = false) String searchKeyword)
+														         {
 		// 시큐리티 empNo 가져오기
 		EmpUserDetails empUserDetails = (EmpUserDetails)auth.getPrincipal();
 		log.debug(TeamColor.OJY + "empUserDetails------>" + empUserDetails + TeamColor.RESET);
@@ -84,11 +86,12 @@ public class MessageController {
 	    page.setCurrentPage(currentPage);
 
 	    // 페이지 된 쪽지목록
-	    List<Map<String, Object>> messageList = messageService.getMessageList(empNo, page);
+	    List<Map<String, Object>> messageList = messageService.getMessageList(empNo, page, searchKeyword);
 
 	    // model 추가
 	    model.addAttribute("messageList", messageList);
 	    model.addAttribute("page", page);
+	    model.addAttribute("searchKeyword", searchKeyword);
 	    
 	    return "message/messageList";
 	}
@@ -102,14 +105,15 @@ public class MessageController {
 
 	// 오자윤 : /employee/messageBin 휴지통 페이지
 	@GetMapping("message/messageBin")
-	public String messageBin(Authentication auth, Model model, Page page) {
+	public String messageBin(Authentication auth, Model model, Page page, @RequestParam(required = false) String searchKeyword)
+    {
 		// 시큐리티 empNo 가져오기
 		EmpUserDetails empUserDetails = (EmpUserDetails)auth.getPrincipal();
 		log.debug(TeamColor.OJY + "empUserDetails------>" + empUserDetails + TeamColor.RESET);
 		String empNo = empUserDetails.getUsername();
 	
 		// 쪽지 목록 조회
-		List<Map<String, Object>> messageList = messageService.getMessageList(empNo, page);
+		List<Map<String, Object>> messageList = messageService.getMessageList(empNo, page, searchKeyword);
 		model.addAttribute("messageList", messageList);
 		log.debug(TeamColor.OJY + "messageList------>" + messageList + TeamColor.RESET);
 		
@@ -118,7 +122,7 @@ public class MessageController {
 	
 	// 오자윤 : /employee/messageBin 휴지통 영구삭제 -->
 	@PostMapping("message/messageDelete")
-	public String messageBin(@RequestParam List<Integer> messageNo, Authentication auth, Model model, Page page) {
+	public String messageBin(@RequestParam List<Integer> messageNo, Authentication auth, Model model, Page page, @RequestParam(required = false) String searchKeyword) {
 		
 		// 시큐리티 empNo 가져오기
 		EmpUserDetails empUserDetails = (EmpUserDetails)auth.getPrincipal();
@@ -130,7 +134,7 @@ public class MessageController {
 		log.debug(TeamColor.OJY + "messageNo------>" + messageNo + TeamColor.RESET);
 		
 		// 쪽지 목록 조회
-		List<Map<String, Object>> messageList = messageService.getMessageList(empNo, page);
+		List<Map<String, Object>> messageList = messageService.getMessageList(empNo, page, searchKeyword);
 		model.addAttribute("messageList", messageList);
 		return "redirect:/message/messageBin";
 	}

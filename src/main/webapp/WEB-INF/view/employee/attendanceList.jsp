@@ -171,7 +171,7 @@
 					<table class="attendance-table">
 				        <thead>
 				            <tr>
-		                        <th class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">소속팀</th>
+		                        <th class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">사번</th>
 		                        <th class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">직원이름</th>
 		                        <th class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">출근날짜</th>
 		                        <th class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">출근시간</th>
