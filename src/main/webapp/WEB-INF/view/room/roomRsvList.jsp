@@ -37,7 +37,7 @@
             <div class="container-fluid group-data-[content=boxed]:max-w-boxed mx-auto">
                 <div class="flex flex-col gap-2 py-4 md:flex-row md:items-center print:hidden">
                     <div class="grow">
-                        <h5 class="text-16">객실</h5>
+                        <h5 class="text-16">예약 내역</h5>
                     </div>
                     <ul class="flex items-center gap-2 text-sm font-normal shrink-0">
                         <li class="relative before:font-remix ltr:before:-right-1 rtl:before:-left-1  before:absolute before:text-[18px] before:-top-[3px] ltr:pr-4 rtl:pl-4 before:text-slate-400 dark:text-zink-200">
@@ -57,7 +57,7 @@
                             </div>
                             <div class="ltr:md:text-end rtl:md:text-start"> 
 							    <!-- 서비스 추가 버튼, href 속성으로 addService 페이지로 이동 -->
-							    <a href="${pageContext.request.contextPath}/service/addService" class="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20 add-btn">
+							    <a href="${pageContext.request.contextPath}/room/getAddRoomRsv" class="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20 add-btn">
 							        <i class="align-bottom ri-add-line me-1"></i> 객실 추가
 							    </a>
 							    
@@ -75,22 +75,34 @@
                                         <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500" scope="col" style="width: 50px;">
                                             <input class="border rounded-sm appearance-none cursor-pointer size-4 bg-slate-100 border-slate-200 dark:bg-zink-600 dark:border-zink-500 checked:bg-custom-500 checked:border-custom-500 dark:checked:bg-custom-500 dark:checked:border-custom-500 checked:disabled:bg-custom-400 checked:disabled:border-custom-400" type="checkbox" id="checkAll" value="option">
                                         </th>
-                                        <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right" data-sort="customer_name">Service No</th>
-                                        <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right" data-sort="email">서비스 이름</th>
-                                        <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right" data-sort="phone">서비스 설명</th>
+                                        <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right">No</th>
+                                        <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right">룸 번호</th>
+                                        <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right">예약자</th>
+                                        <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right">가격</th>
+                                        <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right">예약자</th>
+                                        <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right">상태</th>
+                                        <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right">체크인 날짜</th>
+                                        <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right">체크아웃 날짜</th>
                                     </tr>
                                 </thead>
                                  <tbody>
-		                                <c:forEach var="c" items="${serviceList}">
+		                                <c:forEach var="r" items="${roomRsvList}">
 		                                    <tr class="even:bg-slate-50 hover:bg-slate-50 even:hover:bg-slate-100 dark:even:bg-zink-600/50 dark:hover:bg-zink-600 dark:even:hover:bg-zink-600">
 		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">
 		                                        	<input class="border rounded-sm appearance-none cursor-pointer size-4 bg-slate-100 border-slate-200 dark:bg-zink-600 dark:border-zink-500 checked:bg-custom-500 checked:border-custom-500 dark:checked:bg-custom-500 dark:checked:border-custom-500 checked:disabled:bg-custom-400 checked:disabled:border-custom-400" type="checkbox" id="" value="option"> 
 		                                        </td>
 		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">
-		                                            <a href="#" class="transition-all duration-150 ease-linear text-custom-500 hover:text-custom-600">${c.serviceNo}</a>
+		                                            <a href="#" class="transition-all duration-150 ease-linear text-custom-500 hover:text-custom-600">${r.rsvNo}</a>
 		                                        </td>
-		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${c.serviceName}</td>
-		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${c.serviceDesc}</td>
+		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${r.roomNo}</td>
+		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${r.customerNo}</td>
+		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${r.pricePerNight}</td>
+		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${r.checkInDatetime}</td>
+		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${r.checkOutDatetime}</td>
+		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${r.rsvStatus}</td>
+		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${r.createDatetime}</td>
+		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${r.updateDatetime}</td>
+		                                        
 		                                    </tr>
 		                                </c:forEach> 
                             		</tbody>

@@ -7,10 +7,14 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.example.pettopia.vo.RoomImg;
 import com.example.pettopia.vo.RoomInfo;
+import com.example.pettopia.vo.RoomRsv;
 
 @Mapper
 public interface RoomMapper {
 
+	// 객실 예약 전체 조회
+	List<Map<String, Object>> selectRoomRsvList();
+	
 	// 객실 리스트 전체 조회
 	List<RoomInfo> selectRoom();
 	

@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.pettopia.util.TeamColor;
 import com.example.pettopia.vo.RoomImg;
 import com.example.pettopia.vo.RoomInfo;
+import com.example.pettopia.vo.RoomRsv;
 
 import jakarta.servlet.ServletContext;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +30,11 @@ public class RoomService {
 	
 	@Autowired
 	private ServletContext servletContext;
+	
+	// 객실 예약 전체 조회
+    public List<Map<String, Object>> selectRoomRsvList() {
+        return roomMapper.selectRoomRsvList();
+    }
 	
 	// 객실 페이징
 	public int countRoomList(Map<String, Object> params) {
