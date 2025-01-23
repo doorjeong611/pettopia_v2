@@ -20,11 +20,12 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style>
     .attendance-table {
-        width: 500%;
-        max-width: 1200px;
+	    table-layout: fixed;
+	    width: 100%;
         white-space: nowrap;
         border-collapse: collapse; /* 테두리 겹침 방지 */
         margin: 20px auto; /*가운데 정렬 */
+        
     }
 
     .attendance-table th, .attendance-table td {
@@ -131,58 +132,54 @@
 		   <div class="card">
                     <div class="items-center gab3 card-body">
                         <div class="grid grid-cols-1 gap-5 mb-5 xl:grid-cols-12">
-                            <div class="xl:col-span-3">
+                            <div class="xl:col-span-12">
                      <!-- 선택박스 -->
+                     
                   <div id="container" style="gap: 20px; width: 100%; justify-content: space-between;">
 				    <!-- 선택 박스 : 부서 선택 -->
-				    <div style="display: flex; gap: 20px; width: 100%;">
-				        <div class="select-box" style="flex: 1; min-width: 200px;">
+				    <div style="display: flex; gap: 10px; width: 100%;">
+				        <div class="select-box" style="flex: 1; max-width: 250px;">
 				            <select id="departmentSelect" class="border border-gray-300 rounded w-full p-2">
 				                <option value="">부서 선택</option>
 				            </select>
 				        </div>
 				        
-			        <div class="select-box" style="flex: 1; min-width: 200px;">
+			        <div class="select-box" style="flex: 1; max-width: 250px;">
 			            <select id="teamSelect" class="border border-gray-300 rounded w-full p-2">
 			                <option value="">팀 선택</option>
 			            </select>
 			        </div>
 			        
-				   <div class="input-box" id="employeeBox" style="min-width: 200px;">
-				        <input type="text" id="employeeSearchInput" class="border border-gray-300 rounded w-full p-2" placeholder="직원이름을 입력하세요." />
+				    <div class="input-box" id="employeeBox" style="max-width: 300px;">
+				        <input type="text" id="employeeSearchInput" style="height: 35px;" class="ltr:pl-8 search form-input border-slate-200 focus:outline-none focus:border-custom-500 placeholder:text-slate-400" placeholder="직원이름을 입력하세요." />
 				    </div>
+				    
 				    <!-- 직원 검색 -->
-				      <div class="button-box" id="buttonBox" style="min-width: 200px;">
-				        <button id="searchEmployeeBtn" style="background-color: #007BFF; color: white; border-radius: 4px; padding: 9px 12px; cursor: pointer; transition: background-color 0.3s; " onmouseover="this.style.backgroundColor='#66B2FF';" onmouseout="this.style.backgroundColor='#007BFF';">검색</button>
+				      <div class="button-box" id="buttonBox">
+				        <button id="searchEmployeeBtn" style="width:50px; height: 35px; background-color: #007BFF; color: white; border-radius: 4px; cursor: pointer; transition: background-color 0.3s; " onmouseover="this.style.backgroundColor='#66B2FF';" onmouseout="this.style.backgroundColor='#007BFF';">검색</button>
 				    </div>
 			    </div>
 
 			    <!-- Employee search input and search button on the right -->
 				    <div style="display: flex; gap: 10px;">
-				
-				    </div>
-				</div>
-
 					<!-- 직원 리스트 테이블 -->
 					<div id="newAttendance" style="display: none;">
 					<table class="attendance-table">
 				        <thead>
 				            <tr>
-				                <th>소속팀</th>
-				                <th>직원이름</th>
-				                <th>출근날짜</th>
-				                <th>출근시간</th>
-				                <th>퇴근시간</th>
-				                <th>근태상태</th>
-				            </tr>
+		                        <th class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">소속팀</th>
+		                        <th class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">직원이름</th>
+		                        <th class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">출근날짜</th>
+		                        <th class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">출근시간</th>
+		                        <th class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">퇴근시간</th>
+		                        <th class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">근태상태</th>
+		                    </tr>
 				        </thead>
 					    <tbody id="attendanceTableBody">
 					        <!-- 직원 목록 동적으로 추가 -->
 					    </tbody>
 				    </table>
 					</div>
-
-			        		
                             </div><!--end col-->
                             <div class="xl:col-span-2 xl:col-start-11">
                             
@@ -247,6 +244,9 @@
         </div>
         </div>
     </div></div>
+				    </div>
+				</div>
+
     
             <!-- container-fluid -->
 
