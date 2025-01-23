@@ -150,9 +150,13 @@
 			            </select>
 			        </div>
 			        
-				    <div class="input-box" id="employeeBox" style="max-width: 300px;">
-				        <input type="text" id="employeeSearchInput" style="height: 35px;" class="ltr:pl-8 search form-input border-slate-200 focus:outline-none focus:border-custom-500 placeholder:text-slate-400" placeholder="직원이름을 입력하세요." />
-				    </div>
+				    <div class="input-box" id="employeeBox" style="max-width: 300px; position: relative;">
+					    <input type="text" id="employeeSearchInput" style="height: 35px; padding-left: 35px;" class="ltr:pl-8 search form-input border-slate-200 focus:outline-none focus:border-custom-500 placeholder:text-slate-400" placeholder="직원이름을 입력하세요." />
+					    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #808080;">
+					        <circle cx="11" cy="11" r="8"></circle>
+					        <path d="m21 21-4.3-4.3"></path>
+					    </svg>
+					</div>
 				    
 				    <!-- 직원 검색 -->
 				      <div class="button-box" id="buttonBox">
@@ -222,13 +226,8 @@
                 </tbody>
             </table>
         
-    			 <div id="paginationItems">
-		            <div>
-		                <p>
-		                </p>
-		            </div>
-        <!-- Pagination controls -->
-            <div style="margin-left: 963px; margin-top: 20px; align-items: center;">
+        	<!-- Pagination controls -->
+            <div style="margin-top: 20px; align-items: center; justify-self: end;">
                 <c:if test="${currentPage > 1}">
                     <a href="${pageContext.request.contextPath}/employee/attendanceList?page=${currentPage - 1}" class="prev" style="margin-right: 10px; padding: 8px 12px; border: 1px solid #007bff; background-color: #ffffff; color: #007bff; border-radius: 4px; text-decoration: none;"> < 이전</a>
                 </c:if>
@@ -426,6 +425,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // 직원 검색 버튼 클릭 시 필터링
     $(searchEmployeeBtn).click(function () {
         searchEmployeeByName(); // 이름으로 직원 검색
+    });
+    
+    $('#employeeSearchInput').on('keydown', function(event) {
+        if (event.key === "Enter") {
+            event.preventDefault();  // 기본 엔터 동작 방지 (폼 제출 방지)
+            searchEmployeeByName();  // 엔터 키가 눌렸을 때 실행할 함수 호출
+        }
     });
 
     // 직원 목록 업데이트
