@@ -3,6 +3,7 @@ package com.example.pettopia.common;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import com.example.pettopia.attendance.AttendanceSerivce;
 import com.example.pettopia.dto.EmpUserDetails;
+import com.example.pettopia.employee.EmployeeService;
 import com.example.pettopia.util.TeamColor;
 import com.example.pettopia.vo.Attendance;
 import com.example.pettopia.vo.Employee;
@@ -24,6 +26,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class MainController {
 	@Autowired AttendanceSerivce attendanceService;
+	
+	@Autowired EmployeeService employeeService;
 	
 	// 오자윤 : 출퇴근 기록 조회
 	@GetMapping("/common/petTopiaMain")
@@ -45,6 +49,14 @@ public class MainController {
 		EmpUserDetails empUserDetails = (EmpUserDetails) auth.getPrincipal();
 		String empNo = empUserDetails.getUsername();
 		attendance.setEmpNo(empNo);
+		
+		
+		// 로그인한 회원 정보 
+		Map<String, Object> empInfo = employeeService.getEmployeeOne(empNo);
+		log.debug(TeamColor.KMJ+" empInfo : "+ empInfo.toString() + TeamColor.RESET);
+		
+		model.addAttribute("empInfo", empInfo);
+		
 		
 		// 현재 날짜 설정
 	    String currentDate = LocalDate.now().toString(); 
