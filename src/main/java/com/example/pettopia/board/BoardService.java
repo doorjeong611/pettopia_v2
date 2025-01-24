@@ -1,9 +1,11 @@
 package com.example.pettopia.board;
 
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,7 @@ import com.example.pettopia.boardcomment.CommentMapper;
 import com.example.pettopia.util.Page;
 import com.example.pettopia.util.TeamColor;
 import com.example.pettopia.vo.Board;
+import com.example.pettopia.vo.BoardFile;
 import com.example.pettopia.vo.Division;
 
 import lombok.extern.slf4j.Slf4j;
@@ -25,13 +28,54 @@ public class BoardService {
 	@Autowired BoardMapper boardMapper;
 	@Autowired CommentMapper commentMapper;
 	
-	
-// 게시판 이미지 추가
-	
-	public void addBoardWithImage(Board board, MultipartFile boardImg, String boardImagePath) {
-		
 
+	// 게시판 이미지 추가
+	public int addBoardFile (BoardFile boardFile) {
+		return boardMapper.insertBoardFile(boardFile);
 	}
+	
+	// 게시판 정보 추가
+	public int addBoardOne (Board board, MultipartFile boardImg, String boardImagePath)  throws Exception {
+		
+		boardMapper.insertBoard(board);
+		BoardFile boardImage = new BoardFile();
+		boardImage.setBoardNo(board.getBoardNo()); // boardNo 받아옴
+		boardImage.setOriginFileName(boardImg.getOriginalFilename()); // 오리지널 이미지 이름 받아옴
+		
+		// 고유 파일명 생성
+		String boardFileName = UUID.randomUUID().toString() + "." + getFileExtension(boardImg.getOriginalFilename());
+		boardImage.setFileName(boardFileName);
+		boardImage.setFileExt(getFileExtension(boardImg.getOriginalFilename()));
+		boardImage.setFileType(boardImg.getContentType());
+		
+		int imgBoardFileResult = addBoardFile(boardImage);
+		if(imgBoardFileResult == 0) {
+			throw new RuntimeException("이미지 등록 실패");
+		}
+		log.debug(TeamColor.LJH + "FileName ========> " + boardImage.getFileName() + TeamColor.RESET);
+		// 파일 저장
+		
+		File saveBoardFile = new File(boardImagePath,boardFileName);
+		boardImg.transferTo(saveBoardFile);
+		log.debug(TeamColor.LJH + "Path ========> " + saveBoardFile.getAbsolutePath() + TeamColor.RESET);
+	       
+		return board.getBoardNo();
+	}
+	
+
+	
+// 게시판 이미지 정보 추가
+	
+	
+	// 파일 확장자 추출 메서드
+    private String getFileExtension(String boardfileName) {
+        int dotIndex = boardfileName.lastIndexOf('.');
+        if (dotIndex == -1) {
+            return ""; // 확장자가 없는 경우
+        }
+        return boardfileName.substring(dotIndex + 1);
+    }
+    
 	
 // 부서 번호 카테고리 작업자 : 이준호
 	public List<Division> getDivisionList(){
@@ -54,7 +98,10 @@ public class BoardService {
 	public Integer insertBoard(Board board) {
 		return boardMapper.insertBoard(board);
 	}
+	
+	
 
+	
 	
 //	게시글 댓글 통합 삭제 /board/removeBoard 작업자 : 이준호 
 	public void deleteBoardWithComment(int boardNo) {

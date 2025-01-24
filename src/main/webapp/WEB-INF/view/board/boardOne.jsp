@@ -119,6 +119,7 @@
         background-color: #898989;
         color: #FFFFFF;
     }
+    .boardContentBox .boardFileBox {width: 100%; border: 1px solid red; margin: 1% 0; height: auto;}
 </style>
 
 <body class="text-base bg-body-bg text-body font-public dark:text-zink-100 dark:bg-zink-800 group-data-[skin=bordered]:bg-body-bordered group-data-[skin=bordered]:dark:bg-zink-700">
@@ -179,7 +180,10 @@
 
                             <div class="boardContentBox">
                                 <textarea class="form-input" readonly onfocus='this.blur();'>${boardMap.boardContent}</textarea>
-
+								
+								<div class="boardFileBox">
+									${fileMap.fileName}
+								</div>
                                 <div class="contentFooterBox">
                                     <!-- 버튼 박스 -->
                                     <c:if test="${empNo == boardMap.boardWriterNo}">

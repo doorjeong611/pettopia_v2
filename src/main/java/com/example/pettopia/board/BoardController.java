@@ -22,6 +22,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -64,27 +65,27 @@ public class BoardController {
 	    // 모델값 
 	    
 	    model.addAttribute("boardCategory", boardHeader);
-	    log.debug(TeamColor.LJH + "boardMap : " + boardOneMap + TeamColor.RESET);
 	    model.addAttribute("boardWriterNo",boardWriterNo);
 	    model.addAttribute("empNo", empNo);
 		model.addAttribute("boardMap",boardOneMap);
 		model.addAttribute("boardNo",boardNo);
+		
 	 
 		return "board/boardOne";
 	}
 	
 	@PostMapping("/board/addBoard")
 	public String addBoard(Model model,
-	        Board board,
 	        HttpSession session,
+	        RedirectAttributes redirectAttributes,
+	        @ModelAttribute Board board,
 	        @RequestParam("boardImg") MultipartFile boardImg,
-	        @RequestParam(value = "category", defaultValue = "ALL") String boardCategory,
+	        @RequestParam(value = "category") String boardCategory,
 	        @RequestParam(value = "content", defaultValue = "빈 값입니다.") String boardContent,
 	        Authentication auth) {
-	    
+		  
 	    // boardCategory를 boardHeader로 설정
 	    board.setBoardHeader(boardCategory);  // boardCategory 값이 boardHeader로 사용됨
-	    
 	    
 	    EmpUserDetails empUserDetails = (EmpUserDetails) auth.getPrincipal();
 	    String boardWriterNo = empUserDetails.getUsername();
@@ -92,38 +93,36 @@ public class BoardController {
 	    // 작성자ID 삽입 
 	    board.setBoardWriterNo(boardWriterNo);
 	    
-	    
-	    
-	    
-	    String boardImagePath = session.getServletContext().getRealPath("/boardFile/");
-	    boardService.addBoardWithImage(board, boardImg, boardImagePath);
-
-	    
-	    
+	  
+	    	String boardImagePath = session.getServletContext().getRealPath("/boardFile/");
+			try {
+				boardService.addBoardOne(board, boardImg, boardImagePath);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+		
 	    // boardContent가 제대로 전달되었는지 확인
 	    if (board.getBoardContent() == null || board.getBoardContent().isEmpty()) {
 	    	log.debug(TeamColor.LJH + "boardContent is empty or null" + TeamColor.RESET);
 	    } else {
 	    	log.debug(TeamColor.LJH + "boardContent: " + board.getBoardContent() + TeamColor.RESET);
 	    }
-
-	    // Board 삽입
-	    boardService.insertBoard(board);
-	    
-	    
+	   
 	    
 	    // 카테고리 모델에 추가
 	    model.addAttribute("boardCategory", boardCategory);
-	
+	    
 	    // 카테고리 정보 모델에 추가
 	    Map<String, Object> categoryByAddBoard = new HashMap<>();
 	    model.addAttribute("categoryByAddBoard", categoryByAddBoard);
-	    
+	   
 	    log.debug(TeamColor.LJH + "보드 헤더 : " + boardCategory + TeamColor.RESET);
 
 	    // 리다이렉트
 	    return "redirect:/board/boardList";
 	}
+	
 	// 게시글 작성 구현 /board/addBoard/ 작업자 : 이준호
 	@GetMapping("/board/addBoard")
 	public String addBoard(Model model,

@@ -6,11 +6,16 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.example.pettopia.vo.Board;
+import com.example.pettopia.vo.BoardFile;
 import com.example.pettopia.vo.Division;
 
 @Mapper
 public interface BoardMapper {
-
+// 게시판 이미지 내용 추가
+	int insertBoardFile(BoardFile boardFile);
+// 게시판 내용 및 이미지 조회
+	List<Map<String, Object>> selectBoardWithImages();
+	
 // 게시판 카운트 쿼리 /board/boardList 작업자 : 이준호
 	Integer selectBoardCount(Map<String, Object> lastMap);
 	
