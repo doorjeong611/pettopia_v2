@@ -162,24 +162,26 @@
                             </div>
                         </div>
 
-    
-                        <div class="relative flex items-center dropdown h-header">
+    					<!-- 개인 정보 -->
+                        <div class="relative flex items-center dropdown h-header"">
                             <button type="button" class="inline-block p-0 transition-all duration-200 ease-linear bg-topbar rounded-full text-topbar-item dropdown-toggle btn hover:bg-topbar-item-bg-hover hover:text-topbar-item-hover group-data-[topbar=dark]:text-topbar-item-dark group-data-[topbar=dark]:bg-topbar-dark group-data-[topbar=dark]:hover:bg-topbar-item-bg-hover-dark group-data-[topbar=dark]:hover:text-topbar-item-hover-dark group-data-[topbar=brand]:bg-topbar-brand group-data-[topbar=brand]:hover:bg-topbar-item-bg-hover-brand group-data-[topbar=brand]:hover:text-topbar-item-hover-brand group-data-[topbar=dark]:dark:bg-zink-700 group-data-[topbar=dark]:dark:hover:bg-zink-600 group-data-[topbar=brand]:text-topbar-item-brand group-data-[topbar=dark]:dark:hover:text-zink-50 group-data-[topbar=dark]:dark:text-zink-200" id="dropdownMenuButton" data-bs-toggle="dropdown">
                                 <div class="bg-ligth-100 rounded-full">
-                                    <img src="${pageContext.request.contextPath}/assets/images/logo-pettopia.png" alt="" class="w-[37.5px] h-[37.5px] rounded-full">
+                                    <img src="${pageContext.request.contextPath}/employeeFile/${empInfo.empFileName}" alt="" class="w-[37.5px] h-[37.5px] rounded-full">
                                 </div>
                             </button>
-                            <div class="absolute z-50 hidden p-4 ltr:text-left rtl:text-right bg-white rounded-md shadow-md !top-4 dropdown-menu min-w-[14rem] dark:bg-zink-600" aria-labelledby="dropdownMenuButton">
+                            <div class="absolute z-50 hidden p-4 ltr:text-left rtl:text-right bg-white rounded-md shadow-md !top-4 dropdown-menu min-w-[20rem] dark:bg-zink-600" aria-labelledby="dropdownMenuButton">
                                 <h6 class="mb-2 text-sm font-normal text-slate-500 dark:text-zink-300">Welcome to PetTopia</h6>
                                 <a href="#!" class="flex gap-3 mb-3">
                                     <div class="relative inline-block shrink-0">
                                         <div class="rounded bg-slate-100 dark:bg-zink-500">
-                                            <img src="${pageContext.request.contextPath}/assets/images/logo-pettopia.png" alt="" class="w-12 h-12 rounded">
+                                            <img src="${pageContext.request.contextPath}/employeeFile/${empInfo.empFileName}" alt="" class="w-24 h-24 rounded">
                                         </div>
-                                        <span class="-top-1 ltr:-right-1 rtl:-left-1 absolute w-2.5 h-2.5 bg-green-400 border-2 border-white rounded-full dark:border-zink-600"></span>
+                                        
                                     </div>
                                     <div>
                                         <h6 class="mb-1 text-15">${loginEmp.username }</h6>
+                                        <p class="text-slate-500 dark:text-zink-300">${loginEmp.deptCode }</p>
+                                        <p class="text-slate-500 dark:text-zink-300">${loginEmp.deptCode }</p>
                                         <p class="text-slate-500 dark:text-zink-300">${loginEmp.deptCode }</p>
                                     </div>
                                 </a>
