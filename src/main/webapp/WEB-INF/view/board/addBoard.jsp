@@ -142,7 +142,7 @@
                 	 	
                         
 	                    <!-- 게시글 작성 -->
-                        <form action="${pageContext.request.contextPath}/board/addBoard" method="post" enctype="multipart/form-data" >
+                        <form id="formCategory" action="${pageContext.request.contextPath}/board/addBoard" method="post" enctype="multipart/form-data" >
 	                        <!-- boardHeader 시작 -->
 	                        <div class="boardHeader">
 		                        <div class="inputBox">
@@ -184,9 +184,6 @@
 			                        
 		                        	
                         			</div>
-	                        		<div id="contentThumbnail">
-		                        		
-                       				</div>
 	                        	</div>
                         	</div>
                         	<!-- boardContent 종료 -->
@@ -200,8 +197,6 @@
                         </form>
                         
                         
-               	 		
-                    
                 	 </div>
                 </div>
               	
@@ -235,6 +230,17 @@
 <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
 <!-- jQuery library -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script>
+   document.querySelector("#formCategory").addEventListener("submit", function(event) {
+        var boardCategory = document.getElementById("boardCategory").value;
+        
+        // 말머리 값이 선택되지 않았으면 경고창 띄우기
+        if (boardCategory == "") {
+            event.preventDefault();  // 폼 제출 막기
+            alert("말머리를 선택해주세요.");
+        }
+    });
+    </script>
 </body>
 
 </html>

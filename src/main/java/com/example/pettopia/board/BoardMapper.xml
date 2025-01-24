@@ -27,6 +27,24 @@
     </where>
 </select>
 	
+<select id="selectBoardFile" parameterType="com.example.pettopia.vo.BoardFile" resultType="map">
+    SELECT
+        board_file_no boardFileNo,
+        board_no boardNo,
+        origin_file_name originFileName,
+        file_name fileName,
+        file_ext fileExt,
+        file_type fileType,
+        create_datetime createDatetime,
+        update_datetime updateDatetime
+    FROM
+        board_file
+    WHERE 
+        board_no = #{boardNo}
+</select>
+	
+	
+	
 	<!-- 게시글 카테고리 셀렉트 쿼리 /board/boardList 작업자 : 이준호 -->
 	<select id="selectHeaderListByBoard" parameterType="String" resultType="map">
 		SELECT
@@ -47,10 +65,12 @@
 	
 	<!-- 게시글 작성 쿼리 /board/addBoard 작업자 : 이준호 -->
 	<insert id="insertBoard" parameterType="com.example.pettopia.vo.Board">
+	<selectKey resultType="Integer" keyProperty="boardNo" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
 		INSERT INTO board(
 			board_title,
 			board_writer_no,
-			division_code,
 			board_content,
 			board_header,
 			board_like,
@@ -59,7 +79,6 @@
 		) VALUES (
 			#{boardTitle},
 			#{boardWriterNo},
-			#{divisionCode},
 			#{boardContent},
 			#{boardHeader},
 			0,
@@ -155,5 +174,10 @@
 		WHERE
 			board_no = #{boardNo}
 	</delete>
+	
+	<insert id="insertBoardFile" parameterType="com.example.pettopia.vo.BoardFile">
+		INSERT INTO board_file(board_no, origin_file_name, file_name, file_ext, file_type, create_datetime, update_datetime)
+		VALUES (#{boardNo}, #{originFileName}, #{fileName}, #{fileExt}, #{fileType}, NOW(), NOW());
+	</insert>
 	
 </mapper>
