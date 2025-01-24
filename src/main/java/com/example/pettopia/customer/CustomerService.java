@@ -13,18 +13,19 @@ import com.example.pettopia.vo.Customer;
 public class CustomerService {
     @Autowired
     private CustomerMapper customerMapper;
-
-    // 고객 리스트 조회 + 페이징
-    public List<Customer> getCustomerList(int pageSize, int currentPage) {
-        int offset = (currentPage - 1) * pageSize; // 시작 위치 계산
+    
+    public List<Customer> getCustomerList(String searchWord, int pageSize, int currentPage) {
+        int offset = (currentPage - 1) * pageSize;
         Map<String, Object> params = new HashMap<>();
+        params.put("searchWord", searchWord);
         params.put("pageSize", pageSize);
         params.put("offset", offset);
-        return customerMapper.selectCustomerList(params); // 페이징된 고객 리스트 반환
+        return customerMapper.selectCustomerList(params);
     }
 
-    // 총 고객 수 조회
-    public int countCustomerList() {
-        return customerMapper.countCustomerList(); // 전체 고객 수 반환
+    public int countCustomerList(String searchWord) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("searchWord", searchWord);
+        return customerMapper.countCustomerList(params);
     }
 }

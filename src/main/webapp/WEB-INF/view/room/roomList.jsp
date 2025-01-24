@@ -28,6 +28,7 @@
     align-items: center;
     justify-content: center;
     background-color: #f0f0f0; /* 필요하면 배경색 추가 */
+    border-radius: 20px; /* 이미지 모서리 둥글게 처리 */
 }
 
 .image-container img {
@@ -78,7 +79,7 @@
 	                    <div class="overflow-x-auto">
 	                    	<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 							    <c:forEach var="room" items="${roomListImg}">
-							        <div class="flex flex-col p-4 bg-white border rounded-md shadow-sm dark:bg-zinc-800">
+							        <div class="flex flex-col p-4">
 							            <div class="image-container">
 							                <img src="${pageContext.request.contextPath}/upload/${room.fileName}" 
 							                     alt="${room.originFileName}">
@@ -200,7 +201,6 @@
 	        alert('삭제 성공하였습니다.');
 	        window.location.href = $(this).attr('href');
 	    }
-	});
 	});
 </script>
 
