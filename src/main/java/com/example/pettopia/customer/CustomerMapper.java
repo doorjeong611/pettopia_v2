@@ -13,5 +13,6 @@ public interface CustomerMapper {
     List<Customer> selectCustomerList(Map<String, Object> params);
 
     // 총 고객 수 조회
-    int countCustomerList();
+    int countCustomerList(Map<String, Object> params);
+
 }

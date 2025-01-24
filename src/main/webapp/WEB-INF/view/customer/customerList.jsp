@@ -45,10 +45,21 @@
                         </li>
                     </ul>
                 </div>
+                
+                <form action="${pageContext.request.contextPath}/customer/getCustomerList" method="get" class="mb-4">
+	                <div class="flex items-center gap-2 2xl:col-span-4 2xl:col-start-9">
+	                    <div class="relative grow">
+	                        <input type="text" name="searchWord" value="${searchWord}" class="ltr:pl-8 rtl:pr-8 search form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="이름 / 제목을 입력하세요.">
+	                         <button type="submit" class="absolute right-0 top-0 h-full px-4 text-slate-500">
+	                        	<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="search" class="lucide lucide-search inline-block size-4 absolute ltr:left-2.5 rtl:right-2.5 top-2.5 text-slate-500 dark:text-zink-200 fill-slate-100 dark:fill-zink-600"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+	                        </button>
+	                    </div>
+	                    </div>
+                </form>
+    
                 <!-- Main content -->
                   <div class="card">
                         <div class="card-body">
-                    
                             <div class="overflow-x-auto">
                                 <table class="w-full">
                                     <thead class="ltr:text-left rtl:text-right ">
