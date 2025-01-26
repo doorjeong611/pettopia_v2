@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.example.pettopia.vacationrecord.VacationRecordMapper">
+	
+	<!-- 오자윤 : /vacation/vacationList 직원 휴가 카운팅 -->
+	<select id="getVacationCount" resultType="int">
+	        SELECT 
+	            SUM(
+	                CASE 
+	                    WHEN d.vacation_type = 'AL' THEN 1 <!-- 연차 -->
+	                    WHEN d.vacation_type IN ('HLA', 'HLP') THEN 0.5 <!-- 반차 -->
+	                    ELSE 0
+	                END
+	            ) AS total_vacation_days
+	        FROM 
+	            document d
+	        JOIN 
+	            employee e ON d.doc_writer_no = e.emp_no
+	        WHERE 
+	            d.doc_type = 'V' <!-- 휴가 -->
+	            AND d.approval_status = 'A' <!-- 승인 -->
+	            AND e.emp_no = #{empNo} 
+	    </select>
+	    
+	<!-- 오자윤 : /vacation/vacationList 직원 휴가 사용내역 -->
+    <select id="getVacationUsage" resultType="Map">
+        SELECT 
+            e.emp_no AS empNo,
+            e.emp_name AS empName,
+            d.doc_title AS docTitle,
+            d.start_date AS startDate,
+            d.end_date AS endDate,
+            d.vacation_type AS vacationType,
+            CASE 
+                WHEN d.vacation_type = 'AL' THEN 1
+                WHEN d.vacation_type IN ('HLA', 'HLP') THEN 0.5
+                ELSE 0
+            END AS vacationDays
+        FROM 
+            document d
+        JOIN 
+            employee e ON d.doc_writer_no = e.emp_no
+        WHERE 
+            d.doc_type = 'V' 
+            AND d.approval_status = 'A'
+            AND e.emp_no = #{empNo} 
+        ORDER BY 
+            e.emp_no, d.start_date;
+    </select>
+    
+</mapper>
