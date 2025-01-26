@@ -2,12 +2,33 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.pettopia.schedule.ScheduleMapper">
 	
-	<!-- selectScheduleList -->
+	<!-- selectScheduleList : 캘린더 일정 조회하기 -->
 	<select id="selectScheduleList" parameterType="String" resultType="Map">
 		SELECT s.schedule_no scheduleNo, s.emp_no empNo, s.schedule_title scheduleTitle, s.schedule_type scheduleType,
-			   s.all_day allDay, s.start_datetime startDatetime, s.end_datetime endDatetime, 
-			   s.create_datetime createDatetime, s.update_datetime updateDatetime
+			   s.all_day allDay, s.start_datetime startDatetime, s.end_datetime endDatetime
 		FROM `schedule` s WHERE emp_no = #{empNo}
 	</select>
 	
+	<!-- insertSchedule : 캘린더 일정 추가하기 -->
+	<insert id="insertSchedule" parameterType="com.example.pettopia.vo.Schedule" useGeneratedKeys="true" keyColumn="schedule_no" keyProperty="scheduleNo" >
+        INSERT INTO schedule(emp_no, schedule_title, schedule_type, all_day, start_datetime, end_datetime) 
+		VALUES (#{empNo}, #{scheduleTitle}, #{scheduleType}, #{allDay}, STR_TO_DATE(#{startDatetime}, '%Y-%m-%d %H:%i:%s'), STR_TO_DATE(#{endDatetime}, '%Y-%m-%d %H:%i:%s'))
+    </insert>	
+	
+	
+	<!-- deleteSchedule : 캘린더 일정 삭제하기 -->
+<!-- 	<delete id="calendarDelete"> -->
+<!--         DELETE FROM CALENDAR WHERE CALENDAR_NO = #{no} -->
+<!--     </delete> -->
+	
+	<!-- updateSchedule : 캘린더 일정 수정하기 -->
+<!-- 	<update id="eventUpdate" parameterType="com.example.practice.vo.calendar.CalendarVo"> -->
+<!--         UPDATE CALENDAR SET -->
+<!--                             CALENDAR_TITLE = #{title} , -->
+<!--                             CALENDAR_START = TO_DATE(#{start1}, 'YYYY-MM-DD"T"HH24:MI:SS') , -->
+<!--                             CALENDAR_END = TO_DATE(#{end}, 'YYYY-MM-DD"T"HH24:MI:SS') , -->
+<!--                             ALL_DAY = #{allDay} -->
+<!--         WHERE CALENDAR_NO = #{calendarNo} -->
+<!--     </update> -->
+
 </mapper>
