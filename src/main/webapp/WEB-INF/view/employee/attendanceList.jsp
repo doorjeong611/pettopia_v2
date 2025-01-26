@@ -18,36 +18,36 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tailwind2.css">
        <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<style>
-    .attendance-table {
-	    table-layout: fixed;
-	    width: 100%;
-        white-space: nowrap;
-        border-collapse: collapse; /* 테두리 겹침 방지 */
-        margin: 20px auto; /*가운데 정렬 */
-        
-    }
-
-    .attendance-table th, .attendance-table td {
-        padding: 12px; /* 패딩을 약간 늘림 */
-        border: 1px solid #e0e0e0; /* 테두리 색상을 조금 더 부드럽게 변경 */
-        text-align: center;
-    }
-
-    .attendance-table th {
-        background-color: #f0f4ff; /* 헤더 배경색을 팀 색상에 맞게 수정 */
-        color: #003366; /* 텍스트 색상을 팀의 기본 색상으로 변경 */
-        font-weight: bold; /* 헤더 글씨를 더 두껍게 */
-    }
-
-    .attendance-table tbody tr:nth-child(even) {
-        background-color: #f9fbfd; /* 짝수 행 배경색을 부드럽게 수정 */
-    }
-
-    .attendance-table tbody tr:nth-child(odd) {
-        background-color: #ffffff; /* 홀수 행 배경색 */
-    }
-</style>
+	<style>
+	    .attendance-table {
+		    table-layout: fixed;
+		    width: 100%;
+	        white-space: nowrap;
+	        border-collapse: collapse; /* 테두리 겹침 방지 */
+	        margin: 20px auto; /*가운데 정렬 */
+	        
+	    }
+	
+	    .attendance-table th, .attendance-table td {
+	        padding: 12px; /* 패딩을 약간 늘림 */
+	        border: 1px solid #e0e0e0; /* 테두리 색상을 조금 더 부드럽게 변경 */
+	        text-align: center;
+	    }
+	
+	    .attendance-table th {
+	        background-color: #f0f4ff; /* 헤더 배경색을 팀 색상에 맞게 수정 */
+	        color: #003366; /* 텍스트 색상을 팀의 기본 색상으로 변경 */
+	        font-weight: bold; /* 헤더 글씨를 더 두껍게 */
+	    }
+	
+	    .attendance-table tbody tr:nth-child(even) {
+	        background-color: #f9fbfd; /* 짝수 행 배경색을 부드럽게 수정 */
+	    }
+	
+	    .attendance-table tbody tr:nth-child(odd) {
+	        background-color: #ffffff; /* 홀수 행 배경색 */
+	    }
+	</style>
 
 </head>
 

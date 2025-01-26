@@ -173,7 +173,7 @@ public class AttendanceController {
         
     	// 직원 리스트
         List<Map<String, Object>> attendanceList = attendanceService.selectAttendance(params);
-        log.debug(TeamColor.OJY + "attendanceList------> " + attendanceList + TeamColor.RESET);
+        
         // 직원리스트, 직원출석, 페이징
         model.addAttribute("attendanceList", attendanceList);
         model.addAttribute("employeeStatusCount", employeeStatusCount);

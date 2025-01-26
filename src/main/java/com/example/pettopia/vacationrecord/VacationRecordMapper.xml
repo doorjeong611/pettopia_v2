@@ -3,24 +3,41 @@
 <mapper
 	namespace="com.example.pettopia.vacationrecord.VacationRecordMapper">
 	
+	<!-- 오자윤 : /vacation/vacationList 휴가 리스트 페이지네이션 카운트 -->
+	<select id="countVacation" resultType="int">
+	    SELECT COUNT(*)
+	    FROM document d
+	    JOIN employee e ON d.doc_writer_no = e.emp_no
+	    WHERE d.doc_type = 'V' 
+	      AND d.approval_status = 'A'
+	      AND (#{empNo} IS NULL OR e.emp_no = #{empNo});
+	</select>
+
 	<!-- 오자윤 : /vacation/vacationList 직원 휴가 카운팅 -->
-	<select id="getVacationCount" resultType="int">
-	        SELECT 
-	            SUM(
-	                CASE 
-	                    WHEN d.vacation_type = 'AL' THEN 1 <!-- 연차 -->
-	                    WHEN d.vacation_type IN ('HLA', 'HLP') THEN 0.5 <!-- 반차 -->
-	                    ELSE 0
-	                END
-	            ) AS total_vacation_days
-	        FROM 
-	            document d
-	        JOIN 
-	            employee e ON d.doc_writer_no = e.emp_no
-	        WHERE 
-	            d.doc_type = 'V' <!-- 휴가 -->
-	            AND d.approval_status = 'A' <!-- 승인 -->
-	            AND e.emp_no = #{empNo} 
+	<select id="getVacationCount" resultType="Map">
+		SELECT 
+		    e.emp_no AS empNo,
+		    e.emp_name AS empName,
+		    vr.total_vacation AS total_vacation_days, <!-- 총 연차 -->
+		    SUM(CASE 
+		        WHEN d.vacation_type = 'AL' THEN 1 
+		        WHEN d.vacation_type IN ('HLA', 'HLP') THEN 0.5 
+		        ELSE 0 
+		    END) AS used_vacation_days, <!-- 사용한 휴가 -->
+		    (vr.total_vacation - SUM(CASE 
+		        WHEN d.vacation_type = 'AL' THEN 1 
+		        WHEN d.vacation_type IN ('HLA', 'HLP') THEN 0.5 
+		        ELSE 0 
+		    END)) AS remaining_vacation_days <!-- 잔여 휴가 -->
+		FROM 
+		    employee e
+		JOIN 
+		    vacation_record vr ON e.emp_no = vr.emp_no
+		LEFT JOIN 
+		    document d ON e.emp_no = d.doc_writer_no AND d.doc_type = 'V' AND d.approval_status = 'A'
+		GROUP BY 
+		    e.emp_no, e.emp_name, vr.total_vacation;
+
 	    </select>
 	    
 	<!-- 오자윤 : /vacation/vacationList 직원 휴가 사용내역 -->
@@ -46,7 +63,8 @@
             AND d.approval_status = 'A'
             AND e.emp_no = #{empNo} 
         ORDER BY 
-            e.emp_no, d.start_date;
+	   	 	e.emp_no, d.start_date
+		LIMIT #{limit} OFFSET #{offset};
     </select>
     
 </mapper>
