@@ -16,6 +16,36 @@
     <script src="${pageContext.request.contextPath}/assets/js/layout.js"></script>
     <!-- Tailwind CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tailwind2.css">
+    <style>
+    .attendance-table {
+	    table-layout: fixed;
+	    width: 100%;
+        white-space: nowrap;
+        border-collapse: collapse; /* 테두리 겹침 방지 */
+        margin: 20px auto; /*가운데 정렬 */
+        
+    }
+
+    .attendance-table th, .attendance-table td {
+        padding: 12px; /* 패딩을 약간 늘림 */
+        border: 1px solid #e0e0e0; /* 테두리 색상을 조금 더 부드럽게 변경 */
+        text-align: center;
+    }
+
+    .attendance-table th {
+        background-color: #f0f4ff; /* 헤더 배경색을 팀 색상에 맞게 수정 */
+        color: #003366; /* 텍스트 색상을 팀의 기본 색상으로 변경 */
+        font-weight: bold; /* 헤더 글씨를 더 두껍게 */
+    }
+
+    .attendance-table tbody tr:nth-child(even) {
+        background-color: #f9fbfd; /* 짝수 행 배경색을 부드럽게 수정 */
+    }
+
+    .attendance-table tbody tr:nth-child(odd) {
+        background-color: #ffffff; /* 홀수 행 배경색 */
+    }
+</style>
 </head>
 
 <body class="text-base bg-body-bg text-body font-public dark:text-zink-100 dark:bg-zink-800 group-data-[skin=bordered]:bg-body-bordered group-data-[skin=bordered]:dark:bg-zink-700">
@@ -44,7 +74,7 @@
                             <a href="#!" class="text-slate-400 dark:text-zink-200">휴가</a>
                         </li>
                         <li class="text-slate-700 dark:text-zink-100">
-                            템플릿
+                            휴가
                         </li>
                     </ul>
                 </div>
@@ -52,56 +82,165 @@
                 <div class="grid grid-cols-1 gap-x-5 md:grid-cols-2 xl:grid-cols-12">
 				<div class="col-span-12 md:order-3 lg:col-span-6 2xl:col-span-3 card">
                         <div class="card-body">
-                            <div class="grid grid-cols-12">
-                                <div class="col-span-8 md:col-span-9">
-                                    <p class="text-slate-500 dark:text-slate-200">총 연차휴가</p>
-                                    <h5 class="mt-3 mb-4"><span class="counter-value" data-target="15">15</span></h5>
+                            <div class="grid grid-cols-12 items-center">
+                                <div class="col-span-8 md:col-span-8">
+                                    <p class="text-slate-500 dark:text-slate-200" style="font-size: 0.9rem">총 연차휴가</p>
+                                    <h5 class="mt-3 mb-4" style="font-size: 1.2rem;"><span class="counter-value" data-target="${totalVacationDays}">"${totalVacationDays}"</span></h5>
                                 </div>
-                                <div class="col-span-4 md:col-span-3">
-                                    <div id="totalEmployee" data-chart-colors="[&quot;bg-custom-500&quot;]" dir="ltr" class="grow apex-charts" style="min-height: 77px;"><div id="apexchartsol485m6rl" class="apexcharts-canvas apexchartsol485m6rl apexcharts-theme-light" style="width: 74px; height: 77px;"><svg id="SvgjsSvg1001" width="74" height="77" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev" class="apexcharts-svg" xmlns:data="ApexChartsNS" transform="translate(0, 0)" style="background: transparent;"><foreignObject x="0" y="0" width="74" height="77"><div class="apexcharts-legend" xmlns="http://www.w3.org/1999/xhtml"></div></foreignObject><g id="SvgjsG1003" class="apexcharts-inner apexcharts-graphical" transform="translate(0, 1)"><defs id="SvgjsDefs1002"><clipPath id="gridRectMaskol485m6rl"><rect id="SvgjsRect1004" width="80" height="114" x="-3" y="-3" rx="0" ry="0" opacity="1" stroke-width="0" stroke="none" stroke-dasharray="0" fill="#fff"></rect></clipPath><clipPath id="forecastMaskol485m6rl"></clipPath><clipPath id="nonForecastMaskol485m6rl"></clipPath><clipPath id="gridRectMarkerMaskol485m6rl"><rect id="SvgjsRect1005" width="78" height="112" x="-2" y="-2" rx="0" ry="0" opacity="1" stroke-width="0" stroke="none" stroke-dasharray="0" fill="#fff"></rect></clipPath></defs><g id="SvgjsG1006" class="apexcharts-radialbar"><g id="SvgjsG1007"><g id="SvgjsG1008" class="apexcharts-tracks"><g id="SvgjsG1009" class="apexcharts-radialbar-track apexcharts-track" rel="1"><path id="apexcharts-radialbarTrack-0" d="M 37 13.439024390243901 A 23.5609756097561 23.5609756097561 0 1 1 36.99588783402715 13.439024749098078 " fill="none" fill-opacity="1" stroke="rgba(242,242,242,0.85)" stroke-opacity="1" stroke-linecap="round" stroke-width="6.8136585365853675" stroke-dasharray="0" class="apexcharts-radialbar-area" data:pathOrig="M 37 13.439024390243901 A 23.5609756097561 23.5609756097561 0 1 1 36.99588783402715 13.439024749098078 "></path></g></g><g id="SvgjsG1011"><g id="SvgjsG1013" class="apexcharts-series apexcharts-radial-series" seriesName="TotalxEmployee" rel="1" data:realIndex="0"><path id="SvgjsPath1014" d="M 37 13.439024390243901 A 23.5609756097561 23.5609756097561 0 0 1 50.84879399303729 17.938770327653675 " fill="none" fill-opacity="0.85" stroke="rgba(59,130,246,0.85)" stroke-opacity="1" stroke-linecap="round" stroke-width="7.02439024390244" stroke-dasharray="0" class="apexcharts-radialbar-area apexcharts-radialbar-slice-0" data:angle="36" data:value="10" index="0" j="0" data:pathOrig="M 37 13.439024390243901 A 23.5609756097561 23.5609756097561 0 0 1 50.84879399303729 17.938770327653675 "></path></g><circle id="SvgjsCircle1012" r="20.154146341463417" cx="37" cy="37" class="apexcharts-radialbar-hollow" fill="transparent"></circle></g></g></g><line id="SvgjsLine1016" x1="0" y1="0" x2="74" y2="0" stroke-dasharray="0" stroke-width="0" stroke-linecap="butt" class="apexcharts-ycrosshairs-hidden"></line></g></svg></div></div>
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-3 mt-3">
-                                <p class="text-slate-500 dark:text-slate-200 grow"><span class="font-medium text-green-500"></span></p>
-                                <p class="text-slate-500 dark:text-slate-200"></p>
+								  <div style="display: flex; align-items: center; margin-bottom: 15px;">
+								    <span style="font-size: 55px; margin-right: 0px;">🏖️</span>
+								  </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-span-12 md:order-5 2xl:order-6 lg:col-span-6 2xl:col-span-3 card">
                         <div class="card-body">
-                            <div class="grid grid-cols-12">
-                                <div class="col-span-8 md:col-span-9">
-                                    <p class="text-slate-500 dark:text-slate-200">사용연차</p>
-                                    <h5 class="mt-3 mb-4"><span class="counter-value" data-target="10">10</span></h5>
+                            <div class="grid grid-cols-12 items-center">
+                                <div class="col-span-8 md:col-span-8">
+                                    <p class="text-slate-500 dark:text-slate-200" style="font-size: 0.9rem">사용연차</p>
+                                    <h5 class="mt-3 mb-4" style="font-size: 1.2rem;"><span class="counter-value" data-target="${usedVacationDays}">${usedVacationDays}</span></h5>
                                 </div>
-                                <div class="col-span-4 md:col-span-3">
-                                    <div id="hiredCandidates" data-chart-colors="[&quot;bg-green-500&quot;]" dir="ltr" class="grow apex-charts" style="min-height: 77px;"><div id="apexchartsr12c7dzs" class="apexcharts-canvas apexchartsr12c7dzs apexcharts-theme-light" style="width: 74px; height: 77px;"><svg id="SvgjsSvg1033" width="74" height="77" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev" class="apexcharts-svg" xmlns:data="ApexChartsNS" transform="translate(0, 0)" style="background: transparent;"><foreignObject x="0" y="0" width="74" height="77"><div class="apexcharts-legend" xmlns="http://www.w3.org/1999/xhtml"></div></foreignObject><g id="SvgjsG1035" class="apexcharts-inner apexcharts-graphical" transform="translate(0, 1)"><defs id="SvgjsDefs1034"><clipPath id="gridRectMaskr12c7dzs"><rect id="SvgjsRect1036" width="80" height="114" x="-3" y="-3" rx="0" ry="0" opacity="1" stroke-width="0" stroke="none" stroke-dasharray="0" fill="#fff"></rect></clipPath><clipPath id="forecastMaskr12c7dzs"></clipPath><clipPath id="nonForecastMaskr12c7dzs"></clipPath><clipPath id="gridRectMarkerMaskr12c7dzs"><rect id="SvgjsRect1037" width="78" height="112" x="-2" y="-2" rx="0" ry="0" opacity="1" stroke-width="0" stroke="none" stroke-dasharray="0" fill="#fff"></rect></clipPath></defs><g id="SvgjsG1038" class="apexcharts-radialbar"><g id="SvgjsG1039"><g id="SvgjsG1040" class="apexcharts-tracks"><g id="SvgjsG1041" class="apexcharts-radialbar-track apexcharts-track" rel="1"><path id="apexcharts-radialbarTrack-0" d="M 37 13.439024390243901 A 23.5609756097561 23.5609756097561 0 1 1 36.99588783402715 13.439024749098078 " fill="none" fill-opacity="1" stroke="rgba(242,242,242,0.85)" stroke-opacity="1" stroke-linecap="round" stroke-width="6.8136585365853675" stroke-dasharray="0" class="apexcharts-radialbar-area" data:pathOrig="M 37 13.439024390243901 A 23.5609756097561 23.5609756097561 0 1 1 36.99588783402715 13.439024749098078 "></path></g></g><g id="SvgjsG1043"><g id="SvgjsG1045" class="apexcharts-series apexcharts-radial-series" seriesName="TotalxEmployee" rel="1" data:realIndex="0"><path id="SvgjsPath1046" d="M 37 13.439024390243901 A 23.5609756097561 23.5609756097561 0 0 1 60.5609756097561 37 " fill="none" fill-opacity="0.85" stroke="rgba(36,151,130,0.85)" stroke-opacity="1" stroke-linecap="round" stroke-width="7.02439024390244" stroke-dasharray="0" class="apexcharts-radialbar-area apexcharts-radialbar-slice-0" data:angle="90" data:value="25" index="0" j="0" data:pathOrig="M 37 13.439024390243901 A 23.5609756097561 23.5609756097561 0 0 1 60.5609756097561 37 "></path></g><circle id="SvgjsCircle1044" r="20.154146341463417" cx="37" cy="37" class="apexcharts-radialbar-hollow" fill="transparent"></circle></g></g></g><line id="SvgjsLine1048" x1="0" y1="0" x2="74" y2="0" stroke-dasharray="0" stroke-width="0" stroke-linecap="butt" class="apexcharts-ycrosshairs-hidden"></line></g></svg></div></div>
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-3 mt-3">
-                                <p class="text-slate-500 dark:text-slate-200 grow"><span class="font-medium text-red-500"></span></p>
-                                <p class="text-slate-500 dark:text-slate-200"></p>
+								 <div style="display: flex; align-items: center; margin-bottom: 15px;">
+								    <span style="font-size: 55px; margin-right: 0px;">✈️</span>
+								 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-span-12 md:order-6 2xl:order-7 lg:col-span-6 2xl:col-span-3 card">
                         <div class="card-body">
-                            <div class="grid grid-cols-12">
-                                <div class="col-span-8 md:col-span-9">
-                                    <p class="text-slate-500 dark:text-slate-200">잔여연차</p>
-                                    <h5 class="mt-3 mb-4"><span class="counter-value" data-target="5">5</span></h5>
+                            <div class="grid grid-cols-12 items-center">
+                                <div class="col-span-8 md:col-span-8">
+                                    <p class="text-slate-500 dark:text-slate-200" style="font-size: 0.9rem">잔여연차</p>
+                                    <h5 class="mt-3 mb-4" style="font-size: 1.2rem;"><span class="counter-value" data-target="${remainingVacationDays}">${remainingVacationDays}</span></h5>
                                 </div>
-                                <div class="col-span-4 md:col-span-3">
-                                    <div id="rejectedCandidates" data-chart-colors="[&quot;bg-red-500&quot;]" dir="ltr" class="grow apex-charts" style="min-height: 77px;"><div id="apexchartscu3f4wtm" class="apexcharts-canvas apexchartscu3f4wtm apexcharts-theme-light" style="width: 74px; height: 77px;"><svg id="SvgjsSvg1049" width="74" height="77" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev" class="apexcharts-svg" xmlns:data="ApexChartsNS" transform="translate(0, 0)" style="background: transparent;"><foreignObject x="0" y="0" width="74" height="77"><div class="apexcharts-legend" xmlns="http://www.w3.org/1999/xhtml"></div></foreignObject><g id="SvgjsG1051" class="apexcharts-inner apexcharts-graphical" transform="translate(0, 1)"><defs id="SvgjsDefs1050"><clipPath id="gridRectMaskcu3f4wtm"><rect id="SvgjsRect1052" width="80" height="114" x="-3" y="-3" rx="0" ry="0" opacity="1" stroke-width="0" stroke="none" stroke-dasharray="0" fill="#fff"></rect></clipPath><clipPath id="forecastMaskcu3f4wtm"></clipPath><clipPath id="nonForecastMaskcu3f4wtm"></clipPath><clipPath id="gridRectMarkerMaskcu3f4wtm"><rect id="SvgjsRect1053" width="78" height="112" x="-2" y="-2" rx="0" ry="0" opacity="1" stroke-width="0" stroke="none" stroke-dasharray="0" fill="#fff"></rect></clipPath></defs><g id="SvgjsG1054" class="apexcharts-radialbar"><g id="SvgjsG1055"><g id="SvgjsG1056" class="apexcharts-tracks"><g id="SvgjsG1057" class="apexcharts-radialbar-track apexcharts-track" rel="1"><path id="apexcharts-radialbarTrack-0" d="M 37 13.439024390243901 A 23.5609756097561 23.5609756097561 0 1 1 36.99588783402715 13.439024749098078 " fill="none" fill-opacity="1" stroke="rgba(242,242,242,0.85)" stroke-opacity="1" stroke-linecap="round" stroke-width="6.8136585365853675" stroke-dasharray="0" class="apexcharts-radialbar-area" data:pathOrig="M 37 13.439024390243901 A 23.5609756097561 23.5609756097561 0 1 1 36.99588783402715 13.439024749098078 "></path></g></g><g id="SvgjsG1059"><g id="SvgjsG1061" class="apexcharts-series apexcharts-radial-series" seriesName="TotalxEmployee" rel="1" data:realIndex="0"><path id="SvgjsPath1062" d="M 37 13.439024390243901 A 23.5609756097561 23.5609756097561 0 1 1 13.439024390243901 37 " fill="none" fill-opacity="0.85" stroke="rgba(239,68,68,0.85)" stroke-opacity="1" stroke-linecap="round" stroke-width="7.02439024390244" stroke-dasharray="0" class="apexcharts-radialbar-area apexcharts-radialbar-slice-0" data:angle="270" data:value="75" index="0" j="0" data:pathOrig="M 37 13.439024390243901 A 23.5609756097561 23.5609756097561 0 1 1 13.439024390243901 37 "></path></g><circle id="SvgjsCircle1060" r="20.154146341463417" cx="37" cy="37" class="apexcharts-radialbar-hollow" fill="transparent"></circle></g></g></g><line id="SvgjsLine1064" x1="0" y1="0" x2="74" y2="0" stroke-dasharray="0" stroke-width="0" stroke-linecap="butt" class="apexcharts-ycrosshairs-hidden"></line></g></svg></div></div>
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-3 mt-3">
-                                <p class="text-slate-500 dark:text-slate-200 grow"><span class="font-medium text-red-500"></span></p>
-                                <p class="text-slate-500 dark:text-slate-200"></p>
+                                  <div style="display: flex; align-items: center; margin-bottom: 15px;">
+								    <span style="font-size: 55px; margin-right: 0px;">🏕️</span>
+								  </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                
+            <!-- 휴가리스트 -->
+		   <div class="card">
+                    <div class="items-center gab3 card-body">
+                        <div class="grid grid-cols-1 gap-5 mb-5 xl:grid-cols-12">
+                            <div class="xl:col-span-12">
+                     <!-- 선택박스 -->
+                     
+                  <div id="container" style="gap: 20px; width: 100%; justify-content: space-between;">
+				    <!-- 선택 박스 : 부서 선택 -->
+				    <div style="display: flex; gap: 10px; width: 100%;">
+					  <div class="select-box" style="flex: 1; max-width: 250px;">
+					    <input type="text" id="startDate" class="border border-gray-300 rounded w-full p-2" title="시작일" placeholder="시작일" onfocus="this.type='date'" onblur="if(!this.value)this.type='text'" />
+					  </div>
+					  <div class="select-box" style="flex: 1; max-width: 250px;">
+					    <input type="text" id="endDate" class="border border-gray-300 rounded w-full p-2" title="종료일" placeholder="종료일" onfocus="this.type='date'" onblur="if(!this.value)this.type='text'" />
+					  </div>
+			        
+				    <!-- 휴가일 조회 -->
+				      <div class="button-box" id="buttonBox">
+						<button type="button" id="btnAddFile" class="mr-1 p-2 bg-white text-custosm-500 btn btn-sm hover:text-custom-500 hover:bg-custom-100 focus:text-custom-500 focus:bg-custom-100 active:text-custom-500 active:bg-custom-100" style="font-size: 14px; display: flex; align-items: center; justify-content: center; width: 40px; height: 40px;">
+						  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block">
+						    <circle cx="11" cy="11" r="8"></circle>
+						    <path d="m21 21-4.3-4.3"></path>
+						  </svg>
+						</button>
+				    </div>
+			    </div>
+
+			    <!-- Employee search input and search button on the right -->
+				    <div style="display: flex; gap: 10px;">
+					<!-- 직원 리스트 테이블 -->
+					<div id="newAttendance" style="display: none;">
+					<table class="attendance-table">
+				        <thead>
+				            <tr>
+		                        <th class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">사번</th>
+		                        <th class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">직원이름</th>
+		                        <th class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">출근날짜</th>
+		                        <th class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">출근시간</th>
+		                        <th class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">퇴근시간</th>
+		                        <th class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">근태상태</th>
+		                    </tr>
+				        </thead>
+					    <tbody id="attendanceTableBody">
+					        <!-- 직원 목록 동적으로 추가 -->
+					    </tbody>
+				    </table>
+					
+					<!-- Pagination controls -->
+		            <div id="paginationContainer" style="margin-top: 20px; align-items: center; justify-self: end;">
+		                <c:if test="${currentPage > 1}">
+		                    <a href="${pageContext.request.contextPath}/employee/attendanceList?page=${currentPage - 1}&empName=${param.empName}" class="prev" dfstyle="margin-right: 10px; padding: 8px 12px; border: 1px solid #007bff; background-color: #ffffff; color: #007bff; border-radius: 4px; text-decoration: none;"> < 이전</a>
+		                </c:if>
+		
+		                <c:forEach var="pageNum" begin="1" end="${totalPages}">
+		                    <a href="${pageContext.request.contextPath}/employee/attendanceList?page=${pageNum}&empName=${param.empName}" class="page-num" style="margin-right: 10px; padding: 8px 12px; border: 1px solid #007bff; background-color: #ffffff; color: #007bff; border-radius: 4px; text-decoration: none;">${pageNum}</a>
+		                </c:forEach>
+		
+		                <c:if test="${currentPage < totalPages}">
+		                    <a href="${pageContext.request.contextPath}/employee/attendanceList?page=${currentPage + 1}&empName=${param.empName}" class="next" style="margin-left: 10px; padding: 8px 12px; border: 1px solid #007bff; background-color: #ffffff; color: #007bff; border-radius: 4px; text-decoration: none;"> 다음 > </a>
+		                </c:if>
+		            </div>
+					</div>
+                            </div><!--end col-->
+                            <div class="xl:col-span-2 xl:col-start-11">
+                            
+                            </div>
+                            
+                        </div><!--end grid-->
+                        <div id="existingAttendance" style="display-block;">
+                            <table class="attendance-table">
+                          <thead class="ltr:text-left rtl:text-right bg-slate-100 text-slate-500 dark:bg-zink-600 dark:text-zink-200">
+                    <tr>
+                        <th class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">사번</th>
+                        <th class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">직원이름</th>
+                        <th class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">문서제목</th>
+                        <th class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">시작일</th>
+                        <th class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">종료일</th>
+                        <th class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">휴가유형</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <c:forEach var="v" items="${vacationList}">
+                        <tr>
+                            <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${v.empNo}</td>
+                            <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${v.empName}</td>
+                            <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${v.docTitle}</td>
+                            <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${v.startDate}</td>
+                            <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${v.endDate}</td>
+                            <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">
+                            <c:choose>
+			                    <c:when test="${v.vacationType == 'AL'}">연차</c:when>
+			                    <c:when test="${v.vacationType == 'HLA'}">오전 반차</c:when>
+			                    <c:when test="${v.vacationType == 'HLP'}">오후 반차</c:when>
+				                <c:otherwise>알 수 없음</c:otherwise>
+			                </c:choose>
+		                	</td>
+                        </tr>
+                    </c:forEach>
+                </tbody>
+            </table>
+        
+        	<!-- Pagination controls -->
+            <div id="paginationContainer" style="margin-top: 20px; align-items: center; justify-self: end;">
+                <c:if test="${currentPage > 1}">
+                    <a href="${pageContext.request.contextPath}/vacation/vacationList?page=${currentPage - 1}&empName=${param.empName}" class="prev" style="margin-right: 10px; padding: 8px 12px; border: 1px solid #007bff; background-color: #ffffff; color: #007bff; border-radius: 4px; text-decoration: none;"> < 이전</a>
+                </c:if>
+
+                <c:forEach var="pageNum" begin="1" end="${totalPages}">
+                    <a href="${pageContext.request.contextPath}/vacation/vacationList?page=${pageNum}&empName=${param.empName}" class="page-num" style="margin-right: 10px; padding: 8px 12px; border: 1px solid #007bff; background-color: #ffffff; color: #007bff; border-radius: 4px; text-decoration: none;">${pageNum}</a>
+                </c:forEach>
+
+                <c:if test="${currentPage < totalPages}">
+                    <a href="${pageContext.request.contextPath}/vacation/vacationList?page=${currentPage + 1}&empName=${param.empName}" class="next" style="margin-left: 10px; padding: 8px 12px; border: 1px solid #007bff; background-color: #ffffff; color: #007bff; border-radius: 4px; text-decoration: none;"> 다음 > </a>
+                </c:if>
+            </div>
+        </div>
+        </div>
+    </div></div>
+				    </div>
                 
             </div>
             <!-- container-fluid -->
@@ -134,6 +273,25 @@
 <!-- App js -->
 <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
 
+<script>
+	// 날짜 검색
+	 $('#startDate').on('focus', function() {
+	    $(this).attr('type', 'date'); // 클릭시 input type변환
+	  }).on('blur', function() {
+	    if (!$(this).val()) {
+	      $(this).attr('type', 'text'); // 값 입력 없을시, 기본 text 로 돌아가기,
+	    }
+	  });
+	
+	  $('#endDate').on('focus', function() {
+	    $(this).attr('type', 'date'); // 클릭시 input type변환
+	  }).on('blur', function() {
+	    if (!$(this).val()) {
+	      $(this).attr('type', 'text'); //  값 입력 없을시, 기본 text 로 돌아가기,
+	    }
+	  });
+	
+</script>
 </body>
 
 </html>

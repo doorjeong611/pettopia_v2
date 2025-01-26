@@ -11,13 +11,18 @@ public class VacationRecordService {
 	@Autowired VacationRecordMapper vacationRecordMapper;
 	
 	// 오자윤 : /vacation/vacationList 직원 휴가 카운팅 -->
-	public Integer getVacationCount(String empNo) {
+	public int countVacation(Map<String, Object> params) {
+		return vacationRecordMapper.countVacation(params);
+	}
+	
+	// 오자윤 : /vacation/vacationList 직원 휴가 카운팅 -->
+	public Map<String, Object> getVacationCount(String empNo) {
 		return vacationRecordMapper.getVacationCount(empNo);
 	}
 	
 	// 오자윤 : /vacation/vacationList 직원 휴가 사용내역 -->
-	public List<Map<String, Object>> getVacationUsage(String empNo) {
-		return vacationRecordMapper.getVacationUsage(empNo);
+	public List<Map<String, Object>> getVacationUsage(Map<String, Object> params) {
+		return vacationRecordMapper.getVacationUsage(params);
 		
 	}
 }

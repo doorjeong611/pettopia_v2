@@ -9,9 +9,12 @@ import org.apache.ibatis.annotations.Mapper;
 public interface VacationRecordMapper {
 	
 	// 오자윤 : /vacation/vacationList 직원 휴가 카운팅 -->
-	int getVacationCount(String empNo);
+	int countVacation(Map<String, Object> params);
+	
+	// 오자윤 : /vacation/vacationList 직원 휴가 카운팅 -->
+	Map<String, Object> getVacationCount(String empNo);
 	
 	// 오자윤 : /vacation/vacationList 직원 휴가 사용내역 -->
-	List<Map<String, Object>> getVacationUsage(String empNo);
+	List<Map<String, Object>> getVacationUsage(Map<String, Object> params);
 	
 }
