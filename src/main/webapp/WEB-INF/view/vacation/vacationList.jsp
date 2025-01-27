@@ -16,6 +16,9 @@
     <script src="${pageContext.request.contextPath}/assets/js/layout.js"></script>
     <!-- Tailwind CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tailwind2.css">
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
     <style>
     .attendance-table {
 	    table-layout: fixed;
@@ -126,10 +129,10 @@
                     <div class="items-center gab3 card-body">
                         <div class="grid grid-cols-1 gap-5 mb-5 xl:grid-cols-12">
                             <div class="xl:col-span-12">
-                     <!-- 선택박스 -->
                      
+                  <!-- 날짜검색 -->
                   <div id="container" style="gap: 20px; width: 100%; justify-content: space-between;">
-				    <!-- 선택 박스 : 부서 선택 -->
+				    <!-- 날짜 검색 캘린더 -->
 				    <div style="display: flex; gap: 10px; width: 100%;">
 					  <div class="select-box" style="flex: 1; max-width: 250px;">
 					    <input type="text" id="startDate" class="border border-gray-300 rounded w-full p-2" title="시작일" placeholder="시작일" onfocus="this.type='date'" onblur="if(!this.value)this.type='text'" />
@@ -139,29 +142,39 @@
 					  </div>
 			        
 				    <!-- 휴가일 조회 -->
-				      <div class="button-box" id="buttonBox">
-						<button type="button" id="btnAddFile" class="mr-1 p-2 bg-white text-custosm-500 btn btn-sm hover:text-custom-500 hover:bg-custom-100 focus:text-custom-500 focus:bg-custom-100 active:text-custom-500 active:bg-custom-100" style="font-size: 14px; display: flex; align-items: center; justify-content: center; width: 40px; height: 40px;">
-						  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block">
-						    <circle cx="11" cy="11" r="8"></circle>
-						    <path d="m21 21-4.3-4.3"></path>
-						  </svg>
-						</button>
-				    </div>
+				      <div class="button-box" id="buttonBox" style="display: flex; align-items: center;">
+					    <button type="button" id="btnSearch" class="mr-1 p-2 bg-white text-custom-500 btn btn-sm hover:text-custom-500 hover:bg-custom-100 focus:text-custom-500 focus:bg-custom-100 active:text-custom-500 active:bg-custom-100" style="font-size: 14px; display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; margin-right:0px;">
+					        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block">
+					            <circle cx="11" cy="11" r="8"></circle>
+					            <path d="m21 21-4.3-4.3"></path>
+					        </svg>
+					    </button>
+					<span class="mx-2 border-l border-slate-300 dark:border-zink-500 h-5"></span>
+					    <button type="button" id="btnRefresh" class="mr-1 p-2 bg-white text-custom-500 btn btn-sm hover:text-custom-500 hover:bg-custom-100 focus:text-custom-500 focus:bg-custom-100 active:text-custom-500 active:bg-custom-100" style="font-size: 14px; display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; margin-right:0px;">
+					        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-refresh-cw size-4">
+					            <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path>
+					            <path d="M21 3v5h-5"></path>
+					            <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path>
+					            <path d="M8 16H3v5"></path>
+					        </svg>
+					    </button>
+					</div>
+
 			    </div>
 
-			    <!-- Employee search input and search button on the right -->
+		    		<!-- 휴가 테이블-->
 				    <div style="display: flex; gap: 10px;">
 					<!-- 직원 리스트 테이블 -->
 					<div id="newAttendance" style="display: none;">
 					<table class="attendance-table">
 				        <thead>
 				            <tr>
-		                        <th class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">사번</th>
 		                        <th class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">직원이름</th>
-		                        <th class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">출근날짜</th>
-		                        <th class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">출근시간</th>
-		                        <th class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">퇴근시간</th>
-		                        <th class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">근태상태</th>
+		                        <th class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">문서제목</th>
+		                        <th class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">시작일</th>
+		                        <th class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">종료일</th>
+		                        <th class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">사용일수</th>
+		                        <th class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">휴가유형</th>
 		                    </tr>
 				        </thead>
 					    <tbody id="attendanceTableBody">
@@ -170,19 +183,38 @@
 				    </table>
 					
 					<!-- Pagination controls -->
-		            <div id="paginationContainer" style="margin-top: 20px; align-items: center; justify-self: end;">
-		                <c:if test="${currentPage > 1}">
-		                    <a href="${pageContext.request.contextPath}/employee/attendanceList?page=${currentPage - 1}&empName=${param.empName}" class="prev" dfstyle="margin-right: 10px; padding: 8px 12px; border: 1px solid #007bff; background-color: #ffffff; color: #007bff; border-radius: 4px; text-decoration: none;"> < 이전</a>
-		                </c:if>
-		
-		                <c:forEach var="pageNum" begin="1" end="${totalPages}">
-		                    <a href="${pageContext.request.contextPath}/employee/attendanceList?page=${pageNum}&empName=${param.empName}" class="page-num" style="margin-right: 10px; padding: 8px 12px; border: 1px solid #007bff; background-color: #ffffff; color: #007bff; border-radius: 4px; text-decoration: none;">${pageNum}</a>
-		                </c:forEach>
-		
-		                <c:if test="${currentPage < totalPages}">
-		                    <a href="${pageContext.request.contextPath}/employee/attendanceList?page=${currentPage + 1}&empName=${param.empName}" class="next" style="margin-left: 10px; padding: 8px 12px; border: 1px solid #007bff; background-color: #ffffff; color: #007bff; border-radius: 4px; text-decoration: none;"> 다음 > </a>
-		                </c:if>
-		            </div>
+				<div id="pagination"  class="flex justify-end mt-4">
+				    <ul class="flex flex-wrap items-center gap-2 shrink-0">
+				        <!-- 이전 버튼 -->
+				        <li>
+				            <a href="${currentPage == 1 ? 'javascript:void(0);' : '?page=' + (currentPage - 1)}" class="inline-flex items-center justify-center bg-white dark:bg-zink-700 h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 dark:border-zink-500 text-slate-500 dark:text-zink-200 ${currentPage == 1 ? 'disabled' : ''}">
+				                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="chevron-left" class="lucide lucide-chevron-left mr-1 size-4 rtl:rotate-180">
+				                    <path d="m15 18-6-6 6-6"></path>
+				                </svg> 이전
+				            </a>
+				        </li>
+				
+				        <!-- 페이지 번호 생성 -->
+				        <c:forEach var="i" begin="1" end="${totalPages}">
+				            <li>
+				                <a href="?page=${i}" class="inline-flex items-center justify-center bg-white dark:bg-zink-700 size-8 transition-all duration-150 ease-linear border rounded border-slate-200 dark:border-zink-500 text-slate-500 dark:text-zink-200 hover:text-custom-500 dark:hover:text-custom-500 hover:bg-custom-50 dark:hover:bg-custom-500/10 focus:bg-custom-50 dark:focus:bg-custom-500/10 focus:text-custom-500 dark:focus:text-custom-500 ${i == currentPage ? 'active' : ''}">
+				                    ${i}
+				                </a>
+				            </li>
+				        </c:forEach>
+				
+				        <!-- 다음 버튼 -->
+				        <li>
+				            <a href="${currentPage == totalPages || totalPages == 1 ? 'javascript:void(0);' : '?page=' + (currentPage + 1)}" class="inline-flex items-center justify-center bg-white dark:bg-zink-700 h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 dark:border-zink-500 text-slate-500 dark:text-zink-200 ${currentPage == totalPages || totalPages == 1 ? 'disabled' : ''}">
+				                다음 
+				                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="chevron-right" class="lucide lucide-chevron-right ml-1 size-4 rtl:rotate-180">
+				                    <path d="m9 18 6-6-6-6"></path>
+				                </svg>
+				            </a>
+				        </li>
+				    </ul>
+				</div>
+
 					</div>
                             </div><!--end col-->
                             <div class="xl:col-span-2 xl:col-start-11">
@@ -194,22 +226,22 @@
                             <table class="attendance-table">
                           <thead class="ltr:text-left rtl:text-right bg-slate-100 text-slate-500 dark:bg-zink-600 dark:text-zink-200">
                     <tr>
-                        <th class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">사번</th>
                         <th class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">직원이름</th>
                         <th class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">문서제목</th>
                         <th class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">시작일</th>
                         <th class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">종료일</th>
+                        <th class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">사용일수</th>
                         <th class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">휴가유형</th>
                     </tr>
                 </thead>
                 <tbody>
                     <c:forEach var="v" items="${vacationList}">
                         <tr>
-                            <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${v.empNo}</td>
                             <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${v.empName}</td>
                             <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${v.docTitle}</td>
                             <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${v.startDate}</td>
                             <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${v.endDate}</td>
+                            <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${v.vacationDays}</td>
                             <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">
                             <c:choose>
 			                    <c:when test="${v.vacationType == 'AL'}">연차</c:when>
@@ -224,19 +256,38 @@
             </table>
         
         	<!-- Pagination controls -->
-            <div id="paginationContainer" style="margin-top: 20px; align-items: center; justify-self: end;">
-                <c:if test="${currentPage > 1}">
-                    <a href="${pageContext.request.contextPath}/vacation/vacationList?page=${currentPage - 1}&empName=${param.empName}" class="prev" style="margin-right: 10px; padding: 8px 12px; border: 1px solid #007bff; background-color: #ffffff; color: #007bff; border-radius: 4px; text-decoration: none;"> < 이전</a>
-                </c:if>
+            <div id="pagination" class="flex justify-end mt-4">
+			    <ul class="flex flex-wrap items-center gap-2 shrink-0">
+			        <!-- 이전 버튼 -->
+			        <li>
+			            <a href="${currentPage == 1 ? 'javascript:void(0);' : '?page=' + (currentPage - 1)}" class="inline-flex items-center justify-center bg-white dark:bg-zink-700 h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 dark:border-zink-500 text-slate-500 dark:text-zink-200 ${currentPage == 1 ? 'disabled' : ''}">
+			                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="chevron-left" class="lucide lucide-chevron-left mr-1 size-4 rtl:rotate-180">
+			                    <path d="m15 18-6-6 6-6"></path>
+			                </svg> 이전
+			            </a>
+			        </li>
+			
+			        <!-- 페이지 번호 생성 -->
+			        <c:forEach var="i" begin="1" end="${totalPages}">
+			            <li>
+			                <a href="?page=${i}" class="inline-flex items-center justify-center bg-white dark:bg-zink-700 size-8 transition-all duration-150 ease-linear border rounded border-slate-200 dark:border-zink-500 text-slate-500 dark:text-zink-200 hover:text-custom-500 dark:hover:text-custom-500 hover:bg-custom-50 dark:hover:bg-custom-500/10 focus:bg-custom-50 dark:focus:bg-custom-500/10 focus:text-custom-500 dark:focus:text-custom-500 ${i == currentPage ? 'active' : ''}">
+			                    ${i}
+			                </a>
+			            </li>
+			        </c:forEach>
+			
+			        <!-- 다음 버튼 -->
+			        <li>
+			            <a href="${currentPage == totalPages || totalPages == 1 ? 'javascript:void(0);' : '?page=' + (currentPage + 1)}" class="inline-flex items-center justify-center bg-white dark:bg-zink-700 h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 dark:border-zink-500 text-slate-500 dark:text-zink-200 ${currentPage == totalPages || totalPages == 1 ? 'disabled' : ''}">
+			                다음 
+			                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="chevron-right" class="lucide lucide-chevron-right ml-1 size-4 rtl:rotate-180">
+			                    <path d="m9 18 6-6-6-6"></path>
+			                </svg>
+			            </a>
+			        </li>
+			    </ul>
+			</div>
 
-                <c:forEach var="pageNum" begin="1" end="${totalPages}">
-                    <a href="${pageContext.request.contextPath}/vacation/vacationList?page=${pageNum}&empName=${param.empName}" class="page-num" style="margin-right: 10px; padding: 8px 12px; border: 1px solid #007bff; background-color: #ffffff; color: #007bff; border-radius: 4px; text-decoration: none;">${pageNum}</a>
-                </c:forEach>
-
-                <c:if test="${currentPage < totalPages}">
-                    <a href="${pageContext.request.contextPath}/vacation/vacationList?page=${currentPage + 1}&empName=${param.empName}" class="next" style="margin-left: 10px; padding: 8px 12px; border: 1px solid #007bff; background-color: #ffffff; color: #007bff; border-radius: 4px; text-decoration: none;"> 다음 > </a>
-                </c:if>
-            </div>
         </div>
         </div>
     </div></div>
@@ -274,23 +325,131 @@
 <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
 
 <script>
-	// 날짜 검색
-	 $('#startDate').on('focus', function() {
-	    $(this).attr('type', 'date'); // 클릭시 input type변환
-	  }).on('blur', function() {
-	    if (!$(this).val()) {
-	      $(this).attr('type', 'text'); // 값 입력 없을시, 기본 text 로 돌아가기,
-	    }
-	  });
-	
-	  $('#endDate').on('focus', function() {
-	    $(this).attr('type', 'date'); // 클릭시 input type변환
-	  }).on('blur', function() {
-	    if (!$(this).val()) {
-	      $(this).attr('type', 'text'); //  값 입력 없을시, 기본 text 로 돌아가기,
-	    }
-	  });
-	
+$(document).ready(function() {
+    // 날짜 검색
+    $('#startDate').on('focus', function() {
+        $(this).attr('type', 'date'); // 클릭 시 input type 변환
+    }).on('blur', function() {
+        if (!$(this).val()) {
+            $(this).attr('type', 'text'); // 값 입력 없을 시, 기본 text로 돌아가기
+        }
+    });
+
+    $('#endDate').on('focus', function() {
+        $(this).attr('type', 'date'); // 클릭 시 input type 변환
+    }).on('blur', function() {
+        if (!$(this).val()) {
+            $(this).attr('type', 'text'); // 값 입력 없을 시, 기본 text로 돌아가기
+        }
+    });
+
+    // 검색 버튼 클릭 이벤트
+    $('#btnSearch').on('click', function() {
+        const startDate = $('#startDate').val(); // 시작일 가져오기
+        const endDate = $('#endDate').val(); // 종료일 가져오기
+		
+        // 유효성 검사: 시작일과 종료일이 둘 다 입력되거나 둘 다 비어있어야 함
+	    if (!startDate || !endDate) {
+	        alert("시작일과 종료일을 모두 입력해주세요.");
+            return;
+        }
+
+        // 페이지 번호를 1로 초기화
+        loadVacationData(1, startDate, endDate); // 첫 페이지의 데이터를 로드
+    });
+    
+    // 전체 목록 보기 버튼 클릭 이벤트
+    $('#btnRefresh').on('click', function() {
+    	// 버튼 리셋
+        $('#startDate').val('');
+        $('#endDate').val('');
+
+        loadVacationData(1, null, null); 
+    });
+
+    function loadVacationData(page, startDate, endDate) {
+        $.ajax({
+            url: '/pettopia/rest/vacation/vacationList', // REST API URL
+            method: 'GET',
+            data: {
+                page: page,
+                startDate: startDate || '', 
+                endDate: endDate || ''   
+            },
+            success: function(response) {
+                renderVacationList(response.vacationList); // 데이터 렌더링
+                renderPagination(response.currentPage, response.totalPages); // 페이지네이션 렌더링
+                
+                // 기존 테이블 숨기기
+                $('#existingAttendance').hide();
+                // 새로운 테이블 보이기
+                $('#newAttendance').show();
+            },
+            error: function(xhr, status, error) { // XMLHttpRequest : 서버 통신 JSON 응답
+                console.error("휴가조회에 실패했습니다.", error);
+            }
+        });
+    }
+
+    function renderVacationList(vacationList) {
+        const tbody = $("#attendanceTableBody");
+        tbody.empty(); // 기존 데이터 클리어
+
+        if (!vacationList || vacationList.length === 0) {
+            tbody.append('<tr><td colspan="6" style="text-align: center;">휴가 기록이 없습니다.</td></tr>'); // 데이터가 없을 경우 메시지 표시
+        } else {
+            vacationList.forEach(function(v) {
+                let statusText; // 상태 텍스트 선언
+
+                // vacationType에 따른 상태 텍스트 설정
+                switch (v.vacationType) {
+                    case 'AL':
+                        statusText = '연차';
+                        break;
+                    case 'HLA':
+                        statusText = '오전 반차';
+                        break;
+                    case 'HLP':
+                        statusText = '오후 반차';
+                        break;
+                    default:
+                        statusText = '알 수 없음';
+                }
+
+             // 테이블 행 추가
+                const row = '<tr>' +
+                    '<td>' + v.empName + '</td>' +
+                    '<td>' + v.docTitle + '</td>' +
+                    '<td>' + v.startDate + '</td>' +
+                    '<td>' + v.endDate + '</td>' +
+                    '<td>' + v.usedVacationDays + '</td>' +
+                    '<td>' + statusText + '</td>' +
+                    '</tr>';
+                tbody.append(row); // 테이블에 행 추가
+            });
+        }
+    }
+    
+    function renderPagination(currentPage, totalPages) {
+        const paginationContainer = $("#paginationContainer");
+        paginationContainer.empty(); // 기존 페이지네이션 클리어
+
+        // 이전 버튼
+        if (currentPage > 1) {
+            paginationContainer.append(`<a href="#" class="prev" data-page="${currentPage - 1}" style="margin-right: 10px; padding: 8px 12px; border: 1px solid #007bff; background-color: #ffffff; color: #007bff; border-radius: 4px; text-decoration: none;"> < 이전</a>`);
+        }
+
+        // 페이지 번호 버튼
+        for (let i = 1; i <= totalPages; i++) {
+            paginationContainer.append(`<a href="#" class="page-num" data-page="${i}" style="margin-right: 10px; padding: 8px 12px; border: 1px solid #007bff; background-color: #ffffff; color: #007bff; border-radius: 4px; text-decoration: none;">${i}</a>`);
+        }
+
+        // 다음 버튼
+        if (currentPage < totalPages) {
+            paginationContainer.append(`<a href="#" class="next" data-page="${currentPage + 1}" style="margin-left: 10px; padding: 8px 12px; border: 1px solid #007bff; background-color: #ffffff; color: #007bff; border-radius: 4px; text-decoration: none;"> 다음 > </a>`);
+        }
+    }
+});
 </script>
 </body>
 
