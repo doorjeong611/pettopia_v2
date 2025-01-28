@@ -19,10 +19,13 @@
 		                e.rank_no AS rankNo,
 		                r.rank_name AS rankName,
 		                e.dept_code AS deptCode,
+		                IFNULL(CONCAT(ef.file_name, ef.file_ext), 'placeholder.png') AS fileName,
 		                DENSE_RANK() OVER (PARTITION BY e.dept_code ORDER BY e.rank_no DESC) AS depth
 		FROM employee e 
 		JOIN `rank` r ON e.rank_no = r.rank_no
+		LEFT OUTER JOIN employee_file ef ON e.emp_no = ef.emp_no
 		WHERE e.dept_code = #{deptCode}
+		AND  (ef.file_purpose = 'P' OR ef.file_purpose IS NULL) 
 		ORDER BY depth
 	</select>
 	
