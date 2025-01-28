@@ -3,6 +3,51 @@
 <mapper
 	namespace="com.example.pettopia.vacationrecord.VacationRecordMapper">
 	
+	<!-- 오자윤 : /vacation/vacationList 휴가 카운트 REST-->
+	<select id="countVacationByDate" resultType="int">
+        SELECT COUNT(*) 
+        FROM 
+            document d
+        JOIN 
+            employee e ON d.doc_writer_no = e.emp_no
+        WHERE 
+            e.emp_no = #{empNo}
+            AND (#{startDate} IS NULL OR d.start_date &gt;= #{startDate}) <!-- gt: greater than == '>' -->
+            AND (#{endDate} IS NULL OR d.end_date &lt;= #{endDate}) <!-- lt: less than == '<' -->
+            AND d.doc_type = 'V' 
+            AND d.approval_status = 'A';
+    </select>
+    
+	<!-- 오자윤 : /vacation/vacationList 휴가 날짜검색 REST-->
+    <select id="getVacationListByDate" resultType="map">
+        SELECT 
+            d.doc_title AS docTitle,
+            d.start_date AS startDate,
+            d.end_date AS endDate,
+            d.vacation_type AS vacationType,
+            e.emp_name AS empName,
+            SUM(CASE 
+		        WHEN d.vacation_type = 'AL' THEN DATEDIFF(d.end_date, d.start_date) + 1
+		        WHEN d.vacation_type IN ('HLA', 'HLP') THEN 0.5
+		        ELSE 0 
+		    END) AS usedVacationDays
+        FROM 
+            document d
+        JOIN 
+            employee e ON d.doc_writer_no = e.emp_no
+        WHERE 
+            e.emp_no = #{empNo}
+            AND (#{startDate} IS NULL OR d.start_date &gt;= #{startDate})
+            AND (#{endDate} IS NULL OR d.end_date &lt;= #{endDate})
+            AND d.doc_type = 'V' 
+            AND d.approval_status = 'A'
+        GROUP BY 
+    		d.doc_title, d.start_date, d.end_date, d.vacation_type, e.emp_name
+        ORDER BY 
+            d.start_date
+        LIMIT #{limit} OFFSET #{offset};
+	</select>
+	
 	<!-- 오자윤 : /vacation/vacationList 휴가 리스트 페이지네이션 카운트 -->
 	<select id="countVacation" resultType="int">
 	    SELECT COUNT(*)
@@ -20,13 +65,13 @@
 		    e.emp_name AS empName,
 		    vr.total_vacation AS total_vacation_days, <!-- 총 연차 -->
 		    SUM(CASE 
-		        WHEN d.vacation_type = 'AL' THEN 1 
-		        WHEN d.vacation_type IN ('HLA', 'HLP') THEN 0.5 
+		        WHEN d.vacation_type = 'AL' THEN DATEDIFF(d.end_date, d.start_date) + 1
+		        WHEN d.vacation_type IN ('HLA', 'HLP') THEN 0.5
 		        ELSE 0 
 		    END) AS used_vacation_days, <!-- 사용한 휴가 -->
 		    (vr.total_vacation - SUM(CASE 
-		        WHEN d.vacation_type = 'AL' THEN 1 
-		        WHEN d.vacation_type IN ('HLA', 'HLP') THEN 0.5 
+		        WHEN d.vacation_type = 'AL' THEN DATEDIFF(d.end_date, d.start_date) + 1
+		        WHEN d.vacation_type IN ('HLA', 'HLP') THEN 0.5
 		        ELSE 0 
 		    END)) AS remaining_vacation_days <!-- 잔여 휴가 -->
 		FROM 
@@ -42,28 +87,28 @@
 	    
 	<!-- 오자윤 : /vacation/vacationList 직원 휴가 사용내역 -->
     <select id="getVacationUsage" resultType="Map">
-        SELECT 
-            e.emp_no AS empNo,
-            e.emp_name AS empName,
-            d.doc_title AS docTitle,
-            d.start_date AS startDate,
-            d.end_date AS endDate,
-            d.vacation_type AS vacationType,
-            CASE 
-                WHEN d.vacation_type = 'AL' THEN 1
-                WHEN d.vacation_type IN ('HLA', 'HLP') THEN 0.5
-                ELSE 0
-            END AS vacationDays
-        FROM 
-            document d
-        JOIN 
-            employee e ON d.doc_writer_no = e.emp_no
-        WHERE 
-            d.doc_type = 'V' 
-            AND d.approval_status = 'A'
-            AND e.emp_no = #{empNo} 
-        ORDER BY 
-	   	 	e.emp_no, d.start_date
+		SELECT 
+		    e.emp_no AS empNo,
+		    e.emp_name AS empName,
+		    d.doc_title AS docTitle,
+		    d.start_date AS startDate,
+		    d.end_date AS endDate,
+		    d.vacation_type AS vacationType,
+		    CASE 
+		        WHEN d.vacation_type = 'AL' THEN DATEDIFF(d.end_date, d.start_date) + 1
+		        WHEN d.vacation_type IN ('HLA', 'HLP') THEN 0.5
+		        ELSE 0
+		    END AS vacationDays
+		FROM 
+		    document d
+		JOIN 
+		    employee e ON d.doc_writer_no = e.emp_no
+		WHERE 
+		    d.doc_type = 'V' 
+		    AND d.approval_status = 'A'
+		    AND e.emp_no = #{empNo} 
+		ORDER BY 
+		    e.emp_no, d.start_date
 		LIMIT #{limit} OFFSET #{offset};
     </select>
     

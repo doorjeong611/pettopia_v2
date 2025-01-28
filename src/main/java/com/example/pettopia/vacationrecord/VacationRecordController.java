@@ -52,17 +52,20 @@ public class VacationRecordController {
         
         // 페이징 (전체 개수)
         int totalRecords = vacationRecordService.countVacation(params);
-        // 전체 페이지
-        int totalPages = (int) Math.ceil((double) totalRecords / size);
-        // 시작 페이지 계산
-        int offset = (page - 1) * size;
-        
-        // 페이징 유효성검사
+        // 페이징 유효성 검사
         if (page < 1) {
             page = 1; // 기본값
         }
         if (size < 1 || size > 100) { // 최대 100개
             size = 10; // 기본값
+        }
+        
+        // 전체 페이지
+        int totalPages = (int) Math.ceil((double) totalRecords / size);
+        // 시작 페이지 계산
+        int offset = (page - 1) * size;
+        if (offset < 0) {
+            offset = 0; // OFFSET이 음수가 되지 않도록 설정
         }
         
         // 페이지 파라미터
