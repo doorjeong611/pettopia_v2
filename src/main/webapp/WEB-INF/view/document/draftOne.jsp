@@ -18,6 +18,7 @@
     <!-- Tailwind CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tailwind2.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    
 </head>
 
 <body class="text-base bg-body-bg text-body font-public dark:text-zink-100 dark:bg-zink-800 group-data-[skin=bordered]:bg-body-bordered group-data-[skin=bordered]:dark:bg-zink-700">
@@ -339,7 +340,7 @@
 									<tr>
 										<td style="background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; height: 600px; text-align: left; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;" colspan="2">
 									        <div style="width: 100%; font-family: 'malgun gothic', dotum, arial, tahoma; font-size: 11pt; line-height: 2; margin-top: 0px; margin-bottom: 0px; padding: 30px; padding-left: 50px; white-space: pre-line; max-width: 100%; word-wrap: break-word; text-indent: 0;">
-									            ${documentOne.docContent}
+									            <p style="white-space: pre-wrap;">${documentOne.docContent}</p>
 									        </div>
 										</td>
 									</tr>
@@ -349,7 +350,7 @@
 										</td>
 										<td style="background: rgb(255, 255, 255); padding: 5px;border:1px solid black; height: 70px; text-align: left; color: rgb(0, 0, 0); font-size: 13px; font-weight: normal; vertical-align: middle;">
 											<div style="width: 100%; font-family: &quot;malgun gothic&quot;, dotum, arial, tahoma; font-size: 10pt; line-height: normal; margin-top: 0px; margin-bottom: 0px; padding:5px; padding-left: 10px;">
-												${documentOne.docRemarks}
+												<p style="white-space: pre-wrap;">${documentOne.docRemarks}</p>
 											</div>
 										</td>
 									</tr>

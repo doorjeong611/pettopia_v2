@@ -25,11 +25,4 @@ public class ScheduleController {
 		return "schedule/scheduleCalendar";
 	}
 	
-	//scheduleList Form
-	@GetMapping("/schedule/scheduleList")
-	public String scheduleList(Model model) {
-		return "schedule/scheduleList";
-	}
-	
-
 }

@@ -340,10 +340,10 @@
 								<ul class="flex gap-2 mb-0">
 							        <c:forEach var="num" begin="${page.getStartPagingNum()}" end="${page.getEndPagingNum()}">
 							            <c:if test="${num == page.currentPage}">
-							                <li class="active"><a class="inline-flex items-center justify-center bg-custom-500 border border-custom-500 text-custom-50 h-8 px-3 rounded" href="#">${num}</a></li>
+							                <li class="active"><a class="inline-flex items-center justify-center bg-custom-50 border border-custom-50 text-custom-500 h-8 px-3 rounded" href="#">${num}</a></li>
 							            </c:if>
 							            <c:if test="${num != page.currentPage}">
-							                <li><a class="inline-flex items-center justify-center bg-white border border-slate-200 text-slate-500 hover:text-custom-500 h-8 px-3 rounded" href="${pageContext.request.contextPath}/document/documentBinList?currentPage=${num}">${num}</a></li>
+							                <li><a class="inline-flex items-center justify-center bg-white border border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 h-8 px-3 rounded" href="${pageContext.request.contextPath}/document/documentBinList?currentPage=${num}">${num}</a></li>
 							            </c:if>
 							        </c:forEach>
 								</ul>

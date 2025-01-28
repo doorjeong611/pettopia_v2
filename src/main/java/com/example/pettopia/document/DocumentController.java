@@ -41,6 +41,7 @@ public class DocumentController {
 		EmpUserDetails empUserDetails = (EmpUserDetails)authentication.getPrincipal();
 		String empNo = empUserDetails.getUsername();
 		String empName = empUserDetails.getEmpName();
+		String empRankName = empUserDetails.getRankName();
 		
 		Map<String,Object> empDept = documentService.getEmployeeDept(empNo);
 		log.debug(TeamColor.KDH + "empDept : " + empDept.toString() + TeamColor.RESET);
@@ -50,6 +51,7 @@ public class DocumentController {
 		model.addAttribute("empDept", empDept);
 		model.addAttribute("empNo", empNo);
 		model.addAttribute("empName", empName);
+		model.addAttribute("empRankName", empRankName);
 		
 		return "document/addDocument";
 	}
