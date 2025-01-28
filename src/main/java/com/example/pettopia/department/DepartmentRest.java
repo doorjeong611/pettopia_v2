@@ -40,6 +40,8 @@ public class DepartmentRest {
 		
 		List<Map<String, Object>> orgChart = departmentService.getOrgChart(deptCode);
 		
+		log.debug(TeamColor.KMJ+"최종 orgChart : " + orgChart + TeamColor.RESET);
+		
 		return orgChart;
 	}
 	

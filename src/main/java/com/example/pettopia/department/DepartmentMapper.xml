@@ -14,13 +14,15 @@
 
 	<!-- 조직도 -->
 	<select id="selectOrgChart" parameterType="String" resultType="map">
-		SELECT DISTINCT e1.emp_no AS empNo,
-		                e1.emp_name AS empName,
-		                e1.rank_no AS rankNo,
-		                e1.dept_code AS deptCode,
-		                DENSE_RANK() OVER (PARTITION BY e1.dept_code ORDER BY e1.rank_no DESC) AS depth
-		FROM employee e1
-		WHERE e1.dept_code = #{deptCode}
+		SELECT DISTINCT e.emp_no AS empNo,
+		                e.emp_name AS empName,
+		                e.rank_no AS rankNo,
+		                r.rank_name AS rankName,
+		                e.dept_code AS deptCode,
+		                DENSE_RANK() OVER (PARTITION BY e.dept_code ORDER BY e.rank_no DESC) AS depth
+		FROM employee e 
+		JOIN `rank` r ON e.rank_no = r.rank_no
+		WHERE e.dept_code = #{deptCode}
 		ORDER BY depth
 	</select>
 	
