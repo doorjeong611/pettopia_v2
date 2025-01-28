@@ -61,7 +61,7 @@
 	              // JSON 데이터를 Google Charts DataTable로 변환
 	              drawChart(response);
 	            },
-	            error: function(error) {
+	            error: function(error) { 
 	             	alert('조직도 ajax 실패' + deptCode);
 	            }
 	          }); 
