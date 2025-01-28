@@ -70,6 +70,7 @@
 		     , di.division_code AS divisionCode
 		     , d.dept_name AS deptName
 		     , r.rank_name AS rankName
+		     , r.rank_no AS rankNo
 		     , IFNULL(e.is_team_leader,'N') AS isTeamLeader
 		     , e.hire_date AS hireDate
 		FROM employee e
@@ -87,8 +88,13 @@
 		  <if test="empStatus != 'null'">
 		  	AND e.emp_status = #{empStatus}
 		  </if>
+		  	AND (ef.file_purpose = 'P' OR ef.file_purpose IS NULL) 
 		</where>
-		ORDER BY divisionName ASC;
+		ORDER BY di.division_name DESC,
+	             d.dept_name DESC,
+	             r.rank_no DESC,
+	             e.emp_name ASC,
+	             e.emp_status DESC
 	</select>
 
 	<!-- addEmployee : 사번 자동 입력을 위한 마지막 입사 사번 -->
@@ -201,7 +207,7 @@
 				, e.emp_birth AS empBirth
 				, e.emp_status AS empStatus
 				, e.is_team_leader AS isTeamLeader
-				, CASE WHEN e.emp_gender = 'F' THEN '여자' ELSE '남자'END AS empGender
+				, CASE WHEN e.emp_gender = 'F' THEN '여성' ELSE '남성'END AS empGender
 				, e.emp_phone AS empPhone
 				, e.postal_code AS postalCode
 				, e.basic_address AS basicAddress
@@ -219,7 +225,7 @@
 		JOIN division di ON d.division_code = di.division_code
 		JOIN `rank` r ON e.rank_no = r.rank_no
 		WHERE e.emp_no LIKE #{empNo}
-		AND ef.file_purpose = 'P'
+		AND (ef.file_purpose = 'P' OR ef.file_purpose IS NULL) 
 	</select>
 
 	<!-- employeeSummary : 직원 공식 정보 상세보기 -->
@@ -247,6 +253,15 @@
 		JOIN division di ON d.division_code = di.division_code
 		JOIN `rank` r ON e.rank_no = r.rank_no
 		WHERE e.emp_no = #{empNo}
+		AND (ef.file_purpose = 'P' OR ef.file_purpose IS NULL)  
+	</select>
+
+	<!--  -->
+	<select id="selectNotReadYet" parameterType="String" resultType="map">
+		SELECT COUNT(*) AS notReadYet
+		FROM message 
+		WHERE recipient_emp_no = #{empNo}
+		AND message_state = 'N'
 	</select>
 
 

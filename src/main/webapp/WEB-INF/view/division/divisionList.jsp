@@ -19,7 +19,83 @@
     
     <!-- Jquery -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+	
+	<!-- Google Chart 라이브러리 로드 -->
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  
+	<style>
+	/* 스타일을 추가해 조직도를 보기 좋게 표시 */
+	#orgchart {
+	  
+	  height: 500px;
+	}
+	</style>
     
+    <script>
+    $(document).ready(function () {
+    	// 2단계: Google Chart 라이브러리 로드
+        google.charts.load('current', {
+          packages: ['orgchart']
+        });
+
+        google.charts.setOnLoadCallback(drawChart);
+        google.charts.setOnLoadCallback(fetchAndDrawChart);
+
+        
+     	// 조직도를 위해 deptCode를 가져옴
+     	let deptCode = "";
+		$('#departDiv').on('click', '#deptDivSel', function () {
+		  // 현재 클릭된 #deptDivSel 내부의 input#deptCode 값을 가져오기
+		  deptCode = $(this).find('input#deptCode').val().trim();
+		
+		  // 콘솔에 출력 (확인용)
+		  console.log('deptCode:', deptCode);
+		});
+        
+        
+        
+        
+        function fetchAndDrawChart() {
+          // AJAX 요청으로 JSON 데이터 가져오기
+          $.ajax({
+            url: '/get-org-data', // JSON 데이터를 제공하는 서버의 엔드포인트
+            method: 'GET',
+            dataType: 'json',
+            success: function(response) {
+              // JSON 데이터를 Google Charts DataTable로 변환
+              drawChart(response);
+            },
+            error: function(error) {
+             	alert('조직도 ajax 실패');
+            }
+          }); 
+        }
+
+        // 3단계: 조직도 데이터 설정
+        function drawChart() {
+          // 조직도 데이터를 JavaScript 배열로 정의
+          var data = new google.visualization.DataTable();
+          data.addColumn('string', 'Name');
+          data.addColumn('string', 'Manager');
+          data.addRows([
+            ['CEO', ''],
+            ['Manager 1', 'CEO'],
+            ['Manager 2', 'CEO'],
+            ['Employee 1', 'Manager 1'],
+            ['Employee 2', 'Manager 1'],
+            ['Employee 3', 'Manager 2'],
+            ['Employee 4', 'Manager 2']
+          ]);
+
+          // 4단계: 조직도 차트를 생성하고, div에 표시
+          var chart = new google.visualization.OrgChart(document.getElementById('orgchart'));
+          chart.draw(data, {
+            'allowHtml': true
+          });
+        }       
+    });
+    </script>
+	
 </head>
 
 <body class="text-base bg-body-bg text-body font-public dark:text-zink-100 dark:bg-zink-800 group-data-[skin=bordered]:bg-body-bordered group-data-[skin=bordered]:dark:bg-zink-700">
@@ -53,21 +129,44 @@
                     </ul>
                 </div>
                 <!-- Main content -->
-                <div class="card" >
-                    <div class="card-body flex gap-4">
-                    	
-                    	<div class="grid xl:grid-cols-1" id="divisionDiv" style="border: solid 1px green;" >
-	                  		
-                    	</div>
-                    	<div class="grid xl:grid-cols-1" id="departDiv" style="border: solid 1px purple;">
+				<div class="card">
+					<div class="card-body flex gap-4 ">
+				    
+				        <!-- 상위 부서 목록 -->
+						<div class="grid xl:grid-cols-1" id="divisionDiv" style="border: solid 1px green;">
+				        </div>
+				        
+				        <!-- 하위 팀 목록 -->
+				        <div class="grid xl:grid-cols-1" id="departDiv" style="border: solid 1px purple;">
+				            <div class="grid xl:grid-cols-1 px-5">
+				                <span>부서를 선택해 주세요</span>
+				            </div>
+				        </div >
+				        
+				        <!-- 조직도 -->
+				        <div id="orgchart" class="grid xl:grid-cols-1" style="border: solid 1px blue;" >
+				        	<div class="grid xl:grid-cols-4 px-5 hidden">
+				                <span>팀을 선택해 주세요</span>
+				            </div>
+				        </div>
+				        
+				        
+					</div>
+				    
+				   	<!-- 버튼 -->
+					<div class="px-4 py-4 flex justify-end gap-1">
+						<button id="manageDiviBtn" type="button" class="bg-white text-custom-500 btn border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100">
+						    부서 관리
+						</button>
+						<button id="manageDeptBtn" type="button" class="bg-white text-custom-500 btn border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100">
+						    팀 관리
+						</button>
+					</div>
+				    
+				    
+				</div>
 
-                    	</div>
-                    	<div>
-                    		<button id="manageDiviBtn"  type="button" class="text-white btn bg-custom-500 hover:bg-custom-600 ">부서 관리</button>
-                    		<button id="manageDeptBtn"  type="button" class="text-white btn bg-custom-500 hover:bg-custom-600 ">팀 관리</button>
-                    	</div>
-                    </div>
-                </div>    
+				<!-- 끝 :  card -->
                 
                 
                 
@@ -77,6 +176,18 @@
             <!-- container-fluid -->
         </div>
         <!-- End Page-content -->
+	
+	
+	
+	
+
+
+       
+       
+       
+       
+       
+       
        
        <!-- 상위 관리 모달창 -->
        <div id="diviModalContainer" class="hidden">
@@ -86,35 +197,27 @@
 			<div id="diviFormModal" class="fixed left-1/2 transform -translate-x-1/2 z-[1000]" style="top: 40%; transform: translate(-50%, -40%); z-index: 1000;">
 			
 				<div class="w-screen md:w-[30rem] bg-white shadow rounded-md dark:bg-zink-600 flex flex-col h-full">
-					<div class="flex items-center justify-between p-4 dark:border-zink-500  ml-auto">    
-						<button type="button" id="closeDiviModalBtn" class="transition-all duration-200 ease-linear text-slate-500 hover:text-red-500 dark:text-zink-200 dark:hover:text-red-500">
-							&#10060;
-						</button>
-					</div>
-					<div class="max-h-[calc(theme('height.screen')_-_180px)] p-4 overflow-y-auto">
-						<div class="flex">
-							<div class="mb-4">
-								<button type="button" id="showModifyDiviFormBtn" class="px-4 py-3 text-sm bg-white border rounded-md border-custom-300 text-custom-500 dark:bg-zink-700 dark:border-custom-500">
-	                                <span class="font-bold">부서 변경</span> 
-	                            </button>
-							</div>
-							<div class="mb-4">
-								<button type="button" id="showAddDiviFormBtn" class="px-4 py-3 text-sm text-purple-500 bg-white border border-purple-300 rounded-md dark:bg-zink-700 dark:border-purple-500 hidden">
-	                                <span class="font-bold">부서 등록</span> 
-	                            </button>
-							</div>
-							<div class="mb-4">
-								<button type="button" id="showRemoveDiviFormBtn" class="px-4 py-3 text-sm text-red-500 bg-white border border-red-300 rounded-md dark:bg-zink-700 dark:border-red-500">
-	                                <span class="font-bold">부서 삭제</span> 
-	                            </button>
-							</div>
+					<!-- 모달 헤더 -->
+					<div class="flex items-center justify-between p-4 dark:border-zink-500">    
+						<h5 class="text-16">상위 부서 관리</h5>
+						<div class="flex items-center justify-between p-4 dark:border-zink-500  ml-auto">    
+							<button type="button" id="closeDiviModalBtn" class="transition-all duration-200 ease-linear text-slate-500 hover:text-red-500 dark:text-zink-200 dark:hover:text-red-500">
+								&#10060;
+							</button>
 						</div>
-						
-						<div id="addDiviDiv" class="mb-4">
-							<form action="${pageContext.request.contextPath}/admin/addDivision" method="post" id="addDiviForm">
-								<input type="text" id="addDivisionCode" name="divisionCode" value="" placeholder="부서 코드를 입력하세요.">
-								<input type="text" id="addDivisionName" name="divisionName" value="" placeholder="등록할 부서 이름을 입력하세요.">
-								<button type="button" id="confirmBtn" class="px-4 py-3 text-sm rounded-md text-slate-500 bg-slate-50 dark:bg-zink-400/20 dark:text-zink-200">중복 검사</button>
+					</div>
+					<!-- 모달 내용 -->
+					<div class="max-h-[calc(theme('height.screen')_-_180px)] p-4 overflow-y-auto">
+
+						<div id="addDiviDiv" class="mb-4 ">
+							<form action="${pageContext.request.contextPath}/admin/addDivision" method="post" id="addDiviForm" class="flex gap-2">
+								<div class="mb-1">
+									<input type="text" id="addDivisionCode" name="divisionCode" value="" placeholder="새로운 부서 코드" class="py-1 border border-gray-300 rounded-md ">
+								</div>
+								<div class="mb-1">
+									<input type="text" id="addDivisionName" name="divisionName" value="" placeholder="새로운 부서명" class="py-1 border border-gray-300 rounded-md ">
+								</div>
+								<button type="button" id="confirmBtn" class="px-2 py-2 text-sm rounded-md text-slate-500 bg-slate-50 dark:bg-zink-400/20 dark:text-zink-200  hover:text-white hover:bg-slate-600 hover:border-slate-600">중복 검사</button>
 							</form>
 						</div>
 						
@@ -136,11 +239,38 @@
 						</div>
 				
 					</div>
-					<div class="flex items-center justify-between p-4 mt-auto 0 dark:border-zink-500 ml-auto">
-						<button id="addDiviBtn"  type="button" class="text-white btn bg-custom-500 hover:bg-custom-600">등록</button>
-						<button id="modifyDiviBtn"  type="button" class="text-white btn bg-custom-500 hover:bg-custom-600 hidden">수정</button>
-						<button id="removeDiviBtn"  type="button" class="text-white btn bg-custom-500 hover:bg-custom-600 hidden">삭제</button>
+					
+					<!-- 모달 푸터 -->
+					<div class="flex p-2  dark:border-zink-500 border-t ">
+						
+						<div class="flex gap-1 justify-start pt-4">
+							<div class="">
+								<button type="button" id="showModifyDiviFormBtn" class="px-2 py-2 text-sm text-green-500 bg-white border border-green-300 rounded-md dark:bg-zink-700 dark:border-green-500 ">
+					                            <span class="font-bold">부서 변경</span> 
+					                        </button>
+							</div>
+							<div class="">
+								<button type="button" id="showAddDiviFormBtn" class="px-2 py-2 text-sm bg-white border rounded-md border-custom-300 text-custom-500 dark:bg-zink-700 dark:border-custom-500">
+					                            <span class="font-bold">부서 등록</span> 
+					                        </button>
+							</div>
+							<div class="">
+								<button type="button" id="showRemoveDiviFormBtn" class="px-2 py-2 text-sm text-red-500 bg-white border border-red-300 rounded-md dark:bg-zink-700 dark:border-red-500">
+					                            <span class="font-bold">부서 삭제</span> 
+					                        </button>
+							</div>
+						</div>
+						
+					
+					
+						<div class="flex gap-2 items-center justify-between p-4 mt-auto 0 dark:border-zink-500 ml-auto">
+							<button id="addDiviBtn"  type="button" class="py-2 text-custom-500 bg-white border-custom-500 btn hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100">등록</button>
+							<button id="modifyDiviBtn"  type="button" class="py-2 text-green-500 bg-white border-green-500 btn hover:text-white hover:bg-green-600 hover:border-green-600 focus:text-white focus:bg-green-600 focus:border-green-600 focus:ring focus:ring-green-100 active:text-white active:bg-green-600 active:border-green-600 active:ring active:ring-green-100 hidden">수정</button>
+							<button id="removeDiviBtn"  type="button" class="py-2 text-red-500 bg-white border-red-500 btn hover:text-white hover:bg-red-600 hover:border-red-600 focus:text-white focus:bg-red-600 focus:border-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:border-red-600 active:ring active:ring-red-100 hidden">삭제</button>
+						</div>
 					</div>
+					
+					
 				</div>
 			</div> 
 		</div> 
@@ -256,13 +386,13 @@
    			$('#showModifyDiviFormBtn').click(function() {
    				modifyDiv.removeClass("hidden");
    				modifyDiviBtn.removeClass("hidden");
-   				showAddDiviFormBtn.removeClass("hidden");
+   				
    				addDiviDiv.addClass("hidden");
-   				showModifyDiviFormBtn.addClass("hidden");
    				addDiviBtn.addClass("hidden");
+   				
    				removeDiviBtn.addClass("hidden");  		// 삭제 버튼 숨기기
    	   			removeDiviDiv.addClass("hidden");  		// 삭제 폼 숨기기
-   	   			showRemoveDiviFormBtn.removeClass("hidden");
+   	   			
 
    			});
    			
@@ -270,25 +400,22 @@
    			$('#showAddDiviFormBtn').click(function() {
    				modifyDiv.addClass("hidden");
    				modifyDiviBtn.addClass("hidden");
-   				showAddDiviFormBtn.addClass("hidden");
+   				
    				addDiviDiv.removeClass("hidden");
    				addDiviBtn.removeClass("hidden");
-   				showModifyDiviFormBtn.removeClass("hidden");
+   				
    				removeDiviBtn.addClass("hidden");  		// 삭제 버튼 숨기기
    	   			removeDiviDiv.addClass("hidden");  		// 삭제 폼 숨기기
-   	   			showRemoveDiviFormBtn.removeClass("hidden");
+   	   			
    			});
    			
    			/* 부서 삭제 버튼 클릭시 삭제 부분 보이기 */
    			$('#showRemoveDiviFormBtn').click(function() {
    				removeDiviBtn.removeClass("hidden");  		// 삭제 버튼 보이기
    	   			removeDiviDiv.removeClass("hidden");  		// 삭제 폼 보이기
-   	   			showAddDiviFormBtn.removeClass("hidden"); 	// 등록폼 버튼 보이기
-   	   			showModifyDiviFormBtn.removeClass("hidden");// 수정폼 버튼 보이기
-   	   			showRemoveDiviFormBtn.addClass("hidden");	// 삭제폼 버튼 숨기기
    	   			modifyDiv.addClass("hidden");				// 수정 폼 숨기기
-				addDiviDiv.addClass("hidden");				// 등록 폼 숨기기
 				modifyDiviBtn.addClass("hidden");			// 수정버튼 숨기기
+				addDiviDiv.addClass("hidden");				// 등록 폼 숨기기
 				addDiviBtn.addClass("hidden");				// 등록버튼 숨기기
 			
    			});
@@ -531,8 +658,9 @@ $(document).ready(function () {
             // 하위 팀 목록 추가
             $(result).each(function (index, item) {
                 $('#departDiv').append(
-                    '<div class="p-3 m-2 w-64" style="border: solid 1px red;">' +
+                    '<div id="deptDivSel" class="p-3 m-2 w-64" style="border: solid 1px red;">' +
                     '<span>' + item.deptName + '</span>' +
+                    '<input class="hidden" id="deptCode" value="'+item.deptCode+'">' +
                     '</div>'
                 );
             });
@@ -550,7 +678,6 @@ $(document).ready(function () {
 
 });
 </script>
-
 
 
 

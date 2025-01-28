@@ -582,6 +582,7 @@ public class EmployeeService {
 		
 		log.debug(TeamColor.KMJ + "EmployeeService - getEmployeeSummary() " );
 		log.debug(TeamColor.KMJ + "empNo:" + employee.getEmpNo() + TeamColor.KMJ);
+		log.debug(TeamColor.WJ + "확인" + TeamColor.KMJ);
 		
 		boolean result = false; // 수정 성공시 true
 	
@@ -593,7 +594,7 @@ public class EmployeeService {
 			}
 			
 		}
-		if(employee.getEmpStatus().equals("R")) {
+		if(employee.getEmpStatus() != null && employee.getEmpStatus().equals("R")) {
 			employee.setResignationDate("123");
 		}
 		
@@ -613,6 +614,10 @@ public class EmployeeService {
 		return result;
 		
 	}
+	
+	
+
+	
 	
 
 }// employeeService

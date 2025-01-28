@@ -1,10 +1,12 @@
 package com.example.pettopia.department;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.pettopia.util.TeamColor;
@@ -26,6 +28,19 @@ public class DepartmentRest {
 		log.debug(TeamColor.KMJ + "departmentList : " + departmentService.getDepartmentList(divisionCode).toString() +TeamColor.RESET);
 		
 		return departmentService.getDepartmentList(divisionCode);
+	}
+	
+	
+	// 조직도 
+	@GetMapping("/rest/orgChart/{deptCode}")
+	public List<Map<String, Object>> getOrgChart(@PathVariable String deptCode) {
+		
+		log.debug(TeamColor.KMJ + "DepartmentRest - getOrgChart()");
+		log.debug(TeamColor.KMJ+"divisionCode : " + deptCode);
+		
+		List<Map<String, Object>> orgChart = departmentService.getOrgChart(deptCode);
+		
+		return orgChart;
 	}
 	
 	
