@@ -33,66 +33,133 @@
     
     <script>
     $(document).ready(function () {
-    	// 2단계: Google Chart 라이브러리 로드
-        google.charts.load('current', {
-          packages: ['orgchart']
-        });
-
-        google.charts.setOnLoadCallback(drawChart);
-        google.charts.setOnLoadCallback(fetchAndDrawChart);
-
-        
-     	// 조직도를 위해 deptCode를 가져옴
-     	let deptCode = "";
+		/* 팀을 클릭하면 해당 팀의 조직도를 띄워줘야함 */
 		$('#departDiv').on('click', '#deptDivSel', function () {
-		  // 현재 클릭된 #deptDivSel 내부의 input#deptCode 값을 가져오기
-		  deptCode = $(this).find('input#deptCode').val().trim();
+		  	// 현재 클릭된 #deptDivSel 내부의 input#deptCode 값을 가져오기
+			const deptCode = $(this).find('input#deptCode').val().trim();
 		
-		  // 콘솔에 출력 (확인용)
-		  console.log('deptCode:', deptCode);
-		});
-        
-        
-        
-        
-        function fetchAndDrawChart() {
-          // AJAX 요청으로 JSON 데이터 가져오기
-          $.ajax({
-            url: '/get-org-data', // JSON 데이터를 제공하는 서버의 엔드포인트
-            method: 'GET',
-            dataType: 'json',
-            success: function(response) {
-              // JSON 데이터를 Google Charts DataTable로 변환
-              drawChart(response);
-            },
-            error: function(error) {
-             	alert('조직도 ajax 실패');
-            }
-          }); 
-        }
+		  	// 확인
+		  	console.log('deptCode:', deptCode);
+		  	
+	    	/* Google Chart 라이브러리 로드 */
+	        google.charts.load('current', {
+	          packages: ['orgchart']
+	        });
+	
+	        google.charts.setOnLoadCallback(drawChart);
+	        google.charts.setOnLoadCallback(fetchAndDrawChart);
 
-        // 3단계: 조직도 데이터 설정
-        function drawChart() {
-          // 조직도 데이터를 JavaScript 배열로 정의
-          var data = new google.visualization.DataTable();
-          data.addColumn('string', 'Name');
-          data.addColumn('string', 'Manager');
-          data.addRows([
-            ['CEO', ''],
-            ['Manager 1', 'CEO'],
-            ['Manager 2', 'CEO'],
-            ['Employee 1', 'Manager 1'],
-            ['Employee 2', 'Manager 1'],
-            ['Employee 3', 'Manager 2'],
-            ['Employee 4', 'Manager 2']
-          ]);
+        
+        	/* ajax로 가져온 부서 정보 조직도로 만들기 */
+	        function fetchAndDrawChart() {
+	          // AJAX 요청으로 JSON 데이터 가져오기
+	          $.ajax({
+	            url: '/pettopia/rest/orgChart/'+deptCode, 
+	            method: 'GET',
+	            dataType: 'json',
+	            success: function(response) {
+	              // JSON 데이터를 Google Charts DataTable로 변환
+	              drawChart(response);
+	            },
+	            error: function(error) {
+	             	alert('조직도 ajax 실패' + deptCode);
+	            }
+	          }); 
+	        } 
+	
+	        function drawChart(orgData) {
+	            try {
+	                var $orgchart = $('#orgchart');
+	                var data = new google.visualization.DataTable();
+	                data.addColumn('string', 'name');
+	                data.addColumn('string', 'manager');
 
-          // 4단계: 조직도 차트를 생성하고, div에 표시
-          var chart = new google.visualization.OrgChart(document.getElementById('orgchart'));
-          chart.draw(data, {
-            'allowHtml': true
-          });
-        }       
+	                var rows = [];
+	                var employeeByLevel = {};
+	                var processedEmployees = new Set();
+
+	                // 레벨별로 직원 정보 정리
+	                $.each(orgData, function(index, levelData) {
+	                    $.each(levelData, function(employeeInfo, level) {
+	                        var parts = employeeInfo.split('/');
+	                        if (parts.length < 3) return;
+
+	                        var name = parts[0];
+	                        var rank = parts[2];
+	                        var displayName = name + ' ' + rank;
+
+	                        employeeByLevel[level] = employeeByLevel[level] || [];
+	                        employeeByLevel[level].push({
+	                            displayName: displayName,
+	                            rank: rank
+	                        });
+	                    });
+	                });
+
+	                // 최상위 레벨(이사) 처리
+	                if (employeeByLevel[1]) {
+	                    var director = employeeByLevel[1][0];
+	                    rows.push([director.displayName, '']);
+	                    processedEmployees.add(director.displayName);
+	                }
+
+	                // 부장 레벨 처리
+	                if (employeeByLevel[2]) {
+	                    $.each(employeeByLevel[2], function(index, employee) {
+	                        var manager = employeeByLevel[1] ? employeeByLevel[1][0].displayName : '';
+	                        rows.push([employee.displayName, manager]);
+	                        processedEmployees.add(employee.displayName);
+	                    });
+	                }
+
+	                // 과장 레벨 처리
+	                if (employeeByLevel[3]) {
+	                    $.each(employeeByLevel[3], function(index, employee) {
+	                        var manager = '';
+	                        if (employeeByLevel[2] && employeeByLevel[2].length > 0) {
+	                            manager = employeeByLevel[2][Math.min(index, employeeByLevel[2].length - 1)].displayName;
+	                        }
+	                        rows.push([employee.displayName, manager]);
+	                        processedEmployees.add(employee.displayName);
+	                    });
+	                }
+
+	                // 나머지 직원들 처리 (아직 처리되지 않은 직원들)
+	                $.each(orgData, function(index, levelData) {
+	                    $.each(levelData, function(employeeInfo, level) {
+	                        var parts = employeeInfo.split('/');
+	                        if (parts.length < 3) return;
+
+	                        var displayName = parts[0] + ' ' + parts[2];
+	                        if (!processedEmployees.has(displayName)) {
+	                            var manager = level > 1 && employeeByLevel[level - 1] ? 
+	                                employeeByLevel[level - 1][0].displayName : '';
+	                            rows.push([displayName, manager]);
+	                        }
+	                    });
+	                });
+
+	                data.addRows(rows);
+
+	                var chart = new google.visualization.OrgChart($orgchart[0]);
+	                chart.draw(data, {
+	                    allowHtml: true,
+	                    size: 'large'
+	                });
+
+	            } catch (error) {
+	                console.error('Error drawing org chart:', error);
+	                alert('조직도를 그리는 중 오류가 발생했습니다.');
+	            }
+	        }	        
+
+
+
+        
+        
+		});/* 끝 : $('#departDiv').on('click', */
+        
+        
     });
     </script>
 	
