@@ -2,12 +2,37 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.pettopia.schedule.ScheduleMapper">
 	
-	<!-- selectScheduleList -->
-	<select id="selectScheduleList" parameterType="String" resultType="Map">
+	<!-- selectScheduleList : 캘린더 일정 조회하기 -->
+	<select id="selectScheduleList" parameterType="Map" resultType="Map">
 		SELECT s.schedule_no scheduleNo, s.emp_no empNo, s.schedule_title scheduleTitle, s.schedule_type scheduleType,
-			   s.all_day allDay, s.start_datetime startDatetime, s.end_datetime endDatetime, 
-			   s.create_datetime createDatetime, s.update_datetime updateDatetime
+			   s.all_day allDay, s.start_datetime startDatetime, s.end_datetime endDatetime
 		FROM `schedule` s WHERE emp_no = #{empNo}
+		<if test="scheduleType != null">
+        	AND s.schedule_type = #{scheduleType}
+    	</if>
 	</select>
 	
+	<!-- insertSchedule : 캘린더 일정 추가하기 -->
+	<insert id="insertSchedule" parameterType="com.example.pettopia.vo.Schedule" useGeneratedKeys="true" keyColumn="schedule_no" keyProperty="scheduleNo" >
+        INSERT INTO schedule(emp_no, schedule_title, schedule_type, all_day, start_datetime, end_datetime) 
+		VALUES (#{empNo}, #{scheduleTitle}, #{scheduleType}, #{allDay}, STR_TO_DATE(#{startDatetime}, '%Y-%m-%d %H:%i:%s'), STR_TO_DATE(#{endDatetime}, '%Y-%m-%d %H:%i:%s'))
+    </insert>	
+	
+	
+	<!-- deleteSchedule : 캘린더 일정 삭제하기 -->
+	<delete id="deleteSchedule" parameterType="Integer">
+		DELETE FROM schedule WHERE schedule_no = #{scheduleNo}
+	</delete>
+	
+	<!-- updateSchedule : 캘린더 일정 수정하기 -->
+ 	<update id="updateSchedule" parameterType="com.example.pettopia.vo.Schedule">
+	    UPDATE 
+	    	schedule SET schedule_title = #{scheduleTitle}, 
+	    	schedule_type = #{scheduleType}, 
+	    	all_day = #{allDay},
+	        start_datetime = STR_TO_DATE(#{startDatetime}, '%Y-%m-%d %H:%i:%s'),
+	        end_datetime = STR_TO_DATE(#{endDatetime}, '%Y-%m-%d %H:%i:%s')
+	    WHERE schedule_no = #{scheduleNo}
+   	</update>
+
 </mapper>
