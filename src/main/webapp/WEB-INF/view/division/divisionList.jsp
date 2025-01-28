@@ -21,144 +21,121 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 	
 	<!-- Google Chart 라이브러리 로드 -->
-	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<!-- <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script> -->
+  
+  	<!-- Balkan orgchart -->
+  	<script src="${pageContext.request.contextPath}/assets/js/balkanOrgchart/orgchart.js"></script>
+  	<script src="https://balkan.app/js/OrgChart.js"></script>
   
 	<style>
 	/* 스타일을 추가해 조직도를 보기 좋게 표시 */
-	#orgchart {
-	  
-	  height: 500px;
-	}
+
 	</style>
     
     <script>
     $(document).ready(function () {
-		/* 팀을 클릭하면 해당 팀의 조직도를 띄워줘야함 */
-		$('#departDiv').on('click', '#deptDivSel', function () {
-		  	// 현재 클릭된 #deptDivSel 내부의 input#deptCode 값을 가져오기
-			const deptCode = $(this).find('input#deptCode').val().trim();
-		
-		  	// 확인
-		  	console.log('deptCode:', deptCode);
-		  	
-	    	/* Google Chart 라이브러리 로드 */
-	        google.charts.load('current', {
-	          packages: ['orgchart']
-	        });
-	
-	        google.charts.setOnLoadCallback(drawChart);
-	        google.charts.setOnLoadCallback(fetchAndDrawChart);
-
+        /* 팀을 클릭하면 해당 팀의 조직도를 띄워줘야함 */
+        $('#departDiv').on('click', '#deptDivSel', function () {
         
-        	/* ajax로 가져온 부서 정보 조직도로 만들기 */
-	        function fetchAndDrawChart() {
-	          // AJAX 요청으로 JSON 데이터 가져오기
-	          $.ajax({
-	            url: '/pettopia/rest/orgChart/'+deptCode, 
-	            method: 'GET',
-	            dataType: 'json',
-	            success: function(response) {
-	              // JSON 데이터를 Google Charts DataTable로 변환
-	              drawChart(response);
-	            },
-	            error: function(error) { 
-	             	alert('조직도 ajax 실패' + deptCode);
-	            }
-	          }); 
-	        } 
-	
-	        function drawChart(orgData) {
-	            try {
-	                var $orgchart = $('#orgchart');
-	                var data = new google.visualization.DataTable();
-	                data.addColumn('string', 'name');
-	                data.addColumn('string', 'manager');
+        	
+            // 현재 클릭된 #deptDivSel 내부의 input#deptCode 값을 가져오기
+            const deptCode = $(this).find('input#deptCode').val().trim();
 
-	                var rows = [];
-	                var employeeByLevel = {};
-	                var processedEmployees = new Set();
+            // 확인
+            console.log('deptCode:', deptCode);
 
-	                // 레벨별로 직원 정보 정리
-	                $.each(orgData, function(index, levelData) {
-	                    $.each(levelData, function(employeeInfo, level) {
-	                        var parts = employeeInfo.split('/');
-	                        if (parts.length < 3) return;
+            // ajax로 데이터 가져오기
+            $.ajax({
+                url: '/pettopia/rest/orgChart/' + deptCode, 
+                method: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    // JSON 데이터를 계층 구조로 변환
+                    const hierarchy = createHierarchy(response);
+                    console.log("response : "+ response);
+                    // 계층 구조 데이터로 조직도 그리기
+                    drawOrgChart(hierarchy);
+                },
+                error: function (error) { 
+                    alert('조직도 ajax 실패 ' + deptCode);
+                }
+            });
 
-	                        var name = parts[0];
-	                        var rank = parts[2];
-	                        var displayName = name + ' ' + rank;
-
-	                        employeeByLevel[level] = employeeByLevel[level] || [];
-	                        employeeByLevel[level].push({
-	                            displayName: displayName,
-	                            rank: rank
-	                        });
-	                    });
-	                });
-
-	                // 최상위 레벨(이사) 처리
-	                if (employeeByLevel[1]) {
-	                    var director = employeeByLevel[1][0];
-	                    rows.push([director.displayName, '']);
-	                    processedEmployees.add(director.displayName);
-	                }
-
-	                // 부장 레벨 처리
-	                if (employeeByLevel[2]) {
-	                    $.each(employeeByLevel[2], function(index, employee) {
-	                        var manager = employeeByLevel[1] ? employeeByLevel[1][0].displayName : '';
-	                        rows.push([employee.displayName, manager]);
-	                        processedEmployees.add(employee.displayName);
-	                    });
-	                }
-
-	                // 과장 레벨 처리
-	                if (employeeByLevel[3]) {
-	                    $.each(employeeByLevel[3], function(index, employee) {
-	                        var manager = '';
-	                        if (employeeByLevel[2] && employeeByLevel[2].length > 0) {
-	                            manager = employeeByLevel[2][Math.min(index, employeeByLevel[2].length - 1)].displayName;
-	                        }
-	                        rows.push([employee.displayName, manager]);
-	                        processedEmployees.add(employee.displayName);
-	                    });
-	                }
-
-	                // 나머지 직원들 처리 (아직 처리되지 않은 직원들)
-	                $.each(orgData, function(index, levelData) {
-	                    $.each(levelData, function(employeeInfo, level) {
-	                        var parts = employeeInfo.split('/');
-	                        if (parts.length < 3) return;
-
-	                        var displayName = parts[0] + ' ' + parts[2];
-	                        if (!processedEmployees.has(displayName)) {
-	                            var manager = level > 1 && employeeByLevel[level - 1] ? 
-	                                employeeByLevel[level - 1][0].displayName : '';
-	                            rows.push([displayName, manager]);
-	                        }
-	                    });
-	                });
-
-	                data.addRows(rows);
-
-	                var chart = new google.visualization.OrgChart($orgchart[0]);
-	                chart.draw(data, {
-	                    allowHtml: true,
-	                    size: 'large'
-	                });
-
-	            } catch (error) {
-	                console.error('Error drawing org chart:', error);
-	                alert('조직도를 그리는 중 오류가 발생했습니다.');
-	            }
-	        }	        
+            // 계층 구조로 변환
+			function createHierarchy(data) {
+			    console.log("createHierarchy 실행 확인");
+			    console.log("data : ", data);  // data를 출력하여 들어오는 데이터 확인
+			
+			    var hierarchy = []; // 최상위 노드를 담을 배열
+			    var depthMap = {}; // 각 깊이에 해당하는 마지막 노드를 저장 (배열로 저장)
+			
+			    // 데이터 반복 처리
+			    $.each(data, function (index, node) {
+			        var newNode = {
+			            id: node.empNo, 				// 직원 번호를 고유 ID로 사용
+			            name: node.empName , 			// 이름과 직급 표시
+			            pid: '', 						// pid 미리 빈 문자열로 설정
+			            title: node.rankName,			// 직급
+			            img : "${pageContext.request.contextPath}/employeeFile/"+node.fileName
+			            
+			        };
+			
+			        // 최상위 노드 (depth == 1)인 경우
+			        if (node.depth == 1) {
+			            console.log("디버깅 확인 1 - 최상위 노드: ", newNode);
+			            hierarchy.push(newNode); // 최상위 노드는 바로 배열에 추가
+			        } else {
+			            console.log("디버깅 확인 2 - 부모 찾기: ", node);
+			
+			            // 부모 노드 찾기 (같은 depth의 마지막 노드가 부모)
+			            var parentNode = depthMap[node.depth - 1] ? depthMap[node.depth - 1].slice(-1)[0] : null;
+			            if (parentNode) {
+			                newNode.pid = parentNode.id; // 부모 노드 ID 설정
+			                console.log("부모 노드 설정: ", parentNode);
+			            } else {
+			                console.error("Parent node not found for depth " + node.depth + ":", node);
+			            }
+			        }
+			
+			        // 현재 노드를 해당 depth에 추가
+			        if (!depthMap[node.depth]) {
+			            depthMap[node.depth] = [];
+			        }
+			        depthMap[node.depth].push(newNode);
+			        console.log("현재 depthMap 상태: ", depthMap); // depthMap 상태를 확인
+			    });
+			
+			    // depthMap에서 각 깊이의 노드를 모두 hierarchy 배열에 추가
+			    $.each(depthMap, function(depth, nodes) {
+			        hierarchy = hierarchy.concat(nodes);
+			    });
+			
+			    // 디버깅용 데이터 확인
+			    console.log("계층 구조 데이터:", hierarchy);
+			
+			    return hierarchy;
+			}
 
 
+            // Balkan OrgChart 초기화 및 그리기
+            function drawOrgChart(hierarchy) {
+                console.log("OrgChart에 전달된 데이터:", hierarchy); // 디버깅용
 
+                const chart = new OrgChart(document.getElementById('orgchart'), {
+                	template: 'ula',
+                    mouseScrool: OrgChart.none,
+                    enableSearch: false,
+                    nodes: hierarchy,
+                    nodeBinding: {// 노드에 표시할 내용
+                    	 img_0: "img",
+                         field_0: "name",
+                         field_1: "title" 
+                    }
+                });
+            }
+        }); /* 끝:  팀을 클릭하면 해당 팀의 조직도를 띄워줘야함 */
         
-        
-		});/* 끝 : $('#departDiv').on('click', */
-        
+
         
     });
     </script>
@@ -211,7 +188,7 @@
 				        </div >
 				        
 				        <!-- 조직도 -->
-				        <div id="orgchart" class="grid xl:grid-cols-1" style="border: solid 1px blue;" >
+				        <div id="orgchart" class="grid xl:grid-cols-1" style="border: solid 1px blue;  width: 80%; " >
 				        	<div class="grid xl:grid-cols-4 px-5 hidden">
 				                <span>팀을 선택해 주세요</span>
 				            </div>
@@ -700,7 +677,7 @@ $(document).ready(function () {
         // 상위 부서 목록 추가
         $(result).each(function (index, item) {
             $('#divisionDiv').append(
-                '<div class="p-3 m-2 w-64" onclick="fetchDepartmentList(\'' + item.divisionCode + '\')" style="border: solid 1px blue;">' +
+                '<div class="p-3 m-2 w-64" id="clickDiviDiv" onclick="fetchDepartmentList(\'' + item.divisionCode + '\')" style="border: solid 1px blue;">' +
                 '<span>' + item.divisionName + '</span>' +
                 '</div>'
             );
@@ -715,6 +692,20 @@ $(document).ready(function () {
         // 기존 하위 팀 목록 초기화
         $('#departDiv').empty();
 
+        const chartContainer = document.getElementById('orgchart');
+
+    	// 기존 OrgChart 인스턴스가 존재하는지 확인
+        if (chartContainer) {
+            
+            chartContainer.innerHTML = '';  // 기존 DOM 내용 제거
+            console.log("OrgChart 인스턴스가 제거되었습니다.");
+        } else {
+            console.log("OrgChart 인스턴스가 존재하지 않습니다.");
+        } 
+   	
+        
+        
+        
         /* 하위 팀 조회 */
         $.ajax({
             url: '/pettopia/rest/departmentList/' + divisionCode,
@@ -741,7 +732,14 @@ $(document).ready(function () {
     $(document).on('click', '#divisionDiv > div', function () {
         $('#divisionDiv > div').removeClass('bg-blue-500 text-white'); // 기존 강조 제거
         $(this).addClass('bg-blue-500 text-white'); // 클릭한 항목 강조
+        
+       
+        
     });
+
+    
+    
+    
 
 });
 </script>
