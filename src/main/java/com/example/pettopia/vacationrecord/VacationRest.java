@@ -5,65 +5,67 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.pettopia.message.MessageService;
+import com.example.pettopia.dto.EmpUserDetails;
 import com.example.pettopia.util.TeamColor;
-import com.example.pettopia.vo.Department;
-import com.example.pettopia.vo.Division;
 
 import lombok.extern.slf4j.Slf4j;
 
+
 @Slf4j
 @RestController
-@ComponentScan("com.example.pettopia.message")
 public class VacationRest {
 	   	@Autowired
 	    VacationRecordService vacationRecordService;
-	    @Autowired
-	    MessageService messageService; // 쪽지모달창 부서, 팀 검색 재활용
 
-	    // 오자윤 : /vacation/vacationList 팀 검색 -->
-		@GetMapping("vacation/departmentList/{divisionCode}")
-		public List<Department> getDepartmentName(@PathVariable String divisionCode) {
-			return messageService.getDepartmentName(divisionCode);
-		}
-		
-		// 오자윤 : /vacation/vacationList 부서검색 -->
-		@GetMapping("vacation/divisionList")
-		public List<Division> getDivisionName() {
-			return messageService.getDivisionName();
-		}
-		
-	    // 휴가리스트 반환 : /vacation/attendanceList 근태리스트 반환 (임시)
+	    // 휴가리스트 날짜 검색 : /vacation/vacationList 
 	    @GetMapping("rest/vacation/vacationList")
-	    public List<Map<String, Object>> attendanceList(
-	            @RequestParam(required = false) String attendanceDate,
-	            @RequestParam(required = false) String deptCode,
-	            @RequestParam(required = false) String divisionCode,
-	            @RequestParam(required = false) String empName,
-	            @RequestParam(defaultValue = "0") int offset,
-	            @RequestParam(defaultValue = "10") int limit) {
+	    public Map<String, Object> attendanceList(Authentication auth,
+	            @RequestParam(required = false) String startDate,
+	            @RequestParam(required = false) String endDate,
+		 		@RequestParam(defaultValue = "1") int page, 
+	            @RequestParam(defaultValue = "10") int size) {
 	    	
-	        // 쿼리 파라미터 추가
+			// Security 회원정보 empNo 가져오기
+			EmpUserDetails empUserDetails = (EmpUserDetails)auth.getPrincipal();
+		    String empNo = empUserDetails.getUsername(); 
+		    
+		    // Check if startDate or endDate are empty strings and set them to null
+		    if (startDate != null && startDate.isEmpty()) {
+		        startDate = null;
+		    }
+		    if (endDate != null && endDate.isEmpty()) {
+		        endDate = null;
+		    }
+		    
+	        // 페이징 계산
+	        int offset = (page -1) * size;
+	        
+	        // 파라미터 생성
 	        Map<String, Object> params = new HashMap<>();
-	        params.put("attendanceDate", attendanceDate);
-	        params.put("deptCode", deptCode);
-	        params.put("divisionCode", divisionCode);
-	        params.put("empName", empName);
+	        params.put("empNo", empNo);
+	        params.put("startDate", startDate);
+	        params.put("endDate", endDate);
+	        params.put("limit", size);
 	        params.put("offset", offset);
-	        params.put("limit", limit);
-
-			 // 디버깅
-			 List<Map<String, Object>> vacationList = vacationRecordService.getVacationUsage(params);
-			 log.debug(TeamColor.OJY + "vacationList: " + vacationList + TeamColor.RESET);
+	        
+	        // 휴가 목록 & 카운트 가져오기
+	        List<Map<String, Object>> vacationList = vacationRecordService.getVacationListByDate(params);
+	        int totalRecords = vacationRecordService.countVacationByDate(params);
+	        log.debug(TeamColor.OJY + "vacationList------> " + vacationList + TeamColor.RESET);
+	        
+	        // 결과 맵 생성
+	        Map<String, Object> result = new HashMap<>();
+	        result.put("vacationList", vacationList);
+	        result.put("totalRecords", totalRecords);
+	        result.put("currentPage", page);
+	        result.put("totalPages", (int) Math.ceil((double) totalRecords / size));		
 			 
-	        // 직원리스트 반환
-	        return vacationRecordService.getVacationUsage(params);
+			return result;
 	    }
 	    
 }
