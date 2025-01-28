@@ -42,5 +42,9 @@ public interface EmployeeMapper {
     // employeeSummary : 직원 공식 정보 상세보기
     Map<String, Object> selectEmployeeSummary(String empNo);
     
+    // header.jsp -> 안읽은 쪽지 알림
+    Map<String, Object> selectNotReadYet(String empNo);
+    
+    
     
 }

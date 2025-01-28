@@ -36,6 +36,7 @@
     .gridjs-summary {
         display: none;
     }
+
 </style>
  
  
@@ -108,8 +109,8 @@
 						</div>				
 						
 						<!-- gridjs 출력 -->
-		               <div id="employeeTable">			
-		               </div>
+		               <div id="employeeTable"></div>
+		               
                 	</div>
                 </div>
 
@@ -225,11 +226,11 @@ function fetchEmployeeData() {
 			                + '<div class="w-6 h-6 rounded-full shrink-0 bg-slate-100 dark:bg-zink-600">'
 			                + '<img src="${pageContext.request.contextPath}/employeeFile/' + (emp.fileName ? emp.fileName : 'placeholder.png') + '" class="h-6 rounded-full">'
 			                + '</div>'
-			                + '<h6 class="grow">' + emp.empName + '</h6>' + '</a>',
+			                + '<h6 class="grow">' + emp.empName + '</h6>' + '</a>' ,
 			        empStatus: emp.empStatus,
 			        division: '<strong>' + emp.divisionName + '</strong>' + '/' + emp.deptName,
 			        rankName: emp.isTeamLeader === 'H' ? emp.rankName + '(' + emp.isTeamLeader + ')' : emp.rankName,
-			        divisionCode: emp.divisionCode,
+			        divisionCode: emp.divisionCode ,
 
                 };
             });
@@ -246,18 +247,34 @@ function fetchEmployeeData() {
                     emp.empStatus,
                     gridjs.html(emp.division),
                     emp.rankName,
-                    emp.hireDate,
+                    gridjs.html(emp.hireDate),
                 ]),
                 pagination: true,
                 search: true, 
                 style: {
+                	table: {
+                		tableLayout: 'auto',  // 테이블 너비 고정
+                        width: '100%',
+                        boxSizing: 'border-box', 
+                	},
                     th: {
                         background: '#f8f9fa',
                         color: '#495057',
+                        textAlign: 'center',
+                        borderLeft: 'none',  // 좌측 경계선 없애기
+                        borderRight: 'none', // 우측 경계선 없애기
+                       
                     },
                     td: {
                         padding: '0.75rem',
                         borderBottom: '1px solid #e0e0e0',
+                        textAlign: 'center',
+                        borderLeft: 'none',  // 좌측 경계선 없애기
+                        borderRight: 'none', // 우측 경계선 없애기
+                       
+                    },
+                    tr: {
+                        transition: 'background-color 0.3s ease',  // 애니메이션 효과
                     },
 
                 }
@@ -267,6 +284,17 @@ function fetchEmployeeData() {
         .catch(error => {
             console.error('데이터 가져오기 실패:', error);
         });
+    
+    
+	/* gridjs css 적용 */
+    document.styleSheets[0].insertRule(`
+        .gridjs tr:hover {
+            background-color: #f1f1f1;  // hover 시 배경색 변경
+        }
+    `, 0);
+    
+
+    
 }
 </script>
 

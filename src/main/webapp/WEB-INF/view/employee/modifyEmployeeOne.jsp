@@ -153,140 +153,191 @@
   <!-- Main Form -->
   <form action="${pageContext.request.contextPath}/employee/modifyEmployeeOne" class="create-form" method="post" enctype="multipart/form-data" id="modifyEmployeeForm">
     <input type="hidden" name="isTeamLeader" value="${isTeamLeader }">
-    
-    <div class="xl:col-span-9">
-      <div class="card">
-        <div class="card-body">
-          <div class="max-h-[calc(theme('height.screen')_-_180px)] p-4 overflow-y-auto">
 
-            <!-- Hidden Fields -->
-            <input type="hidden" value="" name="id" id="id">
-            <input type="hidden" value="add" name="action" id="action">
-            <input type="hidden" id="id-field">
+<div class="xl:col-span-9">
+  <div class="card">
+    <div class="card-body">
+      <div class="max-h-[calc(theme('height.screen')_-_180px)] p-4 overflow-y-auto">
 
-            <!-- 에러메세지 -->
-            <div id="alert-error-msg" class="hidden px-4 py-3 text-sm text-red-500 border border-transparent rounded-md bg-red-50 dark:bg-red-500/20"></div>
+        <!-- Hidden Fields -->
+        <input type="hidden" value="" name="id" id="id">
+        <input type="hidden" value="add" name="action" id="action">
+        <input type="hidden" id="id-field">
 
-            <!-- 직원 프로필 사진  -->
-            <div class="relative mx-auto mb-4 rounded-full shadow-md size-24 bg-slate-100 profile-user dark:bg-zink-500">
-              <img id="profileImg" src="${pageContext.request.contextPath }/employeeFile/${fileName}" alt="" class="object-cover w-15 h-15 rounded-full user-profile-image">
+        <!-- 에러메세지 -->
+        <div id="alert-error-msg" class="hidden px-4 py-3 text-sm text-red-500 border border-transparent rounded-md bg-red-50 dark:bg-red-500/20"></div>
+
+        <!-- 등록 버튼 (우측 상단) -->
+        <div class="flex justify-end" >
+          <button type="submit" id="modifyBtn" class="bg-white text-custom-500 btn border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100">
+          	수정
+          </button>
+        </div>
+		
+
+        <!-- 레이아웃: 사진은 왼쪽, 정보는 오른쪽 -->
+        <div class="grid grid-cols-12 gap-4 items-start">
+
+          <!-- 직원 프로필 사진 (왼쪽) -->
+          <div class="col-span-12 xl:col-span-2 flex justify-center">
+            <div class="relative rounded-full shadow-md size-28 bg-slate-100 profile-user dark:bg-zink-500">
+              <img id="profileImg" src="${pageContext.request.contextPath }/employeeFile/${fileName}" alt="" 
+                   class="object-cover w-28 h-28 rounded-full user-profile-image">
               <div class="absolute bottom-0 flex items-center justify-center rounded-full size-8 ltr:right-0 rtl:left-0 profile-photo-edit">
-                <input id="profile-img-file-input" name="employeeFile" type="file" class="hidden profile-img-file-input" accept="image/*">
+                <input id="profile-img-file-input" name="employeeFile" type="file" 
+                       class="hidden profile-img-file-input" accept="image/*">
                 <input type="hidden" name="empFileNo" value="${empFileNo}">
-                <label for="profile-img-file-input" class="flex items-center justify-center bg-white rounded-full shadow-lg cursor-pointer size-8 dark:bg-zink-600 profile-photo-edit">
-                  <i data-lucide="image-plus" class="size-4 text-slate-500 fill-slate-200 dark:text-zink-200 dark:fill-zink-500"></i>
+                <label for="profile-img-file-input" 
+                       class="flex items-center justify-center bg-white rounded-full shadow-lg cursor-pointer size-8 dark:bg-zink-600 profile-photo-edit">
+                  <i data-lucide="image-plus" 
+                     class="size-4 text-slate-500 fill-slate-200 dark:text-zink-200 dark:fill-zink-500"></i>
                 </label>
               </div>
             </div>
+          </div>
 
-            <!-- 직원 정보 입력 -->
+		  
+
+          <!-- 직원 정보 입력 (오른쪽) -->
+          <div class="col-span-12 xl:col-span-9 ">
+
             <div class="grid grid-cols-1 gap-4 xl:grid-cols-12">
+	
+				
               <!-- 사번 : 자동입력 -->
               <div class="xl:col-span-4">
-                <label for="employeeId" class="inline-block mb-2 text-base font-medium">직원 번호</label>
-                <input type="number" name="empNo" id="employeeId" class="form-input border-slate-200 dark:border-zink-500" value="${loginEmp.username}" readOnly>
-             	<input type="hidden" name="empStatus" value="${empStatus}">
+                <label for="employeeId" class="inline-block mb-2 text-base font-medium">직원 번호 </label>
+                <input type="number" name="empNo" id="employeeId" 
+                       class="form-input border-none dark:border-zink-500 focus:outline-none" 
+                       value="${loginEmp.username}" readOnly>
+                <input type="hidden" name="empStatus" value="${empStatus}">
               </div>
 
               <!-- 이름 -->
               <div class="xl:col-span-4">
-                <label for="employeeInput" class="inline-block mb-2 text-base font-medium">이름</label>
-                <input type="text" name="empName" id="employeeInput" class="form-input border-slate-200 dark:border-zink-500" value="${empForm.empName }" required>
+                <label for="employeeInput" class="inline-block mb-2 text-base font-medium">이름 <span class="text-red-600"> *</span></label>
+                <input type="text" name="empName" id="employeeInput" 
+                       class="form-input border-slate-200 dark:border-zink-500" 
+                       value="${empForm.empName}" required>
               </div>
 
               <!-- 생년월일 -->
               <div class="xl:col-span-4">
-                <label for="joiningDateInput1" class="inline-block mb-2 text-base font-medium">생년월일</label>
-                <input type="text" name="empBirth" id="joiningDateInput1" class="form-input border-slate-200 dark:border-zink-500" value="${empForm.empBirth }" data-provider="flatpickr" data-date-format="Y-m-d">
+                <label for="joiningDateInput1" class="inline-block mb-2 text-base font-medium">생년월일 <span class="text-red-600"> *</span></label>
+                <input type="text" name="empBirth" id="joiningDateInput1" 
+                       class="form-input border-slate-200 dark:border-zink-500" 
+                       value="${empForm.empBirth}" data-provider="flatpickr" data-date-format="Y-m-d">
               </div>
 
               <!-- 이메일 -->
               <div class="xl:col-span-4">
-                <label for="emailInput" class="inline-block mb-2 text-base font-medium">이메일</label>
-                <input type="text" name="empEmail" id="emailInput" class="form-input border-slate-200 dark:border-zink-500" value="${empForm.empEmail}" required>
+                <label for="emailInput" class="inline-block mb-2 text-base font-medium">이메일<span class="text-red-600"> *</span></label>
+                <input type="text" name="empEmail" id="emailInput" 
+                       class="form-input border-slate-200 dark:border-zink-500" 
+                       value="${empForm.empEmail}" required>
               </div>
 
               <!-- 연락처 -->
               <div class="xl:col-span-4">
-                <label for="phoneNumberInput" class="inline-block mb-2 text-base font-medium">연락처</label>
+                <label for="phoneNumberInput" class="inline-block mb-2 text-base font-medium">연락처<span class="text-red-600"> *</span></label>
                 <div class="flex gap-2">
                   <select name="empPhoneF" class="form-input border-slate-200 dark:border-zink-500">
-                    <option value="010" ${empForm.empPhoneF == '010' ?  'selected' : '' } >010</option>
-                    <option value="011" ${empForm.empPhoneF == '011' ?  'selected' : '' } >011</option>
+                    <option value="010" ${empForm.empPhoneF == '010' ? 'selected' : ''}>010</option>
+                    <option value="011" ${empForm.empPhoneF == '011' ? 'selected' : ''}>011</option>
                   </select>
-                  <input type="text" name="empPhoneM" id="phoneNumberInput1" class="form-input border-slate-200 dark:border-zink-500" value="${empForm.empPhoneM}" required>
-                  <input type="text" name="empPhoneL" id="phoneNumberInput2" class="form-input border-slate-200 dark:border-zink-500" value="${empForm.empPhoneL}" required>
+                  <input type="text" name="empPhoneM" id="phoneNumberInput1" 
+                         class="form-input border-slate-200 dark:border-zink-500" 
+                         value="${empForm.empPhoneM}" required>
+                  <input type="text" name="empPhoneL" id="phoneNumberInput2" 
+                         class="form-input border-slate-200 dark:border-zink-500" 
+                         value="${empForm.empPhoneL}" required>
                 </div>
               </div>
 
               <!-- 성별 -->
-				<div class="xl:col-span-4">
-				  <label class="block text-base font-medium mb-2" style=" margin-bottom: 15px;">성별</label>
-				  <div class="flex items-center space-x-4">
-				    <label class="flex items-center space-x-2" style="margin-right: 30px;">
-				      <input type="radio" name="empGender" value="M"  ${empForm.empGender == 'M' ? 'checked' : ''} class="h-5 w-5 text-blue-600 border-gray-300 focus:ring-blue-500" style="margin-left: 10px;">
-				      <span>남성</span>
-				    </label>
-				    <label class="flex items-center space-x-2">
-				      <input type="radio" name="empGender" value="F"  ${empForm.empGender == 'F' ? 'checked' : ''} class="h-5 w-5 text-pink-600 border-gray-300 focus:ring-pink-500"> 
-				    	
-				      <span>여성</span>
-				    </label>
-				  </div>
-				</div>
+              <div class="xl:col-span-4">
+                <label class="block text-base font-medium mb-2">성별<span class="text-red-600"> *</span></label>
+                <div class="flex gap-4 items-center space-x-4">
+                  <label class="flex items-center space-x-2">
+                    <input type="radio" name="empGender" value="M" 
+                           ${empForm.empGender == 'M' ? 'checked' : ''} 
+                           class="h-5 w-5 text-blue-600 border-gray-300 focus:ring-blue-500">
+                    <span>남성</span>
+                  </label>
+                  <label class="flex items-center space-x-2">
+                    <input type="radio" name="empGender" value="F" 
+                           ${empForm.empGender == 'F' ? 'checked' : ''} 
+                           class="h-5 w-5 text-pink-600 border-gray-300 focus:ring-pink-500">
+                    <span>여성</span>
+                  </label>
+                </div>
+              </div>
 
-              <!-- 주소 -->          
-				<div class="xl:col-span-4">
-				  <label for="locationInput" class="inline-block mb-2 text-base font-medium">
-				    주소
-				  </label>
-				  <div class="grid gap-2">
-				    <!-- 우편번호와 버튼 -->
-				    <div class="flex items-center space-x-2">
-				      <input type="text" name="postalCode" id="sample6_postcode" value="${empForm.postalCode }" readonly class="flex-grow border border gray-300 rounded-md px-2 py-1">
-				      <!-- <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기" style="background-color: #3B82F6; color: white;" >  -->
-				      <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기" style="background-color: #3B82F6; color: white; padding: 5px 10px; font-size: 13px; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease;">
-				    </div>
-				
-				    <!-- 주소 입력 -->
-				    <input type="text" name="basicAddress" id="sample6_address" value="${empForm.basicAddress }" required class="border border-gray-300 rounded-md px-2 py-1">
-				    <input type="text"  name="detailAddress"  id="sample6_detailAddress" value="${empForm.detailAddress}" required class="border border-gray-300 rounded-md px-2 py-1">
-				    <input type="text" name="dong" id="sample6_extraAddress" value="${empForm.dong }" required class="border border-gray-300 rounded-md px-2 py-1">
-				  </div>
-				</div> 
-				
-				<!-- 공백 -->
-              	<div class="xl:col-span-4">
-	                
-              	</div>
-				
-				
-				<!-- 비밀번호 -->
-              	<div class="xl:col-span-4 mt-6" style="margin-top: 70px;">
-	                <label for="employeeInput" class="inline-block mb-2 mt-10 text-base font-medium">비밀번호</label>
-	                <input type="text" name="empPw" id="empPw" class="form-input border-slate-200 dark:border-zink-500" value="" required>
-              	</div>
+              <!-- 주소 -->
+              <div class="xl:col-span-4">
+                <label for="locationInput" class="inline-block mb-2 text-base font-medium">주소<span class="text-red-600"> *</span></label>
+                <div class="grid gap-2">
+                  <!-- 우편번호와 버튼 -->
+                  <div class="flex items-center space-x-2">
+                    <input type="text" name="postalCode" id="sample6_postcode" 
+                           value="${empForm.postalCode}" readonly 
+                           class="flex-grow border border-gray-300 rounded-md px-2 py-1">
+                    <input type="button" onclick="sample6_execDaumPostcode()" 
+                           value="우편번호 찾기" 
+                           class="bg-white text-sky-500 btn border-sky-500 hover:text-white hover:bg-sky-600 hover:border-sky-600 focus:text-white focus:bg-sky-600 focus:border-sky-600 focus:ring focus:ring-sky-100 active:text-white active:bg-sky-600 active:border-sky-600 active:ring active:ring-sky-100 px-3 py-1"
+                          >
+                  </div>
+
+                  <!-- 주소 입력 -->
+                  <input type="text" name="basicAddress" id="sample6_address" 
+                         value="${empForm.basicAddress}" required 
+                         class="border border-gray-300 rounded-md px-2 py-1">
+                  <input type="text" name="detailAddress" id="sample6_detailAddress" 
+                         value="${empForm.detailAddress}" required 
+                         class="border border-gray-300 rounded-md px-2 py-1">
+                  <input type="text" name="dong" id="sample6_extraAddress" 
+                         value="${empForm.dong}" required 
+                         class="border border-gray-300 rounded-md px-2 py-1">
+                </div>
+              </div>
               
-				             
+              <div class="xl:col-span-4 mt-6 ">
+              </div>
+              
 
-
+              <!-- 비밀번호 -->
+              <div class="xl:col-span-4 mt-6 ">
+              	<br>
+              	<br>
+              	<br>
+              	<br>
+                <label for="empPw" class="inline-block mb-2 text-base font-medium">비밀번호<span class="text-red-600"> *</span></label>
+                <input type="text" name="empPw" id="empPw" 
+                       class="form-input border-slate-200 dark:border-zink-500" 
+                       value="" required>
+              </div>
             </div>
-
-            <!-- 등록 버튼 -->
-            <div class="flex justify-end gap-2 mt-4">
-              <button type="submit" id="modifyBtn" class="text-white btn bg-custom-500 hover:bg-custom-600">수정</button>
-            </div>
-
           </div>
         </div>
+
+
+
       </div>
     </div>
+  </div>
+</div>
+
+
+
+
+    
+    
   </form>
 </div>
 				
 				
 				
-				<!--end add Employee-->
+				<!---->
 			</div>
 			<!-- container-fluid -->
 		</div>

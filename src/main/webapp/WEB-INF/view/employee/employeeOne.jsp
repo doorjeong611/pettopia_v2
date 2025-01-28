@@ -33,6 +33,9 @@
     .gridjs-summary {
         display: none;
     }
+    
+    
+    
 </style>    
     
 </head>
@@ -56,159 +59,216 @@
             <div class="container-fluid group-data-[content=boxed]:max-w-boxed mx-auto">
                 <div class="flex flex-col gap-2 py-4 md:flex-row md:items-center print:hidden">
                     <div class="grow">
-                        <h5 class="text-16">메인 화면</h5>
+                        <h5 class="text-16">마이페이지</h5>
                     </div>
                     <ul class="flex items-center gap-2 text-sm font-normal shrink-0">
                         <li class="relative before:content-['\ea54'] before:font-remix ltr:before:-right-1 rtl:before:-left-1  before:absolute before:text-[18px] before:-top-[3px] ltr:pr-4 rtl:pl-4 before:text-slate-400 dark:text-zink-200">
-                            <a href="#!" class="text-slate-400 dark:text-zink-200">메인 화면</a>
+                            <a href="${pageContext.request.contextPath }/employee/employeeOne?empNo=${loginEmp.username}" class="text-slate-400 dark:text-zink-200">마이페이지</a>
                         </li>
                         <li class="text-slate-700 dark:text-zink-100">
-                            템플릿
+                            개인정보 열람
                         </li>
                     </ul>
                 </div>
                 <!-- Main content -->
-				<div class="xl:col-span-9 flex justify-center">
-				  <div class="card w-full max-w-5xl">
-				    <div class="card-body">
-				      <div class="max-h-[calc(theme('height.screen')_-_180px)] p-4 overflow-y-auto">
-				        <!-- 에러메세지 -->
-				        <div id="alert-error-msg" class="hidden px-4 py-3 text-sm text-red-500 border border-transparent rounded-md bg-red-50 dark:bg-red-500/20"></div>
-				
-								        
-						<!-- 서명 관리 -->
-						<div class="flex justify-end gap-2 mt-4"s>
-							<button type="button" id="signBtn" class="text-green-500 bg-white btn hover:bg-green-100">서명 관리</button>
-						</div>
-						
-				
-				        <!-- 직원 프로필 사진  -->
-				        <div class="relative mx-auto mb-4 rounded-full shadow-md size-24 bg-slate-100 profile-user dark:bg-zink-500">
-				          <img id="profileImg" src="${pageContext.request.contextPath }/employeeFile/${empInfo.empFileName}" alt="" class="object-cover w-15 h-15 rounded-full user-profile-image">
-				        </div>
+<div class="xl:col-span-9 flex justify-center">
+  <div class="card w-full max-w-5xl">
+    <div class="card-body">
 
-				        <!-- 직원 정보 입력 -->
-				        <div class="grid grid-cols-1 gap-4 xl:grid-cols-12 " style="padding-left: 100px;">
-				          <!-- 사번 : 자동입력 -->
-				          <div class="xl:col-span-4">
-				            <label for="employeeId" class="inline-block mb-2 text-base font-medium">직원 번호</label>
-				            <input type="number" name="empNo" id="employeeId" class="form-input border-slate-200 dark:border-zink-500 px-5 focus:outline-none" value="${loginEmp.username}" readOnly>
-				          </div>
+      <!-- 수정 버튼: 오른쪽 상단 -->
+      <div class="flex justify-end gap-2 mb-4 pr-7 mt-6">
+      	<div class="flex justify-end gap-2 ">
+			<button type="button" id="signBtn" class="text-green-500 bg-white border-green-500 btn hover:text-white hover:bg-green-600 hover:border-green-600 focus:text-white focus:bg-green-600 focus:border-green-600 focus:ring focus:ring-green-100 active:text-white active:bg-green-600 active:border-green-600 active:ring active:ring-green-100">서명 관리</button>
+		</div>
+        <a href="${pageContext.request.contextPath}/employee/modifyEmployeeOne?empNo=${loginEmp.username}">
+          <button type="button" id="addNew" class="bg-white text-custom-500 btn border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100">
+            수정
+          </button>
+        </a>
+      </div>
+
+      <div class="flex gap-6 items-start mb-5 py-3 px-10">
+        
+        <!-- 직원 프로필 사진 -->
+        <div class="relative mb-4 mt-3 shadow-md size-36 bg-slate-100 profile-user dark:bg-zink-500">
+          <img id="profileImg" src="${pageContext.request.contextPath}/employeeFile/${empInfo.empFileName}" 
+               alt="" class="object-cover w-40 h-40 user-profile-image">
+        </div>
+
+        <!-- 직원 정보 -->
+        <div class="flex-grow grid grid-cols-1 gap-4">
+        	<!-- 사번 -->
+            <div class="flex ">
+            	<div class="pl-5">
+            		<svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" viewBox="0 0 24 24" fill="none" stroke="#babec2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-id-card"><path d="M16 10h2"/><path d="M16 14h2"/><path d="M6.17 15a3 3 0 0 1 5.66 0"/><circle cx="9" cy="11" r="2"/><rect x="2" y="5" width="20" height="14" rx="2"/></svg>
+            	</div>
+            	<span class="pl-2 text-black-500 text-xl font-semibold">${loginEmp.username}
+            		
+            	</span>
+            	
+            	<c:if test="${empInfo.empStatus == 'T' }">
+            		<span class="flex items-center px-2.5 py-0.5 ml-2 text-xs font-medium rounded border bg-white border-custom-400 text-custom-500 dark:bg-zink-700 dark:border-custom-700">
+                		<span class="size-1.5 ltr:mr-1 rtl:ml-1 rounded-full inline-block bg-custom-500"></span> 임시
+               		</span>
+            	</c:if>
+            	<c:if test="${empInfo.empStatus == 'E' }">
+            		<span class="flex items-center px-2.5 py-0.5 ml-2 text-xs font-medium rounded border bg-white border-green-400 text-green-500 dark:bg-zink-700 dark:border-green-700">
+                		<span class="size-1.5 ltr:mr-1 rtl:ml-1 rounded-full inline-block bg-green-500"></span> 재직
+               		</span>
+            	</c:if>
+            	<c:if test="${empInfo.empStatus == 'L' }">
+            		<span class="flex items-center px-2.5 py-0.5 ml-2 text-xs font-medium rounded border bg-white border-yellow-400 text-yellow-500 dark:bg-zink-700 dark:border-yellow-700">
+                		<span class="size-1.5 ltr:mr-1 rtl:ml-1 rounded-full inline-block bg-yellow-500"></span> 휴직
+               		</span>
+            	</c:if>
+            	<c:if test="${empInfo.empStatus == 'R' }">
+            		<span class="flex items-center px-2.5 py-0.5 ml-2 text-xs font-medium rounded border bg-white border-red-400 text-red-500 dark:bg-zink-700 dark:border-red-700">
+                		<span class="size-1.5 ltr:mr-1 rtl:ml-1 rounded-full inline-block bg-red-500"></span> 퇴직
+               		</span>
+            	</c:if>
+            	<c:if test="${empInfo.empStatus == 'H' }">
+            		<span class="flex items-center px-2.5 py-0.5 ml-2 text-xs font-medium rounded border bg-white border-custom-400 text-purple-500 dark:bg-zink-700 dark:border-purple-700">
+                		<span class="size-1.5 ltr:mr-1 rtl:ml-1 rounded-full inline-block bg-purple-500"></span> 대기
+               		</span>
+            	</c:if>
+            	
+            	
+            	
+            </div>
+        	
+          
+          <!-- 이름, 사번, 생년월일, 이메일 같은 줄에 배치 -->
+          <div class="flex gap-1">
+            
+            <!-- 이름 -->
+            <div class="flex">
+            	<div class="pl-5">
+            		<svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#babec2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-user-round"><path d="M18 20a6 6 0 0 0-12 0"/><circle cx="12" cy="10" r="4"/><circle cx="12" cy="12" r="10"/></svg>
+            	</div>
+            	<span class="pl-2 pt-1 text-black-500 text-[20px]"> 
+            		${empInfo.empName}
+            	</span>
+            </div>
+
+            <!-- 생년월일 -->
+            <div class="flex">
+            	<div class="pl-5">
+            		<svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#babec2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar-1"><path d="M11 14h1v4"/><path d="M16 2v4"/><path d="M3 10h18"/><path d="M8 2v4"/><rect x="3" y="4" width="18" height="18" rx="2"/></svg>
+            	</div>
+            	<span class="pl-2 pt-1">${empInfo.empBirth}</span>
+            </div>
+            
+			<!-- 이메일 -->
+          	<div class="flex">
+            	<div class="pl-5">
+            		<svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#babec2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mail"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            	</div>
+          		<span class="pl-2 pt-1">${empInfo.empEmail}</span>
+          	</div>
+
+          </div>
+
+		<!-- 연락처, 성별, 입사일 같은 줄에 배치 -->
+		<div class="flex gap-1">
+          <!-- 연락처 -->
+           <div class="flex">
+            	<div class="pl-5">
+            		<svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#babec2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-phone"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>	
+            	</div>
+          		<span class="pl-2 pt-1">${empInfo.empPhone}</span>
+          </div>
+
+          <!-- 성별 -->
+           <div class="flex">
+            	<div class="pl-5">
+            		<svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#babec2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+            	</div>
+          	<span class="pl-2 pt-1">${empInfo.empGender}</span>
+          </div>
+          
+          <!-- 입사일 -->
+          <div class="flex">
+           	<div class="pl-5">
+           		<svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#babec2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-contact-round"><path d="M16 2v2"/><path d="M17.915 22a6 6 0 0 0-12 0"/><path d="M8 2v2"/><circle cx="12" cy="12" r="4"/><rect x="3" y="4" width="18" height="18" rx="2"/></svg>
+           	</div>
+          	<span class="pl-2 pt-1">${empInfo.hireDate}</span>
+          </div>
+        </div>  
+
+		<!-- 주소를 한 줄에 배치 -->
+		<div class="flex gap-1">
+          <!-- 주소 -->
+           <div class="flex">
+           		<div class="pl-5">
+           			<svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#babec2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map-pin-house"><path d="M15 22a1 1 0 0 1-1-1v-4a1 1 0 0 1 .445-.832l3-2a1 1 0 0 1 1.11 0l3 2A1 1 0 0 1 22 17v4a1 1 0 0 1-1 1z"/><path d="M18 10a8 8 0 0 0-16 0c0 4.993 5.539 10.193 7.399 11.799a1 1 0 0 0 .601.2"/><path d="M18 22v-3"/><circle cx="10" cy="10" r="3"/></svg>
+           		</div>
+           		<span class="pl-2 pt-1">${empInfo.postalCode}, ${empInfo.basicAddress}, ${empInfo.detailAddress}</span>     
+           </div>	       
+		</div>
+
+		<!-- 부서, 팀, 직급 한 줄에 배치 -->
+		<div class="flex gap-1">
+          <!-- 부서 -->
+      	  <div class="pl-5">
+      		  <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#babec2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-network"><rect x="16" y="16" width="6" height="6" rx="1"/><rect x="2" y="16" width="6" height="6" rx="1"/><rect x="9" y="2" width="6" height="6" rx="1"/><path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"/><path d="M12 12V8"/></svg>
+      	  </div>
+          <div>
+          	<span class="pl-2 ">${empInfo.divisionName} / ${empInfo.deptName} / ${empInfo.rankName}</span>
+          </div>
+      
+        </div>  
+          
+          
+          
+        </div>
+      </div>
+
+
+
+<div class="grid grid-cols-1 gap-4 mb-5 xl:grid-cols-2">
+	<div class="xl:col-span-12">
+		<div>
+			<h5 class="text-16"> 근태 기록 <hr> </h5>
+		</div>
+	</div>
+</div>
+<div class="card p-5 shadow-none">
+	<div class="grid grid-cols-1 gap-4 mb-5 xl:grid-cols-2">
+	<!-- 나의 근태 기록 -->
+	<!-- gridjs 출력 -->
+	<div class="xl:col-span-12">
+		<div class="xl:col-span-4 mb-3" style="width: 150px; margin-left: 175px;">
+               <select name="attendanceStatus" id="attendanceSelect" class="form-input border-slate-200 dark:border-zink-500">
+                   <option value="">전체</option>
+                   <option value="P">출근</option>
+                   <option value="L">지각</option>
+                   <option value="E">조퇴</option>
+                   <option value="A">결근</option>
+                   <option value="V">연차</option>
+                   <option value="H">반차</option>
+               </select>
+        </div>
+        
+		 
+  	<div id="myAttendanceTable" style="width: 800px; justify-self: center;"></div>
+  </div>
+ </div>
+</div>
+
+
+
+    </div>
+  </div>
+</div>
+
 				
-				          <!-- 이름 -->
-				          <div class="xl:col-span-4 ">
-				            <label for="employeeInput" class="inline-block mb-2 text-base font-medium">이름</label>
-				            <input type="text" name="empName" id="employeeInput" class="form-input border-slate-200 dark:border-zink-500 px-5 focus:outline-none" value="${empInfo.empName}" readonly>
-				          </div>
 				
-				          <!-- 생년월일 -->
-				          <div class="xl:col-span-4 ">
-				            <label for="joiningDateInput" class="inline-block mb-2 text-base font-medium">생년월일</label>
-				            <div class="gap-2">
-				              <input type="text" name="empBirth" class="border border-gray-300 rounded-md px-5 py-2 mb-2 focus:outline-none" value="${empInfo.empBirth}" readonly>
-				            </div>
-				          </div>
 				
-				          <!-- 이메일 -->
-				          <div class="xl:col-span-4">
-				            <label for="emailInput" class="inline-block mb-2 text-base font-medium">이메일</label>
-				            <input type="text" name="empEmail" class="form-input border-slate-200 dark:border-zink-500 px-5 focus:outline-none " value="${empInfo.empEmail}" readonly>
-				          </div>
 				
-				          <!-- 연락처 -->
-				          <div class="xl:col-span-4 ">
-				            <label for="phoneNumberInput" class="inline-block mb-2 text-base font-medium">연락처</label>
-				            <div class="flex items-center space-x-4">
-				              <input type="text" name="empPhone" id="phoneNumberInput2" class="form-input border-slate-200 dark:border-zink-500 px-5 focus:outline-none" value="${empInfo.empPhone}" readonly>
-				            </div>
-				          </div>
 				
-				          <!-- 성별 -->
-				          <div class="xl:col-span-4 ">
-				            <label class="block text-base font-medium mb-2" style=" margin-bottom: 8px;">성별</label>
-				            <div class="flex items-center space-x-4">
-				              <input type="text" name="empGender" class="border border-gray-300 rounded-md px-5 py-2 mb-2 focus:outline-none" value="${empInfo.empGender}" readonly>
-				            </div>
-				          </div>
 				
-				          <!-- 주소 -->          
-				          <div class="xl:col-span-4 ">
-				            <label for="locationInput" class="inline-block mb-2 text-base font-medium">
-				              주소
-				            </label>
-				            <div class="grid gap-2">
-				              <!-- 우편번호 -->
-				              <div class="flex items-center space-x-2">
-				                <input type="text" name="postalCode" id="sample6_postcode" class="flex-grow border border-gray-300 rounded-md px-5 py-2 focus:outline-none" value="${empInfo.postalCode}" readonly>
-				              </div>
-				              
-				              <!-- 주소 입력 -->
-				              <input type="text" name="basicAddress" id="sample6_address" class="border border-gray-300 rounded-md px-5 py-2 focus:outline-none" value="${empInfo.basicAddress}" readonly>
-				              <input type="text" name="detailAddress" id="sample6_detailAddress" class="border border-gray-300 rounded-md px-5 py-2 focus:outline-none" value="${empInfo.detailAddress}" readonly>
-				              
-				            </div>
-				          </div>
 				
-				          <!-- 입사일 -->
-				          <div class="xl:col-span-4 ">
-				            <label for="joiningDateInput" class="inline-block mb-2 text-base font-medium">입사일</label>
-				            <div class="gap-2">
-				              <input type="text" name="hireDate" class="border border-gray-300 rounded-md px-5 py-2 mb-2 focus:outline-none" value="${empInfo.hireDate}" readonly>
-				            </div>
-				          </div>
 				
-				          <!-- 부서 -->
-				          <div class="xl:col-span-4 ">
-				            <label for="designationSelect" class="inline-block mb-2 text-base font-medium">소속 부서</label>
-				            <div class="gap-2">
-				              <input type="text" name="divisionCode" class="border border-gray-300 rounded-md px-5 py-2 mb-2 focus:outline-none" value="${empInfo.divisionName}" readonly>
-				              <input type="text" name="deptCode" class="border border-gray-300 rounded-md px-5 py-2 mb-2 focus:outline-none" value="${empInfo.deptName}" readonly>
-				           	</div>
-				            <label for="designationSelect" class="inline-block mb-2 text-base font-medium">직급</label>
-				            <div class="gap-2">
-				              <input type="text" name="rankNo" class="border border-gray-300 rounded-md px-5 py-2 mb-2 focus:outline-none" value="${empInfo.rankName}" readonly>
-				            </div>
-				          </div>
-				        </div>
-				
-				        <!-- 수정 버튼 -->
-				        <div class="flex justify-end gap-2 mt-4">
-				         <a href="${pageContext.request.contextPath }/employee/modifyEmployeeOne?empNo=${loginEmp.username}"> <button type="button" id="addNew" class="text-white btn bg-custom-500 hover:bg-custom-600">수정</button></a> 
-				        </div>
-				
-				      </div>
-				    </div>
-				  </div>
-				</div>
-				<div class="grid grid-cols-1 gap-4 mb-5 xl:grid-cols-2">
-					<div class="xl:col-span-12">
-						<div>
-							<h5 class="text-16"> 근태 기록 </h5>
-						</div>
-					</div>
-				</div>
-				<div class="card p-5">
-					<div class="grid grid-cols-1 gap-4 mb-5 xl:grid-cols-2">
-					<!-- 나의 근태 기록 -->
-					<!-- gridjs 출력 -->
-					<div class="xl:col-span-12">
-						<div class="xl:col-span-4 mb-3" style="width: 150px; margin-left: 250px;">
-			                <select name="attendanceStatus" id="attendanceSelect" class="form-input border-slate-200 dark:border-zink-500">
-			                    <option value="">전체</option>
-			                    <option value="P">출근</option>
-			                    <option value="L">지각</option>
-			                    <option value="E">조퇴</option>
-			                    <option value="A">결근</option>
-			                    <option value="V">연차</option>
-			                    <option value="H">반차</option>
-			                </select>
-				        </div>
-				        
-						 
-		                	<div id="myAttendanceTable" style="width: 800px; justify-self: center;"></div>
-		                </div>
-	                </div>
-                </div>
 				<script type="text/javascript">
 				/* gridjs 시작 */
 				// 전역 변수로 선언
@@ -373,39 +433,62 @@
 					<div id="signModalBackground"class="fixed inset-0" style="background-color: rgba(0, 0, 0, 0.75); z-index: 40;"></div>
 					               	
 					<div id="signFormModal" class="fixed left-1/2 transform -translate-x-1/2 z-[1000]" style="top: 40%; transform: translate(-50%, -40%); z-index: 1000;">
-					
 						<div class="w-screen md:w-[30rem] bg-white shadow rounded-md dark:bg-zink-600 flex flex-col h-full">
-							<div class="flex items-center justify-between p-4 dark:border-zink-500  ml-auto">    
-								<button type="button" id="closeSignModalBtn" class="transition-all duration-200 ease-linear text-slate-500 hover:text-red-500 dark:text-zink-200 dark:hover:text-red-500">
-									&#10060;
-								</button>
-							</div>
+							
+							<!-- 모달 헤더 -->
+							<div class="flex items-center justify-between p-4 border-b border-slate-200 dark:border-zink-500">
+	                            <h5 class="text-16">나의 서명관리</h5>
+								<div class="flex items-center justify-between p-4 dark:border-zink-500  ml-auto">    
+									<button type="button" id="closeSignModalBtn" class="transition-all duration-200 ease-linear text-slate-500 hover:text-red-500 dark:text-zink-200 dark:hover:text-red-500">
+										&#10060;
+									</button>
+								</div>
+							
+							</div>	
+							
+							
+							<!-- 모달 내용 -->
 							<div class="max-h-[calc(theme('height.screen')_-_180px)] p-4 overflow-y-auto">
-								<div id="signView">
+								<div id="signView" class="flex items-center justify-center h-full">
 									
+								</div>
+								<!-- signature_pad -->
+								<div id="pad" class="hidden flex items-center justify-center h-full" >
+									<canvas class="max-w-full mb-2" style="border:1px solid #babec2; width:250px;"></canvas>        		       
+									<button type="button" id="btnClear" class="ml-2 text-green-500 bg-white border-green-500 btn hover:text-white hover:bg-green-600 hover:border-green-600 focus:text-white focus:bg-green-600 focus:border-green-600 focus:ring focus:ring-green-100 active:text-white active:bg-green-600 active:border-green-600 active:ring active:ring-green-100">지우기</button>         
+									      
 								</div>
 								<!-- 업로드 -->
 								<div>
-									<div class="relative w-full max-w-sm" id="fileUploadDiv">
-										<button type="button" id="removeSignFileBtn" class="text-white btn bg-custom-500 hover:bg-custom-600" >삭제</button>
-										<input type="file" id="empSignFile" name="empSignFile" />
+									<div class="relative w-full max-w-sm mb-2" id="fileUploadDiv">
+										<div>
+			                                <input type="file" id="empSignFile" name="empSignFile" class="cursor-pointer form-file form-file-sm border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500" placeholder="Enter your name">
+			                            </div>
 									</div>
-								</div>
-								<!-- signature_pad -->
-								<div>
-									<button type="button" id="signPadBtn" class="text-green-500 bg-white btn hover:bg-green-100">서명하기</button>
-								</div>
-								<div id="pad" class="hidden" >
-									<canvas style="border:1px solid black; width:250px;"></canvas>        
-									       
-									<button type="button" id="btnClear" class="text-green-500 bg-white btn hover:bg-green-100">지우기</button>         
-									<!-- <button type="button" id="btnAdd" class="text-green-500 bg-white btn hover:bg-green-100">등록</button>  -->       
 								</div>
 							    
 							</div>
-							<div class="flex items-center justify-between p-4 mt-auto 0 dark:border-zink-500 ml-auto">
-								<button id="addEmpSignBtn"  type="button" class="text-white btn bg-custom-500 hover:bg-custom-600 addFileBtn">등록</button>
-							</div>
+							
+							<!-- 모달 푸터 -->
+							<div class="flex items-center p-4 mt-auto border-t border-slate-200 dark:border-zink-500">
+                                <div class="flex gap-2 items-center justify-between p-4 mt-auto 0 dark:border-zink-500 ml-auto">									
+	                                <div>
+		                               	<button type="button" id="removeSignFileBtn" class="text-red-500 bg-white border-red-500 btn hover:text-white hover:bg-red-600 hover:border-red-600 focus:text-white focus:bg-red-600 focus:border-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:border-red-600 active:ring active:ring-red-100" >첨부 파일 삭제</button>
+									</div>
+									<div>
+										<button type="button" id="signPadBtn" class="text-green-500 bg-white border-green-500 btn hover:text-white hover:bg-green-600 hover:border-green-600 focus:text-white focus:bg-green-600 focus:border-green-600 focus:ring focus:ring-green-100 active:text-white active:bg-green-600 active:border-green-600 active:ring active:ring-green-100">서명하기</button>
+									</div>
+									<div >
+                                		<button id="addEmpSignBtn"  type="button" class="bg-white text-custom-500 btn border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 addFileBtn">등록</button>
+                                	</div>
+								</div>
+                            </div>
+							
+							
+							
+							
+							
+							
 						</div>
 					</div> 
 				</div> 
@@ -461,6 +544,7 @@ $("#signBtn").click(function() {
 	// 모달 배경과 모달 창을 보이게 하기
 	signModalContainer.removeClass("hidden");  
 	 $('#empSignFile').val('');  // 파일 선택 초기화
+	 signaturePad.clear();
     
 });
 
@@ -525,7 +609,7 @@ $.ajax({
 	const fileName = result.fileName + result.fileExt;
 	console.log('filename : ' + fileName);
 	if(result != null && result != ''){
-		$('#signView').append('<img src="${pageContext.request.contextPath}/employeeFile/' + fileName + '" style="width: 250px;">');
+		$('#signView').append('<div><img src="${pageContext.request.contextPath}/employeeFile/' + fileName + '" style="width: 250px;" class="max-w-full"></div>');
 	}else{
 		$('#signView').append('<img src="${pageContext.request.contextPath}/employeeFile/noSign.png" style="width: 250px;">');
 	}
@@ -549,12 +633,14 @@ $.ajax({
     const signPadBtn = $('#signPadBtn'); // 서명하기 버튼
     const removeSignFileBtn = $('#removeSignFileBtn'); // 파일 삭제 버튼
 
-    /* 파일 첨부 시 signPad에 이미 작성된 서명이 존재할 경우 */
+    /* 파일 첨부 시 signPad에 이미 작성된 서명이 존재할 경우, 비어있는 signpad 비활성화 */
     fileInput.on('click', function () {
     	
     	if (!signaturePad.isEmpty()) {		// signpad가 비어있지 않다면 
     		alert("서명 패드에 작성중인 서명이 존재합니다.");
     		fileInput.prop('disabled', true); // 파일 첨부 비활성화
+    	}else{
+    		$('#pad').addClass("hidden");
     	}
     	
     });	
@@ -642,9 +728,12 @@ $.ajax({
     	        }).fail(function (request, status, error) {
     	            alert('서명 등록 실패');
     	        });
+    	}else if(fileInput.files.length === 0 && signaturePad.isEmpty()){
+    		alert('파일, 서명중 반드시 하나 이상 등록해야합니다.');
+            return; 
     	}else{
     		alert('파일과 서명을 동시에 등록할 수 없습니다. 하나만 등록해주세요.');
-            return;  // 함수 실행 중지
+            return;  
     	}
     
     	

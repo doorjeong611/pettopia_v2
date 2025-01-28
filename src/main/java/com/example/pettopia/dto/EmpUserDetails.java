@@ -2,11 +2,13 @@ package com.example.pettopia.dto;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.example.pettopia.vo.Employee;
+import com.example.pettopia.vo.EmployeeFile;
 
 import lombok.Data;
 
@@ -14,9 +16,13 @@ import lombok.Data;
 public class EmpUserDetails implements UserDetails {
 
 	private final Employee employee;
+	private final Map<String, Object> employeeFile;
+	private final Map<String, Object> notReadYet;
 
-	public EmpUserDetails(Employee employee) {
+	public EmpUserDetails(Employee employee, Map<String, Object> employeeFile, Map<String, Object> notReadYet ) {
 		this.employee = employee;
+		this.employeeFile = employeeFile;
+		this.notReadYet = notReadYet;
 	}
 
 	@Override
@@ -152,8 +158,30 @@ public class EmpUserDetails implements UserDetails {
 		return employee.getUpdateDatetime();
 	}
 	
+	// 프로필 사진
+	public String getEmpFileName() {
+	    return (String) employeeFile.get("empFileName"); 
+	}
 	
+	// 부서명
+	public String getDivisionName() {
+		return (String) employeeFile.get("divisionName"); 
+	}
+
+	// 부서명
+	public String getDeptName() {
+		return (String) employeeFile.get("deptName"); 
+	}
 	
+	// 직급
+	public String getRankName() {
+		return (String) employeeFile.get("rankName"); 
+	}
+		
+	// 안읽은 쪽지 알람
+	public String getNotReadYet() {
+		return String.valueOf(notReadYet.get("notReadYet")); 
+	}
 	
 	
 	
