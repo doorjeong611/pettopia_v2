@@ -1,21 +1,30 @@
 package com.example.pettopia.notice;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.example.pettopia.dto.EmpUserDetails;
 import com.example.pettopia.util.TeamColor;
 import com.example.pettopia.vo.Division;
+import com.example.pettopia.vo.Employee;
 import com.example.pettopia.vo.Notice;
+import com.example.pettopia.vo.NoticeFile;
+
 
 
 
@@ -123,7 +132,7 @@ public class NoticeController {
 		int successView = noticeService.addNoticeView(notice);
 		
 		if(successView != 1) { // 조회수 증가 실패
-			return "redirect:/notice/noticeList";
+			return "redirect:/notice/getNoticeList";
 		}
 		
 		// 해당 공지사항 가져오기
@@ -145,18 +154,59 @@ public class NoticeController {
 	}
 	
 
-	// 공지사항 작성 (관리자만 작성 가능)
+	// 오자윤 : /notice/addNotice 공지사항 작성 (관리자만 작성 가능)
 	@GetMapping("/notice/addNotice")
-	public String addNotice() {
-		return "notice/addNotice";
+	public String addNotice(Authentication auth, Employee employee) {
+		
+		// 관리자 조회를 위한 empNo 가져오기
+		EmpUserDetails empUserDetails = (EmpUserDetails)auth.getPrincipal();
+	    String empNo = empUserDetails.getUsername(); 
+	    String empEmail = empUserDetails.getEmpEmail();
+	    String roleName = empUserDetails.getRoleNameo();
+	    
+	    // 권한에 따라 접근 제어
+	    if ("ROLE_EMP".equals(roleName)) {
+	        return "redirect:/notice/getNoticeList"; // 직원 권한일 경우 공지사항 목록으로 리다이렉트
+	    } else if ("ROLE_ADMIN".equals(roleName)) {
+	        return "notice/addNotice"; // 관리자 권한일 경우 공지사항 작성 페이지로 이동
+	    }
+	    
+	    return "redirect:/notice/getNoticeList";
 	}
 	
-	
-	
-	
-	
-	
-	
+	// 오자윤 : /notice/addNotice 공지사항 추가
+	@PostMapping("/notice/addNotice")
+	public String addNoticeSubmit(@ModelAttribute Notice notice, @RequestParam(value = "file", required = false) MultipartFile file, Authentication auth) {
+	    // 관리자 권한 확인
+	    EmpUserDetails empUserDetails = (EmpUserDetails) auth.getPrincipal();
+	    String writerEmpNo = empUserDetails.getUsername();
+
+	    // 1. 공지사항 저장
+	    notice.setWriterEmpNo(writerEmpNo); // 로그인된 관리자 empNo 저장
+	    noticeService.insertNotice(notice);
+
+	    // 2. 첨부파일 처리 (파일이 있으면)
+	    if (file != null && !file.isEmpty()) {
+	        // 파일 저장 처리
+	        String originalFileName = file.getOriginalFilename();
+	        String generatedFileName = UUID.randomUUID().toString() + "_" + originalFileName;
+	        String fileExtension = FilenameUtils.getExtension(originalFileName);
+
+	        // 파일 저장 로직 (서버 또는 클라우드 저장소에 저장)
+
+	        // 파일 DB에 저장 (NoticeFile 객체 생성 후 DB 저장)
+	        NoticeFile noticeFile = new NoticeFile();
+	        noticeFile.setOriginFileName(originalFileName);
+	        noticeFile.setFileName(generatedFileName);
+	        noticeFile.setFileExt(fileExtension);
+	        noticeFile.setFileType(file.getContentType());
+
+	        // Mapper를 통해 DB에 파일 정보 저장
+	        noticeService.insertNoticeFile(noticeFile);
+	    }
+
+	    return "redirect:/notice/noticeList"; // 공지사항 목록으로 리다이렉트
+	}
 	
 	
 }

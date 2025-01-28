@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.example.pettopia.util.TeamColor;
 import com.example.pettopia.vo.Division;
 import com.example.pettopia.vo.Notice;
+import com.example.pettopia.vo.NoticeFile;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -17,6 +18,27 @@ import lombok.extern.slf4j.Slf4j;
 public class NoticeService {
 	
 	@Autowired NoticeMapper noticeMapper;
+	
+	// 오자윤 : /notice/addNotice 공지사항 추가
+	public void insertNotice(Notice notice) {
+		noticeMapper.insertNotice(notice);
+	}
+	
+	// 오자윤 : /notice/addNotice 첨부파일 추가
+	public List<NoticeFile> insertNoticeFile(NoticeFile noticeFile) { 
+		return noticeMapper.insertNoticeFile(noticeFile);
+	}
+	
+	// 오자윤 : /notice/addNotice 파일첨부 취소
+	public List<NoticeFile> findFilesByNoticeNo(NoticeFile noticeFile) {
+		return noticeMapper.findFilesByNoticeNo(noticeFile);
+	}
+	
+	// 오자윤 : /notice/addNotice 모든 첨부파일 식제 -->
+	public int deleteFilesByNoticeNo(int noticeNo) {
+		return noticeMapper.deleteFilesByNoticeNo(noticeNo);
+	}
+	
 	
 	// 공지사항 리스트 : 부서 목록
 	public List<Division> getDivisionList(){
