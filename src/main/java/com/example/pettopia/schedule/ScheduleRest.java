@@ -1,5 +1,6 @@
 package com.example.pettopia.schedule;
 
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -86,15 +87,14 @@ public class ScheduleRest {
 
         Schedule schedule = new Schedule();
         schedule.setScheduleTitle((String)paramMap.get("title"));
-        /*
-        vo.setCalendarNo(Long.valueOf(no));
-        vo.setTitle((String) map.get("title"));
-        vo.setStart1(map.get("start1").toString().substring(0, 19));
-        if(map.get("end") != null){
-            vo.setEnd(map.get("end").toString().substring(0, 19));
+        schedule.setScheduleNo(scheduleNo);
+        schedule.setStartDatetime(paramMap.get("start").toString().replace("T", " ").substring(0, 19));
+        if (paramMap.get("end") != null) {
+            schedule.setEndDatetime(paramMap.get("end").toString().replace("T", " ").substring(0, 19));
         }
-        vo.setAllDay((Boolean) map.get("allDay"));
-     	*/
+        
+        // 클라이언트에서 전달된 allDay 값을 그대로 사용
+        schedule.setAllDay((String) paramMap.get("allDay"));
         
         try {
         	scheduleService.modifySchedule(schedule);

@@ -88,7 +88,7 @@
                                     <div class="xl:col-span-4">
                                         <label for="docWriterNo" class="inline-block mb-2 text-base font-medium">작성자</label>
                                         <input type="hidden" name="docWriterNo" id="docWriterNo" value="${empNo}">
-                                        <input type="text" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-200 placeholder:text-slate-400" value="${empNo} / ${empName}" disabled required>
+                                        <input type="text" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-200 placeholder:text-slate-400" value="${empRankName} / ${empNo} / ${empName}" disabled required>
                                     </div><!--end col-->
 	                                        
                                     <div class="xl:col-span-2">
@@ -250,7 +250,7 @@
                                     <div class="xl:col-span-4">
                                         <label for="docWriterNo" class="inline-block mb-2 text-base font-medium">작성자</label>
                                         <input type="hidden" name="docWriterNo" id="docWriterNo" value="${empNo}">
-                                        <input type="text" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-200 placeholder:text-slate-400" value="${empNo} / ${empName}" disabled required="">
+                                        <input type="text" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-200 placeholder:text-slate-400" value="${empRankName} / ${empNo} / ${empName}" disabled required="">
                                     </div><!--end col-->
 	                                        
                                     <div class="xl:col-span-2">
@@ -359,7 +359,7 @@
                                     <div class="xl:col-span-4">
                                         <label for="docWriterNo" class="inline-block mb-2 text-base font-medium">작성자</label>
                                         <input type="hidden" name="docWriterNo" id="docWriterNo" value="${empNo}">
-                                        <input type="text" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-200 placeholder:text-slate-400" value="${empNo} / ${empName}" disabled required>
+                                        <input type="text" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-200 placeholder:text-slate-400" value="${empRankName} / ${empNo} / ${empName}" disabled required>
                                     </div><!--end col-->
 	                                        
                                     <div class="xl:col-span-2">
@@ -520,7 +520,7 @@
                                     <div class="xl:col-span-4">
                                         <label for="docWriterNo" class="inline-block mb-2 text-base font-medium">작성자</label>
                                         <input type="hidden" name="docWriterNo" id="docWriterNo" value="${empNo}">
-                                        <input type="text" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-200 placeholder:text-slate-400" value="${empNo} / ${empName}" disabled required>
+                                        <input type="text" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-200 placeholder:text-slate-400" value="${empRankName} / ${empNo} / ${empName}" disabled required>
                                     </div><!--end col-->
 	                                        
                                     <div class="xl:col-span-2">
@@ -660,7 +660,7 @@
 	                                <div class="xl:col-span-4">
                                         <label for="docWriterNo" class="inline-block mb-2 text-base font-medium">작성자</label>
                                         <input type="hidden" name="docWriterNo" id="docWriterNo" value="${empNo}">
-                                        <input type="text" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-200 placeholder:text-slate-400" value="${empNo} / ${empName}" disabled required>
+                                        <input type="text" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-200 placeholder:text-slate-400" value="${empRankName} / ${empNo} / ${empName}" disabled required>
                                     </div><!--end col-->
 	                                        
                                     <div class="xl:col-span-2">

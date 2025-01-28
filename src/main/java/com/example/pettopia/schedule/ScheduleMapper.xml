@@ -28,7 +28,6 @@
  	<update id="updateSchedule" parameterType="com.example.pettopia.vo.Schedule">
 	    UPDATE 
 	    	schedule SET schedule_title = #{scheduleTitle}, 
-	    	schedule_type = #{scheduleType}, 
 	    	all_day = #{allDay},
 	        start_datetime = STR_TO_DATE(#{startDatetime}, '%Y-%m-%d %H:%i:%s'),
 	        end_datetime = STR_TO_DATE(#{endDatetime}, '%Y-%m-%d %H:%i:%s')

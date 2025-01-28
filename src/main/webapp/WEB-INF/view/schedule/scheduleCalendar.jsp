@@ -20,7 +20,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <style>
     .fc-daygrid-more-link {
-        color: navy;
+        color: black;
     }
     .fc-day-sun{
         color: red;
@@ -30,6 +30,7 @@
     }
     :root {
     	--fc-event-text-color: inherit; /* 초기값으로 설정 */
+    	--fc-list-event-hover-bg-color: inherit;
 	}
 	
 	.fc-timegrid-axis-frame {
@@ -37,6 +38,23 @@
 	    justify-content: normal; /* 기본 정렬로 설정하여 justify-content를 해제 */
 	    align-items: center; /* 수직 중앙 정렬 */
 	}
+	
+	.fc-event.text-green-500 {
+	    --fc-event-border-color: #4CAF50; /* 초록색 */
+	}
+	
+	.fc-event.text-yellow-500 {
+	    --fc-event-border-color: #FFC300; /* 노란색 */
+	}
+	
+	.fc-event.text-sky-500 {
+	    --fc-event-border-color: #1E90FF; /* 하늘색 */
+	}
+	
+	.fc-event.text-purple-500 {
+	    --fc-event-border-color: #9B59B6; /* 보라색 */
+	}
+	
     </style>
     
 </head>
@@ -67,7 +85,7 @@
                             <a href="${pageContext.request.contextPath}/schedule/scheduleCalendar" class="text-slate-400">일정 관리</a>
                         </li>
                         <li class="text-slate-700">
-                            일정 (달력)
+                            일정 (캘린더)
                         </li>
                     </ul>
                 </div>
@@ -117,7 +135,7 @@
         <!-- End Page-content -->
         
 		<!-- schedule Modal -->
-		<div id="scheduleModal" class="modal" style="display: none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0, 0, 0, 0.5); ">
+		<div id="scheduleModal" class="modal" style="display: none; position: fixed; z-index: 3; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0, 0, 0, 0.5); ">
 		    <div class="modal-content" style="background-color: #fefefe; margin: 15% auto; border: 1px solid #888; width: 30%; border-radius: 5px;">
 		    	<!-- Modal Header -->
 		        <div class="modal-header flex items-center justify-between p-4 bg-slate-100 border-b" style="border-top-left-radius: 5px; border-top-right-radius: 5px;">
@@ -347,11 +365,11 @@ $(document).ready(function () {
         },
         eventDrop: function(arg) {              // 일정을 이동시킬때, 드래그하여 시작일과 종료일이 변경되는 경우 동작
             let event = {
-                id: arg.event.id,
+                id: arg.event.scheduleNo,
                 title: arg.event.title,
-                start1: arg.event._instance.range.start,
+                start: arg.event._instance.range.start,
                 end: arg.event._instance.range.end ? arg.event._instance.range.end : null,
-                allDay: arg.event.allDay
+             	allDay: arg.event.allDay ? "Y" : "N" // boolean 값을 "Y" 또는 "N"으로 변환
             };
             $.ajax({
                 url: contextPath + '/modifySchedule/' + arg.event.id,
@@ -362,11 +380,11 @@ $(document).ready(function () {
         },
         eventResize: function(arg) {            // 일정의 크기를 변경시킬때 동작(일정을 늘릴때)
             let event = {
-                id: arg.event.id,
+                id: arg.event.scheduleNo,
                 title: arg.event.title,
-                start1: arg.event._instance.range.start,
+                start: arg.event._instance.range.start,
                 end: arg.event._instance.range.end ? arg.event._instance.range.end : null,
-                allDay: arg.event.allDay
+                allDay: arg.event.allDay ? "Y" : "N" // boolean 값을 "Y" 또는 "N"으로 변환
             };
             $.ajax({
                 url: contextPath + '/modifySchedule/' + arg.event.id,
