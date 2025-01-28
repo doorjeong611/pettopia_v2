@@ -50,15 +50,15 @@
             <div class="container-fluid group-data-[content=boxed]:max-w-boxed mx-auto">
                 <div class="flex flex-col gap-2 py-4 md:flex-row md:items-center print:hidden">
                     <div class="grow">
-                        <h5 class="text-16">메인 화면</h5>
+                        <h5 class="text-16">공지사항</h5>
   
                     </div>
                     <ul class="flex items-center gap-2 text-sm font-normal shrink-0">
                         <li class="relative before:content-['\ea54'] before:font-remix ltr:before:-right-1 rtl:before:-left-1  before:absolute before:text-[18px] before:-top-[3px] ltr:pr-4 rtl:pl-4 before:text-slate-400 dark:text-zink-200">
-                            <a href="#!" class="text-slate-400 dark:text-zink-200">메인 화면</a>
+                            <a href="#!" class="text-slate-400 dark:text-zink-200">공지사항</a>
                         </li>
                         <li class="text-slate-700 dark:text-zink-100">
-                            템플릿
+                            공지사항
                         </li>
                     </ul>
                 </div>
@@ -67,43 +67,49 @@
                 <!-- Main content -->
                  <div class="card" id="ordersTable">
                     <div class="card-body">
-                        <div class="grid grid-cols-1 gap-4 mb-5 lg:grid-cols-2 xl:grid-cols-12">
-                            <div class="xl:col-span-3">
-                                <div class="relative">
+                              <div class="relative" style="margin-bottom:20px"> <!-- 카테고리 선택 + 검색 -->
+								  <form action="${pageContext.request.contextPath}/notice/getNoticeList" method="get" id="searchCategoryForm" style="display: flex; justify-content: space-between; align-items: center;">
+								    <div style="display: flex; align-items: center;">
+								      <select name="divisionCode" id="division" class="mr-2">
+								        <option value="" style="text-align: center;">전체</option>
+								        <c:forEach var="dvs" items="${noticeList.divisionList}">
+								          <option value="${dvs.divisionCode}" ${dvs.divisionCode == CurrentdivisionCode ? 'selected' : ''} style="text-align: center">${dvs.divisionName}</option>
+								        </c:forEach>
+								      </select>
+									<!-- 게시글 검색 버튼 -->
+										<div class="relative grow">
+                                            <input type="text" name="searchKeyword" value="" id="searchKeyword" class="ltr:pl-8 rtl:pr-8 search form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" style="text-align:left;" placeholder="검색어를 입력하세요.">
+                                             <button type="submit" class="absolute right-0 top-0 h-full px-4 text-slate-500">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="search" class="lucide lucide-search inline-block size-4 absolute ltr:left-2.5 rtl:right-2.5 top-2.5 text-slate-500 dark:text-zink-200 fill-slate-100 dark:fill-zink-600"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+                                            </button>
+                                        </div>
+								    </div>
+								
+								    <!-- Right part: 게시글 작성 and 삭제 buttons -->
+								    <div style="display: flex; align-items: center;">
+								      <a href="${pageContext.request.contextPath}/notice/addNotice" class="mr-1 bg-white text-custom-500 btn border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100" method="get"> 
+								        게시글 작성
+								      </a>
+								      <form id="binForm" action="${pageContext.request.contextPath}/admin/deleteNotice" method="post" class="inline">
+								        <button type="button" id="binBtn" class="text-red-500 bg-white border-red-500 btn hover:text-white hover:bg-red-600 hover:border-red-600 focus:text-white focus:bg-red-600 focus:border-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:border-red-600 active:ring active:ring-red-100">
+								         삭제
+								        </button>
+								      </form>
+								    </div>
+								  </form>
+								</div>
                                 
-                                <!-- 카테고리 선택 + 검색 -->
-                                	<form action="${pageContext.request.contextPath}/notice/getNoticeList" method="get" id="searchCategoryForm">
-										<select name="divisionCode" id="division">
-											<option value="">전체</option>
-											<c:forEach var="dvs" items="${noticeList.divisionList}" >
-												<option value="${dvs.divisionCode }" ${dvs.divisionCode == CurrentdivisionCode ? 'selected' : ''}>${dvs.divisionName }</option>
-											</c:forEach>
-										</select>
-                                  	
-                                    	<input type="text" name="searchTitle" class="ltr:pl-8 rtl:pr-8 search form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="Search for ..." autocomplete="off">
-                                    	<!-- <i data-lucide="search" class="inline-block size-4 absolute ltr:left-2.5 rtl:right-2.5 top-2.5 text-slate-500 dark:text-zink-200 fill-slate-100 dark:fill-zink-600"></i>  -->
-                               			<button type="submit" class="text-slate-500 btn bg-slate-200 border-slate-200 hover:text-slate-600 hover:bg-slate-300 hover:border-slate-300 focus:text-slate-600 focus:bg-slate-300 focus:border-slate-300 focus:ring focus:ring-slate-100 active:text-slate-600 active:bg-slate-300 active:border-slate-300 active:ring active:ring-slate-100 dark:bg-zink-600 dark:hover:bg-zink-500 dark:border-zink-600 dark:hover:border-zink-500 dark:text-zink-200 dark:ring-zink-400/50">검색</button>
-                               		 </form>
-                                	
-                                </div>
-                            </div><!--end col-->
-                            <div class="xl:col-span-2 xl:col-start-11">
-                                <div class="ltr:lg:text-right rtl:lg:text-left">
-                                    <a href="${pageContext.request.contextPath}/admin/addNotice" type="button" class="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20"><i data-lucide="plus" class="inline-block size-4"></i> <span class="align-middle">글쓰기</span></a>
-                                </div>
-                            </div>
-                        </div><!--col grid-->
                         <div class="overflow-x-auto">
                             <div class="overflow-x-auto">
                                 <table class="w-full whitespace-nowrap">
                                     <thead class="ltr:text-left rtl:text-right bg-slate-100 text-slate-500 dark:bg-zink-600 dark:text-zink-200">
                                         <tr>
-                                            <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500">번호</th>
-                                            <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500">부서</th>
-                                            <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500">제목</th>
-                                            <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500">조회수</th>
-                                            <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500">작성자</th>
-                                            <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500">등록일</th>
+                                            <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500" style="text-align: center;">번호</th>
+                                            <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500" style="text-align: center;">부서</th>
+                                            <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500" style="text-align: center;">제목</th>
+                                            <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500" style="text-align: center;">조회수</th>
+                                            <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500" style="text-align: center;">작성자</th>
+                                            <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500" style="text-align: center;">등록일</th>
                                          
                                         </tr>
                                     </thead>
@@ -111,58 +117,57 @@
                                     	<c:forEach var="no" items="${noticeList.noticeList}" varStatus="status">
                                     		<c:if test="${no.isPinned == 'Y' }">
 	                                    		<tr style="background-color: #F1F5F9">
-		                                    		<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${status.count}</td>
-		                                    		<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${no.divisionName == 'ALL' ? '전체' : no.divisionName}</td>
-		                                    		<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500"><a href="${pageContext.request.contextPath}/notice/getNoticeOne?noticeNo=${no.noticeNo}">${no.noticeTitle}</a></td>
-		                                    		<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${no.noticeView}</td>
-		                                    		<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${no.empName}</td>
-		                                    		<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${fn:substring(no.createDate,0,10)}</td>                                		
+		                                    		<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500" style="text-align: center;">${status.count}</td>
+		                                    		<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500" style="text-align: center;">${no.divisionName == 'ALL' ? '전체' : no.divisionName}</td>
+		                                    		<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500" style="text-align: center;"><a href="${pageContext.request.contextPath}/notice/getNoticeOne?noticeNo=${no.noticeNo}">${no.noticeTitle}</a></td>
+		                                    		<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500" style="text-align: center;">${no.noticeView}</td>
+		                                    		<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500" style="text-align: center;">${no.empName}</td>
+		                                    		<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500" style="text-align: center;">${fn:substring(no.createDate,0,10)}</td>                                		
 	                                    		</tr>
                                     		</c:if>
                                     		<c:if test="${no.isPinned == 'N' }">
 	                                    		<tr>
-		                                    		<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${status.count}</td>
-		                                    		<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${no.divisionName == 'ALL' ? '전체' : no.divisionName}</td>
-		                                    		<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500"><a href="${pageContext.request.contextPath}/notice/getNoticeOne?noticeNo=${no.noticeNo}">${no.noticeTitle}</a></td>
-		                                    		<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${no.noticeView}</td>
-		                                    		<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${no.empName}</td>
-		                                    		<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${fn:substring(no.createDate,0,10)}</td>                                		
+		                                    		<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500" style="text-align: center;">${status.count}</td>
+		                                    		<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500" style="text-align: center;">${no.divisionName == 'ALL' ? '전체' : no.divisionName}</td>
+		                                    		<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500" style="text-align: center;"><a href="${pageContext.request.contextPath}/notice/getNoticeOne?noticeNo=${no.noticeNo}">${no.noticeTitle}</a></td>
+		                                    		<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500" style="text-align: center;">${no.noticeView}</td>
+		                                    		<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500" style="text-align: center;">${no.empName}</td>
+		                                    		<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500" style="text-align: center;">${fn:substring(no.createDate,0,10)}</td>                                		
 	                                    		</tr>
                                     		</c:if>
                                     		
                                     	</c:forEach>
                                     
-                                    
-                                    
-                                    
-                                      
-                                        
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-                        <div class="flex flex-col items-center mt-5 md:flex-row">
-                            <div class="mb-4 grow md:mb-0">
-                                <p class="text-slate-500 dark:text-zink-200">Showing <b>10</b> of <b>17</b> Results</p>
-                            </div>
-                            <ul class="flex flex-wrap items-center gap-2 shrink-0">
-                                <li>
-                                    <a href="#!" class="inline-flex items-center justify-center bg-white dark:bg-zink-700 h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 dark:border-zink-500 text-slate-500 dark:text-zink-200 hover:text-custom-500 dark:hover:text-custom-500 hover:bg-custom-50 dark:hover:bg-custom-500/10 focus:bg-custom-50 dark:focus:bg-custom-500/10 focus:text-custom-500 dark:focus:text-custom-500 [&.active]:text-custom-500 dark:[&.active]:text-custom-500 [&.active]:bg-custom-50 dark:[&.active]:bg-custom-500/10 [&.active]:border-custom-50 dark:[&.active]:border-custom-500/10 [&.active]:hover:text-custom-700 dark:[&.active]:hover:text-custom-700 [&.disabled]:text-slate-400 dark:[&.disabled]:text-zink-300 [&.disabled]:cursor-auto"><i class="mr-1 size-4 rtl:rotate-180" data-lucide="chevron-left"></i> Prev</a>
-                                </li>
-                                <li>
-                                    <a href="#!" class="inline-flex items-center justify-center bg-white dark:bg-zink-700 size-8 transition-all duration-150 ease-linear border rounded border-slate-200 dark:border-zink-500 text-slate-500 dark:text-zink-200 hover:text-custom-500 dark:hover:text-custom-500 hover:bg-custom-50 dark:hover:bg-custom-500/10 focus:bg-custom-50 dark:focus:bg-custom-500/10 focus:text-custom-500 dark:focus:text-custom-500 [&.active]:text-custom-500 dark:[&.active]:text-custom-500 [&.active]:bg-custom-50 dark:[&.active]:bg-custom-500/10 [&.active]:border-custom-50 dark:[&.active]:border-custom-500/10 [&.active]:hover:text-custom-700 dark:[&.active]:hover:text-custom-700 [&.disabled]:text-slate-400 dark:[&.disabled]:text-zink-300 [&.disabled]:cursor-auto">1</a>
-                                </li>
-                                <li>
-                                    <a href="#!" class="inline-flex items-center justify-center bg-white dark:bg-zink-700 size-8 transition-all duration-150 ease-linear border rounded border-slate-200 dark:border-zink-500 text-slate-500 dark:text-zink-200 hover:text-custom-500 dark:hover:text-custom-500 hover:bg-custom-50 dark:hover:bg-custom-500/10 focus:bg-custom-50 dark:focus:bg-custom-500/10 focus:text-custom-500 dark:focus:text-custom-500 [&.active]:text-custom-500 dark:[&.active]:text-custom-500 [&.active]:bg-custom-50 dark:[&.active]:bg-custom-500/10 [&.active]:border-custom-50 dark:[&.active]:border-custom-500/10 [&.active]:hover:text-custom-700 dark:[&.active]:hover:text-custom-700 [&.disabled]:text-slate-400 dark:[&.disabled]:text-zink-300 [&.disabled]:cursor-auto active">2</a>
-                                </li>
-                                <li>
-                                    <a href="#!" class="inline-flex items-center justify-center bg-white dark:bg-zink-700 size-8 transition-all duration-150 ease-linear border rounded border-slate-200 dark:border-zink-500 text-slate-500 dark:text-zink-200 hover:text-custom-500 dark:hover:text-custom-500 hover:bg-custom-50 dark:hover:bg-custom-500/10 focus:bg-custom-50 dark:focus:bg-custom-500/10 focus:text-custom-500 dark:focus:text-custom-500 [&.active]:text-custom-500 dark:[&.active]:text-custom-500 [&.active]:bg-custom-50 dark:[&.active]:bg-custom-500/10 [&.active]:border-custom-50 dark:[&.active]:border-custom-500/10 [&.active]:hover:text-custom-700 dark:[&.active]:hover:text-custom-700 [&.disabled]:text-slate-400 dark:[&.disabled]:text-zink-300 [&.disabled]:cursor-auto">3</a>
-                                </li>
-                                <li>
-                                    <a href="#!" class="inline-flex items-center justify-center bg-white dark:bg-zink-700 h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 dark:border-zink-500 text-slate-500 dark:text-zink-200 hover:text-custom-500 dark:hover:text-custom-500 hover:bg-custom-50 dark:hover:bg-custom-500/10 focus:bg-custom-50 dark:focus:bg-custom-500/10 focus:text-custom-500 dark:focus:text-custom-500 [&.active]:text-custom-500 dark:[&.active]:text-custom-500 [&.active]:bg-custom-50 dark:[&.active]:bg-custom-500/10 [&.active]:border-custom-50 dark:[&.active]:border-custom-500/10 [&.active]:hover:text-custom-700 dark:[&.active]:hover:text-custom-700 [&.disabled]:text-slate-400 dark:[&.disabled]:text-zink-300 [&.disabled]:cursor-auto">Next <i class="ml-1 size-4 rtl:rotate-180" data-lucide="chevron-right"></i></a>
-                                </li>
-                            </ul>
-                        </div>
+                        <!-- 페이지네이션 -->
+                        <div id="pagination" class="flex justify-end mt-4">
+						    <ul class="flex flex-wrap items-center gap-2 shrink-0">
+						        <!-- 이전 버튼 -->
+						        <li>
+						            <a href="javascript:void(0);" class="inline-flex items-center justify-center bg-white dark:bg-zink-700 h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 dark:border-zink-500 text-slate-500 dark:text-zink-200 disabled">
+						                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="chevron-left" class="lucide lucide-chevron-left mr-1 size-4 rtl:rotate-180"><path d="m15 18-6-6 6-6"></path></svg> 이전
+						            </a>
+						        </li>
+						
+						        <!-- 페이지 번호 생성 -->
+						            <li>
+						                <a href="?page=1" class="inline-flex items-center justify-center bg-white dark:bg-zink-700 size-8 transition-all duration-150 ease-linear border rounded border-slate-200 dark:border-zink-500 text-slate-500 dark:text-zink-200 hover:text-custom-500 dark:hover:text-custom-500 hover:bg-custom-50 dark:hover:bg-custom-500/10 focus:bg-custom-50 dark:focus:bg-custom-500/10 focus:text-custom-500 dark:focus:text-custom-500 active">
+						                    1
+						                </a>
+						            </li>
+						        <!-- 다음 버튼 -->
+						        <li>
+						            <a href="javascript:void(0);" class="inline-flex items-center justify-center bg-white dark:bg-zink-700 h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 dark:border-zink-500 text-slate-500 dark:text-zink-200 disabled">
+						                다음 
+						                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="chevron-right" class="lucide lucide-chevron-right ml-1 size-4 rtl:rotate-180"><path d="m9 18 6-6-6-6"></path></svg>
+						            </a>
+						        </li>
+						    </ul>
+						</div>	
+						
                     </div>
                 </div>   <!--  id="ordersTable" div 끝 -->
                 

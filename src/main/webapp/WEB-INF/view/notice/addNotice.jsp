@@ -17,7 +17,37 @@
     <script src="${pageContext.request.contextPath}/assets/js/layout.js"></script>
     <!-- Tailwind CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tailwind2.css">
+    <!--CKeditor -->		
+	<link rel="stylesheet" href="./style.css">
+	<link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/44.1.0/ckeditor5.css" crossorigin>
 </head>
+<style>
+
+	@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+	@media print {
+		body {
+			margin: 0 !important;
+		}
+	}
+	
+	.main-container {
+		font-family: 'Lato';
+		width: fit-content;
+		margin-left: auto;
+		margin-right: auto;
+	}
+	
+	.ck-content {
+		font-family: 'Lato';
+		line-height: 1.6;
+		word-break: break-word;
+	}
+	
+	.ck-editor__editable_inline {
+	    min-height: 300px;
+	}
+</style>
 
 <body class="text-base bg-body-bg text-body font-public dark:text-zink-100 dark:bg-zink-800 group-data-[skin=bordered]:bg-body-bordered group-data-[skin=bordered]:dark:bg-zink-700">
 <div class="group-data-[sidebar-size=sm]:min-h-sm group-data-[sidebar-size=sm]:relative">
@@ -38,101 +68,70 @@
             <div class="container-fluid group-data-[content=boxed]:max-w-boxed mx-auto">
                 <div class="flex flex-col gap-2 py-4 md:flex-row md:items-center print:hidden">
                     <div class="grow">
-                        <h5 class="text-16">공지사항 작성</h5>
+                        <h3 class="text-16">공지사항 작성</h3>
                     </div>
                     <ul class="flex items-center gap-2 text-sm font-normal shrink-0">
                         <li class="relative before:content-['\ea54'] before:font-remix ltr:before:-right-1 rtl:before:-left-1  before:absolute before:text-[18px] before:-top-[3px] ltr:pr-4 rtl:pl-4 before:text-slate-400 dark:text-zink-200">
-                            <a href="#!" class="text-slate-400 dark:text-zink-200">메인 화면</a>
+                            <a href="#!" class="text-slate-400 dark:text-zink-200">공지사항</a>
                         </li>
                         <li class="text-slate-700 dark:text-zink-100">
-                            템플릿
+                            공지사항 작성
                         </li>
                     </ul>
                 </div>
                 <!-- Main content -->
-                 <div class="xl:col-span-9">
-                        <div class="card max-w-4xl mx-auto">
-                            <div class="card-body">
-                                <h6 class="mb-5 text-15">공지사항 작성</h6>
-                                
-                                
-                                <form id="formAddDocument" method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/document/addDocument">
-                                    
-                                   <div class="grid grid-cols-1 gap-5 lg:grid-cols-2 xl:grid-cols-12" style="border: 1px solid red;">
-									    <!-- 부서, 제목 -->
-									    <div class="flex-1 col-span-1">
-									        <label for="docTitle" class="inline-block mb-2 text-base font-medium">부서</label>
-									        <h2 style="color: green">${sessionScope.loginEmp.rankNo}</h2>
-									        <c:if test="${sessionScope.loginEmp.rankNo >= 40}"><!-- 차장 이상 부장 미만 : 소속 부서 공지만 작성 가능 / 부장 이상 : 전체 공지 , 소속 부서 공지 작성 가능-->
-									        	<select name="division">
-									        		<option value=""></option>
-									        	</select>
-									        </c:if>
-									        
-									    </div>
-									    <div class="col-span-1 lg:col-span-8 xl:col-span-9">
-									        <label for="docTitle" class="inline-block mb-2 text-base font-medium">제목</label>
-									        <input type="text" name="docTitle" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400"  value="" >
-									    </div><!--end col-->
-									    
-									    <!-- 작성자, 작성일, 조회수 -->
-									    <div class="col-span-1 lg:col-span-3">
-									        <label for="docWriterNo" class="inline-block mb-2 text-base font-medium">작성자</label> 
-									        <input type="text" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" style="border: none; outline: none;" value="" readonly>
-									    </div><!--end col-->
-									    <div class="col-span-1 lg:col-span-3">
-									        <label for="docWriterNo" class="inline-block mb-2 text-base font-medium">작성일</label> 
-									        <input type="text" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" style="border: none; outline: none;" value="" readonly>
-									    </div><!--end col-->
-									    
-                                        
-                                        <!-- 첨부파일 여부 -->
-                                        <div>
-                                        	첨부 파일 : ${noticeOne.noticeFileNo}
-                                        </div>
-                                        
-										<!-- 공지사항 내용 -->
-                                        <div id="documentDiv" class="lg:col-span-2 xl:col-span-12" style="display:block;">
-                                            <div>
-                                                <label for="docContent" class="inline-block mb-2 text-base font-medium">내용</label>
-                                                <textarea name="docContent" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" style="border: none; outline: none;" rows="10" readonly>${noticeOne.noticeContent}</textarea>
-                                            </div>
-                                        </div>
-                                      
-                                        
-                                        
-<!-- 파일 업로드    
-                                     <div class="lg:col-span-2 xl:col-span-12">
-                                            <label for="genderSelect" class="inline-block mb-2 text-base font-medium">파일 업로드</label>
-                                            <div class="flex items-center justify-center bg-white border border-dashed rounded-md cursor-pointer dropzone border-slate-300 dark:bg-zink-700 dark:border-zink-500 dropzone2 dz-clickable">
-                                                
-                                                <div class="w-full py-5 text-lg text-center dz-message needsclick">
-                                                    <div class="mb-3">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="upload-cloud" class="lucide lucide-upload-cloud block mx-auto size-12 text-slate-500 fill-slate-200 dark:text-zink-200 dark:fill-zink-500"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"></path><path d="M12 12v9"></path><path d="m16 16-4-4-4 4"></path></svg>
-                                                    </div>
-
-                                                    <h5 class="mb-0 font-normal text-slate-500 dark:text-zink-200 text-15">Drag and drop your product images or <a href="#!">browse</a> your product images</h5>
-                                                </div>
-                                            </div>
-
-                                            <ul class="flex flex-wrap mb-0 gap-x-5" id="dropzone-preview2">
-                                                
-                                            </ul>
-                                        </div> 
--->
-                                    </div><!--end grid-->
-                                     
-                                    
-                                    <div class="flex justify-end gap-2 mt-4">
-                                      
-                                        <a href="${pageContext.request.contextPath}" ><button type="button" class="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100">수정</button></a>
-										<a href="${pageContext.request.contextPath}/notice/getNoticeList" ><button type="button" class="text-white bg-green-500 border-green-500 btn hover:text-white hover:bg-green-600 hover:border-green-600 focus:text-white focus:bg-green-600 focus:border-green-600 focus:ring focus:ring-green-100 active:text-white active:bg-green-600 active:border-green-600 active:ring active:ring-green-100">목록</button></a>
-
-                                    </div>
-                                </form>
-                            </div>
-                        </div><!--end card-->
-                    </div>
+                <div class="xl:col-span-9">
+				    <div class="card max-w-4xl mx-auto shadow-lg rounded-lg">
+				        <div class="card-body p-6">
+				            <h6 class="mb-6 text-xl font-semibold">공지사항 작성</h6>
+				            <form id="formAddDocument" method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/document/addDocument">
+				                <!-- Department and Title -->
+				                <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+				                    <!-- Department -->
+				                    <div class="col-span-1">
+				                        <label for="division" class="block mb-2 text-base font-medium">부서</label>
+				                        <h2 class="mb-2 text-green-600">${sessionScope.loginEmp.rankNo}</h2>
+				                        <c:if test="${sessionScope.loginEmp.rankNo >= 40}">
+				                            <select name="division" class="w-full form-select border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-custom-500">
+				                                <option value="">소속 부서를 선택하세요</option>
+				                            </select>
+				                        </c:if>
+				                    </div>
+				
+				                    <!-- Title -->
+				                    <div class="col-span-1">
+				                        <label for="docTitle" class="block mb-2 text-base font-medium">제목</label>
+				                        <input type="text" name="docTitle" class="w-full form-input border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-custom-500" placeholder="제목을 입력하세요">
+				                    </div>
+				                </div>
+				
+				                <!-- CKEditor -->
+									<div class="editor-container editor-container_classic-editor mt-4" id="editor-container">
+										<div class="editor-container__editor" style="padding-left: 10px;"> <div id="editor"></div></div>
+									</div>
+				
+				                <!-- File Attachment -->
+				                <div class="mt-6">
+				                    <label class="block mb-2 text-base font-medium">첨부 파일</label>
+				                    <div class="border border-gray-200 rounded-md p-3 bg-gray-50">
+				                        <span>${noticeOne.noticeFileNo || "첨부 파일이 없습니다"}</span>
+				                    </div>
+				                </div>
+				
+				                <!-- Buttons -->
+				                <div class="flex justify-end gap-4 mt-8">
+				                    <a href="${pageContext.request.contextPath}">
+				                        <button type="button" class="px-4 py-2 text-white bg-custom-500 border border-custom-500 rounded-lg hover:bg-custom-600 focus:ring-2 focus:ring-custom-300">수정</button>
+				                    </a>
+				                    <a href="${pageContext.request.contextPath}/notice/getNoticeList">
+				                        <button type="button" class="px-4 py-2 text-white bg-green-500 border border-green-500 rounded-lg hover:bg-green-600 focus:ring-2 focus:ring-green-300">목록</button>
+				                    </a>
+				                </div>
+				            </form>
+				        </div>
+				    </div>
+				</div>
+				                
                 
             </div>
             <!-- container-fluid -->
@@ -156,14 +155,151 @@
 <script src="${pageContext.request.contextPath}/assets/libs/prismjs/prism.js"></script>
 <script src="${pageContext.request.contextPath}/assets/libs/lucide/umd/lucide.js"></script>
 <script src="${pageContext.request.contextPath}/assets/js/tailwick.bundle.js"></script>
-<!--apexchart js-->
-<%-- <script src="${pageContext.request.contextPath}/assets/libs/apexcharts/apexcharts.min.js"></script>
-
-<!--dashboard ecommerce init js-->
-<script src="${pageContext.request.contextPath}/assets/js/pages/dashboards-ecommerce.init.js"></script>
- --%>
 <!-- App js -->
 <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
+<!-- CKEditor -->
+<script src="https://cdn.ckeditor.com/ckeditor5/44.1.0/ckeditor5.umd.js" crossorigin></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/44.1.0/translations/ko.umd.js" crossorigin></script>
+<script src="./main.js"></script>
+<script>
+//CKEditor
+	const {
+		ClassicEditor,
+		Autosave,
+		BlockQuote,
+		Bold,
+		Essentials,
+		Heading,
+		Indent,
+		IndentBlock,
+		Italic,
+		Link,
+		Paragraph,
+		SpecialCharacters,
+		Table,
+		TableCaption,
+		TableCellProperties,
+		TableColumnResize,
+		TableProperties,
+		TableToolbar,
+		Underline
+	} = window.CKEDITOR;
+	
+	const LICENSE_KEY =
+		'eyJhbGciOiJFUzI1NiJ9.eyJleHAiOjE3MzkzMTgzOTksImp0aSI6ImU1MTA5MDUwLTVmMDctNGE2NC04Nzc1LWQ2YTU1ODVkNTVmNyIsInVzYWdlRW5kcG9pbnQiOiJodHRwczovL3Byb3h5LWV2ZW50LmNrZWRpdG9yLmNvbSIsImRpc3RyaWJ1dGlvbkNoYW5uZWwiOlsiY2xvdWQiLCJkcnVwYWwiLCJzaCJdLCJ3aGl0ZUxhYmVsIjp0cnVlLCJsaWNlbnNlVHlwZSI6InRyaWFsIiwiZmVhdHVyZXMiOlsiKiJdLCJ2YyI6IjQwNzlmNTQxIn0.9h-4-f2NVZFCmrnBvERfiCFD-mgLaldK-wimYdIJy6X595wSGXY4jv4lFSSJ4wTIxUbYRyAXPweBSq1X4aPEig';
+	
+	const editorConfig = {
+		toolbar: {
+			items: [
+				'heading',
+				'|',
+				'bold',
+				'italic',
+				'underline',
+				'|',
+				'specialCharacters',
+				'link',
+				'insertTable',
+				'blockQuote',
+				'|',
+				'outdent',
+				'indent'
+			],
+			shouldNotGroupWhenFull: false
+		},
+		plugins: [
+			Autosave,
+			BlockQuote,
+			Bold,
+			Essentials,
+			Heading,
+			Indent,
+			IndentBlock,
+			Italic,
+			Link,
+			Paragraph,
+			SpecialCharacters,
+			Table,
+			TableCaption,
+			TableCellProperties,
+			TableColumnResize,
+			TableProperties,
+			TableToolbar,
+			Underline
+		],
+		heading: {
+			options: [
+				{
+					model: 'paragraph',
+					title: 'Paragraph',
+					class: 'ck-heading_paragraph'
+				},
+				{
+					model: 'heading1',
+					view: 'h1',
+					title: 'Heading 1',
+					class: 'ck-heading_heading1'
+				},
+				{
+					model: 'heading2',
+					view: 'h2',
+					title: 'Heading 2',
+					class: 'ck-heading_heading2'
+				},
+				{
+					model: 'heading3',
+					view: 'h3',
+					title: 'Heading 3',
+					class: 'ck-heading_heading3'
+				},
+				{
+					model: 'heading4',
+					view: 'h4',
+					title: 'Heading 4',
+					class: 'ck-heading_heading4'
+				},
+				{
+					model: 'heading5',
+					view: 'h5',
+					title: 'Heading 5',
+					class: 'ck-heading_heading5'
+				},
+				{
+					model: 'heading6',
+					view: 'h6',
+					title: 'Heading 6',
+					class: 'ck-heading_heading6'
+				}
+			]
+		},
+		initialData:'',
+		language: 'ko',
+		licenseKey: LICENSE_KEY,
+		link: {
+			addTargetToExternalLinks: true,
+			defaultProtocol: 'https://',
+			decorators: {
+				toggleDownloadable: {
+					mode: 'manual',
+					label: 'Downloadable',
+					attributes: {download: 'file'}
+				}
+			}
+		},
+		menuBar: {
+			isVisible: true
+		},
+		placeholder: '내용을 입력해주세요.',
+		table: {
+			contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells', 'tableProperties', 'tableCellProperties']
+		},
+        // 폭, 높이 수정.
+        width: '100%',
+        height: '500px'
+	};
+	
+	  ClassicEditor.create(document.querySelector('#editor'), editorConfig);
+</script>
 
 </body>
 

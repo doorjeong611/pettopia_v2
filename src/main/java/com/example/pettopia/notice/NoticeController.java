@@ -145,8 +145,8 @@ public class NoticeController {
 	}
 	
 
-	// 공지사항 작성 
-	@GetMapping("/admin/addNotice")
+	// 공지사항 작성 (관리자만 작성 가능)
+	@GetMapping("/notice/addNotice")
 	public String addNotice() {
 		return "notice/addNotice";
 	}
