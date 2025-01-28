@@ -8,10 +8,13 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.pettopia.dto.EmpUserDetails;
@@ -29,9 +32,10 @@ public class ScheduleRest {
 	
 	// scheduleCalendar → 캘린더 일정 조회하기
 	@GetMapping("/scheduleList/{empNo}")	
-    public List<Map<String , Object>> getScheduleList(@PathVariable String empNo) {
-        List<Map<String , Object>> scheduleList = scheduleService.getScheduleList(empNo);
-
+    public List<Map<String , Object>> getScheduleList(@PathVariable String empNo, @RequestParam(required = false) String scheduleType) throws Exception {
+		
+        List<Map<String , Object>> scheduleList = scheduleService.getScheduleList(empNo, scheduleType);
+        
         return scheduleList;
     }
 	
@@ -65,37 +69,40 @@ public class ScheduleRest {
     }
 	
 	// scheduleCalendar → 캘린더 일정 삭제하기
-//	@DeleteMapping("/calendarDelete")
-//    public String calendarDelete(@RequestParam String no) throws Exception{
-//        try{
-//            calendarService.calendarDelete(no);
-//            return "success";
-//        }catch (Exception e){
-//            e.printStackTrace();
-//            return "fail";
-//        }
-//    }
+	@DeleteMapping("/removeSchedule")
+    public String calendarDelete(@RequestParam Integer scheduleNo) throws Exception{
+        try{
+        	scheduleService.removeSchedule(scheduleNo);
+            return "success";
+        }catch (Exception e){
+            e.printStackTrace();
+            return "fail";
+        }
+    }
 	
 	// scheduleCalendar → 캘린더 일정 수정하기
-//	@PutMapping("/eventUpdate/{no}")
-//    public String eventUpdate(@PathVariable String no, @RequestBody Map<String, Object> map){
-//
-//        CalendarVo vo = new CalendarVo();
-//        vo.setCalendarNo(Long.valueOf(no));
-//        vo.setTitle((String) map.get("title"));
-//        vo.setStart1(map.get("start1").toString().substring(0, 19));
-//        if(map.get("end") != null){
-//            vo.setEnd(map.get("end").toString().substring(0, 19));
-//        }
-//        vo.setAllDay((Boolean) map.get("allDay"));
-//
-//        try {
-//            calendarService.eventUpdate(vo);
-//            return "success";
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return "fail";
-//        }
-//    }
+	@PutMapping("/modifySchedule/{scheduleNo}")
+    public String eventUpdate(@PathVariable Integer scheduleNo, @RequestBody Map<String, Object> paramMap){
+
+        Schedule schedule = new Schedule();
+        schedule.setScheduleTitle((String)paramMap.get("title"));
+        /*
+        vo.setCalendarNo(Long.valueOf(no));
+        vo.setTitle((String) map.get("title"));
+        vo.setStart1(map.get("start1").toString().substring(0, 19));
+        if(map.get("end") != null){
+            vo.setEnd(map.get("end").toString().substring(0, 19));
+        }
+        vo.setAllDay((Boolean) map.get("allDay"));
+     	*/
+        
+        try {
+        	scheduleService.modifySchedule(schedule);
+            return "success";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "fail";
+        }
+    }
 
 }

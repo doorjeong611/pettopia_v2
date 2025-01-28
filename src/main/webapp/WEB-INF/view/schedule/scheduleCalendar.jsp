@@ -18,55 +18,25 @@
     <!-- Tailwind CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tailwind2.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    
-    
     <style>
-		
-		.modal {
-		    display: none; /* 기본적으로 숨김 */
-		    position: fixed;
-		    z-index: 1;
-		    left: 0;
-		    top: 0;
-		    width: 100%;
-		    height: 100%;
-		    overflow: auto;
-		    background-color: rgba(0, 0, 0, 0.5); /* 반투명 배경 */
-		}
-		
-		.modal-content {
-		    background-color: #fefefe;
-		    margin: 15% auto;
-		    padding: 20px;
-		    border: 1px solid #888;
-		    width: 50%; /* 모달 너비 조정 */
-		}
-		
-		.close {
-		    color: #aaa;
-		    float: right;
-		    font-size: 28px;
-		    font-weight: bold;
-		}
-		
-		.close:hover,
-		.close:focus {
-		    color: black;
-		    text-decoration: none;
-		    cursor: pointer;
-		}
-		
-		.btn {
-		    padding: 10px 20px;
-		    margin: 5px;
-		    cursor: pointer;
-		}
-		
-		.btn-primary {
-		    background-color: #007bff;
-		    color: white;
-		    border: none;
-		}
+    .fc-daygrid-more-link {
+        color: navy;
+    }
+    .fc-day-sun{
+        color: red;
+    }
+    .fc-day-sat{
+        color: blue;
+    }
+    :root {
+    	--fc-event-text-color: inherit; /* 초기값으로 설정 */
+	}
+	
+	.fc-timegrid-axis-frame {
+	    display: flex; /* Flexbox를 사용 */
+	    justify-content: normal; /* 기본 정렬로 설정하여 justify-content를 해제 */
+	    align-items: center; /* 수직 중앙 정렬 */
+	}
     </style>
     
 </head>
@@ -116,26 +86,25 @@
                         </div>
                     </div><!--end col-->
                     
-                    
                     <div class="xl:col-span-3">
                         <div class="card">
                             <div class="card-body">
-                                <h6 class="mb-4 text-15">일정 선택</h6>
-                                <div id='external-events' class="flex flex-col gap-3 mb-4">
-                                    <button data-modal-target="event-modal" data-class="transition-all w-[100%] text-custom-500 !bg-custom-100 border-none rounded-md py-1.5 px-3" class='external-event fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event text-custom-500 btn bg-custom-100 hover:text-white hover:bg-custom-600 focus:text-white focus:bg-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:ring active:ring-custom-100'>
+                                <h6 class="mb-4 text-15">일정 카테고리</h6>
+                                <div class="flex flex-col gap-3 mb-4">
+                                    <button type="button" data-schedule-type="" class='categoryBtn text-custom-500 btn bg-custom-100 hover:text-white hover:bg-custom-600 focus:text-white focus:bg-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:ring active:ring-custom-100'>
                                         전체 일정
                                     </button>
-                                    <button data-class="text-green-500 w-[100%] !bg-green-100 border-none rounded-md py-1.5 px-3" class='text-green-500 bg-green-100 external-event fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event btn hover:text-white hover:bg-green-600 focus:text-white focus:bg-green-600 focus:ring focus:ring-green-100 active:text-white active:bg-green-600 active:ring active:ring-green-100'>
+                                    <button type="button" data-schedule-type="I" class='categoryBtn text-green-500 bg-green-100 btn hover:text-white hover:bg-green-600 focus:text-white focus:bg-green-600 focus:ring focus:ring-green-100 active:text-white active:bg-green-600 active:ring active:ring-green-100'>
                                         개인 일정
                                     </button>
-                                    <button data-class="text-yellow-500 w-[100%] !bg-yellow-100 border-none rounded-md py-1.5 px-3" class='text-yellow-500 bg-yellow-100 external-event fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event btn hover:text-white hover:bg-yellow-600 focus:text-white focus:bg-yellow-600 focus:ring focus:ring-yellow-100 active:text-white active:bg-yellow-600 active:ring active:ring-yellow-100'>
+                                    <button type="button" data-schedule-type="T" class='categoryBtn text-yellow-500 bg-yellow-100 btn hover:text-white hover:bg-yellow-500 focus:text-white focus:bg-yellow-500 focus:ring focus:ring-yellow-100 active:text-white active:bg-yellow-600 active:ring active:ring-yellow-100'>
                                         팀 일정
                                     </button>
-                                    <button data-class="text-sky-500 w-[100%] !bg-sky-100 border-none rounded-md py-1.5 px-3" class='external-event fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event text-sky-500 btn bg-sky-100 hover:text-white hover:bg-sky-600 focus:text-white focus:bg-sky-600 focus:ring focus:ring-sky-100 active:text-white active:bg-sky-600 active:ring active:ring-sky-100'>
-                                        휴가
+                                    <button type="button" data-schedule-type="V" class='categoryBtn text-sky-500 btn bg-sky-100 hover:text-white hover:bg-sky-500 focus:text-white focus:bg-sky-500 focus:ring focus:ring-sky-100 active:text-white active:bg-sky-600 active:ring active:ring-sky-100'>
+                                        휴가 계획
                                     </button>
-                                    <button data-class="w-[100%] text-purple-500 !bg-purple-100 border-none rounded-md py-1.5 px-3" class='text-purple-500 bg-purple-100 external-event fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event btn hover:text-white hover:bg-purple-600 focus:text-white focus:bg-purple-600 focus:ring focus:ring-purple-100 active:text-white active:bg-purple-600 active:ring active:ring-purple-100'>
-                                        회의
+                                    <button type="button" data-schedule-type="C" class='categoryBtn text-purple-500 bg-purple-100 btn hover:text-white hover:bg-purple-600 focus:text-white focus:bg-purple-600 focus:ring focus:ring-purple-100 active:text-white active:bg-purple-600 active:ring active:ring-purple-100'>
+                                        회의 일정
                                     </button>
                                 </div>
                             </div>
@@ -147,33 +116,45 @@
         </div>
         <!-- End Page-content -->
         
-		<!-- Modal -->
-		<div id="scheduleModal" class="modal" style="display: none;">
-		  <div class="modal-content">
-		    <div class="modal-header">
-		      <h5>일정 추가</h5>
-		      <button type="button" class="close" onclick="closeModal()">×</button>
+		<!-- schedule Modal -->
+		<div id="scheduleModal" class="modal" style="display: none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0, 0, 0, 0.5); ">
+		    <div class="modal-content" style="background-color: #fefefe; margin: 15% auto; border: 1px solid #888; width: 30%; border-radius: 5px;">
+		    	<!-- Modal Header -->
+		        <div class="modal-header flex items-center justify-between p-4 bg-slate-100 border-b" style="border-top-left-radius: 5px; border-top-right-radius: 5px;">
+		            <h4 class="text-16 mr-auto">일정 추가</h4>
+		        </div>
+		        
+		        <!-- Modal Content -->
+		        <div class="modal-body max-h-[calc(theme('height.screen')_-_180px)] p-4 overflow-y-auto">
+		            
+		            <div class="xl:col-span-12 mb-4">
+                        <label class="inline-block mb-2 text-base font-medium" style="font-weight: bold;">카테고리 선택</label>
+                        <select required="" id="scheduleType" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" style="width: 40%">
+                            <option>유형을 선택하세요</option>
+		                    <option value="I">* 개인 일정</option>
+		                    <option value="T">* 팀 일정</option>
+		                    <option value="V">* 휴가 계획</option>
+		                    <option value="C">* 회의 일정</option>
+                        </select>
+                    </div>
+		            
+		            
+		            <div class="xl:col-span-12">
+                        <label class="inline-block mb-2 text-base font-medium" style="font-weight: bold;">내용 입력</label>
+                        <input type="text" id="scheduleTitle" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" placeholder="내용을 입력하세요" required="">
+		            </div>
+		        </div>
+		        
+		        <!-- Modal Footer -->
+		        <div class="modal-footer flex items-center justify-end p-1 mt-auto border-t border-slate-200">
+		            <button id="cancelBtn" type="button" class="text-red-500 bg-white btn hover:text-red-500 hover:bg-red-100 focus:text-red-500 focus:bg-red-100 active:text-red-500 active:bg-red-100">
+		                취소<i class="align-baseline ltr:pl-1 ri-close-line"></i>
+		            </button>
+		        	<button id="addScheduleBtn" type="button" class="text-custom-500 bg-white btn hover:text-custom-500 hover:bg-custom-100 focus:text-custom-500 focus:bg-custom-100 active:text-custom-500 active:bg-custom-100">
+		                저장
+		            </button>
+		        </div>
 		    </div>
-		    <div class="modal-body">
-		      <div class="form-group">
-		        <label for="scheduleTitle">일정 제목</label>
-		        <input type="text" class="form-control" id="scheduleTitle" placeholder="일정 제목 입력">
-		      </div>
-		      <div class="form-group">
-		        <label for="scheduleType">일정 유형</label>
-		        <select class="form-control" id="scheduleType">
-		          <option value="I">개인</option>
-		          <option value="T">팀</option>
-		          <option value="T">휴가</option>
-		          <option value="C">회의</option>
-		        </select>
-		      </div>
-		    </div>
-		    <div class="modal-footer">
-		      <button type="button" class="btn" onclick="closeModal()">취소</button>
-		      <button type="button" class="btn btn-primary" id="saveSchedule">저장</button>
-		    </div>
-		  </div>
 		</div>
 
 		<!-- Start Footer -->
@@ -213,6 +194,8 @@
 <script>
 $(document).ready(function () {
 	
+	var contextPath = '${pageContext.request.contextPath}';
+	
 	function openModal() {
 	    document.getElementById('scheduleModal').style.display = 'block';
 	}
@@ -221,6 +204,29 @@ $(document).ready(function () {
 	    document.getElementById('scheduleModal').style.display = 'none';
 	}
 	
+	$('#cancelBtn').on('click', function() {
+        closeModal(); // 모달 닫기
+    });
+	
+    // ESC 키로 모달 닫기
+    $(document).on('keydown', function (e) {
+        if (e.key === "Escape") { // ESC 키가 눌리면
+            closeModal();
+        }
+    });
+    
+    $(document).on('keydown', function (e) {
+        if (e.key === "Enter") {
+            // 모달이 열려있는 상태에서만
+            if ($('#scheduleModal').is(':visible')) {
+                // 현재 포커스가 addScheduleBtn 버튼이 아닐 경우에만 클릭 이벤트 실행
+                if (document.activeElement !== document.getElementById('addScheduleBtn')) {
+                    document.getElementById('addScheduleBtn').click(); // 버튼 클릭 이벤트 실행
+                }
+            }
+        }
+    });
+
 	var empNo = "${empNo}";
 	
     let calendarTag = $('#calendar')[0];                    // full-calendar 생성하기
@@ -241,6 +247,13 @@ $(document).ready(function () {
             // left: 'prev,next,today',
             center: 'title',
             right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+        },
+        buttonText: {
+        	today : 'Today',
+        	dayGridMonth : 'Month',
+        	timeGridWeek : 'Week',
+        	timeGridDay : 'Day',
+        	listWeek : 'List'
         },
         initialView: 'dayGridMonth',    // 로드 될때 캘린더 화면 기본 설정
         // initialDate: '2025-01-26',   // 초기 날짜 설정 (설정하지 않으면 오늘 날짜가 보인다.)
@@ -263,7 +276,7 @@ $(document).ready(function () {
             openModal(); // 모달 열기
 
             // 저장 버튼 클릭 시
-            document.getElementById('saveSchedule').onclick = function() {
+            document.getElementById('addScheduleBtn').onclick = function() {
                 let scheduleTitle = document.getElementById('scheduleTitle').value;
                 let scheduleType = document.getElementById('scheduleType').value;
                 
@@ -319,8 +332,8 @@ $(document).ready(function () {
             if (confirm("선택한 일정을 삭제하시겠습니까?")) {
                 $.ajax({
                     type: "DELETE",
-                    url: "/calendarDelete",
-                    data: {"no" : arg.event.id},
+                    url: contextPath + "/removeSchedule",
+                    data: {"scheduleNo" : arg.event.id},
                     success: function (data) {
                         if (data == "success") {
                             alert("삭제하였습니다.");
@@ -341,7 +354,7 @@ $(document).ready(function () {
                 allDay: arg.event.allDay
             };
             $.ajax({
-                url: '/eventUpdate/' + arg.event.id,
+                url: contextPath + '/modifySchedule/' + arg.event.id,
                 method: 'PUT',
                 contentType: 'application/json',
                 data: JSON.stringify(event)
@@ -356,7 +369,7 @@ $(document).ready(function () {
                 allDay: arg.event.allDay
             };
             $.ajax({
-                url: '/eventUpdate/' + arg.event.id,
+                url: contextPath + '/modifySchedule/' + arg.event.id,
                 method: 'PUT',
                 contentType: 'application/json',
                 data: JSON.stringify(event)
@@ -377,13 +390,13 @@ $(document).ready(function () {
 		                        classNames = 'text-green-500 bg-green-100 border border-green-100 hover:text-white hover:bg-green-600 hover:border-green-600';
 		                        break;
 		                    case 'T':
-		                        classNames = 'text-yellow-500 bg-yellow-100 border border-yellow-100 hover:text-white hover:bg-yellow-600 hover:border-yellow-600';
+		                        classNames = 'text-yellow-500 bg-yellow-100 border border-yellow-100 hover:text-white hover:bg-yellow-500 hover:border-yellow-500';
 		                        break;
 		                    case 'V':
-		                        classNames = 'text-sky-500 bg-sky-100 border border-sky-100 hover:text-white hover:bg-sky-600 hover:border-sky-600';
+		                        classNames = 'text-sky-500 bg-sky-100 border border-sky-100 hover:text-white hover:bg-sky-500 hover:border-sky-500';
 		                        break;
 		                    case 'C':
-		                        classNames = 'text-purple-500 bg-purple-100 border border-purple-100 hover:text-white hover:bg-purple-600 hover:border-purple-600';
+		                        classNames = 'text-purple-500 bg-purple-100 border border-purple-100 hover:text-white hover:bg-purple-500 hover:border-purple-500';
 		                        break;
 		                    default:
 		                        classNames = ''; // 기본 클래스
@@ -405,11 +418,62 @@ $(document).ready(function () {
                 }
             });
         }
-
     });
+    
+
+ 	// 버튼 클릭 이벤트
+    $('.categoryBtn').on('click', function() {
+	    const typeCode = $(this).data('schedule-type'); // data-schedule-type 속성에서 값 가져오기
+	    fetchEvents(typeCode); // typeCode를 fetchEvents에 전달
+	});
+ 	
+    function fetchEvents(scheduleType) {
+        $.ajax({
+            type: "get",
+            url: "/pettopia/scheduleList/" + empNo + (scheduleType ? "?scheduleType=" + scheduleType : ""),
+            success: function (data) {
+                const events = data.map(item => {
+                    let classNames = '';
+
+                    // 일정 유형에 따라 클래스 추가
+                    switch (item.scheduleType) {
+                        case 'I':
+                            classNames = 'text-green-500 bg-green-100 border border-green-100 hover:text-white hover:bg-green-600 hover:border-green-600';
+                            break;
+                        case 'T':
+                            classNames = 'text-yellow-500 bg-yellow-100 border border-yellow-100 hover:text-white hover:bg-yellow-500 hover:border-yellow-500';
+                            break;
+                        case 'V':
+                            classNames = 'text-sky-500 bg-sky-100 border border-sky-100 hover:text-white hover:bg-sky-500 hover:border-sky-500';
+                            break;
+                        case 'C':
+                            classNames = 'text-purple-500 bg-purple-100 border border-purple-100 hover:text-white hover:bg-purple-500 hover:border-purple-500';
+                            break;
+                        default:
+                            classNames = ''; // 기본 클래스
+                    }
+
+                    return {
+                        id: item.scheduleNo,
+                        title: item.scheduleTitle,
+                        start: item.startDatetime,
+                        end: item.endDatetime,
+                        allDay: item.allDay === "Y", // "Y"일 경우 true
+                        classNames: classNames // CSS 클래스 추가
+                    };
+                });
+                calendar.removeAllEvents(); // 이전 이벤트 제거
+                calendar.addEventSource(events); // 필터링된 이벤트 추가
+            },
+            error: function() {
+                console.error("일정 데이터를 가져오는 데 실패했습니다.");
+            }
+        });
+    }
+ 
     // 캘린더 랜더링
     calendar.render();
-
+    
 });
 </script>
 
