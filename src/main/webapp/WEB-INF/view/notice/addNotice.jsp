@@ -20,6 +20,10 @@
     <!--CKeditor -->		
 	<link rel="stylesheet" href="./style.css">
 	<link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/44.1.0/ckeditor5.css" crossorigin>
+	<!-- Dropzone.js API -->
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dropzone@5.9.3/dist/dropzone.min.css">
+	<script src="https://cdn.jsdelivr.net/npm/dropzone@5.9.3/dist/dropzone.min.js"></script>
 </head>
 <style>
 
@@ -83,8 +87,7 @@
                 <div class="xl:col-span-9">
 				    <div class="card max-w-4xl mx-auto shadow-lg rounded-lg">
 				        <div class="card-body p-6">
-				            <h6 class="mb-6 text-xl font-semibold">공지사항 작성</h6>
-				            <form id="formAddDocument" method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/document/addDocument">
+				            <form id="noticeForm" method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/notice/addNotice">
 				                <!-- Department and Title -->
 				                <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
 				                    <!-- Department -->
@@ -107,16 +110,36 @@
 				
 				                <!-- CKEditor -->
 									<div class="editor-container editor-container_classic-editor mt-4" id="editor-container">
-										<div class="editor-container__editor" style="padding-left: 10px;"> <div id="editor"></div></div>
+										<div class="editor-container__editor" style="padding-left: 10px;"> 
+											<div id="editor"></div></div>
 									</div>
 				
+				
+								<!-- 첨부파일 Drag&Drop -->
+                                    <div class="item lg:col-span-2 xl:col-span-12 mt-6">
+								        <label for="genderSelect" class="inline-block mb-2 text-base font-medium">파일 업로드</label>
+								        <div id="fileUploadArea" class="flex items-center justify-center bg-white border border-dashed rounded-md cursor-pointer dropzone border-slate-300 dark:bg-zink-700 dark:border-zink-500 dropzone2 dz-clickable">
+								            <div class="w-full py-5 text-lg text-center dz-message needsclick">
+								                <div class="mb-3">
+								                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="upload-cloud" class="lucide lucide-upload-cloud block mx-auto size-12 text-slate-500 fill-slate-200 dark:text-zink-200 dark:fill-zink-500">
+								                        <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"></path>
+								                        <path d="M12 12v9"></path>
+								                        <path d="m16 16-4-4-4 4"></path>
+								                    </svg>
+								                </div>
+								                <h5 class="mb-0 font-normal text-slate-500 dark:text-zink-200 text-15">파일을 드래그해주세요.</h5>
+								            </div>
+								        </div>
+								        <ul class="flex flex-wrap mb-0 gap-x-5" id="dropzone-preview2"></ul>
+								    </div>
+                                        
 				                <!-- File Attachment -->
-				                <div class="mt-6">
+				                <!-- <div class="mt-6">
 				                    <label class="block mb-2 text-base font-medium">첨부 파일</label>
 				                    <div class="border border-gray-200 rounded-md p-3 bg-gray-50">
 				                        <span>${noticeOne.noticeFileNo || "첨부 파일이 없습니다"}</span>
 				                    </div>
-				                </div>
+				                </div>  -->
 				
 				                <!-- Buttons -->
 				                <div class="flex justify-end gap-4 mt-8">
@@ -161,6 +184,74 @@
 <script src="https://cdn.ckeditor.com/ckeditor5/44.1.0/ckeditor5.umd.js" crossorigin></script>
 <script src="https://cdn.ckeditor.com/ckeditor5/44.1.0/translations/ko.umd.js" crossorigin></script>
 <script src="./main.js"></script>
+<script type="text/javascript">
+// Dropzone API
+Dropzone.autoDiscover = false;
+
+document.addEventListener("DOMContentLoaded", function() {
+    // Dropzone 실행
+    var myDropzone = new Dropzone("#fileUploadArea", {
+        url: "/pettopia/addFile",
+        paramName: "file",  // 파라미터
+        maxFilesize: 10,    // 파일 최대사이즈
+        acceptedFiles: ".jpg, .jpeg, .png, .gif, .pdf, .docx", // 파일 유형
+        addRemoveLinks: true, // 파일 삭제 옵션
+        dictDefaultMessage: "파일 선택 또는 드래그 해주세요.", // 기본 메시지
+        dictRemoveFile: "삭제", // 삭제 텍스트
+        
+        init: function () {
+            this.on("success", function (file, response) {
+                console.log("파일이 업로드 되었습니다!");
+            });
+
+            this.on("error", function (file, errorMessage) {
+                console.error("파일 업로드 실패했습니다.", errorMessage);
+            });
+            
+            // 파일 삭제시
+            this.on("removedfile", function(file) { // 이벤트 이름 수정
+                console.log("파일이 삭제되었습니다.", file);
+            });
+        }
+    });
+
+    // 수동으로 파일 제출, Dropzone으로 업로드 하기.
+    document.getElementById("noticeForm").addEventListener("submit", function (e) {
+        e.preventDefault();  // 기본 제출 방지
+
+        // 객체 생성
+        var formData = new FormData(this);
+
+        // 파일 업로드 되어있으면, append로 추가하기
+        if (myDropzone.files.length > 0) {
+            myDropzone.files.forEach(function (file) {
+                formData.append("file", file);
+            });
+        }
+
+        // form data 전송
+        fetch("/pettopia/addFile", { // 쉼표 추가
+            method: "POST",             
+            body: formData,             
+        })
+        .then(response => {
+            if (response.ok) {
+                console.log("공지사항이 성공적으로 추가되었습니다.");
+                return response.text(); 
+            } else {
+                throw new Error("공지사항 업로드 실패");
+            }
+        })
+        .then(data => {
+            console.log(data);
+        })
+        .catch(error => {
+            console.error("에러 발생:", error);
+        });
+    });
+</script>
+
+
 <script>
 //CKEditor
 	const {
@@ -205,7 +296,7 @@
 				'outdent',
 				'indent'
 			],
-			shouldNotGroupWhenFull: false
+			shouldNotGroupWhenFull: true
 		},
 		plugins: [
 			Autosave,
@@ -299,6 +390,7 @@
 	};
 	
 	  ClassicEditor.create(document.querySelector('#editor'), editorConfig);
+	  
 </script>
 
 </body>

@@ -42,10 +42,10 @@
                     </div>
                     <ul class="flex items-center gap-2 text-sm font-normal shrink-0">
                         <li class="relative before:content-['\ea54'] before:font-remix ltr:before:-right-1 rtl:before:-left-1  before:absolute before:text-[18px] before:-top-[3px] ltr:pr-4 rtl:pl-4 before:text-slate-400 dark:text-zink-200">
-                            <a href="#!" class="text-slate-400 dark:text-zink-200">메인 화면</a>
+                            <a href="#!" class="text-slate-400 dark:text-zink-200">공지사항</a>
                         </li>
                         <li class="text-slate-700 dark:text-zink-100">
-                            템플릿
+                            공지사항 상세보기
                         </li>
                     </ul>
                 </div>
@@ -53,12 +53,11 @@
                  <div class="xl:col-span-9">
                         <div class="card max-w-4xl mx-auto">
                             <div class="card-body">
-                                <h6 class="mb-5 text-15">공지사항</h6>
                                 
                                 
                                 <form id="formAddDocument" method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/document/addDocument">
                                     
-                                   <div class="grid grid-cols-1 gap-5 lg:grid-cols-2 xl:grid-cols-12" style="border: 1px solid red;">
+                                   <div class="grid grid-cols-1 gap-5 lg:grid-cols-2 xl:grid-cols-12">
 									    <!-- 부서, 제목 -->
 									    <div class="flex-1 col-span-1">
 									        <label for="docTitle" class="inline-block mb-2 text-base font-medium">부서</label>
@@ -95,28 +94,8 @@
                                                 <textarea name="docContent" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" style="border: none; outline: none;" rows="10" readonly>${noticeOne.noticeContent}</textarea>
                                             </div>
                                         </div>
-                                      
-                                        
-                                        
-<!-- 파일 업로드    
-                                     <div class="lg:col-span-2 xl:col-span-12">
-                                            <label for="genderSelect" class="inline-block mb-2 text-base font-medium">파일 업로드</label>
-                                            <div class="flex items-center justify-center bg-white border border-dashed rounded-md cursor-pointer dropzone border-slate-300 dark:bg-zink-700 dark:border-zink-500 dropzone2 dz-clickable">
-                                                
-                                                <div class="w-full py-5 text-lg text-center dz-message needsclick">
-                                                    <div class="mb-3">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="upload-cloud" class="lucide lucide-upload-cloud block mx-auto size-12 text-slate-500 fill-slate-200 dark:text-zink-200 dark:fill-zink-500"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"></path><path d="M12 12v9"></path><path d="m16 16-4-4-4 4"></path></svg>
-                                                    </div>
+ 
 
-                                                    <h5 class="mb-0 font-normal text-slate-500 dark:text-zink-200 text-15">Drag and drop your product images or <a href="#!">browse</a> your product images</h5>
-                                                </div>
-                                            </div>
-
-                                            <ul class="flex flex-wrap mb-0 gap-x-5" id="dropzone-preview2">
-                                                
-                                            </ul>
-                                        </div> 
--->
                                     </div><!--end grid-->
                                      
                                     
@@ -153,15 +132,13 @@
 <script src="${pageContext.request.contextPath}/assets/libs/prismjs/prism.js"></script>
 <script src="${pageContext.request.contextPath}/assets/libs/lucide/umd/lucide.js"></script>
 <script src="${pageContext.request.contextPath}/assets/js/tailwick.bundle.js"></script>
-<!--apexchart js-->
-<%-- <script src="${pageContext.request.contextPath}/assets/libs/apexcharts/apexcharts.min.js"></script>
 
-<!--dashboard ecommerce init js-->
-<script src="${pageContext.request.contextPath}/assets/js/pages/dashboards-ecommerce.init.js"></script>
- --%>
 <!-- App js -->
 <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
-
+<script>
+	
+	
+</script>
 </body>
 
 </html>

@@ -1,7 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.pettopia.notice.NoticeMapper">
+	
+	<!-- 오자윤 : /notice/addNotice 공지사항 추가 -->
+	<insert id="insertNotice" parameterType="com.example.pettopia.vo.Notice">
+	    INSERT INTO notice (
+	        writer_emp_no,
+	        dept_code,
+	        notice_title,
+	        notice_content,
+	        notice_view,
+	        is_pinned,
+	        create_datetime,
+	        update_datetime
+	    )
+	    VALUES (
+	        #{writerEmpNo},
+	        #{deptCode},
+	        #{noticeTitle},
+	        #{noticeContent},
+	        0,  
+	        #{isPinned},
+	        NOW(),
+	        NOW()
+	    )
+	</insert>
+	
+	<!-- 오자윤 : /notice/addNotice 첨부파일 추가 -->
+    <insert id="insertNoticeFile" parameterType="com.example.pettopia.vo.NoticeFile">
+        INSERT INTO notice_file (
+            notice_no,
+            origin_file_name,
+            file_name,
+            file_ext,
+            file_type,
+            create_datetime,
+            update_datetime
+        )
+        VALUES (
+            #{noticeNo},
+            #{originFileName},
+            #{fileName},
+            #{fileExt},
+            #{fileType},
+            NOW(),
+            NOW()
+        )
+    </insert>
 
+    <!-- 오자윤 : /notice/addNotice 파일첨부 취소 -->
+    <select id="findFilesByNoticeNo" resultType="com.example.pettopia.vo.NoticeFile">
+        SELECT 
+            notice_file_no AS noticeFileNo,
+            notice_no AS noticeNo,
+            origin_file_name AS originFileName,
+            file_name AS fileName,
+            file_ext AS fileExt,
+            file_type AS fileType,
+            create_datetime AS createDatetime,
+            update_datetime AS updateDatetime
+        FROM notice_file
+        WHERE notice_no = #{noticeNo}
+    </select>
+
+    <!-- 오자윤 : /notice/addNotice 모든 첨부파일 식제 -->
+    <delete id="deleteFilesByNoticeNo">
+        DELETE FROM notice_file
+        WHERE notice_no = #{noticeNo}
+    </delete>
+	
+	
 	<!-- 공지사항 리스트 : 부서 목록 -->
 	<select id="selectDivisionList" resultType="com.example.pettopia.vo.Division">
 		SELECT division_code divisionCode
