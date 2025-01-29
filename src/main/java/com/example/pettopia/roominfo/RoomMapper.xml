@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.pettopia.roominfo.RoomMapper">
+	<!-- 객실 이름 중복 검사 -->
+	<select id="countByRoomName" resultType="int">
+    SELECT COUNT(*) 
+    FROM room_info
+    WHERE room_name = #{roomName}
+</select>
 
 	<!-- 객실 예약 조회 -->
 	<select id="selectRoomRsvList" resultType="java.util.Map">

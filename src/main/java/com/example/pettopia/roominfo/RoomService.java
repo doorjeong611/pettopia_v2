@@ -31,6 +31,11 @@ public class RoomService {
 	@Autowired
 	private ServletContext servletContext;
 	
+	// 중복된 roomName이 있는지 검사
+    public boolean checkRoomName(String roomName) {
+        return roomMapper.countByRoomName(roomName) > 0;
+    }
+	
 	// 객실 예약 전체 조회
     public List<Map<String, Object>> selectRoomRsvList() {
         return roomMapper.selectRoomRsvList();

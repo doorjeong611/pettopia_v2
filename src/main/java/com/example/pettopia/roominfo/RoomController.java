@@ -80,7 +80,14 @@ public class RoomController {
 	                          HttpSession session,
 	                          RedirectAttributes redirectAttributes) {
 	        log.debug(TeamColor.WJ + "addRoom 호출됨 " + TeamColor.RESET);
-	        log.debug(TeamColor.WJ + "roomType 길이 =======>" + roomInfo.getRoomType().length() + TeamColor.RESET); 
+	        // 중복 체크
+	        boolean isDuplicate = roomService.checkRoomName(roomInfo.getRoomName());
+	        if (isDuplicate) {
+	            redirectAttributes.addFlashAttribute("errorMessage", "이미 존재하는 객실 이름입니다.");
+	            redirectAttributes.addFlashAttribute("alertType", "error");
+	            return "redirect:/room/getAddRoom";
+	        }
+	        
 	        try {
 	            String uploadPath = session.getServletContext().getRealPath("/upload/"); // 파일 저장 경로
 	            roomService.addRoomWithImage(roomInfo, roomImg, uploadPath); // 서비스 호출
