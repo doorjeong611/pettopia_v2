@@ -29,6 +29,12 @@ public class RoomController {
 		@Autowired
 		private RoomService roomService;
 		
+		 // AJAX 요청을 받아 룸 타입별 객실 목록을 JSON으로 반환
+	    @GetMapping("/listByType")
+	    public List<Map<String, Object>> getRoomsByType(@RequestParam("roomType") String roomType) {
+	        return roomService.getRoomsByType(roomType);
+	    }
+		
 		// 객실 예약 리스트
 		@GetMapping("/room/getRoomRsvList")
 		public String selectRoomRsvList(Model model) {
@@ -103,18 +109,7 @@ public class RoomController {
 	        return "redirect:/room/getRoomList";
 	    }
 		
-		// 객실 등록 처리 (text만 저장 가능)
-//	    @PostMapping("/room/addRoom")
-//	    public String addRoom(@ModelAttribute RoomInfo roomInfo, RedirectAttributes redirectAttributes) {
-//	        try {
-//	        	roomService.addRoomInfo(roomInfo);
-//	        	log.debug(TeamColor.WJ + "roomInfo =======> " + roomInfo + TeamColor.RESET);
-//	            redirectAttributes.addFlashAttribute("successMessage", "객실이 성공적으로 등록되었습니다!");
-//	        } catch (Exception e) {
-//	            redirectAttributes.addFlashAttribute("errorMessage", "객실 등록 중 오류가 발생했습니다.");
-//	        }
-//	        return "redirect:/room/getRoomList";
-//	    }
+		
 		
 		// 객실 상세보기
 		@GetMapping("/room/getRoomOne")
@@ -138,11 +133,19 @@ public class RoomController {
 		@GetMapping("/room/getRoomList")
 		public String getRoomList(Model model,
 								@RequestParam(defaultValue = "1") int currentPage, // 현재 페이지 번호
-						        @RequestParam(defaultValue = "6") int pageSize // 페이지 크기
-								) {
+						        @RequestParam(defaultValue = "6") int pageSize, // 페이지 크기
+						        @RequestParam(value = "roomType", required = false) String roomType) {
 			// 전체 객실 리스트 가져오기
 		    List<Map<String, Object>> roomListImg = roomService.getRoomListWithImages(); 
 		    log.debug(TeamColor.WJ + "roomListImg =======> " + roomListImg + TeamColor.RESET);
+		    
+		    // 특정 룸 타입에 해당하는 객실 목록 조회
+		    if (roomType != null && !roomType.isEmpty()) {
+	            roomListImg = roomService.getRoomsByType(roomType);
+	        } else {
+	            // 전체 객실 조회
+	            roomListImg = roomService.getRoomListWithImages();
+	        }
 		    
 		    // 총 객실 수
 		    int totalRecords = roomListImg.size();
@@ -163,6 +166,7 @@ public class RoomController {
 		    model.addAttribute("currentPage", currentPage); // 현재 페이지 번호
 		    model.addAttribute("totalPages", totalPages); // 총 페이지 수
 		    model.addAttribute("totalRecords", totalRecords); // 총 데이터 수
+		    model.addAttribute("roomType", roomType); // 현재 선택된 룸 타입
 		    
 		    return "room/roomList"; 
 		}
