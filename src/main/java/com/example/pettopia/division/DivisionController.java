@@ -40,7 +40,7 @@ public class DivisionController {
 		Division division = new Division();
 		
 		if(divisionName != null && divisionCode != null) {
-			division.setDivisionCode(divisionCode);
+			division.setDivisionCode(divisionCode.toUpperCase());
 			division.setDivisionName(divisionName);
 		}
 		
@@ -50,11 +50,11 @@ public class DivisionController {
 		log.debug(TeamColor.KMJ + "row : " + row);
 		
 		if(row == 1) {
-			return "/employee/divisionList";
+			return "division/divisionList";
 		}
 		
 		
-		return "/employee/divisionList";
+		return "division/divisionList";
 	}
 	
 	
@@ -80,11 +80,11 @@ public class DivisionController {
 		log.debug(TeamColor.KMJ + "row : " + row);
 		
 		if(row == 1) {
-			return "/employee/divisionList";
+			return "division/divisionList";
 		}
 		
 		
-		return "/employee/divisionList";
+		return "division/divisionList";
 		
 	}
 	
@@ -93,21 +93,27 @@ public class DivisionController {
 	@PostMapping("/admin/removeDivision")
 	public String removeDivision(@RequestParam String divisionCode) {
 		
-		log.debug(TeamColor.KMJ+"[DivisionController - POST removeDivision()]");
+		log.debug(TeamColor.OJY+"[DivisionController - POST removeDivision()]");
 
 		log.debug(TeamColor.KMJ+"divisionCode : " + divisionCode);
 		
+		Division division = new Division();
+		
+		if(divisionCode != null) {
+			division.setDivisionCode(divisionCode);
+		}
+		
 		// 부서 삭제하기
-//		Integer row = divisionService.
+		Integer row = divisionService.removeDivision(division);
 		
-//		log.debug(TeamColor.KMJ + "row : " + row);
-//		
-//		if(row == 1) {
-//			return "/employee/divisionList";
-//		}
+		log.debug(TeamColor.KMJ + "row : " + row);
+		
+		if(row == 1) {
+			return "division/divisionList";
+		}
 		
 		
-		return "/employee/divisionList";
+		return "division/divisionList";
 	}
 	
 	
