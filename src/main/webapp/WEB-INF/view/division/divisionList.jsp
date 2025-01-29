@@ -28,7 +28,10 @@
   	<script src="https://balkan.app/js/OrgChart.js"></script>
   
 	<style>
-	/* 스타일을 추가해 조직도를 보기 좋게 표시 */
+	.readonly-select {
+	    pointer-events: none; /* 클릭 차단 */
+	    background-color: #f1f1f1; /* 읽기 전용처럼 보이게 */
+	}
 
 	</style>
     
@@ -233,7 +236,7 @@
        
        
        
-       <!-- 상위 관리 모달창 -->
+       <!-- 상위 부서 관리 모달창 -->
        <div id="diviModalContainer" class="hidden">
 				
 			<div id="diviModalBackground"class="fixed inset-0" style="background-color: rgba(0, 0, 0, 0.75); z-index: 40;"></div>
@@ -242,7 +245,7 @@
 			
 				<div class="w-screen md:w-[30rem] bg-white shadow rounded-md dark:bg-zink-600 flex flex-col h-full">
 					<!-- 모달 헤더 -->
-					<div class="flex items-center justify-between p-4 dark:border-zink-500">    
+					<div class="flex items-center justify-between p-4 dark:border-zink-500 border-b">    
 						<h5 class="text-16">상위 부서 관리</h5>
 						<div class="flex items-center justify-between p-4 dark:border-zink-500  ml-auto">    
 							<button type="button" id="closeDiviModalBtn" class="transition-all duration-200 ease-linear text-slate-500 hover:text-red-500 dark:text-zink-200 dark:hover:text-red-500">
@@ -251,7 +254,7 @@
 						</div>
 					</div>
 					<!-- 모달 내용 -->
-					<div class="max-h-[calc(theme('height.screen')_-_180px)] p-4 overflow-y-auto">
+					<div class="max-h-[calc(theme('height.screen')_-_180px)] p-4 overflow-y-auto mt-4">
 
 						<div id="addDiviDiv" class="mb-4 ">
 							<form action="${pageContext.request.contextPath}/admin/addDivision" method="post" id="addDiviForm" class="flex gap-2">
@@ -264,6 +267,9 @@
 								<button type="button" id="confirmBtn" class="px-2 py-2 text-sm rounded-md text-slate-500 bg-slate-50 dark:bg-zink-400/20 dark:text-zink-200  hover:text-white hover:bg-slate-600 hover:border-slate-600">중복 검사</button>
 							</form>
 						</div>
+						<div id="alertAddDivi" class="px-4 py-3 text-sm border rounded-md text-slate-500 border-slate-200 bg-slate-50 dark:bg-zink-500/30 dark:border-zink-500 dark:text-zink-200 hidden">
+							<span class="font-bold">해당 부서는 등록 가능합니다.</span>
+                        </div>
 						
 						<div id="modifyDiviDiv" class="hidden mb-4">
 							<form action="${pageContext.request.contextPath}/admin/modifyDivision" method="post" id="modifyDiviForm">
@@ -271,8 +277,12 @@
 									<option value="">부서 선택</option>
 								</select>
 								<input type="text" id="modifyDivisionName" name="divisionName" value="" placeholder="수정할 부서 이름을 입력하세요">
+								<button type="button" id="confirmModifyBtn" class="px-2 py-2 text-sm rounded-md text-slate-500 bg-slate-50 dark:bg-zink-400/20 dark:text-zink-200  hover:text-white hover:bg-slate-600 hover:border-slate-600">중복 검사</button>
 							</form>
 						</div>
+						<div id="alertModifyDivi" class="px-4 py-3 text-sm border rounded-md text-slate-500 border-slate-200 bg-slate-50 dark:bg-zink-500/30 dark:border-zink-500 dark:text-zink-200 hidden">
+							<span class="font-bold">입력하신 부서명으로 수정 가능합니다.</span>
+                        </div>
 						
 						<div id="removeDiviDiv" class="hidden mb-4">
 							<form action="${pageContext.request.contextPath}/admin/removeDivision" method="post" id="removeDiviForm">
@@ -286,7 +296,7 @@
 					
 					<!-- 모달 푸터 -->
 					<div class="flex p-2  dark:border-zink-500 border-t ">
-						
+						<!-- 폼 변경 버튼 -->
 						<div class="flex gap-1 justify-start pt-4">
 							<div class="">
 								<button type="button" id="showModifyDiviFormBtn" class="px-2 py-2 text-sm text-green-500 bg-white border border-green-300 rounded-md dark:bg-zink-700 dark:border-green-500 ">
@@ -306,8 +316,9 @@
 						</div>
 						
 					
-					
+						<!-- 등록, 수정, 삭제 버튼 -->
 						<div class="flex gap-2 items-center justify-between p-4 mt-auto 0 dark:border-zink-500 ml-auto">
+							<button id="resetAddDiviBtn"  type="button" class="py-2 text-red-500 bg-white border-none btn hover:text-white hover:bg-red-600 hover:border-none focus:text-white focus:bg-red-600 focus:border-none focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:border-red-600 active:ring active:ring-red-100">다시 작성</button>
 							<button id="addDiviBtn"  type="button" class="py-2 text-custom-500 bg-white border-custom-500 btn hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100">등록</button>
 							<button id="modifyDiviBtn"  type="button" class="py-2 text-green-500 bg-white border-green-500 btn hover:text-white hover:bg-green-600 hover:border-green-600 focus:text-white focus:bg-green-600 focus:border-green-600 focus:ring focus:ring-green-100 active:text-white active:bg-green-600 active:border-green-600 active:ring active:ring-green-100 hidden">수정</button>
 							<button id="removeDiviBtn"  type="button" class="py-2 text-red-500 bg-white border-red-500 btn hover:text-white hover:bg-red-600 hover:border-red-600 focus:text-white focus:bg-red-600 focus:border-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:border-red-600 active:ring active:ring-red-100 hidden">삭제</button>
@@ -364,9 +375,26 @@
 
    			// 모달창 띄우기
    			$("#manageDiviBtn").click(function() {
-   			   
+   				
+   				// 값 초기화
+   			 	$('#addDivisionCode').val('');
+ 			    $('#addDivisionName').val('');
+ 			 	$('#modifyDivisionName').val('');
+ 			 	$('#divisionSelect').val('');
+
+ 			    // readonly 제거
+ 			    $('#addDivisionCode').removeAttr('readonly');
+ 			    $('#addDivisionName').removeAttr('readonly');
+ 			 	$('#modifyDivisionName').removeAttr('readonly');
+
+ 			    // 중복 검사 완료 알림 숨기기
+ 			    $('#alertAddDivi').addClass('hidden');
+ 			 	$('#alertModifyDivi').addClass("hidden");  
+
+ 			 	$('#divisionSelect').removeClass('readonly-select'); 
    				// 모달 배경과 모달 창을 보이게 하기
    				diviModalContainer.removeClass("hidden");  	
+
    			    
    			});
 
@@ -424,7 +452,8 @@
    			const removeDiviBtn = $("#removeDiviBtn");
    			const removeDiviDiv = $("#removeDiviDiv");
    			const showRemoveDiviFormBtn = $("#showRemoveDiviFormBtn");
-   			
+   			const resetAddDiviBtn = $('#resetAddDiviBtn');
+   			 
    			
    			/* 부서이름 변경하기 버튼 클릭시 수정 부분 보이기 */
    			$('#showModifyDiviFormBtn').click(function() {
@@ -433,10 +462,12 @@
    				
    				addDiviDiv.addClass("hidden");
    				addDiviBtn.addClass("hidden");
+   				resetAddDiviBtn.removeClass("hidden");  			
    				
    				removeDiviBtn.addClass("hidden");  		// 삭제 버튼 숨기기
    	   			removeDiviDiv.addClass("hidden");  		// 삭제 폼 숨기기
-   	   			
+   	   			$('#alertAddDivi').addClass("hidden");  
+   	   			$('#alertModifyDivi').addClass("hidden");  
 
    			});
    			
@@ -447,9 +478,13 @@
    				
    				addDiviDiv.removeClass("hidden");
    				addDiviBtn.removeClass("hidden");
+   				resetAddDiviBtn.removeClass("hidden");  
    				
    				removeDiviBtn.addClass("hidden");  		// 삭제 버튼 숨기기
    	   			removeDiviDiv.addClass("hidden");  		// 삭제 폼 숨기기
+   	   			
+   	   			$('#alertAddDivi').addClass("hidden"); 
+   	   			$('#alertModifyDivi').addClass("hidden");  
    	   			
    			});
    			
@@ -461,38 +496,82 @@
 				modifyDiviBtn.addClass("hidden");			// 수정버튼 숨기기
 				addDiviDiv.addClass("hidden");				// 등록 폼 숨기기
 				addDiviBtn.addClass("hidden");				// 등록버튼 숨기기
+				resetAddDiviBtn.addClass("hidden");  		// 리셋 버튼 숨기기
+				$('#alertAddDivi').addClass("hidden"); 
+				$('#alertModifyDivi').addClass("hidden");  
 			
    			});
    			
-   			/* 영어 대문자 정규식 */ 
-   			const engUp = /^[A-Z]*$/;
    			
    			/* 부서 등록 */
    			$('#addDiviBtn').click(function() {
-   				
-   				if($('#addDivisionCode').val() == null || $('#addDivisionCode').val() == '' ){
-   					alert('부서 코드를 입력해주세요.');
-   					$('#addDivisionCode').focus();
-   					return;
-   				}
-   				
-   				if(engUp.test($('#addDivisionCode').val()) == false ){
-   					alert('부서코드는 영어 대문자만 허용됩니다.');
-   					$('#addDivisionCode').focus();
-   					return;
-   				}
+   				const divisionCode = $('#addDivisionCode').val();
+				const divisionName = $('#addDivisionName').val();
+				const alertAddDivi = $('#alertAddDivi');
+				
+				const testDivisionCode = /^[A-Za-z]+$/;
+				const testDivisionName = /^[A-Za-z0-9가-힣]+$/;
+			
+				if(divisionCode == '' ){
+					alert('부서 코드를 입력해주세요.');
+					$('#addDivisionCode').focus();
+					return;
+				}
+				
+				if(divisionName == ''){
+					alert('부서명을 입력해주세요.');
+					$('#addDivisionName').focus();
+					return;
+				}
+				
+				if(testDivisionCode.test(divisionCode) == false){
+					alert('부서코드는 영문자만 가능합니다.');
+					$('#addDivisionCode').focus();
+					return;
+				}
+				
+				if(testDivisionName.test(divisionName) == false){
+					alert('부서명에 특수문자는 사용할 수 없습니다.');
+					$('#addDivisionName').focus();
+					return;
+				}
+				
+				// 중복 검사 진행 여부 확인
+			    if (!$('#addDivisionCode').prop('readonly') || !$('#addDivisionName').prop('readonly')) {
+			        alert('중복 검사를 진행하세요.');
+			        return;
+			    }
+				
+				$('#addDiviForm').submit();
+				
+				
+			});
+   			
+   			
+   			/* 다시 작성 버튼 */
+   			$('#resetAddDiviBtn').click(function() {
+   			  
+   			    $('#addDivisionCode').val('');
+   			    $('#addDivisionName').val('');
+   			 	$('#modifyDivisionName').val('');
 
-   				if($('#addDivisionName').val() == null || $('#addDivisionName').val() == '' ){
-   					alert('등록할 부서명을 입력해주세요.');
-   					$('#addDivisionName').focus();
-   					return;
-   				}
-   				
-   				$('#addDiviForm').submit();
-   			});
+   			    // readonly 제거
+   			    $('#addDivisionCode').removeAttr('readonly');
+   			    $('#addDivisionName').removeAttr('readonly');
+   			 	$('#modifyDivisionName').removeAttr('readonly');
+
+   			    // 중복 검사 완료 알림 숨기기
+   			    $('#alertAddDivi').addClass('hidden');
+   			 	$('#alertModifyDivi').addClass("hidden");  
+
+   			 	$('#divisionSelect').removeClass('readonly-select'); 
+			});
+   			
    			
    			/* 부서 수정 */
 			$('#modifyDiviBtn').click(function() {
+				
+				const testDivisionName = /^[A-Za-z0-9가-힣]+$/;
 				
 				// 부서가 선택되지 않았는지 확인
 			    if ($('#divisionSelect').val() === '') {
@@ -507,6 +586,18 @@
    					return;
    				}
    				
+   				if(testDivisionName.test($('#modifyDivisionName').val()) == false){
+					alert('부서명에 특수문자는 사용할 수 없습니다.');
+					$('#addDivisionName').focus();
+					return;
+				}
+   				
+				// 중복 검사 진행 여부 확인
+			    if (!$('#modifyDivisionName').prop('readonly')) {
+			        alert('중복 검사를 진행하세요.');
+			        return;
+			    }
+
    				$('#modifyDiviForm').submit();
    			});
    			
@@ -522,15 +613,45 @@
 			    }
 
    				
-   				$('#removeDiviForm').submit();
+			    if (confirm('정말로 삭제하시겠습니까?')) {
+			        $('#removeDiviForm').submit();
+			    }
    			});
    			
 			
-			/* 부서 이름, 코드 중복 확인 */
+			/* 부서 등록시 이름, 코드 중복 확인 */
 			$('#confirmBtn').click(function() {
 				const divisionCode = $('#addDivisionCode').val();
 				const divisionName = $('#addDivisionName').val();
+				const alertAddDivi = $('#alertAddDivi');
 				
+				const testDivisionCode = /^[A-Za-z]+$/;
+				const testDivisionName = /^[A-Za-z0-9가-힣]+$/;
+			
+				if(divisionCode == '' ){
+					alert('부서 코드를 입력해주세요.');
+					$('#addDivisionCode').focus();
+					return;
+				}
+				
+				if(divisionName == ''){
+					alert('부서명을 입력해주세요.');
+					$('#addDivisionName').focus();
+					return;
+				}
+				
+				if(testDivisionCode.test(divisionCode) == false){
+					alert('부서코드는 영문자만 가능합니다.');
+					$('#addDivisionCode').focus();
+					return;
+				}
+				
+				if(testDivisionName.test(divisionName) == false){
+					alert('부서명에 특수문자는 사용할 수 없습니다.');
+					$('#addDivisionName').focus();
+					return;
+				}
+
 				/* 부서 중복 검사 ajax */
 		   		$.ajax({
 		   	        url: '/pettopia/rest/confirmDivision',
@@ -541,7 +662,25 @@
 		   	     	}
 		   	    }).done(function (result) {
 		   	        console.log("응답받은 결과:", result);
-		
+					
+		   	        if( result == 'C' ){ // 
+		   	        	alert('부서코드 중복! 다시 작성해주세요.');
+		   	        	$('#addDivisionCode').focus();
+		   	        	return;
+		   	        }
+		   	        
+		   	        if(result == 'N'){
+		   	        	alert('부서명 중복! 다시 작성해주세요.');
+		   	        	$('#addDivisionName').focus();
+						return;
+		   	        }
+		   	        
+		   	        if(result == 'A'){
+		   	        	alertAddDivi.removeClass('hidden');
+		   	        	$('#addDivisionCode').attr('readonly', true);
+		   	        	$('#addDivisionName').attr('readonly', true);
+		   	        	return;
+		   	        }
 		   	        
 		
 		   	    }).fail(function () {
@@ -552,7 +691,73 @@
 			
 			
 			
-   			
+			/* 부서명 수정시 이름 중복 확인 */
+			$('#confirmModifyBtn').click(function() {
+				
+				const divisionName = $('#modifyDivisionName').val();
+				const alertModifyDivi = $('#alertModifyDivi');
+				
+				const testDivisionName = /^[A-Za-z0-9가-힣]+$/;
+
+				// 부서가 선택되지 않았는지 확인
+			    if ($('#divisionSelect').val() === '') {
+			        alert('수정할 부서를 선택해주세요.');
+			        $('#divisionSelect').focus();
+			        return;
+			    }
+
+   				if($('#modifyDivisionName').val() == null || $('#modifyDivisionName').val() == '' ){
+   					alert('수정할 부서명을 입력해주세요.');
+   					$('#modifyDivisionName').focus();
+   					return;
+   				}
+   				
+   				if(testDivisionName.test($('#modifyDivisionName').val()) == false){
+					alert('부서명에 특수문자는 사용할 수 없습니다.');
+					$('#addDivisionName').focus();
+					return;
+				}
+
+				
+				/* 부서 중복 검사 ajax */
+		   		$.ajax({
+		   	        url: '/pettopia/rest/confirmDivision',
+		   	        method: 'GET',
+		   	     	data: {
+		   	        	divisionName: divisionName
+		   	     	}
+		   	    }).done(function (result) {
+		   	        console.log("응답받은 결과:", result);
+					
+		   	        if( result == 'C' ){ // 
+		   	        	alert('부서코드 중복! 다시 작성해주세요.');
+		   	        	$('#addDivisionCode').focus();
+		   	        	return;
+		   	        }
+		   	        
+		   	        if(result == 'N'){
+		   	        	alert('부서명 중복! 다시 작성해주세요.');
+		   	        	$('#addDivisionName').focus();
+						return;
+		   	        }
+		   	        
+		   	        if(result == 'A'){
+		   	        	alertModifyDivi.removeClass('hidden');
+		   	        	
+		   	        	$('#modifyDivisionName').attr('readonly', true);
+		   	        	$('#divisionSelect').addClass('readonly-select'); 
+		   	        	return;
+		   	        }
+		   	        
+		
+		   	    }).fail(function () {
+		   	        alert('부서 호출 실패');
+		   	    });
+				
+			});
+			
+			
+			
    			
    			
 

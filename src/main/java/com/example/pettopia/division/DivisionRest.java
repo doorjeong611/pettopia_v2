@@ -32,18 +32,21 @@ public class DivisionRest {
 	
 	// 부서 중복 검사
 	@GetMapping("/rest/confirmDivision")
-	public String confirmDivision(@RequestParam String divisionCode, @RequestParam String divisionName) {
+	public String confirmDivision(@RequestParam(required = false) String divisionCode, @RequestParam String divisionName) {
 		
-		log.debug(TeamColor.KMJ + "DivisionRest - confirmDivision()");
+		log.debug(TeamColor.WJ + "DivisionRest - confirmDivision()");
 		
 		log.debug(TeamColor.KMJ+"divisionName : " + divisionName);
 		log.debug(TeamColor.KMJ+"divisionCode : " + divisionCode);
 		
 		Division division = new Division();
 
-		if(divisionName != null && divisionCode != null) {
-			division.setDivisionCode(divisionCode);
+		if(divisionName != null) {
 			division.setDivisionName(divisionName);
+		}
+		
+		if(divisionCode != null) {
+			division.setDivisionCode(divisionCode);
 		}
 		
 		List<Division> divisionList = divisionSerivce.confirmDivision(division);
@@ -53,11 +56,15 @@ public class DivisionRest {
 		if(divisionList.size() > 0) {
 			
 			for(int i=0; i<divisionList.size(); i++) {
-				if(divisionList.get(i).getDivisionCode() != null) {
+				if(divisionList.get(i).getDivisionCode().equalsIgnoreCase(divisionCode)) {
+					
+					log.debug(TeamColor.KMJ+"부서코드 중복! 다시 작성해주세요." );
 					return "C"; //"부서코드 중복! 다시 작성해주세요.";
 				}
 				
 				if(divisionList.get(i).getDivisionName() != null) {
+					
+					log.debug(TeamColor.KMJ+"부서명 중복! 다시 작성해주세요." );
 					return "N"; // "부서명 중복! 다시 작성해주세요.";
 				}
 				
@@ -65,6 +72,7 @@ public class DivisionRest {
 			
 		}
 		
+		log.debug(TeamColor.KMJ+"부서코드, 부서명 사용 가능" );
 		return "A"; //"부서코드, 부서명 사용 가능";
 	}
 	
