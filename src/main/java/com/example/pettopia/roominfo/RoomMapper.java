@@ -11,6 +11,9 @@ import com.example.pettopia.vo.RoomRsv;
 
 @Mapper
 public interface RoomMapper {
+	// 룸타입으로 객실 필터링
+	List<Map<String, Object>> selectRoomsByType(String roomType);
+	
 	 // roomName 중복 검사
     int countByRoomName(String roomName);
 
@@ -48,5 +51,7 @@ public interface RoomMapper {
     
     // 객실 페이징
     int countRoomList(Map<String, Object> params);
+
+	
 
 }
