@@ -8,6 +8,14 @@
 				, division_name divisionName
 		FROM division
 	</select>
+	
+<!-- 이미지 파일 삭제 -->
+ <delete id="deleteBoardFile" parameterType="int">
+        DELETE FROM board_file
+        WHERE board_no = #{boardNo}
+ </delete>
+	 
+	
 <select id="selectBoardCount" parameterType="Map" resultType="Integer">
     SELECT count(*)
     FROM board
@@ -27,7 +35,7 @@
     </where>
 </select>
 	
-<select id="selectBoardFile" parameterType="com.example.pettopia.vo.BoardFile" resultType="map">
+<select id="selectBoardFile" parameterType="int" resultType="com.example.pettopia.vo.BoardFile">
     SELECT
         board_file_no boardFileNo,
         board_no boardNo,
@@ -90,18 +98,22 @@
 	<!-- 상세 글 보기 셀렉트 쿼리 /board/getBoardOne 작업자 : 이준호 -->
 	<select id="selectBoardByBoardOne" parameterType="map">
 		SELECT
-			board_no boardNo,
-			board_title boardTitle,
-			division_code divisionCode,
-			board_writer_no boardWriterNo,
-			board_content boardContent,
-			board_header boardHeader,
-			board_like boardLike,
-			board_view boardView,
-			create_datetime createDatetime,
-			update_datetime updateDatetime
-		FROM board
-			WHERE board_no = #{boardNo} 
+			b.board_no boardNo,
+			b.board_title boardTitle,
+			b.board_writer_no boardWriterNo,
+			b.board_content boardContent,
+			b.board_header boardHeader,
+			bf.file_name fileName,
+			b.board_like boardLike,
+			b.board_view boardView,
+			b.create_datetime createDatetime,
+			b.update_datetime updateDatetime
+		FROM 
+			board b
+		INNER JOIN
+			board_file bf ON b.board_no = bf.board_no
+		WHERE
+			 b.board_no = #{boardNo} 
 	</select>
 	
 	<select id="selectBoardList" parameterType="Map" resultType="Map">

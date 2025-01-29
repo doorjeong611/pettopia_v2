@@ -165,10 +165,6 @@
                                     <input type="text" class="form-input" id="category_input" name="category" value="${boardCategory == 'SG' ? '건의사항' : boardCategory == 'DS' ? '토론' : boardCategory == 'CT' ? '잡답' : boardCategory == 'IN' ? '정보' : boardCategory == 'QA' ? '질문' : boardCategory == 'CP' ? '칭찬' : ''}" readonly>
                                 </div>
                                 <div>
-                                    <label for="division_input" class="inline-block text-base">부서 번호</label>
-                                    <input type="text" class="form-input" id="division_input" readonly value="${boardMap.divisionCode}">
-                                </div>
-                                <div>
                                     <label for="creatDateTime_input" class="inline-block text-base">작성일시</label>
                                     <input type="text" class="form-input" id="creatDateTime_input" readonly value="${boardMap.createDatetime}">
                                 </div>
@@ -182,7 +178,7 @@
                                 <textarea class="form-input" readonly onfocus='this.blur();'>${boardMap.boardContent}</textarea>
 								
 								<div class="boardFileBox">
-									${fileMap.fileName}
+									 <img src="${pageContext.request.contextPath}/boardFile/${boardMap.fileName}" alt="게시글 이미지">
 								</div>
                                 <div class="contentFooterBox">
                                     <!-- 버튼 박스 -->

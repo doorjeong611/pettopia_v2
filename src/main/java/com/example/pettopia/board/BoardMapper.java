@@ -8,9 +8,13 @@ import org.apache.ibatis.annotations.Mapper;
 import com.example.pettopia.vo.Board;
 import com.example.pettopia.vo.BoardFile;
 import com.example.pettopia.vo.Division;
+import com.example.pettopia.vo.RoomImg;
 
 @Mapper
 public interface BoardMapper {
+// 게시판 파일 셀렉트	
+	List<BoardFile> selectBoardFile(int boardNo);
+	
 // 게시판 이미지 내용 추가
 	int insertBoardFile(BoardFile boardFile);
 // 게시판 내용 및 이미지 조회
@@ -39,7 +43,7 @@ public interface BoardMapper {
 
 //	게시글 삭제 쿼리 /board/removeBoard 작업자 : 이준호 
 	Integer deleteBoard (int boardNo);
-	
+	int deleteBoardFile (int boardNo);
 // 	게시글 조회수 증가 /board/updateBoard 작업자 : 이준호
 	int updateBoard(Board board);
 }
