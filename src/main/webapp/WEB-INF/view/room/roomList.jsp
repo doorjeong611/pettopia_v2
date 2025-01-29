@@ -60,7 +60,7 @@
                     </div>
                     <div class="ltr:md:text-end rtl:md:text-start"> 
 					    <!-- 서비스 추가 버튼, href 속성으로 addService 페이지로 이동 -->
-					    <a href="${pageContext.request.contextPath}/room/getAddRoom" class="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20 add-btn">
+					    <a href="${pageContext.request.contextPath}/room/getAddRoom" class="mr-1 bg-white text-custom-500 btn border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100">
 					        <i class="align-bottom ri-add-line me-1"></i> 객실 등록
 					    </a>
 					    
@@ -94,11 +94,22 @@
 								                </h6>
 										    	<a href="${pageContext.request.contextPath}/room/deleteRoom?roomNo=${room.roomNo}"
 										    		id="deleteRoom"
-											    	class="text-white bg-red-500 border-red-500 btn hover:text-white hover:bg-red-600 hover:border-red-600 focus:text-white focus:bg-red-600 focus:border-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:border-red-600 active:ring active:ring-red-100 dark:ring-custom-400/20">
-											    	<i class="ri-delete-bin-2-line"></i>
+											    	class="text-red-500 bg-white border-red-500 btn hover:text-white hover:bg-red-600 hover:border-red-600 focus:text-white focus:bg-red-600 focus:border-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:border-red-600 active:ring active:ring-red-100">
+											    	<i class="ri-delete-bin-2-line"> 삭제 </i>
 										    	</a>
 							                </div>
-							                <p class="text-sm text-slate-500 mt-1">타입: <span>${room.roomType}</span></p>
+							                <p class="text-sm text-slate-500 mt-1">
+											    타입: 
+											    <span>
+											        <c:choose>
+											            <c:when test="${room.roomType == 'S'}">싱글</c:when>
+											            <c:when test="${room.roomType == 'D'}">더블</c:when>
+											            <c:when test="${room.roomType == 'ST'}">스탠다드</c:when>
+											            <c:when test="${room.roomType == 'F'}">패밀리</c:when>
+											        </c:choose>
+											    </span>
+											</p>
+
 							                <p class="text-sm text-slate-500">수용 인원: <span>${room.roomCapacity}</span> 명 </p>
 							                <p class="text-sm text-slate-500">1박 당 가격: <span><fmt:formatNumber value="${room.pricePerNight}" type="number" groupingUsed="true" /></span> 원 </p>
 							                <p class="text-sm text-slate-500">설명: <span>${room.roomDesc}</span></p>

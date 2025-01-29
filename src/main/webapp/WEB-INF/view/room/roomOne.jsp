@@ -50,10 +50,10 @@
                                 <div class="mb-4">
                                     <label class="inline-block mb-2 text-base font-medium"> 타입 <span class="text-red-500">*</span></label>
                                      <select id="roomType" name="roomType" class="form-select border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200">
-								        <option value="S" ${roomOne.roomType == 'S' ? 'selected' : ''}>S</option>
-						                <option value="D" ${roomOne.roomType == 'D' ? 'selected' : ''}>D</option>
-						                <option value="ST" ${roomOne.roomType == 'ST' ? 'selected' : ''}>ST</option>
-						                <option value="F" ${roomOne.roomType == 'F' ? 'selected' : ''}>F</option>
+								        <option value="S" ${roomOne.roomType == 'S' ? 'selected' : ''}>싱글</option>
+						                <option value="D" ${roomOne.roomType == 'D' ? 'selected' : ''}>더블</option>
+						                <option value="ST" ${roomOne.roomType == 'ST' ? 'selected' : ''}>스탠다드</option>
+						                <option value="F" ${roomOne.roomType == 'F' ? 'selected' : ''}>패밀리</option>
    									 </select>
                                 </div>
                                 <div class="mb-4">
