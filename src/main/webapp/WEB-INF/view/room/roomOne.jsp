@@ -46,7 +46,7 @@
                         <form id="formUpdateRoom" method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/room/updateRoom">
                         <!-- 수정 시 필요한 roomNo  -->
                         <input type="hidden" name="roomNo" value="${roomOne.roomNo}">
-                            <div class="grid grid-cols-1 gap-x-5 md:grid-cols-2 xl:grid-cols-3">
+                            <div class="grid grid-cols-1 gap-x-5 md:grid-cols-4 xl:grid-cols-4">
                                 <div class="mb-4">
                                     <label class="inline-block mb-2 text-base font-medium"> 타입 <span class="text-red-500">*</span></label>
                                      <select id="roomType" name="roomType" class="form-select border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200">
@@ -68,13 +68,17 @@
                                     <label class="inline-block mb-2 text-base font-medium">1박 당 가격<span class="text-red-500">*</span></label>
                                     <input type="text" id="pricePerNight" name="pricePerNight" class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="1박 당 가격을 입력하세요" value="${roomOne.pricePerNight}">
                                 </div>
-                                <div class="mb-4">
-                                    <label class="inline-block mb-2 text-base font-medium">객실 설명 <span class="text-red-500">*</span></label>
-                                   <textarea id="roomDesc" name="roomDesc" class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="객실 설명을 입력하세요">${roomOne.roomDesc}</textarea>
-                                </div>
                             </div>
-                            <input name="roomImg" type="file">
-                            <img src="${pageContext.request.contextPath}/upload/${roomOne.fileName}" alt="객실 이미지">
+                            <div class="lg:col-span-2 xl:col-span-12 mb-4">
+                                  <label class="inline-block mb-2 text-base font-medium">객실 설명 <span class="text-red-500">*</span></label>
+                                  <textarea rows="10" id="roomDesc" name="roomDesc" class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200">${roomOne.roomDesc}</textarea>
+                            </div>
+                             <div class="lg:col-span-2 xl:col-span-12 mb-4">
+								<label class="inline-block mb-2 text-base font-medium">파일 첨부<span class="text-red-500">*</span></label>
+								<input name="roomImg" type="file" class="cursor-pointer form-file border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500">
+                            	<img src="${pageContext.request.contextPath}/upload/${roomOne.fileName}" alt="객실 이미지">
+                            </div>
+                            
 						<!-- <div>
 	                        <ul class="mb-0" id="dropzone-preview">
 	                            <li class="mt-2" id="dropzone-preview-list">
@@ -102,8 +106,8 @@
 	                        </ul>
                         </div> -->
                         <div class="flex justify-end gap-2">
-                            <button type="button" class="text-red-500 bg-white btn hover:text-red-500 hover:bg-red-100 focus:text-red-500 focus:bg-red-100 active:text-red-500 active:bg-red-100 dark:bg-zink-700 dark:hover:bg-red-500/10 dark:focus:bg-red-500/10 dark:active:bg-red-500/10"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="x" class="lucide lucide-x inline-block size-4"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg> <span class="align-middle">Cancel</span></button>
-                            <button type="submit" class="text-white transition-all duration-200 ease-linear btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100">저장</button>
+                            <button type="button" id="cancel" class="text-red-500 bg-white border-red-500 btn hover:text-white hover:bg-red-600 hover:border-red-600 focus:text-white focus:bg-red-600 focus:border-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:border-red-600 active:ring active:ring-red-100"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="x" class="lucide lucide-x inline-block size-4"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg> <span class="align-middle">Cancel</span></button>
+                            <button type="submit" class="mr-1 bg-white text-custom-500 btn border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100">저장</button>
                         </div>
                     </form>
                     </div>
@@ -134,7 +138,14 @@
 <script src="${pageContext.request.contextPath}/assets/js/pages/form-file-upload.init.js"></script>
 <!-- App js -->
 <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
+<script>
+// Cancel 버튼 클릭 시
+document.querySelector('#cancel').addEventListener('click', function() {
+	  window.location.href = '${pageContext.request.contextPath}/room/getRoomList'; 
+	});
 
+
+</script>
 
 </body>
 

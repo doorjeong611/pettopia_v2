@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 
 <!DOCTYPE html>
 <html lang="en" class="light scroll-smooth group" data-layout="vertical" data-sidebar="light" data-sidebar-size="lg" data-mode="light" data-topbar="light" data-skin="default" data-navbar="sticky" data-content="fluid" dir="ltr">
@@ -7,6 +9,15 @@
 <head>
 	<meta charset="utf-8">
     <title>Room List</title>
+      <script type="text/javascript">
+        // 메시지가 있을 경우 경고창을 띄움
+        window.onload = function() {
+            var message = "${errorMessage}";
+            if (message) {
+                alert(message);
+            }
+        }
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta content="Minimal Admin & Dashboard Template" name="description">
     <meta content="Themesdesign" name="author">
@@ -44,45 +55,42 @@
                 <!-- Main content -->
                <div class="card">
                     <div class="card-body">
-                        <form id="formAddRoom" method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/room/addRoom">
+                        <form id="formAddRoom" method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/room/addRoom" onsubmit="return validateForm(event);">
                             
                             
-                            <div class="grid grid-cols-1 gap-x-5 md:grid-cols-2 xl:grid-cols-3">
-                                <div class="mb-4">
-                                    <label class="inline-block mb-2 text-base font-medium"> 타입 <span class="text-red-500">*</span></label>
-                                    <select id="roomType" name="roomType" class="form-select border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200">
-								         <option value="">타입 선택</option>
-									     <option value="S" <c:if test="${room.roomType == 'S'}">selected</c:if>>싱글</option>
-									     <option value="D" <c:if test="${room.roomType == 'D'}">selected</c:if>>더블</option>
-									     <option value="ST" <c:if test="${room.roomType == 'ST'}">selected</c:if>>스탠다드</option>
-									     <option value="F" <c:if test="${room.roomType == 'F'}">selected</c:if>>패밀리</option>
-   									 </select>
-                                </div>
-                                <div class="mb-4">
-                                    <label class="inline-block mb-2 text-base font-medium"> 객실 이름 <span class="text-red-500">*</span></label>
-                                    <input type="text" id="roomName" name="roomName" class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="타입 선택">
-                                </div>
-                                <div class="mb-4">
-                                    <label class="inline-block mb-2 text-base font-medium">수용 인원<span class="text-red-500">*</span></label>
-                                    <input type="text" id="roomCapacity" name="roomCapacity" class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="최대 수용인원을 입력하세요">
-                                </div>
-                                <div class="mb-4">
-                                    <label class="inline-block mb-2 text-base font-medium">1박 당 가격<span class="text-red-500">*</span></label>
-                                    <input type="text" id="pricePerNight" name="pricePerNight" class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="1박 당 가격을 입력하세요">
-                                </div>
-                               <!-- <!--  <div class="mb-4">
-                                    <label class="inline-block mb-2 text-base font-medium">객실 상태 <span class="text-red-500">*</span></label>
-                                    <select class="form-select border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200">
-                                        <option selected="" disabled="" value="">Choose...</option>
-                                        <option>Name</option>
-                                    </select>
-                                </div> -->
-                                <div class="mb-4">
-                                    <label class="inline-block mb-2 text-base font-medium">객실 설명 <span class="text-red-500">*</span></label>
-                                   <textarea id="roomDesc" name="roomDesc" class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="객실 설명을 입력하세요"></textarea>
-                                </div>
+                            <div class="grid grid-cols-1 gap-x-5 md:grid-cols-4 xl:grid-cols-4">
+							    <div class="mb-4">
+							        <label class="inline-block mb-2 text-base font-medium"> 타입 <span class="text-red-500">*</span></label>
+							        <select id="roomType" name="roomType" class="form-select border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200">
+							            <option value="">타입 선택</option>
+							            <option value="S" <c:if test="${room.roomType == 'S'}">selected</c:if>>싱글</option>
+							            <option value="D" <c:if test="${room.roomType == 'D'}">selected</c:if>>더블</option>
+							            <option value="ST" <c:if test="${room.roomType == 'ST'}">selected</c:if>>스탠다드</option>
+							            <option value="F" <c:if test="${room.roomType == 'F'}">selected</c:if>>패밀리</option>
+							        </select>
+							    </div>
+							    <div class="mb-4">
+							        <label class="inline-block mb-2 text-base font-medium"> 객실 호수 <span class="text-red-500">*</span></label>
+							        <input type="text" id="roomName" name="roomName" class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="객실 호수를 입력하세요" oninput="validateNumber(this)">
+							    </div>
+							   <div class="mb-4">
+								    <label class="inline-block mb-2 text-base font-medium">수용 인원<span class="text-red-500">*</span></label>
+								    <input type="text" id="roomCapacity" name="roomCapacity" class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="최대 수용인원을 입력하세요" oninput="validateNumber(this)">
+								</div>
+							    <div class="mb-4">
+							        <label class="inline-block mb-2 text-base font-medium">1박 당 가격<span class="text-red-500">*</span></label>
+							        <input type="text" id="pricePerNight" name="pricePerNight" class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="1박 당 가격을 입력하세요" oninput="validateNumber(this)">
+							    </div>
+							</div>
+                            <div class="lg:col-span-2 xl:col-span-12 mb-4">
+                                  <label class="inline-block mb-2 text-base font-medium">객실 설명 <span class="text-red-500">*</span></label>
+                                  <textarea rows="10" id="roomDesc" name="roomDesc" class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="객실 설명을 입력하세요"></textarea>
                             </div>
-                            <input name="roomImg" type="file">
+                            <div class="lg:col-span-2 xl:col-span-12 mb-4">
+								<label class="inline-block mb-2 text-base font-medium">파일 첨부<span class="text-red-500">*</span></label>
+								<input name="roomImg" id="roomImg" type="file" class="cursor-pointer form-file border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500">
+                            </div>
+                            
                             <!-- <div class="flex items-center justify-center border rounded-md cursor-pointer bg-slate-100 dropzone border-slate-200 dark:bg-zink-600 dark:border-zink-500">
 	                            <div class="fallback">
 	                                
@@ -122,8 +130,8 @@
 	                        </ul>
                         </div> -->
                         <div class="flex justify-end gap-2">
-                            <button type="button" class="text-red-500 bg-white btn hover:text-red-500 hover:bg-red-100 focus:text-red-500 focus:bg-red-100 active:text-red-500 active:bg-red-100 dark:bg-zink-700 dark:hover:bg-red-500/10 dark:focus:bg-red-500/10 dark:active:bg-red-500/10"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="x" class="lucide lucide-x inline-block size-4"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg> <span class="align-middle">Cancel</span></button>
-                            <button type="submit" class="text-white transition-all duration-200 ease-linear btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100">등록</button>
+                            <button type="button" id="cancel" class="text-red-500 bg-white border-red-500 btn hover:text-white hover:bg-red-600 hover:border-red-600 focus:text-white focus:bg-red-600 focus:border-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:border-red-600 active:ring active:ring-red-100"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="x" class="lucide lucide-x inline-block size-4"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg> <span class="align-middle">Cancel</span></button>
+                        	<button type="submit" class="mr-1 bg-white text-custom-500 border-custom-500 btn hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100">등록</button>
                         </div>
                     </form>
                     </div>
@@ -138,6 +146,7 @@
         </footer>
         <!-- End Footer -->
     </div>
+    
 </div>
 <!-- End Main Content -->
 <c:import url="/WEB-INF/view/inc/customizerButton.jsp"></c:import>
@@ -154,7 +163,75 @@
 <script src="${pageContext.request.contextPath}/assets/js/pages/form-file-upload.init.js"></script>
 <!-- App js -->
 <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
+<script>
+	// Cancel 버튼 클릭 시
+	document.querySelector('#cancel').addEventListener('click', function() {
+		window.location.href = '${pageContext.request.contextPath}/room/getRoomList';
+	});
+	
+	/**************************************** 유효성 검사 *****************************************/
+	
+	// 유효성 검사 : 숫자만 입력 가능하게 제한
+	function validateNumber(input) {
+    // 숫자만 입력 가능하도록 검사
+    if (isNaN(input.value)) {
+        alert('숫자만 입력 가능합니다.');
+     	// 잘못된 입력 비우기
+        input.value = '';
+	    }
+	}
+	
+	// 저장 버튼 클릭 시 모든 값이 다 있는지 확인
+function validateForm(event) {
+    event.preventDefault(); // 기본 폼 제출 방지
 
+    const roomType = document.getElementById('roomType')?.value.trim() || null;
+    const roomName = document.getElementById('roomName')?.value.trim() || null;
+    const roomCapacity = document.getElementById('roomCapacity')?.value.trim() || null;
+    const pricePerNight = document.getElementById('pricePerNight')?.value.trim() || null;
+    const roomDesc = document.getElementById('roomDesc')?.value.trim() || null;
+    const roomImgInput = document.getElementById('roomImg');
+    const roomImg = roomImgInput && roomImgInput.files.length > 0; // 파일 선택 여부 확인
+
+    // 필수 입력값 검사
+    if (!roomType) {
+        alert('객실 타입을 선택하세요.');
+        return false;
+    }
+    
+    
+    if (!roomName) {
+        alert('객실 호수를 입력하세요.');
+        return false;
+    }
+
+    if (!roomCapacity) {
+        alert('수용 인원을 입력하세요.');
+        return false;
+    }
+
+    if (!pricePerNight) {
+        alert('1박 당 가격을 입력하세요.');
+        return false;
+    }
+
+    if (!roomDesc) {
+        alert('객실 설명을 입력하세요.');
+        return false;
+    }
+
+    if (!roomImg) {
+        alert('이미지를 선택하세요.');
+        return false;
+    }
+
+    // 모든 필드가 정상적으로 입력된 경우 폼 제출
+    document.getElementById('formAddRoom').submit();
+    return true;
+}
+
+
+</script>
 </body>
 
 </html>

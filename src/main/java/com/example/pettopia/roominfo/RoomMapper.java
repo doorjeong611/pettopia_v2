@@ -11,6 +11,8 @@ import com.example.pettopia.vo.RoomRsv;
 
 @Mapper
 public interface RoomMapper {
+	 // roomName 중복 검사
+    int countByRoomName(String roomName);
 
 	// 객실 예약 전체 조회
 	List<Map<String, Object>> selectRoomRsvList();
