@@ -62,8 +62,11 @@ public class BoardController {
 	    if(successViewByBoard != 1) {
 	    	return "redirect:/board/boardList";
 	    }
-	    // 모델값 
 	    
+
+
+	    // 모델값  
+
 	    model.addAttribute("boardCategory", boardHeader);
 	    model.addAttribute("boardWriterNo",boardWriterNo);
 	    model.addAttribute("empNo", empNo);

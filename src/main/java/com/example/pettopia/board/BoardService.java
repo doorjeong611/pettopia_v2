@@ -18,6 +18,7 @@ import com.example.pettopia.util.TeamColor;
 import com.example.pettopia.vo.Board;
 import com.example.pettopia.vo.BoardFile;
 import com.example.pettopia.vo.Division;
+import com.example.pettopia.vo.RoomImg;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -100,7 +101,10 @@ public class BoardService {
 	}
 	
 	
-
+// 게시판 파일 셀렉트
+	public List<BoardFile> boardFileService(int boardNo) {
+        return boardMapper.selectBoardFile(boardNo);
+    }
 	
 	
 //	게시글 댓글 통합 삭제 /board/removeBoard 작업자 : 이준호 
