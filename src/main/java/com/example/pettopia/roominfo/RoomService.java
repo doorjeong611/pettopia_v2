@@ -31,6 +31,16 @@ public class RoomService {
 	@Autowired
 	private ServletContext servletContext;
 	
+	// 객실 예약 추가
+	public void addRoomRsv(RoomRsv roomRsv) {
+	    int result = roomMapper.insertRoomRsv(roomRsv);
+	    if (result == 0) {
+	        throw new RuntimeException("객실 예약 추가 실패");
+	    }
+	}
+
+	
+	
 	// 룸 타입으로 필터링된 목록 조회
     public List<Map<String, Object>> getRoomsByType(String roomType) {
         return roomMapper.selectRoomsByType(roomType);
@@ -181,10 +191,13 @@ public class RoomService {
                 }
             }
             
-            // 4. DB에서 이미지 지우기
+            // 4. room_rsv에서 해당 roomNo 예약 정보 삭제 (새로 추가된 부분)
+            roomMapper.deleteRsvByRoomNo(roomNo);
+
+            // 5. DB에서 이미지 지우기
             roomMapper.deleteRoomImages(roomNo);
             
-            // 5. 룸 정보 지우기
+            // 6. 룸 정보 지우기
             int result = roomMapper.deleteRoom(roomNo);
             
             return result > 0;
@@ -192,5 +205,6 @@ public class RoomService {
             throw new RuntimeException("객실 삭제 실패", e);
         }
     }
+
 }
 

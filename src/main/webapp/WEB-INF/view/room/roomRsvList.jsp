@@ -56,14 +56,13 @@
                                 </div>
                             </div>
                             <div class="ltr:md:text-end rtl:md:text-start"> 
-							    <!-- 서비스 추가 버튼, href 속성으로 addService 페이지로 이동 -->
-							    <a href="${pageContext.request.contextPath}/room/getAddRoomRsv" class="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20 add-btn">
-							        <i class="align-bottom ri-add-line me-1"></i> 객실 추가
+							    <a href="${pageContext.request.contextPath}/room/getAddRoomRsv" class="mr-1 bg-white text-custom-500 btn border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100">
+							        <i class="align-bottom ri-add-line me-1"></i> 예약 추가
 							    </a>
 							    
 							    <!-- 삭제 버튼 -->
-							    <button type="button" class="text-white bg-red-500 border-red-500 btn hover:text-white hover:bg-red-600 hover:border-red-600 focus:text-white focus:bg-red-600 focus:border-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:border-red-600 active:ring active:ring-red-100 dark:ring-custom-400/20" onClick="deleteMultiple()">
-							        <i class="ri-delete-bin-2-line"></i>
+							    <button type="button" class="text-red-500 bg-white border-red-500 btn hover:text-white hover:bg-red-600 hover:border-red-600 focus:text-white focus:bg-red-600 focus:border-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:border-red-600 active:ring active:ring-red-100" onClick="deleteMultiple()">
+							        <i class="ri-delete-bin-2-line">삭제</i>
 							    </button>
 							</div>
                         </div>

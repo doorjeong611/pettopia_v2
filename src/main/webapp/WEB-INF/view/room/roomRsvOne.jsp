@@ -43,33 +43,40 @@
                 <!-- Main content -->
                <div class="card">
                     <div class="card-body">
-                        <form id="formUpdateRoom" method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/room/updateRoom">
-                        <!-- 수정 시 필요한 roomNo  -->
+                        <form id="formInsertRoomRsv" method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/room/addRoomRsv">
+                        <!-- 등록 시 필요한 roomNo  -->
                         <input type="hidden" name="roomNo" value="${roomOne.roomNo}">
                             <div class="grid grid-cols-1 gap-x-5 md:grid-cols-2 xl:grid-cols-3">
                                 <div class="mb-4">
-                                    <label class="inline-block mb-2 text-base font-medium"> 타입 <span class="text-red-500">*</span></label>
-                                     <select id="roomType" name="roomType" class="form-select border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200">
-								        <option value="S" ${roomOne.roomType == 'S' ? 'selected' : ''}>S</option>
-						                <option value="D" ${roomOne.roomType == 'D' ? 'selected' : ''}>D</option>
-						                <option value="ST" ${roomOne.roomType == 'ST' ? 'selected' : ''}>ST</option>
-						                <option value="F" ${roomOne.roomType == 'F' ? 'selected' : ''}>F</option>
-   									 </select>
+                                    <label class="inline-block mb-2 text-base font-medium"> 룸 <span class="text-red-500">*</span></label>
+                                     <select name="roomNo" id="roomNo">
+							            <c:forEach var="room" items="${roomList}">
+							                <option value="${room.roomNo}">${room.roomName} (${room.roomType})</option>
+							            </c:forEach>
+							        </select>
                                 </div>
                                 <div class="mb-4">
-                                    <label class="inline-block mb-2 text-base font-medium">객실 이름<span class="text-red-500">*</span></label>
+                                    <label class="inline-block mb-2 text-base font-medium">예약자<span class="text-red-500">*</span></label>
                                     <input type="text" id="roomName" name="roomName" class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="최대 수용인원을 입력하세요" value="${roomOne.roomName}">
                                 </div>
                                 <div class="mb-4">
-                                    <label class="inline-block mb-2 text-base font-medium">수용 인원<span class="text-red-500">*</span></label>
+                                    <label class="inline-block mb-2 text-base font-medium">예약자 번호<span class="text-red-500">*</span></label>
                                     <input type="text" id="roomCapacity" name="roomCapacity" class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="최대 수용인원을 입력하세요" value="${roomOne.roomCapacity}">
                                 </div>
                                 <div class="mb-4">
-                                    <label class="inline-block mb-2 text-base font-medium">1박 당 가격<span class="text-red-500">*</span></label>
+                                    <label class="inline-block mb-2 text-base font-medium">상태<span class="text-red-500">*</span></label>
                                     <input type="text" id="pricePerNight" name="pricePerNight" class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="1박 당 가격을 입력하세요" value="${roomOne.pricePerNight}">
                                 </div>
                                 <div class="mb-4">
-                                    <label class="inline-block mb-2 text-base font-medium">객실 설명 <span class="text-red-500">*</span></label>
+                                    <label class="inline-block mb-2 text-base font-medium">체크인<span class="text-red-500">*</span></label>
+                                    <input type="date" id="pricePerNight" name="pricePerNight" class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="1박 당 가격을 입력하세요" value="${roomOne.pricePerNight}">
+                                </div>
+                                <div class="mb-4">
+                                    <label class="inline-block mb-2 text-base font-medium">체크아웃<span class="text-red-500">*</span></label>
+                                    <input type="date" id="pricePerNight" name="pricePerNight" class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="1박 당 가격을 입력하세요" value="${roomOne.pricePerNight}">
+                                </div>
+                                <div class="mb-4">
+                                    <label class="inline-block mb-2 text-base font-medium">메모 <span class="text-red-500">*</span></label>
                                    <textarea id="roomDesc" name="roomDesc" class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="객실 설명을 입력하세요">${roomOne.roomDesc}</textarea>
                                 </div>
                             </div>

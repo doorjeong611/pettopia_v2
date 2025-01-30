@@ -48,88 +48,45 @@
                             <div class="grid grid-cols-1 gap-x-5 md:grid-cols-2 xl:grid-cols-3">
                                 <div class="mb-4">
                                     <label class="inline-block mb-2 text-base font-medium"> 룸 선택 <span class="text-red-500">*</span></label>
-                                    <select id="roomType" name="roomType" class="form-select border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200">
-								        <c:forEach var="room" items="${rooms}">
-									        <option value="${room.roomType}">${room.roomType}</option>
-									    </c:forEach>
+                                    <select name="roomNo" id="roomSelect" onchange="getRoomInfo()" class="form-select border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200">
+								         <option value="">-- 객실 선택 --</option>
+										    <c:forEach var="room" items="${roomList}">
+										        <option value="${room.roomNo}">${room.roomName}(${room.roomType})</option>
+										    </c:forEach>
    									 </select>
                                 </div>
-                                <div>
-                                	<p> 선택된 룸 </p>
-                                	<div style="display: flex;">
-                                		<div>
-                                			<img src=""  alt="선택된 룸의 사진 출력">
-                                		</div>
-                                		<div>
-                                			<p> 타입 : </p>
-                                			<p> 1박 당 가격 : </p>
-                                			<p> 설명 : </p>
-                                		</div>
-                                	</div>
-                                </div>
+                                <!-- 객실 정보 뿌려질 div -->
+                                <div id="roomInfoDiv">
+                    <p id="roomName"></p>
+                    <p id="roomType"></p>
+                    <p id="roomCapacity"></p>
+                    <p id="roomDesc"></p>
+                    <p id="pricePerNight"></p>
+                </div>
+                                
                                 <div class="mb-4">
-                                    <label class="inline-block mb-2 text-base font-medium"> 객실 이름 <span class="text-red-500">*</span></label>
+                                    <label class="inline-block mb-2 text-base font-medium"> 예약자 <span class="text-red-500">*</span></label>
                                     <input type="text" id="roomName" name="roomName" class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="타입 선택">
                                 </div>
                                 <div class="mb-4">
-                                    <label class="inline-block mb-2 text-base font-medium">수용 인원<span class="text-red-500">*</span></label>
+                                    <label class="inline-block mb-2 text-base font-medium">예약자 H.P<span class="text-red-500">*</span></label>
                                     <input type="text" id="roomCapacity" name="roomCapacity" class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="최대 수용인원을 입력하세요">
                                 </div>
                                 <div class="mb-4">
-                                    <label class="inline-block mb-2 text-base font-medium">1박 당 가격<span class="text-red-500">*</span></label>
-                                    <input type="text" id="pricePerNight" name="pricePerNight" class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="1박 당 가격을 입력하세요">
+                                    <label class="inline-block mb-2 text-base font-medium">체크인<span class="text-red-500">*</span></label>
+                                    <input type="date" id="checkIn" name="pricePerNight" class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="1박 당 가격을 입력하세요">
                                 </div>
-                               <!-- <!--  <div class="mb-4">
-                                    <label class="inline-block mb-2 text-base font-medium">객실 상태 <span class="text-red-500">*</span></label>
-                                    <select class="form-select border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200">
-                                        <option selected="" disabled="" value="">Choose...</option>
-                                        <option>Name</option>
-                                    </select>
-                                </div> -->
                                 <div class="mb-4">
-                                    <label class="inline-block mb-2 text-base font-medium">객실 설명 <span class="text-red-500">*</span></label>
-                                   <textarea id="roomDesc" name="roomDesc" class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="객실 설명을 입력하세요"></textarea>
+                                    <label class="inline-block mb-2 text-base font-medium">체크아웃<span class="text-red-500">*</span></label>
+                                    <input type="date" id="checkOut" name="pricePerNight" class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="1박 당 가격을 입력하세요">
+                                </div>
+                               
+                                <div class="mb-4">
+                                    <label class="inline-block mb-2 text-base font-medium">메모 <span class="text-red-500">*</span></label>
+                                   <textarea id="memo" name="roomDesc" class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="객실 설명을 입력하세요"></textarea>
                                 </div>
                             </div>
-                            <input name="roomImg" type="file">
-                            <!-- <div class="flex items-center justify-center border rounded-md cursor-pointer bg-slate-100 dropzone border-slate-200 dark:bg-zink-600 dark:border-zink-500">
-	                            <div class="fallback">
-	                                
-	                            </div>
-	                            <div class="w-full py-5 text-lg text-center dz-message needsclick">
-	                                <div class="mb-3">
-	                                    <i data-lucide="upload-cloud" class="block mx-auto size-12 text-slate-500 fill-slate-200 dark:text-zink-200 dark:fill-zink-500"></i>
-	                                </div>
-	
-	                                <h5 class="mb-0 font-normal text-slate-500 text-15">Drag and drop your files or <a href="#!">browse</a> your files</h5>
-	                            </div>
-                        	</div> -->
-						<!-- <div>
-	                        <ul class="mb-0" id="dropzone-preview">
-	                            <li class="mt-2" id="dropzone-preview-list">
-	                                This is used as the file preview template
-	                                <div class="border rounded border-slate-200 dark:border-zink-500">
-	                                    <div class="flex p-2">
-	                                        <div class="shrink-0 me-3">
-	                                            <div class="p-2 rounded-md size-14 bg-slate-100 dark:bg-zink-600">
-	                                                <img data-dz-thumbnail class="block w-full h-full rounded-md" src="data:image/png;base64,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" alt="Dropzone-Image">
-	                                            </div>
-	                                        </div>
-	                                        <div class="grow">
-	                                            <div class="pt-1">
-	                                                <h5 class="mb-1 text-15" data-dz-name>&nbsp;</h5>
-	                                                <p class="mb-0 text-slate-500 dark:text-zink-200" data-dz-size></p>
-	                                                <strong class="error text-danger" data-dz-errormessage></strong>
-	                                            </div>
-	                                        </div>
-	                                        <div class="shrink-0 ms-3">
-	                                            <button data-dz-remove class="px-2 py-1.5 text-xs text-white bg-red-500 border-red-500 btn hover:text-white hover:bg-red-600 hover:border-red-600 focus:text-white focus:bg-red-600 focus:border-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:border-red-600 active:ring active:ring-red-100 dark:ring-custom-400/20">Delete</button>
-	                                        </div>
-	                                    </div>
-	                                </div>
-	                            </li>
-	                        </ul>
-                        </div> -->
+                           
                         <div class="flex justify-end gap-2">
                             <button type="button" class="text-red-500 bg-white btn hover:text-red-500 hover:bg-red-100 focus:text-red-500 focus:bg-red-100 active:text-red-500 active:bg-red-100 dark:bg-zink-700 dark:hover:bg-red-500/10 dark:focus:bg-red-500/10 dark:active:bg-red-500/10"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="x" class="lucide lucide-x inline-block size-4"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg> <span class="align-middle">Cancel</span></button>
                             <button type="submit" class="text-white transition-all duration-200 ease-linear btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100">등록</button>
@@ -163,6 +120,34 @@
 <script src="${pageContext.request.contextPath}/assets/js/pages/form-file-upload.init.js"></script>
 <!-- App js -->
 <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
+<script>
+    // 객실 정보를 가져오는 함수
+    function getRoomInfo() {
+        var roomNo = document.getElementById('roomSelect').value;
+
+        if (roomNo) {
+            // 서버에서 객실 정보 조회
+            fetch('/room/getRoomInfo?roomNo=' + roomNo)
+                .then(response => response.json())
+                .then(data => {
+                    // 데이터를 화면에 출력
+                    document.getElementById('roomName').textContent = "Room Name: " + data.roomName;
+                    document.getElementById('roomType').textContent = "Room Type: " + data.roomType;
+                    document.getElementById('roomCapacity').textContent = "Capacity: " + data.roomCapacity;
+                    document.getElementById('roomDesc').textContent = "Description: " + data.roomDesc;
+                    document.getElementById('pricePerNight').textContent = "Price per Night: " + data.pricePerNight;
+                })
+                .catch(error => {
+                    console.error("Error fetching room info:", error);
+                });
+        }
+    }
+
+    // 셀렉트 박스에서 선택된 객실 정보를 가져오기
+    document.getElementById('roomSelect').addEventListener('change', getRoomInfo);
+</script>
+
+
 
 </body>
 

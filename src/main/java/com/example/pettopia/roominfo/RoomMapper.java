@@ -52,6 +52,12 @@ public interface RoomMapper {
     // 객실 페이징
     int countRoomList(Map<String, Object> params);
 
+    // 예약 객실 삭제
+	void deleteRsvByRoomNo(int roomNo);
+
+	// 객실 예약 추가
+	int insertRoomRsv(RoomRsv roomRsv);
+
 	
 
 }
