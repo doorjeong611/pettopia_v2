@@ -17,4 +17,22 @@ public interface DepartmentMapper {
 	// 조직도
 	List<Map<String, Object>> selectOrgChart(String deptCode);
 	
+	// 팀명 중복 검사
+	Integer selectConfirmDepartment(String deptName);
+	
+	// 마지막 deptCode 
+	Department selectLastDeptCode(String divisionCode);
+	
+	// 마지막 내선번호
+	String selectLastDeptExt();
+	
+	// 팀 등록
+	Integer insertDepartment(Department dept);
+	
+	// 팀 이름 수정
+	Integer updateDepartmentName(Department dept);
+	
+	// 팀 삭제
+	Integer deleteDepartment(Department dept);
+	
 }

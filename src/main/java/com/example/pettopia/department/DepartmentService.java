@@ -104,5 +104,39 @@ public class DepartmentService {
 		return orgChartData;
 	}
 	
+	
+	
+	// 팀명 중복 검사
+	public Integer confirmDepartment(String deptName) {
+		
+		return departmentMapper.selectConfirmDepartment(deptName);
+	}
+	
+	// 마지막 팀코드
+	public Department getLastDeptCode(String divisionCode) {
+		return departmentMapper.selectLastDeptCode(divisionCode);
+	}
+	
+	// 마지막 내선번호
+	public String getLastDeptExt() {
+		return departmentMapper.selectLastDeptExt();			
+	}
+	
+	
+	// 팀 등록
+	public Integer addDepartment(Department department) {
+		return departmentMapper.insertDepartment(department);
+	}
+	
+	
+	// 팀 수정
+	public Integer modifyDepartmentName(Department dept) {
+		return departmentMapper.updateDepartmentName(dept);
+	}
+	
+	public Integer deleteDepartment(Department dept) {
+		return departmentMapper.deleteDepartment(dept);
+	}
+	
 
 }

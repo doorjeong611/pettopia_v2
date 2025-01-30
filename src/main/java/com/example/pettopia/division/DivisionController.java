@@ -1,6 +1,8 @@
 package com.example.pettopia.division;
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -10,7 +12,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.pettopia.department.DepartmentMapper;
 import com.example.pettopia.util.TeamColor;
+import com.example.pettopia.vo.Department;
 import com.example.pettopia.vo.Division;
 
 
@@ -19,6 +23,7 @@ import com.example.pettopia.vo.Division;
 public class DivisionController {
 	
 	@Autowired DivisionService divisionService;
+	@Autowired DepartmentMapper departmentMapper;
 
 	// 부서 조회
 	@GetMapping("/employee/divisionList")
@@ -103,14 +108,43 @@ public class DivisionController {
 			division.setDivisionCode(divisionCode);
 		}
 		
-		// 부서 삭제하기
-		Integer row = divisionService.removeDivision(division);
 		
-		log.debug(TeamColor.KMJ + "row : " + row);
+		// 하위 팀이 존재하면 먼저 삭제
+		List<Department> existDept = departmentMapper.selectDepartmentList(divisionCode);
 		
-		if(row == 1) {
-			return "division/divisionList";
+		if(existDept.size() != 0) { // 하위팀 존재
+			Department dept = new Department();
+			dept.setDivisionCode(divisionCode);
+			
+			Integer row = departmentMapper.deleteDepartment(dept);
+			
+			if(row == 1) {
+				// 부서 삭제하기
+				Integer result = divisionService.removeDivision(division);
+				
+				log.debug(TeamColor.KMJ + "result : " + result);
+				
+				if(result == 1) {
+					return "division/divisionList";
+				}
+			}
+			
+			
+		}else { // 하위팀 없음
+			
+			// 부서 삭제하기
+			Integer result = divisionService.removeDivision(division);
+			
+			log.debug(TeamColor.KMJ + "result : " + result);
+			
+			if(result == 1) {
+				return "division/divisionList";
+			}
+		
 		}
+		
+		
+		
 		
 		
 		return "division/divisionList";
