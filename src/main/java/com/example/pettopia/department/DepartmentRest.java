@@ -46,5 +46,29 @@ public class DepartmentRest {
 	}
 	
 	
+	// 팀명 중복 검사
+	@GetMapping("/rest/confirmDepartment")
+	public String confirmDepartment(@RequestParam String deptName) {
+		
+		log.debug(TeamColor.OJY + "DepartmentRest - confirmDepartment()");
+		
+		log.debug(TeamColor.KMJ+"deptName : " + deptName);
+		
+		Integer deptCount = departmentService.confirmDepartment(deptName);
+
+		log.debug(TeamColor.KMJ+"deptCount : " + deptCount);
+		
+		if(deptCount == 0 ) {
+			log.debug(TeamColor.KMJ+"사용가능");
+			return "Y";
+		}
+		return "N"; // 팀명 중복
+
+		
+	}
+	
+	
+	
+	
 
 }

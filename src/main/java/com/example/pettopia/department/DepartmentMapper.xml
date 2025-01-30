@@ -29,6 +29,60 @@
 		ORDER BY depth
 	</select>
 	
+	<!-- 팀명 중복검사 -->
+	<select id="selectConfirmDepartment" parameterType="String" resultType="INTEGER">
+		SELECT COUNT(*) AS count
+		FROM department
+		WHERE UPPER(REPLACE(dept_name, ' ', '')) = UPPER(REPLACE(#{deptName}, ' ', ''))
+	</select>
+	
+	<!-- 마지막 팀 코드 가져오기 -->
+	<select id="selectLastDeptCode" parameterType="String" resultType="com.example.pettopia.vo.Department">
+		SELECT dept_code AS deptCode
+				, dept_ext AS deptExt
+		FROM department 
+		WHERE division_code = #{divisionCode}
+		ORDER BY dept_code DESC
+		LIMIT 1
+	</select>
+	
+	
+	<!-- 내선번호 -->
+	<select id="selectLastDeptExt"  resultType="String">
+		SELECT dept_ext AS deptExt
+		FROM department
+		ORDER BY dept_ext DESC
+		LIMIT 1
+	</select>
+	
+	<!-- 팀 등록 -->
+	<insert id="insertDepartment" parameterType="com.example.pettopia.vo.Department">
+		INSERT INTO department(dept_code, division_code, dept_name, dept_ext, create_datetime, update_datetime)
+		VALUES(#{deptCode}, #{divisionCode}, #{deptName}, #{deptExt}, NOW(), NOW());
+	</insert>
+	
+	
+	<!-- 팀 수정 -->
+	<update id="updateDepartmentName" parameterType="com.example.pettopia.vo.Department">
+		UPDATE department
+		SET dept_name = #{deptName}
+		WHERE dept_code = #{deptCode}
+	</update>
+	
+	<!-- 팀 삭제 -->
+	<delete id="deleteDepartment" parameterType="com.example.pettopia.vo.Department">
+		DELETE FROM department
+		<where>
+			<if test="divisionCode != null">
+				division_code = #{divisionCode}
+			</if>
+			<if test="deptCode != null">
+				AND dept_code = #{deptCode}
+			</if>
+		</where>		
+	</delete>
+	
+	
 	
 	
 </mapper>

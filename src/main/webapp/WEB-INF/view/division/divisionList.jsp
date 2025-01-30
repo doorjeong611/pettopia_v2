@@ -253,6 +253,7 @@
 							</button>
 						</div>
 					</div>
+					
 					<!-- 모달 내용 -->
 					<div class="max-h-[calc(theme('height.screen')_-_180px)] p-4 overflow-y-auto mt-4">
 
@@ -343,23 +344,121 @@
 			<div id="deptFormModal" class="fixed left-1/2 transform -translate-x-1/2 z-[1000]" style="top: 40%; transform: translate(-50%, -40%); z-index: 1000;">
 			
 				<div class="w-screen md:w-[30rem] bg-white shadow rounded-md dark:bg-zink-600 flex flex-col h-full">
-					<div class="flex items-center justify-between p-4 dark:border-zink-500  ml-auto">    
-						<button type="button" id="closeDeptModalBtn" class="transition-all duration-200 ease-linear text-slate-500 hover:text-red-500 dark:text-zink-200 dark:hover:text-red-500">
-							&#10060;
-						</button>
+					
+					<!-- 모달 헤더 -->
+					<div class="flex items-center justify-between p-4 dark:border-zink-500 border-b">    
+						<h5 class="text-16">하위 팀 관리</h5>
+						<div class="flex items-center justify-between p-4 dark:border-zink-500  ml-auto">    
+							<button type="button" id="closeDeptModalBtn" class="transition-all duration-200 ease-linear text-slate-500 hover:text-red-500 dark:text-zink-200 dark:hover:text-red-500">
+								&#10060;
+							</button>
+						</div>
 					</div>
-					<div class="max-h-[calc(theme('height.screen')_-_180px)] p-4 overflow-y-auto">
+					
+					
+					<!-- 모달 내용 -->
+					<div class="max-h-[calc(theme('height.screen')_-_180px)] p-4 overflow-y-auto mt-4">
+
+						<div id="addDeptDiv" class="mb-4 ">
+							<form action="${pageContext.request.contextPath}/admin/addDepartment" method="post" id="addDeptForm" class="flex gap-2">
+								<div class="mb-1">
+									<select name="divisionCode" id="selDivisionCode" class="form-input border-slate-200 dark:border-zink-500 mb-4">
+										<option value="">부서 선택</option>
+									</select>
+								</div>
+								<div class="mb-1">
+									<input type="text" id="addDeptName" name="deptName" value="" placeholder="새로운 팀명" class="py-1 border border-gray-300 rounded-md ">
+								</div>
+								<button type="button" id="confirmDeptBtn" class="px-2 py-2 text-sm rounded-md text-slate-500 bg-slate-50 dark:bg-zink-400/20 dark:text-zink-200  hover:text-white hover:bg-slate-600 hover:border-slate-600">중복 검사</button>
+							</form>
+						</div>
+						<div id="alertAddDept" class="px-4 py-3 text-sm border rounded-md text-slate-500 border-slate-200 bg-slate-50 dark:bg-zink-500/30 dark:border-zink-500 dark:text-zink-200 hidden">
+							<span class="font-bold">해당 팀은 등록 가능합니다.</span>
+                        </div>
 						
+						<div id="modifyDeptDiv" class="hidden mb-4">
+								<select name="divisionCode" id="selModifyDivisionCode" class="form-input border-slate-200 dark:border-zink-500 mb-4">
+									<option value="">부서 선택</option>
+								</select>
+							<form action="${pageContext.request.contextPath}/admin/modifyDepartment" method="post" id="modifyDeptForm">
+								<select name="deptCode" id="selDeptCode" class="form-input border-slate-200 dark:border-zink-500 mb-4">
+									<option value="">팀 선택</option>
+								</select>
+								<input type="text" id="modifyDeptName" name="deptName" value="" placeholder="수정할 팀 이름을 입력하세요">
+								<button type="button" id="confirmModifyDeptBtn" class="px-2 py-2 text-sm rounded-md text-slate-500 bg-slate-50 dark:bg-zink-400/20 dark:text-zink-200  hover:text-white hover:bg-slate-600 hover:border-slate-600">중복 검사</button>
+							</form>
+						</div>
+						<div id="alertModifyDept" class="px-4 py-3 text-sm border rounded-md text-slate-500 border-slate-200 bg-slate-50 dark:bg-zink-500/30 dark:border-zink-500 dark:text-zink-200 hidden">
+							<span class="font-bold">입력하신 팀명으로 수정 가능합니다.</span>
+                        </div>
+						
+						<div id="removeDeptDiv" class="hidden mb-4">
+								<select name="divisionCode" id="divisionRemoveDeptsSelect" class="form-input border-slate-200 dark:border-zink-500 mb-4">
+									<option value="">부서 선택</option>
+								</select>
+							<form action="${pageContext.request.contextPath}/admin/removeDepartment" method="post" id="removeDeptForm">
+								<select name="deptCode" id="deptRemoveSelect" class="form-input border-slate-200 dark:border-zink-500 mb-4">
+									<option value="">팀 선택</option>
+								</select>
+							</form>
+						</div>
+				
 					</div>
-					<div class="flex items-center justify-between p-4 mt-auto 0 dark:border-zink-500 ml-auto">
-						<button id="addDeptBtn"  type="button" class="text-white btn bg-custom-500 hover:bg-custom-600">등록</button>
-						<button id="modifyDeptBtn"  type="button" class="text-white btn bg-custom-500 hover:bg-custom-600">수정</button>
-						<button id="removeDeptBtn"  type="button" class="text-white btn bg-custom-500 hover:bg-custom-600">삭제</button>
+					
+					
+					
+					<!-- 모달 푸터 -->
+					<div class="flex p-2  dark:border-zink-500 border-t ">
+						<!-- 폼 변경 버튼 -->
+						<div class="flex gap-1 justify-start pt-4">
+							<div class="">
+								<button type="button" id="showModifyDeptFormBtn" class="px-2 py-2 text-sm text-green-500 bg-white border border-green-300 rounded-md dark:bg-zink-700 dark:border-green-500 ">
+		                            <span class="font-bold">팀 변경</span> 
+		                        </button>
+							</div>
+							<div class="">
+								<button type="button" id="showAddDeptFormBtn" class="px-2 py-2 text-sm bg-white border rounded-md border-custom-300 text-custom-500 dark:bg-zink-700 dark:border-custom-500">
+		                            <span class="font-bold">팀 등록</span> 
+		                        </button>
+							</div>
+							<div class="">
+								<button type="button" id="showRemoveDeptFormBtn" class="px-2 py-2 text-sm text-red-500 bg-white border border-red-300 rounded-md dark:bg-zink-700 dark:border-red-500">
+		                            <span class="font-bold">팀 삭제</span> 
+		                        </button>
+							</div>
+						</div>
+						
+					
+						<!-- 등록, 수정, 삭제 버튼 -->
+						<div class="flex gap-2 items-center justify-between p-4 mt-auto 0 dark:border-zink-500 ml-auto">
+							<button id="resetAddDeptBtn"  type="button" class="py-2 text-red-500 bg-white border-none btn hover:text-white hover:bg-red-600 hover:border-none focus:text-white focus:bg-red-600 focus:border-none focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:border-red-600 active:ring active:ring-red-100">다시 작성</button>
+							<button id="addDeptBtn"  type="button" class="py-2 text-custom-500 bg-white border-custom-500 btn hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100">등록</button>
+							<button id="modifyDeptBtn"  type="button" class="py-2 text-green-500 bg-white border-green-500 btn hover:text-white hover:bg-green-600 hover:border-green-600 focus:text-white focus:bg-green-600 focus:border-green-600 focus:ring focus:ring-green-100 active:text-white active:bg-green-600 active:border-green-600 active:ring active:ring-green-100 hidden">수정</button>
+							<button id="removeDeptBtn"  type="button" class="py-2 text-red-500 bg-white border-red-500 btn hover:text-white hover:bg-red-600 hover:border-red-600 focus:text-white focus:bg-red-600 focus:border-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:border-red-600 active:ring active:ring-red-100 hidden">삭제</button>
+						</div>
 					</div>
 				</div>
 			</div> 
 		</div> 
 		<!-- 끝 : 모달창 -->
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
         <!-- 상위 관리 모달창 script -->
    		<script type="text/javascript">
@@ -510,7 +609,7 @@
 				const alertAddDivi = $('#alertAddDivi');
 				
 				const testDivisionCode = /^[A-Za-z]+$/;
-				const testDivisionName = /^[A-Za-z0-9가-힣]+$/;
+				const testDivisionName = /^[A-Za-z가-힣\s&-]+$/;
 			
 				if(divisionCode == '' ){
 					alert('부서 코드를 입력해주세요.');
@@ -571,7 +670,7 @@
    			/* 부서 수정 */
 			$('#modifyDiviBtn').click(function() {
 				
-				const testDivisionName = /^[A-Za-z0-9가-힣]+$/;
+				const testDivisionName = /^[A-Za-z가-힣\s&-]+$/;
 				
 				// 부서가 선택되지 않았는지 확인
 			    if ($('#divisionSelect').val() === '') {
@@ -626,7 +725,7 @@
 				const alertAddDivi = $('#alertAddDivi');
 				
 				const testDivisionCode = /^[A-Za-z]+$/;
-				const testDivisionName = /^[A-Za-z0-9가-힣]+$/;
+				const testDivisionName = /^[A-Za-z가-힣\s&-]+$/;
 			
 				if(divisionCode == '' ){
 					alert('부서 코드를 입력해주세요.');
@@ -697,7 +796,7 @@
 				const divisionName = $('#modifyDivisionName').val();
 				const alertModifyDivi = $('#alertModifyDivi');
 				
-				const testDivisionName = /^[A-Za-z0-9가-힣]+$/;
+				const testDivisionName = /^[A-Za-z가-힣\s&-]+$/;
 
 				// 부서가 선택되지 않았는지 확인
 			    if ($('#divisionSelect').val() === '') {
@@ -756,29 +855,46 @@
 				
 			});
 			
-			
-			
-   			
-   			
 
-   			
    		});	
    		</script>
+   		<!-- 끝 : 상위 관리 모달창 script -->
    		
+
+<!-- ---------------------------------------------------------------------------------------------------------------------------------  -->
    		
-   		<!-- 팀 관리 -->
+   		<!-- 팀 관리 모달창 script -->
    		<script type="text/javascript">
    		$(document).ready(function () {
    			
 
    			/* 팀 관리 버튼 클릭 */
-   			// 재직상태 모달창 관련 id 가져오기 
+   			// 모달창 관련
    			const deptModalContainer = $("#deptModalContainer");
    			const deptModalBackground = $("#deptModalBackground");
    			const deptFormModal = $("#deptFormModal");
    			const closeDeptModalBtn = $("#closeDeptModalBtn");
-   			const addDeptBtn = $("#addDeptBtn");
-   			const removeDeptBtn = $("#removeDeptBtn");
+   			
+   			
+	   		/* 팀 관리 모달 body 폼 */
+	   		const showModifyDeptFormBtn = $('#showModifyDeptFormBtn');
+	   		const showAddDeptFormBtn = $('#showAddDeptFormBtn');
+	   		const showRemoveDeptFormBtn = $('#showRemoveDeptFormBtn');
+	   		
+	   		const addDeptDiv = $('#addDeptDiv');
+	   		const modifyDeptDiv = $('#modifyDeptDiv');
+	   		const removeDeptDiv = $('#removeDeptDiv');
+	   		
+	   		const resetAddDeptBtn = $('#resetAddDeptBtn');
+	   		const addDeptBtn = $('#addDeptBtn');
+	   		const modifyDeptBtn = $('#modifyDeptBtn');
+	   		const removeDeptBtn = $('#removeDeptBtn');
+	   		
+	   		const alertModifyDept = $('#alertModifyDept');
+	   		const alertAddDept = $('#alertAddDept');
+   			
+   			
+
 
    			// 모달창 띄우기
    			$("#manageDeptBtn").click(function() {
@@ -793,8 +909,6 @@
    				deptModalContainer.addClass("hidden");
    			    $('body').removeClass('overflow-hidden');
    			    
-   			   
-
    			}
 
    			// 닫기 버튼
@@ -812,6 +926,365 @@
    			    }
    			});
    			
+   			
+   			/* 부서 목록 조회 ajax */
+	   		$.ajax({
+	   	        url: '/pettopia/rest/divisionList',
+	   	        method: 'GET'
+	   	    }).done(function (result) {
+	   	        console.log("응답받은 결과:", result);
+	
+	   	        // 상위 부서 목록 추가
+	   	        $(result).each(function (index, item) {
+	   	            $('#selDivisionCode').append('<option value="' + item.divisionCode + '">'+ item.divisionName+ '</option>');
+	   	         	$('#divisionRemoveDeptsSelect').append('<option value="' + item.divisionCode + '">'+ item.divisionName+ '</option>');
+	   	         	$('#selModifyDivisionCode').append('<option value="' + item.divisionCode + '">'+ item.divisionName+ '</option>');
+	   	        });
+	
+	   	    }).fail(function () {
+	   	        alert('부서 호출 실패');
+	   	    });
+   			
+   		
+	
+   			/* 팀 이름 변경하기 버튼 클릭시 수정 부분 보이기 */
+   			$('#showModifyDeptFormBtn').click(function() {
+   				
+   				modifyDeptDiv.removeClass("hidden");
+   				modifyDeptBtn.removeClass("hidden");
+   				
+   				addDeptDiv.addClass("hidden");
+   				removeDeptDiv.addClass("hidden");
+   				
+   				resetAddDeptBtn.removeClass("hidden"); 
+   				addDeptBtn.addClass("hidden");
+   				modifyDeptBtn.removeClass("hidden"); 
+   				removeDeptBtn.addClass("hidden");
+   				
+   				alertModifyDept.addClass("hidden");
+   				alertAddDept.addClass("hidden");
+
+   			});
+   			
+   			/* 팀 등록하기 버튼 클릭시 수정 부분 보이기 */
+   			$('#showAddDeptFormBtn').click(function() {
+   				
+   				modifyDeptDiv.addClass("hidden");
+   				modifyDeptBtn.addClass("hidden");
+   				
+   				addDeptDiv.removeClass("hidden");
+   				addDeptBtn.removeClass("hidden");
+   				
+   				resetAddDeptBtn.removeClass("hidden");  
+   				removeDeptBtn.addClass("hidden");  		// 삭제 버튼 숨기기
+   				removeDeptDiv.addClass("hidden");  		// 삭제 폼 숨기기
+   	   			
+   				alertModifyDept.addClass("hidden"); 
+   				alertAddDept.addClass("hidden");  
+   				
+   	   			
+   			});
+   			
+   			/* 팀 삭제 버튼 클릭시 삭제 부분 보이기 */
+   			$('#showRemoveDeptFormBtn').click(function() {
+   				
+   				removeDeptBtn.removeClass("hidden");  		// 삭제 버튼 보이기
+   				removeDeptDiv.removeClass("hidden");  		// 삭제 폼 보이기
+   	   			
+   				modifyDeptDiv.addClass("hidden");			// 수정 폼 숨기기
+   				modifyDeptBtn.addClass("hidden");			// 수정버튼 숨기기
+				
+   				addDeptDiv.addClass("hidden");				// 등록 폼 숨기기
+   				addDeptBtn.addClass("hidden");				// 등록버튼 숨기기
+				
+   				resetAddDeptBtn.addClass("hidden");  		// 리셋 버튼 숨기기
+				
+   				alertModifyDept.addClass("hidden"); 
+   				alertAddDept.addClass("hidden"); 
+			
+   			});
+   			
+   			
+
+   			/* 다시 작성 버튼 */
+   			$('#resetAddDeptBtn').click(function() {
+   			  
+   			    $('#addDeptName').val('');
+   			    $('#selDivisionCode').val('');
+   			 	$('#selDeptCode').val('');
+   			 	$('#modifyDeptName').val('');   			 	
+   			 	$('#selModifyDivisionCode').val('');
+
+
+   			    // readonly 제거
+   			    $('#addDeptName').removeAttr('readonly');
+   			    $('#modifyDeptName').removeAttr('readonly');
+
+   			    // 중복 검사 완료 알림 숨기기
+   			    $('#alertModifyDept').addClass('hidden');
+   			 	$('#alertAddDept').addClass("hidden");  
+
+   			 	$('#selDivisionCode').removeClass('readonly-select'); 
+   			 	$('#selModifyDivisionCode').removeClass('readonly-select'); 
+   			 	$('#selDeptCode').removeClass('readonly-select'); 
+			});
+   			
+   			
+   			
+   			/* 팀 등록시 이름 중복 확인 */
+			$('#confirmDeptBtn').click(function() {
+
+				const deptName = $('#addDeptName').val();
+				const selDivision = $('#selDivisionCode').val();
+				const alertAddDept = $('#alertAddDept');
+				
+				const testDeptName = /^[A-Za-z가-힣\s&-]+$/;
+			
+				if(selDivision == ''){
+					alert('소속 부서를 입력해주세요.');
+					$('#selDivisionCode').focus();
+					return;
+				}
+
+				if(deptName == ''){
+					alert('팀명을 입력해주세요.');
+					$('#addDeptName').focus();
+					return;
+				}
+				
+				if(testDeptName.test(deptName) == false){
+					alert('팀명에 허용되지 않은 특수문자는 사용할 수 없습니다.');
+					$('#addDeptName').focus();
+					return;
+				}
+
+				/* 팀명 중복 검사 ajax */
+		   		$.ajax({
+		   	        url: '/pettopia/rest/confirmDepartment',
+		   	        method: 'GET',
+		   	     	data: {
+		   	        	deptName: deptName
+		   	     	}
+		   	    }).done(function (result) {
+		   	        console.log("응답받은 결과:", result);
+		   	        
+		   	        if(result == 'N'){
+		   	        	alert('팀명 중복! 다시 작성해주세요.');
+		   	        	$('#addDeptName').focus();
+						return;
+		   	        }
+		   	        
+		   	        if(result == 'Y'){
+		   	        	alertAddDept.removeClass('hidden');
+		   	        	$('#selDivisionCode').addClass('readonly-select'); 
+		   	        	$('#addDeptName').attr('readonly', true);
+		   	        	return;
+		   	        }
+		   	        
+		
+		   	    }).fail(function () {
+		   	        alert('중복검사 호출 실패');
+		   	    });
+				
+			});
+   			
+   			
+   			/* 팀 등록 */
+   			$('#addDeptBtn').click(function() {
+   				const divisionCode = $('#addDivisionCode').val();
+   				const deptName = $('#addDeptName').val();
+				const selDivision = $('#selDivisionCode').val();
+				const alertAddDept = $('#alertAddDept');
+				
+				const testDeptName = /^[A-Za-z가-힣\s&-]+$/;
+			
+				if(selDivision == ''){
+					alert('소속 부서를 입력해주세요.');
+					$('#selDivisionCode').focus();
+					return;
+				}
+
+				if(deptName == ''){
+					alert('팀명을 입력해주세요.');
+					$('#addDeptName').focus();
+					return;
+				}
+				
+				if(testDeptName.test(deptName) == false){
+					alert('팀명에 허용되지 않은 특수문자는 사용할 수 없습니다.');
+					$('#addDeptName').focus();
+					return;
+				}
+				
+				// 중복 검사 진행 여부 확인
+			    if (!$('#addDeptName').prop('readonly') ) {
+			        alert('중복 검사를 진행하세요.');
+			        return;
+			    }
+				
+				$('#addDeptForm').submit();
+				
+				
+			});
+   			
+   			
+   			
+   			
+   			
+   			
+   			/* 부서 선택시 하위 팀 출력 */
+			$('#selModifyDivisionCode').change(function() {
+				$.ajax({
+						url : '/pettopia/rest/departmentList/'+ $('#selModifyDivisionCode').val(),
+						method : 'GET'
+				}).done(function(result) {
+						// 팀 리셋
+						$('#selDeptCode').empty();
+						$('#selDeptCode').append('<option value="">팀 선택</option>');
+				
+						$(result).each(function(index,item) {
+							$('#selDeptCode').append('<option value="' + item.deptCode + '">'+ item.deptName+ '</option>');});
+				
+				}).fail(function() {
+					alert('팀 호출 실패');
+				});
+			
+			});
+   			
+			/* 팀명 수정시 이름 중복 확인 */
+			$('#confirmModifyDeptBtn').click(function() {
+				
+				const deptName = $('#modifyDeptName').val();
+				const alertModifyDept = $('#alertModifyDept');
+				
+				const testDivisionName = /^[A-Za-z가-힣\s&-]+$/;
+
+				// 부서와 수정하려는 팀이 선택되지 않았는지 확인
+			    if ($('#selModifyDivisionCode').val() === '' || $('#selDeptCode').val() === '') {
+			        alert('수정할 팀을 선택해주세요.');
+			        $('#selModifyDivisionCode').focus();
+			        return;
+			    }
+			  
+
+   				if($('#modifyDeptName').val() == null || $('#modifyDeptName').val() == '' ){
+   					alert('수정할 팀명을 입력해주세요.');
+   					$('#modifyDeptName').focus();
+   					return;
+   				}
+   				
+   				if(testDivisionName.test($('#modifyDeptName').val()) == false){
+					alert('부서명에 특수문자는 사용할 수 없습니다.');
+					$('#modifyDeptName').focus();
+					return;
+				}
+
+				
+				/* 팀명 중복 검사 ajax */
+		   		$.ajax({
+		   	        url: '/pettopia/rest/confirmDepartment',
+		   	        method: 'GET',
+		   	     	data: {
+		   	        	deptName: deptName
+		   	     	}
+		   	    }).done(function (result) {
+		   	        console.log("응답받은 결과:", result);
+					
+		   	     	if(result == 'N'){
+		   	        	alert('팀명 중복! 다시 작성해주세요.');
+		   	        	$('#modifyDeptName').focus();
+						return;
+		   	        }
+		   	        
+		   	        if(result == 'Y'){
+		   	        	alertModifyDept.removeClass('hidden');
+		   	        	$('#selModifyDivisionCode').addClass('readonly-select'); 
+		   	        	$('#selDeptCode').addClass('readonly-select'); 
+		   	        	$('#modifyDeptName').attr('readonly', true);
+		   	        	return;
+		   	        }
+
+		   	    }).fail(function () {
+		   	        alert('중복검사 호출 실패');
+		   	    });
+				
+			});
+			
+			
+			/* 팀명 수정 */
+			$('#modifyDeptBtn').click(function() {
+				
+				const deptName = $('#modifyDeptName').val();
+				const alertModifyDept = $('#alertModifyDept');
+				
+				const testDivisionName = /^[A-Za-z가-힣\s&-]+$/;
+
+				// 부서와 수정하려는 팀이 선택되지 않았는지 확인
+			    if ($('#selModifyDivisionCode').val() === '' || $('#selDeptCode').val() === '') {
+			        alert('수정할 팀을 선택해주세요.');
+			        $('#selModifyDivisionCode').focus();
+			        return;
+			    }
+			  
+
+   				if($('#modifyDeptName').val() == null || $('#modifyDeptName').val() == '' ){
+   					alert('수정할 팀명을 입력해주세요.');
+   					$('#modifyDeptName').focus();
+   					return;
+   				}
+   				
+   				if(testDivisionName.test($('#modifyDeptName').val()) == false){
+					alert('부서명에 특수문자는 사용할 수 없습니다.');
+					$('#modifyDeptName').focus();
+					return;
+				}
+   				
+				// 중복 검사 진행 여부 확인
+			    if (!$('#modifyDeptName').prop('readonly')) {
+			        alert('중복 검사를 진행하세요.');
+			        return;
+			    }
+
+   				$('#modifyDeptForm').submit();
+   			});
+			
+			
+   			
+
+			/* 팀 삭제 */
+			$('#removeDeptBtn').click(function() {
+				
+				// 부서가 선택되지 않았는지 확인
+			    if ($('#divisionRemoveDeptsSelect').val() === '' || $('#deptRemoveSelect').val() === '') {
+			        alert('삭제할 팀을 선택해주세요.');
+			        $('#divisionRemoveDeptsSelect').focus();
+			        return;
+			    }
+
+   				
+			    if (confirm('정말로 삭제하시겠습니까?')) {
+			        $('#removeDeptForm').submit();
+			    }
+   			});
+   			
+			/* 부서 선택시 하위 팀 출력 */
+			$('#divisionRemoveDeptsSelect').change(function() {
+				$.ajax({
+						url : '/pettopia/rest/departmentList/'+ $('#divisionRemoveDeptsSelect').val(),
+						method : 'GET'
+				}).done(function(result) {
+						// 팀 리셋
+						$('#deptRemoveSelect').empty();
+						$('#deptRemoveSelect').append('<option value="">팀 선택</option>');
+				
+						$(result).each(function(index,item) {
+							$('#deptRemoveSelect').append('<option value="' + item.deptCode + '">'+ item.deptName+ '</option>');});
+				
+				}).fail(function() {
+					alert('팀 호출 실패');
+				});
+			
+			});
    			
    			
    			
