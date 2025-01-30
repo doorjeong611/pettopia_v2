@@ -5,11 +5,14 @@
 <html lang="en" class="light scroll-smooth group" data-layout="vertical" data-sidebar="light" data-sidebar-size="lg" data-mode="light" data-topbar="light" data-skin="default" data-navbar="sticky" data-content="fluid" dir="ltr">
 
 <head>
-    <meta charset="utf-8">
+	<meta charset="utf-8">
     <title>PetTopia</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta content="Minimal Admin & Dashboard Template" name="description">
     <meta content="Themesdesign" name="author">
+    <!-- CKEditor5 -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/boardStyle.css">
+	<link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/44.1.0/ckeditor5.css" crossorigin>
     <!-- App favicon -->
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/assets/images/pettopia_favicon.ico">
     <!-- Layout config Js -->
@@ -19,215 +22,237 @@
 </head>
 
 <style>
-    .boardTitleBox {
-        width: 70%;
-        margin: 10px auto;
-        text-align: left;
-    }
-
-    .boardHeaderBox {
-        width: 70%;
-        margin: 0 auto;
-    }
-
-    .boardHeaderBox>div {
-        width: 32%;
-        margin: 1% 1%;
-        float: left;
-    }
-
-    .boardHeaderBox>div>label {
-        padding-bottom: 2%;
-    }
-
-    .boardHeaderBox>div:first-child {
-        margin-left: 0;
-    }
-
-    .boardHeaderBox>div:last-child {
-        margin-right: 0;
-    }
-
-    .boardContentBox {
-        width: 70%;
-        margin: 0 auto;
-    }
-
-    .boardContentBox>textarea {
-        height: 500px;
-        text-align: left;
-        resize: none;
-    }
-
-    .boardContentBox .btnBox {
-        width: 35%;
-        display: flex;
-        justify-content: flex-end;
-        margin-top: 2%;
-    }
-
-    .boardContentBox .btnBox div {
-        transition: all 0.3s;
-        border-radius: 15px;
-        width: 33.3%;
-        text-align: center;
-        margin: 0 1%;
-    }
-
-    .boardContentBox .btnBox div a {
-        display: block;
-        padding: 7% 10%;
-    }
-
-    .boardContentBox .btnBox:first-child {
-        margin-left: 0;
-    }
-
-    .boardContentBox .btnBox:last-child {
-        margin-right: 0;
-    }
-
-    .contentFooterBox {
-        width: 100%;
-        display: flex;
-        justify-content: flex-end;
-    }
-
-    .boardContentBox .btnBox .modifyBtn {
-        background-color: #D6D6D6;
-    }
-
-    .boardContentBox .btnBox .deleteBtn {
-        background-color: #D6D6D6;
-    }
-
-    .boardContentBox .btnBox .returnBtn {
-        background-color: #D6D6D6;
-    }
-
-    .boardContentBox .btnBox .modifyBtn:hover {
-        background-color: #0eA5e9;
-        color: #CCEBF9;
-    }
-
-    .boardContentBox .btnBox .deleteBtn:hover {
-        background-color: #f75a45;
-        color: #FEEBEB;
-    }
-
-    .boardContentBox .btnBox .returnBtn:hover {
-        background-color: #898989;
-        color: #FFFFFF;
-    }
-    .boardContentBox .boardFileBox {width: 100%; border: 1px solid red; margin: 1% 0; height: auto;}
+	.boardHeader {
+		width: 70%;
+		margin: 0 auto;
+	}
+	
+	.boardHeader .inputBox {width: 100%; }
+	.boardHeader .inputBox .categoryBox {width: 20%;margin-bottom: 1%; margin-right: 1%; float: left;}
+	.boardHeader .inputBox .titleBox {width: 79%; float: left; margin-bottom: 1%;}
+	
+	.boardContent {
+		width: 70%;
+		margin: 0 auto;
+	}
+	.boardContent .contentBox {
+	margin-top: 1%;
+	padding-bottom: 1%;
+	}
+	.boardContent .contentBox textarea {
+		height: 500px;
+		resize: none;
+		margin: 1% 0;
+	}
+	.boardContent .contentBox > input {
+		margin: 1% 0;
+		
+	}
+	.btnContentBox {
+		width: 70%;
+		margin: 0 auto;
+	}
+	
+	.btnContentBox .btnBox{
+	 	display: flex;
+	    justify-content: flex-end;
+	    width: 100%;
+	}
+	.btnContentBox .btnBox .btn {
+		margin-left: 1%;
+		float:left;
+	}
+	.cancel-btn{
+		border:1px solid #EF4444;
+		background-color: #fff;
+	}
+	.cancel-btn:hover {
+		background-color: #fff;
+	}
+	.boardContent .fileBox {
+		width: 100%; 
+		display: flex;
+		margin-bottom: 1%;
+	    justify-content: flex-end;
+		
+	}
+	.boardContent .fileContentBox {
+		width: 84%;
+	}
+	.boardContent .fileContentBox input {
+	margin-top: 1%;
+	}
+	.boardContent .fileBtnBox {
+		margin-left: 5%;
+		width: 15%;
+	}
+	.boardContent .fileBtnBox .btn {
+		margin-right: 2%;
+	
+	}
+	.fileBtnRightBox {
+	margin-top: 28px;
+	}
+	.fileBtnRightBox button{
+	float: right;
+	}
+	.boardContentBox .boardFileBox {width: 100%; border: 1px solid red; margin: 1% 0; height: auto;}
+	
 </style>
-
 <body class="text-base bg-body-bg text-body font-public dark:text-zink-100 dark:bg-zink-800 group-data-[skin=bordered]:bg-body-bordered group-data-[skin=bordered]:dark:bg-zink-700">
-    <div class="group-data-[sidebar-size=sm]:min-h-sm group-data-[sidebar-size=sm]:relative">
-        <!-- Left Sidebar Start -->
-        <div class="app-menu w-vertical-menu bg-vertical-menu ltr:border-r rtl:border-l border-vertical-menu-border fixed bottom-0 top-0 z-[1003] transition-all duration-75 ease-linear group-data-[sidebar-size=md]:w-vertical-menu-md group-data-[sidebar-size=sm]:w-vertical-menu-sm group-data-[sidebar-size=sm]:pt-header group-data-[sidebar=dark]:bg-vertical-menu-dark group-data-[sidebar=dark]:border-vertical-menu-dark group-data-[sidebar=brand]:bg-vertical-menu-brand group-data-[sidebar=brand]:border-vertical-menu-brand group-data-[sidebar=modern]:bg-gradient-to-tr group-data-[sidebar=modern]:to-vertical-menu-to-modern group-data-[sidebar=modern]:from-vertical-menu-form-modern group-data-[layout=horizontal]:w-full group-data-[layout=horizontal]:bottom-auto group-data-[layout=horizontal]:top-header hidden md:block print:hidden group-data-[sidebar-size=sm]:absolute group-data-[sidebar=modern]:border-vertical-menu-border-modern group-data-[layout=horizontal]:dark:bg-zink-700 group-data-[layout=horizontal]:border-t group-data-[layout=horizontal]:dark:border-zink-500 group-data-[layout=horizontal]:border-r-0 group-data-[sidebar=dark]:dark:bg-zink-700 group-data-[sidebar=dark]:dark:border-zink-600 group-data-[layout=horizontal]:group-data-[navbar=scroll]:absolute group-data-[layout=horizontal]:group-data-[navbar=bordered]:top-[calc(theme('spacing.header')_+_theme('spacing.4'))] group-data-[layout=horizontal]:group-data-[navbar=bordered]:inset-x-4 group-data-[layout=horizontal]:group-data-[navbar=hidden]:top-0 group-data-[layout=horizontal]:group-data-[navbar=hidden]:h-16 group-data-[layout=horizontal]:group-data-[navbar=bordered]:w-[calc(100%_-_2rem)] group-data-[layout=horizontal]:group-data-[navbar=bordered]:[&.sticky]:top-header group-data-[layout=horizontal]:group-data-[navbar=bordered]:rounded-b-md group-data-[layout=horizontal]:shadow-md group-data-[layout=horizontal]:shadow-slate-500/10 group-data-[layout=horizontal]:dark:shadow-zink-500/10 group-data-[layout=horizontal]:opacity-0">
-            <c:import url="/WEB-INF/view/inc/leftSidebar.jsp"></c:import>
-        </div>
-        <!-- Left Sidebar End -->
-
-        <div id="sidebar-overlay" class="absolute inset-0 z-[1002] bg-slate-500/30 hidden"></div>
-        <header id="page-topbar" class="ltr:md:left-vertical-menu rtl:md:right-vertical-menu group-data-[sidebar-size=md]:ltr:md:left-vertical-menu-md group-data-[sidebar-size=md]:rtl:md:right-vertical-menu-md group-data-[sidebar-size=sm]:ltr:md:left-vertical-menu-sm group-data-[sidebar-size=sm]:rtl:md:right-vertical-menu-sm group-data-[layout=horizontal]:ltr:left-0 group-data-[layout=horizontal]:rtl:right-0 fixed right-0 z-[1000] left-0 print:hidden group-data-[navbar=bordered]:m-4 group-data-[navbar=bordered]:[&.is-sticky]:mt-0 transition-all ease-linear duration-300 group-data-[navbar=hidden]:hidden group-data-[navbar=scroll]:absolute group/topbar group-data-[layout=horizontal]:z-[1004]">
-            <c:import url="/WEB-INF/view/inc/header.jsp"></c:import>
-        </header>
-
-        <div class="relative min-h-screen group-data-[sidebar-size=sm]:min-h-sm">
-            <div class="group-data-[sidebar-size=lg]:ltr:md:ml-vertical-menu group-data-[sidebar-size=lg]:rtl:md:mr-vertical-menu group-data-[sidebar-size=md]:ltr:ml-vertical-menu-md group-data-[sidebar-size=md]:rtl:mr-vertical-menu-md group-data-[sidebar-size=sm]:ltr:ml-vertical-menu-sm group-data-[sidebar-size=sm]:rtl:mr-vertical-menu-sm pt-[calc(theme('spacing.header')_*_1)] pb-[calc(theme('spacing.header')_*_0.8)] px-4 group-data-[navbar=bordered]:pt-[calc(theme('spacing.header')_*_1.3)] group-data-[navbar=hidden]:pt-0 group-data-[layout=horizontal]:mx-auto group-data-[layout=horizontal]:max-w-screen-2xl group-data-[layout=horizontal]:px-0 group-data-[layout=horizontal]:group-data-[sidebar-size=lg]:ltr:md:ml-auto group-data-[layout=horizontal]:group-data-[sidebar-size=lg]:rtl:md:mr-auto group-data-[layout=horizontal]:md:pt-[calc(theme('spacing.header')_*_1.6)] group-data-[layout=horizontal]:px-3 group-data-[layout=horizontal]:group-data-[navbar=hidden]:pt-[calc(theme('spacing.header')_*_0.9)]">
-                <div class="container-fluid group-data-[content=boxed]:max-w-boxed mx-auto">
-                    <div class="flex flex-col gap-2 py-4 md:flex-row md:items-center print:hidden">
-                        <div class="grow">
-                            <h5 class="text-16">게시글 수정페이지</h5>
-                        </div>
-
-                        <ul class="flex items-center gap-2 text-sm font-normal shrink-0">
-                            <li class="relative before:content-['\ea54'] before:font-remix ltr:before:-right-1 rtl:before:-left-1 before:absolute before:text-[18px] before:-top-[3px] ltr:pr-4 rtl:pl-4 before:text-slate-400 dark:text-zink-200">
-                                <a href="${pageContext.request.contextPath}/board/boardList" class="text-slate-400 dark:text-zink-200">사내 게시판</a>
-                            </li>
-                            <li class="relative before:content-['\ea54'] before:font-remix ltr:before:-right-1 rtl:before:-left-1 before:absolute before:text-[18px] before:-top-[3px] ltr:pr-4 rtl:pl-4 before:text-slate-400 dark:text-zink-200">
-                                <a href="${pageContext.request.contextPath}/board/boardList" class="text-slate-400 dark:text-zink-200">게시판 리스트</a>
-                            </li>
-                            <li class="text-slate-700 dark:text-zink-100">
-                                게시글&nbsp;No.${boardNo}
-                            </li>
-                        </ul>
+<div class="group-data-[sidebar-size=sm]:min-h-sm group-data-[sidebar-size=sm]:relative">
+    
+	<!-- Left Sidebar Start -->
+    <div class="app-menu w-vertical-menu bg-vertical-menu ltr:border-r rtl:border-l border-vertical-menu-border fixed bottom-0 top-0 z-[1003] transition-all duration-75 ease-linear group-data-[sidebar-size=md]:w-vertical-menu-md group-data-[sidebar-size=sm]:w-vertical-menu-sm group-data-[sidebar-size=sm]:pt-header group-data-[sidebar=dark]:bg-vertical-menu-dark group-data-[sidebar=dark]:border-vertical-menu-dark group-data-[sidebar=brand]:bg-vertical-menu-brand group-data-[sidebar=brand]:border-vertical-menu-brand group-data-[sidebar=modern]:bg-gradient-to-tr group-data-[sidebar=modern]:to-vertical-menu-to-modern group-data-[sidebar=modern]:from-vertical-menu-form-modern group-data-[layout=horizontal]:w-full group-data-[layout=horizontal]:bottom-auto group-data-[layout=horizontal]:top-header hidden md:block print:hidden group-data-[sidebar-size=sm]:absolute group-data-[sidebar=modern]:border-vertical-menu-border-modern group-data-[layout=horizontal]:dark:bg-zink-700 group-data-[layout=horizontal]:border-t group-data-[layout=horizontal]:dark:border-zink-500 group-data-[layout=horizontal]:border-r-0 group-data-[sidebar=dark]:dark:bg-zink-700 group-data-[sidebar=dark]:dark:border-zink-600 group-data-[layout=horizontal]:group-data-[navbar=scroll]:absolute group-data-[layout=horizontal]:group-data-[navbar=bordered]:top-[calc(theme('spacing.header')_+_theme('spacing.4'))] group-data-[layout=horizontal]:group-data-[navbar=bordered]:inset-x-4 group-data-[layout=horizontal]:group-data-[navbar=hidden]:top-0 group-data-[layout=horizontal]:group-data-[navbar=hidden]:h-16 group-data-[layout=horizontal]:group-data-[navbar=bordered]:w-[calc(100%_-_2rem)] group-data-[layout=horizontal]:group-data-[navbar=bordered]:[&.sticky]:top-header group-data-[layout=horizontal]:group-data-[navbar=bordered]:rounded-b-md group-data-[layout=horizontal]:shadow-md group-data-[layout=horizontal]:shadow-slate-500/10 group-data-[layout=horizontal]:dark:shadow-zink-500/10 group-data-[layout=horizontal]:opacity-0">
+    	 <c:import url="/WEB-INF/view/inc/leftSidebar.jsp"></c:import>   
+    </div>
+    <!-- Left Sidebar End -->
+    
+    <div id="sidebar-overlay" class="absolute inset-0 z-[1002] bg-slate-500/30 hidden"></div>
+   	<header id="page-topbar" class="ltr:md:left-vertical-menu rtl:md:right-vertical-menu group-data-[sidebar-size=md]:ltr:md:left-vertical-menu-md group-data-[sidebar-size=md]:rtl:md:right-vertical-menu-md group-data-[sidebar-size=sm]:ltr:md:left-vertical-menu-sm group-data-[sidebar-size=sm]:rtl:md:right-vertical-menu-sm group-data-[layout=horizontal]:ltr:left-0 group-data-[layout=horizontal]:rtl:right-0 fixed right-0 z-[1000] left-0 print:hidden group-data-[navbar=bordered]:m-4 group-data-[navbar=bordered]:[&.is-sticky]:mt-0 transition-all ease-linear duration-300 group-data-[navbar=hidden]:hidden group-data-[navbar=scroll]:absolute group/topbar group-data-[layout=horizontal]:z-[1004]">
+       	<c:import url="/WEB-INF/view/inc/header.jsp"></c:import>
+   	</header>
+    
+    <div class="relative min-h-screen group-data-[sidebar-size=sm]:min-h-sm">
+        <div class="group-data-[sidebar-size=lg]:ltr:md:ml-vertical-menu group-data-[sidebar-size=lg]:rtl:md:mr-vertical-menu group-data-[sidebar-size=md]:ltr:ml-vertical-menu-md group-data-[sidebar-size=md]:rtl:mr-vertical-menu-md group-data-[sidebar-size=sm]:ltr:ml-vertical-menu-sm group-data-[sidebar-size=sm]:rtl:mr-vertical-menu-sm pt-[calc(theme('spacing.header')_*_1)] pb-[calc(theme('spacing.header')_*_0.8)] px-4 group-data-[navbar=bordered]:pt-[calc(theme('spacing.header')_*_1.3)] group-data-[navbar=hidden]:pt-0 group-data-[layout=horizontal]:mx-auto group-data-[layout=horizontal]:max-w-screen-2xl group-data-[layout=horizontal]:px-0 group-data-[layout=horizontal]:group-data-[sidebar-size=lg]:ltr:md:ml-auto group-data-[layout=horizontal]:group-data-[sidebar-size=lg]:rtl:md:mr-auto group-data-[layout=horizontal]:md:pt-[calc(theme('spacing.header')_*_1.6)] group-data-[layout=horizontal]:px-3 group-data-[layout=horizontal]:group-data-[navbar=hidden]:pt-[calc(theme('spacing.header')_*_0.9)]">
+            <div class="container-fluid group-data-[content=boxed]:max-w-boxed mx-auto">
+                <div class="flex flex-col gap-2 py-4 md:flex-row md:items-center print:hidden">
+                    <div class="grow">
+                        <h5 class="text-16">사내 게시판</h5>
                     </div>
-				<!-- Start card -->
-                    <div class="card">
-                   <!-- Start card-body -->
-                        <div class="card-body">
-                            <div class="boardHeaderBox">
-                                <div>
-                                    <label for="category_input" class="inline-block text-base">말머리</label>
-                                    <input type="text" class="form-input" id="category_input" name="category" value="${boardCategory == 'SG' ? '건의사항' : boardCategory == 'DS' ? '토론' : boardCategory == 'CT' ? '잡담' : boardCategory == 'IN' ? '정보' : boardCategory == 'QA' ? '질문' : boardCategory == 'CP' ? '칭찬' : ''}" readonly>
-                                </div>
-                                 <div>
-                                    <label for="view_input" class="inline-block text-base">조회 수</label>
-                                    <input type="text" class="form-input" id="view_input" name="view" value="${boardMap.boardView}" readonly>
-                                </div>
-                                <div>
-                                    <label for="creatDateTime_input" class="inline-block text-base">작성일시</label>
-                                    <input type="text" class="form-input" id="creatDateTime_input" readonly value="${boardMap.createDatetime}">
-                                </div>
-                            </div>
-
-                            <div class="boardTitleBox">
-                                <input type="text" class="form-input" value="${boardMap.boardTitle}" readonly onfocus='this.blur();'>
-                            </div>
-
-                            <div class="boardContentBox">
-                                <textarea class="form-input" readonly onfocus='this.blur();'>${boardMap.boardContent}</textarea>
-								
-								<div class="boardFileBox">
-									 <img src="${pageContext.request.contextPath}/boardFile/${boardMap.fileName}" alt="게시글 이미지">
-								</div>
-                                <div class="contentFooterBox">
-                                    <!-- 버튼 박스 -->
-                                    <c:if test="${empNo == boardMap.boardWriterNo}">
-                                        <div class="btnBox">
-                                            <div class="modifyBtn"><a href="${pageContext.request.contextPath}/board/modifyBoard">수정하기</a></div>
-                                            <div class="deleteBtn"><a href="${pageContext.request.contextPath}/board/removeBoard?boardNo=${boardMap.boardNo}">삭제하기</a></div>
-                                            <div class="returnBtn"><a href="${pageContext.request.contextPath}/board/boardList">돌아가기</a></div>
-                                        </div>
-                                    </c:if>
-                                    <c:if test="${empNo != boardMap.boardWriterNo}">
-                                        <div class="btnBox">
-                                            <div class="returnBtn"><a href="${pageContext.request.contextPath}/board/boardList">돌아가기</a></div>
-                                        </div>
-                                    </c:if>
-                                </div>
-                            </div>
-                        </div>
-                       <!-- End card-body -->
-	                   	   <!-- Start Footer -->
-					        <footer class="ltr:md:left-vertical-menu rtl:md:right-vertical-menu group-data-[sidebar-size=md]:ltr:md:left-vertical-menu-md group-data-[sidebar-size=md]:rtl:md:right-vertical-menu-md group-data-[sidebar-size=sm]:ltr:md:left-vertical-menu-sm group-data-[sidebar-size=sm]:rtl:md:right-vertical-menu-sm absolute right-0 bottom-0 px-4 h-14 group-data-[layout=horizontal]:ltr:left-0 group-data-[layout=horizontal]:rtl:right-0 left-0 border-t py-3 flex items-center dark:border-zink-600">
-					            <c:import url="/WEB-INF/view/inc/footer.jsp"></c:import>
-					        </footer>
-	       				   <!-- End Footer -->
-                    </div>
-                   <!-- End card -->
+                    <ul class="flex items-center gap-2 text-sm font-normal shrink-0">
+                        <li class="relative before:content-['\ea54'] before:font-remix ltr:before:-right-1 rtl:before:-left-1  before:absolute before:text-[18px] before:-top-[3px] ltr:pr-4 rtl:pl-4 before:text-slate-400 dark:text-zink-200">
+                            <a href="${pageContext.request.contextPath}/board/boardList" class="text-slate-400 dark:text-zink-200 ">사내 게시판</a>
+                        </li>
+                         <li class="text-slate-700 dark:text-zink-100 before:text-slate-400 dark:text-zink-200">
+                            게시글 수정하기 ${boardMap.boardTitle}
+                        </li>
+                    </ul>
                 </div>
+                <!-- Main content -->
+                
+
+                <div class="card" >
+                	 <div class="card-body" >
+                	 	
+                        
+	                    <!-- 게시글 작성 -->
+                        <form id="formCategory" action="${pageContext.request.contextPath}/board/addBoard" method="post" enctype="multipart/form-data" >
+	                        <!-- boardHeader 시작 -->
+	                        <div class="boardHeader">
+		                        <div class="inputBox">
+		                        	<div class="categoryBox">
+		                        		<label for="boardCategory">말머리</label>
+			                        		<select id="boardCategory"  data-category="${boardCategory}" name="category"  class="form-select border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200">
+												<option value="ALL" ${boardCategory == 'ALL' ? 'selected' : ''}>전체</option>
+												<option value="SG" ${boardCategory == 'SG' ? 'selected' : ''}>건의사항</option>
+												<option value="DS" ${boardCategory == 'DS' ? 'selected' : ''}>토론</option>
+												<option value="CT" ${boardCategory == 'CT' ? 'selected' : ''}>잡답</option>
+												<option value="IN" ${boardCategory == 'IN' ? 'selected' : ''}>정보</option>
+												<option value="QA" ${boardCategory == 'QA' ? 'selected' : ''}>질문</option>
+												<option value="CP" ${boardCategory == 'CP' ? 'selected' : ''}>칭찬</option>
+											</select>
+								</div>
+			                        <div class="titleBox">
+			                        	<label for="boardTitle">제목</label>
+			                        		<input type="text" class="form-input" name="boardTitle" value="${boardmap.boardTitle}">
+		                        	</div>
+                        		</div>
+	                        </div>
+	                        <!-- boardHeader 종료 -->
+	                        
+	                        <!-- boardContent 시작 -->
+                        	<div class="boardContent">	
+	                        	<div class="contentBox">
+		                        	<label for="boardContent">내용</label>
+			                        	<textarea name="boardContent" class="form-input">${boardMap.boardContent}</textarea>
+		                        	<div class="fileBox">
+			                        	<div class="fileContentBox">
+			                        		<label for="boardImg">이미지 첨부</label>
+		                        			<input type="file" name="boardImg" class="form-file" multiple="multiple">
+			                        	</div>
+		                        		<div class="boardFileBox">
+											 <img src="${pageContext.request.contextPath}/boardFile/${boardMap.fileName}" alt="게시글 이미지">
+										</div>
+			                        	<div class="fileBtnBox">
+				                        	<div class="fileBtnRightBox">
+				                        		<button type="button" class="text-red-500 cancel-btn bg-white btn hover:text-red-500 hover:bg-red-100 focus:text-red-500 focus:bg-red-100 active:text-red-500 active:bg-red-100 dark:bg-zink-700 dark:hover:bg-red-500/10 dark:focus:bg-red-500/10 dark:active:bg-red-500/10">파일삭제</button>
+		                        			</div>
+		                        		</div>
+			                        	
+		                        	
+                        			</div>
+	                        	</div>
+                        	</div>
+                        	<!-- boardContent 종료 -->
+                        	
+                       		<div class="btnContentBox ">
+	                        	<div class="btnBox">
+	                        		<button type="button" class="text-red-500 cancel-btn bg-white btn hover:text-red-500 hover:bg-red-100 focus:text-red-500 focus:bg-red-100 active:text-red-500 active:bg-red-100 dark:bg-zink-700 dark:hover:bg-red-500/10 dark:focus:bg-red-500/10 dark:active:bg-red-500/10"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="x" class="lucide lucide-x inline-block size-4"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg> <span class="align-middle">취소</span></button>
+	                        		<button type="submit" class="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20">수정하기</button>
+	                       		</div>
+                       		</div>
+                        </form>
+                        
+                        
+                	 </div>
+                </div>
+              	
+     		   
             </div>
             <!-- container-fluid -->
-        </div>v
+        </div>
         <!-- End Page-content -->
+
+		<!-- Start Footer -->
+        <footer class="ltr:md:left-vertical-menu rtl:md:right-vertical-menu group-data-[sidebar-size=md]:ltr:md:left-vertical-menu-md group-data-[sidebar-size=md]:rtl:md:right-vertical-menu-md group-data-[sidebar-size=sm]:ltr:md:left-vertical-menu-sm group-data-[sidebar-size=sm]:rtl:md:right-vertical-menu-sm absolute right-0 bottom-0 px-4 h-14 group-data-[layout=horizontal]:ltr:left-0  group-data-[layout=horizontal]:rtl:right-0 left-0 border-t py-3 flex items-center dark:border-zink-600">
+        	<c:import url="/WEB-INF/view/inc/footer.jsp"></c:import>    
+        </footer>
+        
+        <!-- End Footer -->
+ 
     </div>
-    <c:import url="/WEB-INF/view/inc/customizerButton.jsp"></c:import>
-    <script src='${pageContext.request.contextPath}/assets/libs/choices.js/public/assets/scripts/choices.min.js'></script>
-    <script src="${pageContext.request.contextPath}/assets/libs/@popperjs/core/umd/popper.min.js"></script>
-    <script src="${pageContext.request.contextPath}/assets/libs/tippy.js/tippy-bundle.umd.min.js"></script>
-    <script src="${pageContext.request.contextPath}/assets/libs/simplebar/simplebar.min.js"></script>
-    <script src="${pageContext.request.contextPath}/assets/libs/prismjs/prism.js"></script>
-    <script src="${pageContext.request.contextPath}/assets/libs/lucide/umd/lucide.js"></script>
-    <script src="${pageContext.request.contextPath}/assets/js/tailwick.bundle.js"></script>
-    <script src="${pageContext.request.contextPath}/assets/libs/dropzone/dropzone-min.js"></script>
-    <script src="${pageContext.request.contextPath}/assets/js/pages/form-file-upload.init.js"></script>
-    <script src="${pageContext.request.contextPath}/assets/libs/apexcharts/apexcharts.min.js"></script>
-    <script src="${pageContext.request.contextPath}/assets/js/pages/dashboards-ecommerce.init.js"></script>
-    <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
+</div>
+<!-- End Main Content -->
+<c:import url="/WEB-INF/view/inc/customizerButton.jsp"></c:import>
+<script src='${pageContext.request.contextPath}/assets/libs/choices.js/public/assets/scripts/choices.min.js'></script>
+<script src="${pageContext.request.contextPath}/assets/libs/@popperjs/core/umd/popper.min.js"></script>
+<script src="${pageContext.request.contextPath}/assets/libs/tippy.js/tippy-bundle.umd.min.js"></script>
+<script src="${pageContext.request.contextPath}/assets/libs/simplebar/simplebar.min.js"></script>
+<script src="${pageContext.request.contextPath}/assets/libs/prismjs/prism.js"></script>
+<script src="${pageContext.request.contextPath}/assets/libs/lucide/umd/lucide.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/tailwick.bundle.js"></script>
+<!--dashboard ecommerce init js-->
+<script src="${pageContext.request.contextPath}/assets/js/pages/dashboards-ecommerce.init.js"></script>
+<!-- App js -->
+<script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    // select 요소 가져오기
+    const selectElement = document.getElementById("boardCategory");
+
+    // select 태그의 data-category 값 가져오기
+    const previousCategory = selectElement.getAttribute("data-category");
+
+    // 이전에 선택했던 값으로 설정
+    if (previousCategory) {
+        selectElement.value = previousCategory;
+    }
+});
+
+   document.querySelector("#formCategory").addEventListener("submit", function(event) {
+        var boardCategory = document.getElementById("boardCategory").value;
+        
+        // 말머리 값이 선택되지 않았으면 경고창 띄우기
+        if (boardCategory == "") {
+            event.preventDefault();  // 폼 제출 막기
+            alert("말머리를 선택해주세요.");
+        }
+    });
+   
+    </script>
 </body>
 
 </html>

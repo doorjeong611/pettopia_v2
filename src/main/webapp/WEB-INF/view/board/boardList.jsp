@@ -130,7 +130,7 @@
 				                            </c:if>
 				                        </a>
 				                    </td>
-				                    <td class="px-3.5 py-3 border-y border-slate-200 text-center">${bl.boardLike}</td>
+				                    <td class="px-3.5 py-3 border-y border-slate-200 text-center">${bl.boardView}</td>
 				                    <td class="px-3.5 py-3 border-y border-slate-200 text-center">${bl.createDate}</td>
 				                </tr>
 				            </c:forEach>
