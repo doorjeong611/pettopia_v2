@@ -30,14 +30,7 @@
 	.listHeader .addBox {float: right;}
 	
 	.boardList {width: 100%;}
-	
-	.pagingBox { width: 50%; height: 40px; min-width: 30%; margin: 2% auto;}
-	.pagingBox .pageBox {float: left; width: 7.8%; text-align: center; margin-left: 1%;}
-	.pagingBox .arrowPage:first-child{width: 9%;}
-	.pagingBox .arrowPage:last-child{width: 9%;}
-	.pagingBox .pageBox a {display: block; transition:all 0.2s; padding: 8px; border-radius:8px; border: 1px solid #94A3B8;}
-	.pagingBox .onpage a{color:#fff; background-color: #3b82f6;}
-	.pagingBox .pageBox a:hover {border: 1px solid #3b82f6;}
+
 </style>
 <body class="text-base bg-body-bg text-body font-public dark:text-zink-100 dark:bg-zink-800 group-data-[skin=bordered]:bg-body-bordered group-data-[skin=bordered]:dark:bg-zink-700">
 <div class="group-data-[sidebar-size=sm]:min-h-sm group-data-[sidebar-size=sm]:relative">
@@ -85,7 +78,7 @@
 									<option value="ALL" ${boardCategory == 'ALL' ? 'selected' : ''}>전체</option>
 									<option value="SG" ${boardCategory == 'SG' ? 'selected' : ''}>건의사항</option>
 									<option value="DS" ${boardCategory == 'DS' ? 'selected' : ''}>토론</option>
-									<option value="CT" ${boardCategory == 'CT' ? 'selected' : ''}>잡답</option>
+									<option value="CT" ${boardCategory == 'CT' ? 'selected' : ''}>잡담</option>
 									<option value="IN" ${boardCategory == 'IN' ? 'selected' : ''}>정보</option>
 									<option value="QA" ${boardCategory == 'QA' ? 'selected' : ''}>질문</option>
 									<option value="CP" ${boardCategory == 'CP' ? 'selected' : ''}>칭찬</option>
@@ -118,10 +111,9 @@
 				    <table class="w-full whitespace-nowrap">
 				        <thead class="bg-slate-100">
 				            <tr>
-				                <th class="px-3.5 py-3 font-semibold border-b border-slate-200 ltr:text-center" style="width:10%;">글 번호</th>
-				                <th class="px-3.5 py-3 font-semibold border-b border-slate-200 ltr:text-center" style="width:40%;">제목</th>
-				                <th class="px-3.5 py-3 font-semibold border-b border-slate-200 ltr:text-center" style="width:15%;">조회수</th>
-				                <th class="px-3.5 py-3 font-semibold border-b border-slate-200 ltr:text-center" style="width:15%;">추천</th>
+				                <th class="px-3.5 py-3 font-semibold border-b border-slate-200 ltr:text-center" style="width:15%;">글 번호</th>
+				                <th class="px-3.5 py-3 font-semibold border-b border-slate-200 ltr:text-center" style="width:45ㄴ%;">제목</th>
+				                <th class="px-3.5 py-3 font-semibold border-b border-slate-200 ltr:text-center" style="width:20%;">조회수</th>
 				                <th class="px-3.5 py-3 font-semibold border-b border-slate-200 ltr:text-center" style="width:20%;">작성일</th>
 				            </tr>
 				        </thead>
@@ -138,7 +130,6 @@
 				                            </c:if>
 				                        </a>
 				                    </td>
-				                    <td class="px-3.5 py-3 border-y border-slate-200 text-center">${bl.boardView}</td>
 				                    <td class="px-3.5 py-3 border-y border-slate-200 text-center">${bl.boardLike}</td>
 				                    <td class="px-3.5 py-3 border-y border-slate-200 text-center">${bl.createDate}</td>
 				                </tr>
@@ -146,41 +137,40 @@
 				       
 				    </table>
 				    
-					<!-- 검색 및 카테고리별 페이지 기준 -->
-					  <c:if test="${not empty boardList}">
-					   <div class="pagingBox">
-						    <!-- 이전 페이지 버튼 -->
-						    <c:if test="${currentPage > 10 && currentPage <= lastPage}">
-						        <div class="pageBox arrowPage">
-						            <a href="${pageContext.request.contextPath}/board/boardList?searchBoard=${searchBoard}&category=${boardCategory}&currentPage=${currentPage-1}">[이전]</a>
-						        </div>
-						    </c:if>
-						    <!-- 페이지 번호 버튼들 -->
-						    <c:if test="${currentPage <= endPagingNum}">
-						    	<c:forEach var="num" begin="${startPagingNum}" end="${endPagingNum}">
-								    <c:if test="${num == currentPage}">
-								        <div class="pageBox onpage">
-								            <a href="#">${num}</a>
-								        </div>
-								    </c:if>
-								    <c:if test="${num != currentPage}">
-								        <div class="pageBox">
-								            <a href="${pageContext.request.contextPath}/board/boardList?searchBoard=${searchBoard}&category=${boardCategory}&currentPage=${num}">${num}</a>
-								        </div>
-								    </c:if>
-								</c:forEach>
-						    </c:if>
-						  
-						  	
-						  
-						    <!-- 다음 페이지 버튼 -->
-						    <c:if test="${endPagingNum < lastPage}">
-						        <div class="pageBox arrowPage">
-						            <a href="${pageContext.request.contextPath}/board/boardList?searchBoard=${searchBoard}&category=${boardCategory}&currentPage=${currentPage+1}">[다음]</a>
-						        </div>
-						    </c:if>
+					 <!-- 페이지 네이션 -->
+                        <div class="flex justify-end mt-4">
+						    <div class="flex gap-2 pagination-wrap">
+						        <!-- 이전 페이지 -->
+						        <c:if test="${!(currentPage > 1)}">
+						            <a class="inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 focus:bg-custom-50 focus:text-custom-500 [&amp;.active]:text-custom-500 [&amp;.active]:bg-custom-50 [&amp;.active]:border-custom-50 [&amp;.active]:hover:text-custom-700 [&amp;.disabled]:text-slate-400 [&amp;.disabled]:cursor-auto page-item pagination-prev pagination-prev disabled" href="#">이전</a>
+						        </c:if>
+						        <c:if test="${currentPage > 1}">
+						            <a class="inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 focus:bg-custom-50 focus:text-custom-500 [&amp;.active]:text-custom-500 [&amp;.active]:bg-custom-50 [&amp;.active]:border-custom-50 [&amp;.active]:hover:text-custom-700 [&amp;.disabled]:text-slate-400 [&amp;.disabled]:cursor-auto page-item pagination-prev pagination-next" href="?searchBoard=${searchBoard}&category=${boardCategory}&currentPage=${currentPage-1}">이전</a>
+						        </c:if>
+						
+						        <!-- 페이지 번호 링크 -->
+						        <ul class="flex gap-2 mb-0">
+						            <c:forEach var="num" begin="${startPagingNum}" end="${endPagingNum}">
+						                <c:if test="${num == currentPage}">
+						                    <li class="active"><a class="inline-flex items-center justify-center bg-custom-50 border border-custom-50 text-custom-500 h-8 px-3 rounded" href="#">${num}</a></li>
+						                </c:if>
+						                <c:if test="${num != currentPage}">
+						                    <li><a class="inline-flex items-center justify-center bg-white border border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 h-8 px-3 rounded" href="?searchBoard=${searchBoard}&category=${boardCategory}&currentPage=${num}">${num}</a></li>
+						                </c:if>
+						            </c:forEach>
+						        </ul>
+						
+						        <!-- 다음 페이지 -->
+						        <c:if test="${currentPage < lastPage}">
+						            <a class="inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 dark:hover:bg-custom-500/10 focus:bg-custom-50 focus:text-custom-500 dark:focus:text-custom-500 [&amp;.active]:text-custom-500 [&amp;.active]:bg-custom-50 [&amp;.active]:border-custom-50 [&amp;.active]:hover:text-custom-700 [&amp;.disabled]:text-slate-400 [&amp;.disabled]:cursor-auto page-item pagination-prev pagination-next" href="?searchBoard=${searchBoard}&category=${boardCategory}&currentPage=${currentPage+1}">다음</a>
+						        </c:if>
+						        <c:if test="${currentPage >= lastPage}">
+						            <a class="inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 focus:bg-custom-50 focus:text-custom-500 [&amp;.active]:text-custom-500 [&amp;.active]:bg-custom-50 [&amp;.active]:border-custom-50 [&amp;.active]:hover:text-custom-700 [&amp;.disabled]:text-slate-400 [&amp;.disabled]:cursor-auto page-item pagination-prev pagination-prev disabled" href="#">다음</a>
+						        </c:if>
+						    </div>
 						</div>
-					</c:if>
+						<!-- 페이징 끝 -->
+					
 				</div>
 				
 				
