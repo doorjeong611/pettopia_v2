@@ -13,16 +13,10 @@ import com.example.pettopia.vo.NoticeFile;
 public interface NoticeMapper {
 	
 	// 오자윤 : /notice/addNotice 공지사항 추가
-	void insertNotice(Notice notice);
+	Integer insertNotice(Notice notice);
 	
-	// 오자윤 : /notice/addNotice 첨부파일 추가
-	public List<NoticeFile> insertNoticeFile(NoticeFile noticeFile);
-	
-	// 오자윤 : /notice/addNotice 파일첨부 취소
-	public List<NoticeFile> findFilesByNoticeNo(NoticeFile noticeFile);
-	
-	// 오자윤 : /notice/addNotice 모든 첨부파일 식제 -->
-	int deleteFilesByNoticeNo(int noticeNo);
+	// 오자윤 : /notice/addNotice 첨부파일 추가 
+	void saveAll(List<NoticeFile> files);
 	
 	// 공지사항 리스트 : 부서 목록
 	List<Division> selectDivisionList();

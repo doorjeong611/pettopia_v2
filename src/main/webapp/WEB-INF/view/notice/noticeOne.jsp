@@ -88,11 +88,11 @@
                                         </div>
                                         
 										<!-- 공지사항 내용 -->
-                                        <div id="documentDiv" class="lg:col-span-2 xl:col-span-12" style="display:block;">
-                                            <div>
-                                                <label for="docContent" class="inline-block mb-2 text-base font-medium">내용</label>
-                                                <textarea name="docContent" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" style="border: none; outline: none;" rows="10" readonly>${noticeOne.noticeContent}</textarea>
-                                            </div>
+                                        <div id="displayArea" class="lg:col-span-2 xl:col-span-12" style="display:block;">
+                                        	<div>
+                                    			<label for="noticeCOntent" class="inline-block mb-2 text-base font-medium">내용</label>
+                                        		${noticeOne.noticeContent}
+                                        	</div>
                                         </div>
  
 
@@ -135,8 +135,15 @@
 
 <!-- App js -->
 <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
-<script>
-	
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.2/purify.min.js">
+// Get the content from CKEditor
+const editorContent = CKEDITOR.instances.editor.getData();
+
+// Sanitize HTML content to avoid XSS vulnerabilities
+const sanitizedContent = DOMPurify.sanitize(editorContent);
+
+// Display the sanitized HTML inside the div
+document.getElementById('displayArea').innerHTML = sanitizedContent;
 	
 </script>
 </body>

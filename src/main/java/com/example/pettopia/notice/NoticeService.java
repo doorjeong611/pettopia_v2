@@ -5,14 +5,18 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import com.example.pettopia.util.TeamColor;
 import com.example.pettopia.vo.Division;
 import com.example.pettopia.vo.Notice;
 import com.example.pettopia.vo.NoticeFile;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+@RequiredArgsConstructor
 @Service
 @Slf4j
 public class NoticeService {
@@ -20,24 +24,22 @@ public class NoticeService {
 	@Autowired NoticeMapper noticeMapper;
 	
 	// 오자윤 : /notice/addNotice 공지사항 추가
-	public void insertNotice(Notice notice) {
-		noticeMapper.insertNotice(notice);
+	public Integer insertNotice(Notice notice) {
+		return noticeMapper.insertNotice(notice); // 공지사항 저장 후 ID반환
 	}
 	
-	// 오자윤 : /notice/addNotice 첨부파일 추가
-	public List<NoticeFile> insertNoticeFile(NoticeFile noticeFile) { 
-		return noticeMapper.insertNoticeFile(noticeFile);
-	}
-	
-	// 오자윤 : /notice/addNotice 파일첨부 취소
-	public List<NoticeFile> findFilesByNoticeNo(NoticeFile noticeFile) {
-		return noticeMapper.findFilesByNoticeNo(noticeFile);
-	}
-	
-	// 오자윤 : /notice/addNotice 모든 첨부파일 식제 -->
-	public int deleteFilesByNoticeNo(int noticeNo) {
-		return noticeMapper.deleteFilesByNoticeNo(noticeNo);
-	}
+	// 오자윤 : /notice/addNotice 공지사항 파일 추가
+	@Transactional
+	 public void saveFiles(final Integer noticeId, final List<NoticeFile> files) {
+        if (CollectionUtils.isEmpty(files)) {
+            return;
+        }
+        for (NoticeFile file : files) {
+            // NoticeFile 객체 생성 및 설정
+        	file.setNoticeNo(noticeId); // 공지사항 ID 설정
+        }
+            noticeMapper.saveAll(files); // 파일 저장
+    }
 	
 	
 	// 공지사항 리스트 : 부서 목록

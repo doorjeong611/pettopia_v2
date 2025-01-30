@@ -153,13 +153,22 @@ public class MessageController {
 	
 	// 오자윤 : /employee/messageBin 메시지 보관함 복구 -->
 	@PostMapping("message/messageRestore")
-	public String messageRestore(@RequestParam List<Long> messageNo) {
+	public String messageRestore(@RequestParam List<Long> messageNo, Authentication auth, Model model, Page page,@RequestParam(required = false) String searchKeyword) {
 		log.debug(TeamColor.OJY + "messageNo------>" + messageNo + TeamColor.RESET);
 		 
+		// 시큐리티 empNo 가져오기
+		EmpUserDetails empUserDetails = (EmpUserDetails)auth.getPrincipal();
+		log.debug(TeamColor.OJY + "empUserDetails------>" + empUserDetails + TeamColor.RESET);
+		String empNo = empUserDetails.getUsername();
+		
 		// 쪽지보관함 복원 
 		messageService.restoreMessage(messageNo);
 		
-		return "message/messageBin";
+		// 쪽지 목록 조회
+		List<Map<String, Object>> messageList = messageService.getMessageList(empNo, page, searchKeyword);
+		model.addAttribute("messageList", messageList);
+		
+		return "redirect:/message/messageBin";
 	}
 	
 	

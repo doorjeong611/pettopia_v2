@@ -56,7 +56,6 @@
                             <div class="card-body flex flex-col" style="overflow: visible;">
                                <p class="mb-2 text-slate-500 dark:text-zink-200">
 								    <a href="${pageContext.request.contextPath}/message/messageNote" class="text-blue-500 hover:underline">쪽지쓰기</a>
-								    <span class="mx-2 border-l border-slate-300 dark:border-zink-500 h-5"></span> <!-- 흐릿한 선 -->
 								    <form action="${pageContext.request.contextPath}/message/messageRestore" method="post" style="display:inline;">
                                       <!-- 작성 예정 -->
                                         </form>
@@ -66,7 +65,6 @@
                                         <div class="flex flex-wrap items-center gap-3 divide-x rtl:divide-x-reverse divide-slate-200 dark:divide-zink-500">
                                             <div class="flex items-center gap-3">
                                                 <div class="flex items-center gap-2" id="email-topbar-actions">
-                                                    <input id="checkboxAll" class="form-check-input size-4 cursor-pointer bg-white border border-slate-200 checked:bg-none dark:bg-zink-700 dark:border-zink-500 rounded-sm appearance-none arrow-none relative after:absolute after:content-['\eb7b'] after:top-0 after:left-0 after:font-remix after:leading-none after:opacity-0 checked:after:opacity-100 after:text-custom-500 checked:border-custom-500 dark:after:text-custom-500 dark:checked:border-custom-800" type="checkbox" onclick="toggleCheckboxes(this)">
                                                 </div>
                                                 <a href="#!" class="flex items-center justify-center transition-all duration-200 ease-linear size-6 text-slate-500 dark:text-zink-200 hover:text-slate-600 dark:hover:text-zink-50"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="refresh-cw" class="lucide lucide-refresh-cw size-4"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path><path d="M21 3v5h-5"></path><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path><path d="M8 16H3v5"></path></svg></a>
                                             <div class="hidden px-4 py-3 text-sm text-yellow-500 border border-transparent rounded-md unreadConversations-alert bg-yellow-50 dark:bg-yellow-400/20" id="unreadConversations">
@@ -94,16 +92,19 @@
                                        <table class="w-full whitespace-nowrap">
 							    		<tr>
 								        	<td style="padding: 10px;">
-										        <button type="submit" id="deleteButton" class="text-slate-500 dark:text-zink-200" style="margin-right: 20px; cursor: pointer;">
-								                    영구삭제
-								                </button>
-									            <span class="text-slate-500 dark:text-zink-200" style="margin-right: 24px;">읽음</span>
-									            <span class="text-slate-500 dark:text-zink-200" style="margin-right: 0px;">보낸사람</span>
-									            <span class="mx-2 border-l border-slate-300 dark:border-zink-500 h-5" style="margin-right: 10px;"></span> <!-- 흐릿한 선 -->
-									            <button type="submit" id="restoreButton" class="text-slate-500 dark:text-zink-200" style="margin-right: 20px; cursor: pointer;">
+	                                             <input id="checkboxAll" class="form-check-input size-4 cursor-pointer bg-white border border-slate-200 checked:bg-none dark:bg-zink-700 dark:border-zink-500 rounded-sm appearance-none arrow-none relative after:absolute after:content-['\eb7b'] after:top-0 after:left-0 after:font-remix after:leading-none after:opacity-0 checked:after:opacity-100 after:text-custom-500 checked:border-custom-500 dark:after:text-custom-500 dark:checked:border-custom-800" style="margin-left: 19px;" type="checkbox" onclick="toggleCheckboxes(this)">
+									            <span class="text-slate-500 dark:text-zink-200" style="margin-left: 34px;">읽음</span>
+									            <span class="text-slate-500 dark:text-zink-200" style="margin-left: 25px;">보낸사람</span>
+									            <span class="mx-2 border-l border-slate-300 dark:border-zink-500 h-5" style="margin-left: 5px;"></span> <!-- 흐릿한 선 -->
+									            <button type="submit" id="restoreButton" class="text-slate-500 dark:text-zink-200" style="margin-left: 0x; cursor: pointer;">
 								                    쪽지복원
 								                </button>
-							           	 		<span class="text-slate-500 dark:text-zink-200" style="margin-left: 790px;">날짜</span>
+									            <span class="mx-2 border-l border-slate-300 dark:border-zink-500 h-5" style="margin-left: 4px;"></span> <!-- 흐릿한 선 -->
+										        <button type="submit" id="deleteButton" class="text-slate-500 dark:text-zink-200" style="margin-left: 0px; cursor: pointer;">
+								                    영구삭제
+								                </button>
+								                <span class="text-slate-500 dark:text-zink-200" style="margin-left: 232px;">제목</span>
+							           	 		<span class="text-slate-500 dark:text-zink-200" style="margin-left: 514px;">날짜</span>
 								        	</td>
 								    	</tr>
 							   		    <tbody class="elmLoader" id="mail-list">
@@ -113,11 +114,11 @@
 								            <tr>
 								              <td class="px-3.5 py-2.5 border-y text-slate-500" style="width: 600px;">
 								                <input type="hidden" class="messageNo" value="${message.messageNo}" />
-											    <input style="margin-left: 17px;"  type="checkbox" class="deleteMessage" id="deleteMessage" name="messageNo" value="${message.messageNo}" /> 
-											    <span style="margin-left: 44px; display: inline-block;">${message.messageState}</span>
+											    <input style="margin-left: 17px; text-align: center;"  type="checkbox" class="deleteMessage" id="deleteMessage" name="messageNo" value="${message.messageNo}" /> 
+											    <span style="margin-left: 44px; display: inline-block; text-align: center;">${message.messageState}</span>
 											    <span style="margin-left: 37px; display: inline-block; width: 300px;">${message.senderName}</span> <!-- 보낸 사람 -->
-											    <a href="${pageContext.request.contextPath}/message/messageOne?messageNo=${message.messageNo}" style="margin-left: -125px; display: inline-block; width: 300px;">${message.messageTitle}</a>
-											    <span style="margin-left: 408px; display: inline-block; width: 150px;">${message.createDatetime}</span> <!-- 날짜 -->
+											    <a href="${pageContext.request.contextPath}/message/messageOne?messageNo=${message.messageNo}" style="margin-left: -22px; text-align: center; display: inline-block; width: 300px;">${message.messageTitle}</a>
+											    <span style="margin-left: 314px; display: inline-block; text-align: center; width: 150px;">${message.createDatetime}</span> <!-- 날짜 -->
 											</td>
 								            </tr>
 								            </c:if>
@@ -127,6 +128,37 @@
 								</form>
                              </div>
                           </div>
+                          <!-- 페이지네이션 -->
+                          <div id="pagination" class="flex justify-end mt-4">
+						    <ul class="flex flex-wrap items-center gap-2 shrink-0">
+						        <!-- 이전 버튼 -->
+						        <li>
+						            <a href="javascript:void(0);" class="inline-flex items-center justify-center bg-white dark:bg-zink-700 h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 dark:border-zink-500 text-slate-500 dark:text-zink-200 disabled">
+						                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="chevron-left" class="lucide lucide-chevron-left mr-1 size-4 rtl:rotate-180"><path d="m15 18-6-6 6-6"></path></svg> 이전
+						            </a>
+						        </li>
+						
+						        <!-- 페이지 번호 생성 -->
+						        
+						            <li>
+						                <a href="?page=1" class="inline-flex items-center justify-center bg-white dark:bg-zink-700 size-8 transition-all duration-150 ease-linear border rounded border-slate-200 dark:border-zink-500 text-slate-500 dark:text-zink-200 hover:text-custom-500 dark:hover:text-custom-500 hover:bg-custom-50 dark:hover:bg-custom-500/10 focus:bg-custom-50 dark:focus:bg-custom-500/10 focus:text-custom-500 dark:focus:text-custom-500 active">
+						                    1
+						                </a>
+						            </li>
+						        
+						
+						        <!-- 다음 버튼 -->
+						        <li>
+						            <a href="javascript:void(0);" class="inline-flex items-center justify-center bg-white dark:bg-zink-700 h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 dark:border-zink-500 text-slate-500 dark:text-zink-200 disabled">
+						                다음 
+						                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="chevron-right" class="lucide lucide-chevron-right ml-1 size-4 rtl:rotate-180"><path d="m9 18 6-6-6-6"></path></svg>
+						            </a>
+						        </li>
+						    </ul>
+						</div>
+                          
+                          
+                          
                       </div><div class="simplebar-placeholder" style="width: 1176px; height: 93px;"></div></div><div class="simplebar-track simplebar-horizontal" style="visibility: hidden;"><div class="simplebar-scrollbar" style="width: 0px; display: none;"></div></div><div class="simplebar-track simplebar-vertical" style="visibility: hidden;"><div class="simplebar-scrollbar" style="height: 0px; display: none;"></div></div></div>
                   
                 
