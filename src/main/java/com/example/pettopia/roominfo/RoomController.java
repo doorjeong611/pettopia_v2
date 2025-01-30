@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -28,6 +29,23 @@ import lombok.extern.slf4j.Slf4j;
 public class RoomController {
 		@Autowired
 		private RoomService roomService;
+		
+		// 객실 예약 추가
+		@PostMapping("/room/addRoomRsv")
+		public String addRoomRsv(@ModelAttribute RoomRsv roomRsv, RedirectAttributes redirectAttributes) {
+		    log.debug(TeamColor.WJ + "addRoomRsv 호출됨 - roomRsv ====> " + roomRsv + TeamColor.RESET);
+
+		    try {
+		        roomService.addRoomRsv(roomRsv);
+		        redirectAttributes.addFlashAttribute("successMessage", "객실 예약이 성공적으로 추가되었습니다!");
+		    } catch (Exception e) {
+		        log.debug(TeamColor.WJ + "객실 예약 추가 중 오류 발생 ====> " + e + TeamColor.RESET);
+		        redirectAttributes.addFlashAttribute("errorMessage", "객실 예약 중 오류가 발생했습니다.");
+		    }
+
+		    return "redirect:/room/getRoomRsvList";
+		}
+
 		
 		 // AJAX 요청을 받아 룸 타입별 객실 목록을 JSON으로 반환
 	    @GetMapping("/listByType")
@@ -64,6 +82,24 @@ public class RoomController {
 
 		    return "redirect:/room/getRoomList";
 		}
+		
+		@GetMapping("/room/getRoomInfo")
+		@ResponseBody
+		public Map<String, Object> getRoomInfo(@RequestParam("roomNo") Integer roomNo) {
+		    // 특정 객실 정보 조회
+		    Map<String, Object> roomInfo = roomService.selectRoomOne(roomNo);
+		    
+		    // 필요한 정보만 반환 (객실 이름, 타입, 수용 인원, 설명, 1박 당 가격)
+		    Map<String, Object> response = new HashMap<>();
+		    response.put("roomName", roomInfo.get("roomName"));
+		    response.put("roomType", roomInfo.get("roomType"));
+		    response.put("roomCapacity", roomInfo.get("roomCapacity"));
+		    response.put("roomDesc", roomInfo.get("roomDesc"));
+		    response.put("pricePerNight", roomInfo.get("pricePerNight"));
+		    
+		    return response;  // JSON 형식으로 반환
+		}
+
 
 		
 		
@@ -75,7 +111,11 @@ public class RoomController {
 		
 		// 객실 예약 추가
 		@GetMapping("/room/getAddRoomRsv")
-		public String getAddRoomRsv() {
+		public String getAddRoomRsv(Model model) {
+			List<RoomInfo> roomList = roomService.getRoomList(); // 객실 목록 조회
+		    model.addAttribute("roomList", roomList); // JSP로 전달
+		    log.debug(TeamColor.WJ + "roomList 안에 뭐 들어있는지 ====> " + roomList + TeamColor.RESET); //아 사진이 안들어가있네
+		    
 			return "room/addRoomRsv";
 		}
 
@@ -162,7 +202,7 @@ public class RoomController {
 		    
 		    // 모델에 데이터 추가
 		    model.addAttribute("roomListImg", roomListImg); 
-		    model.addAttribute("roomListImg", paginatedList); // 현재 페이지의 데이터
+		    model.addAttribute("paginatedList", paginatedList); // 현재 페이지의 데이터
 		    model.addAttribute("currentPage", currentPage); // 현재 페이지 번호
 		    model.addAttribute("totalPages", totalPages); // 총 페이지 수
 		    model.addAttribute("totalRecords", totalRecords); // 총 데이터 수

@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.pettopia.roominfo.RoomMapper">
+<!-- 객실 예약 추가 -->
+<insert id="insertRoomRsv" parameterType="com.example.pettopia.vo.RoomRsv">
+    INSERT INTO room_rsv (room_no, customer_no, check_in_datetime, check_out_datetime, rsv_status, create_datetime, update_datetime)
+    VALUES (#{roomNo}, #{customerNo}, #{checkInDatetime}, #{checkOutDatetime}, '예약완료', NOW(), NOW())
+</insert>
+
+
 	<!-- 룸 타입으로 필터링하여 조회 -->
 	<select id="selectRoomsByType" resultType="java.util.Map">
 	    SELECT 
@@ -57,10 +64,15 @@
 	</select>
 
   <!-- 객실 삭제 -->
+  	<!-- 1. 예약 객실부터 삭제 -->
+	  <delete id="deleteRsvByRoomNo">
+	    DELETE FROM room_rsv WHERE room_no = #{roomNo}
+	</delete>
+  <!-- 2. 이미지 삭제 -->
     <delete id="deleteRoomImages" parameterType="int">
         DELETE FROM room_img WHERE room_no = #{roomNo}
     </delete>
-    
+    <!-- 3. 객실 정보 삭제 -->
     <delete id="deleteRoom" parameterType="int">
         DELETE FROM room_info WHERE room_no = #{roomNo}
     </delete>
