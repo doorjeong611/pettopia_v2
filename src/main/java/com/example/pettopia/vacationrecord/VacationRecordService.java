@@ -20,7 +20,7 @@ public class VacationRecordService {
 		return vacationRecordMapper.getVacationListByDate(params);
 	}
 	
-	// 오자윤 : /vacation/vacationList 직원 휴가 카운팅 -->
+	// 오자윤 : /vacation/vacationList 직원 휴가 카운팅(페이징) -->
 	public int countVacation(Map<String, Object> params) {
 		return vacationRecordMapper.countVacation(params);
 	}

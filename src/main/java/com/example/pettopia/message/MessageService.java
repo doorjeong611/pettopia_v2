@@ -16,6 +16,11 @@ import com.example.pettopia.vo.Message;
 public class MessageService {
 	@Autowired MessageMapper messageMapper;
 	
+	// 오자윤 : /message/messagList&Bin 쪽지 카운팅(페이징) -->
+	public int countMessage(Map<String, Object> params) {
+		return messageMapper.countMessage(params);
+	}
+	
 	// 오자윤 : /message/messagList 고객이메일 검색
 	public List<Map<String, Object>> searchMessages(String searchQuery) {
 		return messageMapper.searchMessages(searchQuery);
@@ -47,28 +52,18 @@ public class MessageService {
 	}
 	
 	// 오자윤 : /message/messageNote (모달)직원 조회 -->
-	public List<Map<String, Object>> getEmployeeList(String empStatus, String deptCode, String empName) {
-		return messageMapper.getEmployeeList(empStatus, deptCode, empName);
+	public List<Map<String, Object>> getEmployeeList(Map<String, Object> params) {
+	    return messageMapper.getEmployeeList(params);
 	}
-	
+
 	// 오자윤 : /message/messageOne 쪽지 상세보기 페이지
 	public Map<String, Object> getMessageById(String messageNo) {
 	    return messageMapper.getMessageById(messageNo); // 새로운 메서드
 	}
 	
 	// 오자윤 : /message/messageList 쪽지리스트 조횐
-	public List<Map<String, Object>> getMessageList(String empNo, Page page, String searchKeyword) {
-	    Integer beginRow = page.getBeginRow();
-	    Integer rowPerPage = page.getRowPerPage();
-
-	    // 파라미터 추가
-	    Map<String, Object> params = new HashMap<>();
-	    params.put("empNo", empNo);
-	    params.put("limit", rowPerPage);
-	    params.put("offset", beginRow);
-	    params.put("searchKeyword", searchKeyword); // 검색어가 없으면 null 전달
-
-	    return messageMapper.getMessageList(params);
+	public List<Map<String, Object>> getMessageList(Map<String, Object> params) {
+		return messageMapper.getMessageList(params);
 	}
 
 	
