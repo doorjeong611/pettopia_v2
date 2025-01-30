@@ -12,11 +12,18 @@ import com.example.pettopia.vo.RoomImg;
 
 @Mapper
 public interface BoardMapper {
+// 게시글 수정
+	int updateBoard(Board board);
+	
+// 게시글 이미지 수정
+	int updateBoardFile(BoardFile boardFile);
+	
 // 게시판 파일 셀렉트	
 	List<BoardFile> selectBoardFile(int boardNo);
 	
 // 게시판 이미지 내용 추가
 	int insertBoardFile(BoardFile boardFile);
+	
 // 게시판 내용 및 이미지 조회
 	List<Map<String, Object>> selectBoardWithImages();
 	
@@ -45,5 +52,5 @@ public interface BoardMapper {
 	Integer deleteBoard (int boardNo);
 	int deleteBoardFile (int boardNo);
 // 	게시글 조회수 증가 /board/updateBoard 작업자 : 이준호
-	int updateBoard(Board board);
+	int updateBoardView(Board board);
 }

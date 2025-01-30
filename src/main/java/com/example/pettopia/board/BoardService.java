@@ -13,12 +13,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.pettopia.boardcomment.CommentMapper;
-import com.example.pettopia.util.Page;
 import com.example.pettopia.util.TeamColor;
 import com.example.pettopia.vo.Board;
 import com.example.pettopia.vo.BoardFile;
 import com.example.pettopia.vo.Division;
-import com.example.pettopia.vo.RoomImg;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,7 +27,35 @@ public class BoardService {
 	@Autowired BoardMapper boardMapper;
 	@Autowired CommentMapper commentMapper;
 	
-
+	// 게시글 수정
+	public void modifyBoard (Board board, MultipartFile boardImg, String boardImagePath) throws Exception {
+		int updateBoard = boardMapper.updateBoard(board);
+		if(updateBoard == 0) {
+			throw new RuntimeException("게시글 수정 실패");
+		}
+		log.debug("게시글 수정 완료 : ", board);
+		
+		if(boardImg != null && !boardImg.isEmpty()) {
+			BoardFile boardImage = new BoardFile();
+			boardImage.setBoardNo(board.getBoardNo());
+			boardImage.setOriginFileName(boardImg.getOriginalFilename());
+			
+			String fileName = UUID.randomUUID() + "." + getFileExtension(boardImg.getOriginalFilename());
+			boardImage.setFileName(fileName);
+			boardImage.setFileExt(getFileExtension(boardImg.getOriginalFilename()));
+			boardImage.setFileType(boardImg.getContentType());
+			
+			int updateBoardImg = boardMapper.updateBoardFile(boardImage);
+			if(updateBoardImg == 0) {
+				throw new RuntimeException("이미지 수정 실패");
+			}
+			log.debug("객실 이미지 수정 완료 : ", boardImage);
+			
+			File saveBoardFile = new File(boardImagePath,  fileName);
+			boardImg.transferTo(saveBoardFile);
+		}
+	}
+	
 	// 게시판 이미지 추가
 	public int addBoardFile (BoardFile boardFile) {
 		return boardMapper.insertBoardFile(boardFile);
@@ -185,7 +211,7 @@ public Map<String, Object> getBoardList(Integer currentPage, Integer rowPerPage,
 	
 	public int addBoardView(Board board) {
 		
-		return boardMapper.updateBoard(board);
+		return boardMapper.updateBoardView(board);
 	}
 	
 }

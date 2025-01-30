@@ -35,15 +35,61 @@ public class BoardController {
 	@Autowired BoardService boardService;
 	
 	@GetMapping("/board/modifyBoard")
-	public String modifyBoard() {
+	public String modifyBoard(Authentication auth,
+			Model model,
+			@ModelAttribute Board board,
+			@RequestParam(required = false) Integer boardNo,
+	        @RequestParam(value = "category") String boardCategory) {
+		 // 로그인 세션
+	    EmpUserDetails empUserDetails = (EmpUserDetails) auth.getPrincipal();
+	    String empNo = empUserDetails.getUsername();
+	    String boardWriterNo = board.getBoardWriterNo();
+		
+	    // 상세 글보기 셀렉트
+	    Map<String, Object> boardOneMap = boardService.getListByBoardOne(boardNo);
+	    
+	    // 모델값
+	    
+	    model.addAttribute("boardCategory", boardCategory);
+	    model.addAttribute("boardWriterNo",boardWriterNo);
+	    model.addAttribute("empNo", empNo);
+		model.addAttribute("boardMap",boardOneMap);
+		model.addAttribute("boardNo",boardNo);
+		
 		return "board/modifyBoard";
 	}
 
+	@PostMapping("/board/modifyBoard")
+	public String getModifyBoard(Authentication auth,
+								Model model,
+								@ModelAttribute Board board,
+								@RequestParam(required = false) Integer boardNo,
+								@RequestParam("boardImg") MultipartFile boardImg,
+						        @RequestParam(value = "category") String boardCategory,
+						        @RequestParam(value = "content", defaultValue = "") String boardContent,
+								HttpSession session
+								) {
+		log.debug(TeamColor.LJH + "updateBoard : " + board + TeamColor.RESET);
+		
+		 
+		String boardImagePath = session.getServletContext().getRealPath("/boardFile/");
+		try {
+			boardService.modifyBoard(board, boardImg, boardImagePath);
+		} catch (Exception e) {
+			log.debug(TeamColor.LJH + "게시글 수정 중 오류 발생 : " + e + TeamColor.RESET);
+			
+			e.printStackTrace();
+		}
+		 
+		
+		
+		return "redirect:/board/boardList";
+	}
+	
 	@GetMapping("/board/getBoardOne")
 	public String getBoardOne(Model model,
 								Board board,
 								Authentication auth,
-								@RequestParam(required = false) String divisionCode,
 								@RequestParam(required = false) Integer boardNo
 								) {
 	    Map<String, Object> map = new HashMap<>();
