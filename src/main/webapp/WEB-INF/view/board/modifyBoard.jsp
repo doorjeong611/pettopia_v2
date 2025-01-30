@@ -140,7 +140,7 @@
                 <div class="container-fluid group-data-[content=boxed]:max-w-boxed mx-auto">
                     <div class="flex flex-col gap-2 py-4 md:flex-row md:items-center print:hidden">
                         <div class="grow">
-                            <h5 class="text-16">게시글 상세페이지</h5>
+                            <h5 class="text-16">게시글 수정페이지</h5>
                         </div>
 
                         <ul class="flex items-center gap-2 text-sm font-normal shrink-0">
@@ -212,7 +212,7 @@
                 </div>
             </div>
             <!-- container-fluid -->
-        </div>
+        </div>v
         <!-- End Page-content -->
     </div>
     <c:import url="/WEB-INF/view/inc/customizerButton.jsp"></c:import>

@@ -34,7 +34,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class BoardController {
 	@Autowired BoardService boardService;
 	
-	
+	@GetMapping("/board/modifyBoard")
+	public String modifyBoard() {
+		return "board/modifyBoard";
+	}
 
 	@GetMapping("/board/getBoardOne")
 	public String getBoardOne(Model model,
@@ -180,12 +183,6 @@ public class BoardController {
 	    @SuppressWarnings("unchecked")
 	    List<Map<String, Object>> boardList = (List<Map<String, Object>>) result.get("boardList");
 
-	    // 게시판의 갯수가 10개 미만일 경우 currentPage를 1로 초기화하고, 다시 조회
-	    if (boardList.size() < 10) {
-	        currentPage = 1;  // currentPage를 1로 초기화
-	        result = boardService.getBoardList(currentPage, rowPerPage, boardCategory, new HashMap<>(), searchBoard);
-	        boardList = (List<Map<String, Object>>) result.get("boardList");  // 다시 boardList를 갱신
-	    }
 
 	    // 로그인된 사용자 정보
 	    EmpUserDetails empUserDetails = (EmpUserDetails) auth.getPrincipal();
