@@ -1,5 +1,6 @@
 package com.example.pettopia.notice;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.pettopia.dto.EmpUserDetails;
+import com.example.pettopia.util.FileUtils;
 import com.example.pettopia.util.TeamColor;
 import com.example.pettopia.vo.Division;
 import com.example.pettopia.vo.Employee;
@@ -27,13 +29,12 @@ import com.example.pettopia.vo.NoticeFile;
 
 
 
-
 @Controller
 @Slf4j
 public class NoticeController {
 	
 	@Autowired NoticeService noticeService;
-	
+	@Autowired FileUtils fileUtils;
 	
 	// 공지사항 목록 페이지
 	@GetMapping("/notice/getNoticeList")
@@ -82,7 +83,7 @@ public class NoticeController {
 
 		// 전체 공지사항 가져오기
 		List<Map<String, Object>> noticeList = noticeService.getNoticeList(paramMap);
-		log.debug(TeamColor.KMJ+ "noticeList : " + noticeList.toString() + TeamColor.RESET);
+		log.debug(TeamColor.OJY+ "noticeList : " + noticeList.toString() + TeamColor.RESET);
 		
 		// 부서 이름 수정 : 부서명 [부서(부서 영어명)]부분 삭제하기.
 //		List<String> divisionNames = new ArrayList<>(); 
@@ -156,56 +157,45 @@ public class NoticeController {
 
 	// 오자윤 : /notice/addNotice 공지사항 작성 (관리자만 작성 가능)
 	@GetMapping("/notice/addNotice")
-	public String addNotice(Authentication auth, Employee employee) {
-		
-		// 관리자 조회를 위한 empNo 가져오기
-		EmpUserDetails empUserDetails = (EmpUserDetails)auth.getPrincipal();
-	    String empNo = empUserDetails.getUsername(); 
+	public String addNotice(Authentication auth, Employee employee, Model model) {
+	    // 관리자 조회를 위한 empNo 가져오기
+	    EmpUserDetails empUserDetails = (EmpUserDetails) auth.getPrincipal();
+	    String empNo = empUserDetails.getUsername();
 	    String empEmail = empUserDetails.getEmpEmail();
 	    String roleName = empUserDetails.getRoleNameo();
-	    
+
 	    // 권한에 따라 접근 제어
 	    if ("ROLE_EMP".equals(roleName)) {
 	        return "redirect:/notice/getNoticeList"; // 직원 권한일 경우 공지사항 목록으로 리다이렉트
 	    } else if ("ROLE_ADMIN".equals(roleName)) {
+	        // 부서 목록 가져오기
+	        List<Division> divisionList = noticeService.getDivisionList();
+	        log.debug(TeamColor.OJY + "divisionList추가보드 : " + divisionList.toString());
+
+	        model.addAttribute("divisionList", divisionList);
 	        return "notice/addNotice"; // 관리자 권한일 경우 공지사항 작성 페이지로 이동
 	    }
-	    
-	    return "redirect:/notice/getNoticeList";
+
+	    return "redirect:/notice/getNoticeList"; // 기본 리다이렉트
 	}
+
 	
 	// 오자윤 : /notice/addNotice 공지사항 추가
 	@PostMapping("/notice/addNotice")
-	public String addNoticeSubmit(@ModelAttribute Notice notice, @RequestParam(value = "file", required = false) MultipartFile file, Authentication auth) {
+	public String addNoticeSubmit(@ModelAttribute Notice notice, @RequestParam(value = "file", required = false) List<MultipartFile> files, Authentication auth, Model model) {
 	    // 관리자 권한 확인
 	    EmpUserDetails empUserDetails = (EmpUserDetails) auth.getPrincipal();
 	    String writerEmpNo = empUserDetails.getUsername();
-
+		
 	    // 1. 공지사항 저장
 	    notice.setWriterEmpNo(writerEmpNo); // 로그인된 관리자 empNo 저장
-	    noticeService.insertNotice(notice);
-
-	    // 2. 첨부파일 처리 (파일이 있으면)
-	    if (file != null && !file.isEmpty()) {
-	        // 파일 저장 처리
-	        String originalFileName = file.getOriginalFilename();
-	        String generatedFileName = UUID.randomUUID().toString() + "_" + originalFileName;
-	        String fileExtension = FilenameUtils.getExtension(originalFileName);
-
-	        // 파일 저장 로직 (서버 또는 클라우드 저장소에 저장)
-
-	        // 파일 DB에 저장 (NoticeFile 객체 생성 후 DB 저장)
-	        NoticeFile noticeFile = new NoticeFile();
-	        noticeFile.setOriginFileName(originalFileName);
-	        noticeFile.setFileName(generatedFileName);
-	        noticeFile.setFileExt(fileExtension);
-	        noticeFile.setFileType(file.getContentType());
-
-	        // Mapper를 통해 DB에 파일 정보 저장
-	        noticeService.insertNoticeFile(noticeFile);
-	    }
-
-	    return "redirect:/notice/noticeList"; // 공지사항 목록으로 리다이렉트
+	    Integer noticeId = noticeService.insertNotice(notice); // 저장 후 ID반환
+	    
+	    // 2. 파일 업로드 및 저장
+	    List<NoticeFile> noticeFiles = fileUtils.uploadFiles(notice.getFiles()); // 파일 업로드
+	    noticeService.saveFiles(noticeId, noticeFiles); // 파일 저장
+ 
+	    return "redirect:/notice/getNoticeList"; // 공지사항 목록으로 리다이렉트
 	}
 	
 	

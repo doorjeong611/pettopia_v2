@@ -95,7 +95,7 @@
 								         삭제
 								        </button>
 								      </form>
-								    </div>
+								    </div> 
 								  </form>
 								</div>
                                 
@@ -103,7 +103,7 @@
                             <div class="overflow-x-auto">
                                 <table class="w-full whitespace-nowrap">
                                     <thead class="ltr:text-left rtl:text-right bg-slate-100 text-slate-500 dark:bg-zink-600 dark:text-zink-200">
-                                        <tr>
+                                        <tr style="background-color: #8ca2d557">
                                             <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500" style="text-align: center;">번호</th>
                                             <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500" style="text-align: center;">부서</th>
                                             <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500" style="text-align: center;">제목</th>
@@ -116,7 +116,7 @@
                                     <tbody>
                                     	<c:forEach var="no" items="${noticeList.noticeList}" varStatus="status">
                                     		<c:if test="${no.isPinned == 'Y' }">
-	                                    		<tr style="background-color: #F1F5F9">
+	                                    		<tr style="background-color: #f0f4ff">
 		                                    		<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500" style="text-align: center;">${status.count}</td>
 		                                    		<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500" style="text-align: center;">${no.divisionName == 'ALL' ? '전체' : no.divisionName}</td>
 		                                    		<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500" style="text-align: center;"><a href="${pageContext.request.contextPath}/notice/getNoticeOne?noticeNo=${no.noticeNo}">${no.noticeTitle}</a></td>

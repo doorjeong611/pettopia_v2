@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.pettopia.notice.NoticeMapper">
 	
-	<!-- 오자윤 : /notice/addNotice 공지사항 추가 -->
-	<insert id="insertNotice" parameterType="com.example.pettopia.vo.Notice">
+	<!-- 오자윤 : /notice/addNotice 공지사항 추가, 자동 생성된 키 반환 -->
+	<insert id="insertNotice" parameterType="com.example.pettopia.vo.Notice" useGeneratedKeys="true" keyProperty="noticeNo">
 	    INSERT INTO notice (
 	        writer_emp_no,
 	        dept_code,
@@ -27,49 +27,37 @@
 	</insert>
 	
 	<!-- 오자윤 : /notice/addNotice 첨부파일 추가 -->
-    <insert id="insertNoticeFile" parameterType="com.example.pettopia.vo.NoticeFile">
-        INSERT INTO notice_file (
-            notice_no,
-            origin_file_name,
-            file_name,
-            file_ext,
-            file_type,
-            create_datetime,
-            update_datetime
-        )
-        VALUES (
-            #{noticeNo},
-            #{originFileName},
-            #{fileName},
-            #{fileExt},
-            #{fileType},
-            NOW(),
-            NOW()
-        )
-    </insert>
-
-    <!-- 오자윤 : /notice/addNotice 파일첨부 취소 -->
-    <select id="findFilesByNoticeNo" resultType="com.example.pettopia.vo.NoticeFile">
-        SELECT 
-            notice_file_no AS noticeFileNo,
-            notice_no AS noticeNo,
-            origin_file_name AS originFileName,
-            file_name AS fileName,
-            file_ext AS fileExt,
-            file_type AS fileType,
-            create_datetime AS createDatetime,
-            update_datetime AS updateDatetime
-        FROM notice_file
-        WHERE notice_no = #{noticeNo}
-    </select>
-
-    <!-- 오자윤 : /notice/addNotice 모든 첨부파일 식제 -->
-    <delete id="deleteFilesByNoticeNo">
-        DELETE FROM notice_file
-        WHERE notice_no = #{noticeNo}
-    </delete>
+	<!-- 테이블 전체 컬럼 -->
+	 <sql id="noticeFileColumns">
+	      notice_file_no
+	    , notice_no
+	    , origin_file_name
+	    , file_name
+	    , file_ext
+	    , file_type
+	    , create_datetime
+	    , update_datetime
+	</sql>
 	
-	
+	<!-- 파일 정보 저장 -->
+	<insert id="saveAll" parameterType="list">
+	    INSERT INTO notice_file (
+	        <include refid="noticeFileColumns" />
+	    ) VALUES
+	    <foreach item="file" collection="list" separator=",">
+	    (
+	          NULL
+	        , #{file.noticeNo}
+	        , #{file.originFileName}
+	        , #{file.fileName}
+	        , #{file.fileExt}
+	        , #{file.fileType}
+	        , NOW()
+	        , NOW()
+	    )
+	    </foreach>
+	</insert>
+
 	<!-- 공지사항 리스트 : 부서 목록 -->
 	<select id="selectDivisionList" resultType="com.example.pettopia.vo.Division">
 		SELECT division_code divisionCode
@@ -79,72 +67,83 @@
 
 
 	<!-- 공지사항 리스트 : 게시글 목록 -->
-	<select id="selectNoticeList" parameterType="map" resultType="map">
-		WITH noticeList AS (
-		    (SELECT n.notice_no 
-		            , n.writer_emp_no 
-		            , e.emp_name 
-		            , n.dept_code 
-		            , di.division_code 
-		            , IFNULL(di.division_name, 'ALL') AS division_name  
-		            , n.notice_title 
-		            , n.notice_view 
-		            , n.create_datetime 
-		            , n.is_pinned 
-		    FROM notice n 
-		    LEFT OUTER JOIN department d ON n.dept_code = d.dept_code
-		    LEFT OUTER JOIN division di ON d.division_code = di.division_code
-		    LEFT OUTER JOIN employee e ON n.writer_emp_no = e.emp_no
-		    <where>
-				    <if test="division != null">
-						(di.division_code LIKE #{division} OR di.division_code IS NULL)
-					</if>
-			    AND n.is_pinned LIKE 'Y'
-		    </where>
-		    )
-		   
-		    UNION ALL 
-		    
-		    (SELECT n.notice_no 
-		            , n.writer_emp_no 
-		            , e.emp_name 
-		            , n.dept_code 
-		            , di.division_code 
-		            , IFNULL(di.division_name, 'ALL') AS division_name  
-		            , n.notice_title 
-		            , n.notice_view 
-		            , n.create_datetime 
-		            , n.is_pinned 
-		    FROM notice n 
-		    LEFT OUTER JOIN department d ON n.dept_code = d.dept_code
-		    LEFT OUTER JOIN division di ON d.division_code = di.division_code
-		    LEFT OUTER JOIN employee e ON n.writer_emp_no = e.emp_no 
-			<where>
-				<if test="searchTitle != null">
-					n.notice_title LIKE CONCAT('%' , #{searchTitle}, '%')
-				</if>
-				<if test="division != null">
-					AND di.division_code LIKE #{division}
-				</if>
-				 AND n.is_pinned LIKE 'N'
-			</where>
-		    )
-		)
-		SELECT notice_no AS noticeNo
-		    , writer_emp_no AS empNo
-		    , emp_name AS empName
-		    , dept_code AS deptCode
-		    , division_code AS divisionCode
-		    , division_name AS divisionName  
-		    , notice_title AS noticeTitle
-		    , notice_view AS noticeView
-		    , create_datetime AS createDate
-		    , is_pinned AS isPinned
-		FROM noticeList 
-		ORDER BY CASE WHEN division_code IS NULL THEN 0 ELSE 1 END
-				, is_pinned DESC
-				, create_datetime DESC
-	</select>
+		<select id="selectNoticeList" parameterType="map" resultType="map">  
+	    WITH noticeList AS (  
+	        (SELECT  
+	            n.notice_no,  
+	            n.writer_emp_no,  
+	            e.emp_name,  
+	            n.dept_code,  
+	            COALESCE(di1.division_code, di2.division_code) AS division_code,  
+	            COALESCE(di1.division_name, di2.division_name, 'ALL') AS division_name,  
+	            n.notice_title,  
+	            n.notice_view,  
+	            n.create_datetime,  
+	            n.is_pinned  
+	        FROM notice n  
+	        LEFT OUTER JOIN department d ON n.dept_code = d.dept_code  
+	        LEFT OUTER JOIN division di1 ON d.division_code = di1.division_code  
+	        LEFT OUTER JOIN division di2 ON n.dept_code = di2.division_code  
+	        LEFT OUTER JOIN employee e ON n.writer_emp_no = e.emp_no  
+	        <where>  
+	            <if test="division != null">  
+	                (COALESCE(di1.division_code, di2.division_code) LIKE #{division} OR di1.division_code IS NULL)  
+	            </if>  
+	            AND n.is_pinned = 'Y'  
+	        </where>  
+	        )  
+	        
+	        UNION ALL  
+	        
+	        (SELECT  
+	            n.notice_no,  
+	            n.writer_emp_no,  
+	            e.emp_name,  
+	            n.dept_code,  
+	            COALESCE(di1.division_code, di2.division_code) AS division_code,  
+	            COALESCE(di1.division_name, di2.division_name, 'ALL') AS division_name,  
+	            n.notice_title,  
+	            n.notice_view,  
+	            n.create_datetime,  
+	            n.is_pinned  
+	        FROM notice n  
+	        LEFT OUTER JOIN department d ON n.dept_code = d.dept_code  
+	        LEFT OUTER JOIN division di1 ON d.division_code = di1.division_code  
+	        LEFT OUTER JOIN division di2 ON n.dept_code = di2.division_code  
+	        LEFT OUTER JOIN employee e ON n.writer_emp_no = e.emp_no  
+	        <where>  
+	            <if test="searchTitle != null">  
+	                n.notice_title LIKE CONCAT('%', #{searchTitle}, '%')  
+	            </if>  
+	            <if test="division != null">  
+	                AND (COALESCE(di1.division_code, di2.division_code) LIKE #{division})  
+	            </if>  
+	            AND n.is_pinned = 'N'  
+	        </where>  
+	        )  
+	    )  
+	
+	    SELECT  
+	        notice_no AS noticeNo,  
+	        writer_emp_no AS empNo,  
+	        emp_name AS empName,  
+	        dept_code AS deptCode,  
+	        division_code AS divisionCode,  
+	        division_name AS divisionName,  
+	        notice_title AS noticeTitle,  
+	        notice_view AS noticeView,  
+	        create_datetime AS createDate,  
+	        is_pinned AS isPinned  
+	    FROM noticeList  
+	    ORDER BY  
+	        CASE  
+	            WHEN is_pinned = 'Y' THEN 0  -- Pinned notices appear first  
+	            WHEN is_pinned = 'N' THEN 1  
+	            ELSE 2  
+	        END,  
+	        create_datetime DESC  -- Newer notices appear before older ones  
+	</select>  
+
 
 
 	<!-- 공지사항 수정 : 제목, 내용, 부서, 조회수, 고정여부 -->
