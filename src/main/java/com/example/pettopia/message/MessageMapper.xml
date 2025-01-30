@@ -26,18 +26,6 @@
 			ORDER BY m.message_no ASC
 	</select>
 	
-	
-	<!-- 오자윤 : /message/messageList 페이징-->
-	<select id="getMessageCount" resultType="int">
-	    SELECT 
-	        COUNT(*)
-	    FROM 
-	        message
-	    WHERE 
-	        recipient_emp_no = #{empNo}
-	        AND message_bin = '0'
-    </select>
-	
 	<!-- 오자윤 : /message/messageNote 쪽지보내기-->
 	<insert id="insertMessage" parameterType="com.example.pettopia.vo.Message">
 	    INSERT INTO message (sender_emp_no, recipient_emp_no, message_title, message_content, message_state, message_bin, create_datetime, update_datetime) 
@@ -84,9 +72,24 @@
 	    </foreach>
 	</delete>
 
-
+	<!-- 오자윤 : /message/messageList, Bin 페이징 개수 조회 -->
+	<select id="countMessage" resultType="int">
+	    SELECT COUNT(*) 
+	    FROM (
+	        SELECT recipient_emp_no
+	        FROM message
+	        WHERE recipient_emp_no = #{empNo} AND message_bin = '0'
+	        
+	        UNION ALL
+	        
+	        SELECT recipient_emp_no
+	        FROM message
+	        WHERE recipient_emp_no = #{empNo} AND message_bin = '1'
+	    ) AS combined;
+	</select>
+	
 	<!-- 오자윤 : /message/messageNote (모달)직원 선택 조회 -->
-	<select id="getEmployeeList" parameterType="String" resultType="map">
+	<select id="getEmployeeList" parameterType="map" resultType="map">
 		SELECT  
 		    d.division_name divisionName, 
 		    dep.dept_name deptName, 
@@ -105,6 +108,7 @@
 		    e.emp_status = #{empStatus}  <!-- 재직 상태 필터 -->
 		    AND (#{deptCode} IS NULL OR dep.dept_code = #{deptCode})  
     		AND (#{empName} IS NULL OR e.emp_name LIKE CONCAT('%', #{empName}, '%'));
+    	LIMIT #{limit} OFFSET #{offset};
 	</select>
 	
 	<!-- 오자윤 : /message/messageOne 쪽지 상세조히 -->

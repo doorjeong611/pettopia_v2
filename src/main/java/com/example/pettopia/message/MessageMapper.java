@@ -17,7 +17,7 @@ public interface MessageMapper {
 	List<Map<String, Object>> searchMessages(String searchQuery);
 	
 	// 오자윤 : 페이지네이션 총 total count 
-	Integer getMessageCount(String empNo);
+	int countMessage(Map<String, Object> params);
 	
 	// 오자윤 : /employee/messageNote 쪽지보내기
 	void insertMessage(Message message);
@@ -35,7 +35,7 @@ public interface MessageMapper {
 	Integer deleteMessage(List<Integer> messageNo);
 	
 	// 오자윤 : /employee/messageNote (모달)직원 조회 
-	List<Map<String, Object>> getEmployeeList(String empStatus, String deptCode, String empName);
+	List<Map<String, Object>> getEmployeeList(Map<String, Object> params);
 	
 	// 오자윤 : /employee/messageOne 쪽지 상세보기
 	Map<String, Object>getMessageById(String messageNo);

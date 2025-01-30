@@ -1,5 +1,6 @@
 package com.example.pettopia.message;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -46,18 +47,23 @@ public class MessageRest {
 		(@RequestParam(value = "empStatus", defaultValue = "E") String empStatus, 
 		 @RequestParam(value = "deptCode", required = false) String deptCode,
 		 @RequestParam(value = "empName", required = false) String empName,
+		 @RequestParam(value = "limit", defaultValue = "10") Integer limit,
+		 @RequestParam(value = "offset", defaultValue = "0") Integer offset,
 		 Model model) {
 		
-		 // 매개변수디버깅
-		 log.debug(TeamColor.OJY + "empStatus: " + empStatus + TeamColor.RESET);
-		 log.debug(TeamColor.OJY + "deptCode: " + deptCode + TeamColor.RESET);
-		 log.debug(TeamColor.OJY + "empName: " + empName + TeamColor.RESET);
-		 
-		 // 디버깅
-		 List<Map<String, Object>> employeeList = messageService.getEmployeeList(empStatus, deptCode, empName);
-		 log.debug(TeamColor.OJY + "Employee List: " + employeeList + TeamColor.RESET);
-		 
-		return messageService.getEmployeeList(empStatus, deptCode, empName);
+		  // 파라미터를 맵에 담기
+	    Map<String, Object> params = new HashMap<>();
+	    params.put("empStatus", empStatus);
+	    params.put("deptCode", deptCode);
+	    params.put("empName", empName);
+	    params.put("limit", limit);
+	    params.put("offset", offset);
+	 
+	    // 직원 리스트 조회
+	    List<Map<String, Object>> employeeList = messageService.getEmployeeList(params);
+	    log.debug(TeamColor.OJY + "Employee List: " + employeeList + TeamColor.RESET);
+	    
+	    return employeeList;
 	}
 	
 }

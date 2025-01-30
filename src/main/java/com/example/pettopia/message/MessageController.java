@@ -1,12 +1,12 @@
 package com.example.pettopia.message;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
@@ -14,17 +14,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.pettopia.dto.EmpUserDetails;
-import com.example.pettopia.employee.EmployeeService;
-import com.example.pettopia.util.Page;
 import com.example.pettopia.util.TeamColor;
-import com.example.pettopia.vo.Employee;
 import com.example.pettopia.vo.Message;
-
-import jakarta.servlet.http.HttpSession;
-
 
 @Slf4j
 @Controller
@@ -74,23 +67,47 @@ public class MessageController {
 	// 오자윤 : /employee/messageList 쪽지 목록 조회
 	@GetMapping("message/messageList")
 	public String getMethodName(Authentication auth, Model model, @RequestParam(defaultValue = "1") Integer currentPage,
-														        @RequestParam(required = false) String searchKeyword)
-														         {
+																@RequestParam(defaultValue = "10") Integer size,
+														        @RequestParam(required = false) String searchKeyword)	{
 		// 시큐리티 empNo 가져오기
 		EmpUserDetails empUserDetails = (EmpUserDetails)auth.getPrincipal();
 		log.debug(TeamColor.OJY + "empUserDetails------>" + empUserDetails + TeamColor.RESET);
 		String empNo = empUserDetails.getUsername();
 	
-		// 페이지네이션
-	    Page page = new Page();
-	    page.setCurrentPage(currentPage);
+		 // 페이지네이션 유효성 검사
+	    if (currentPage < 1) {
+	        currentPage = 1; // 기본값
+	    }
+	    if (size < 1 || size > 100) { // 최대 100개
+	        size = 10; // 기본값
+	    }
+	    
+	    // 전체 메시지 개수 가져오기
+	    Map<String, Object> params = new HashMap<>();
+	    params.put("empNo", empNo);
+	    params.put("searchKeyword", searchKeyword);
+	    
+	    int totalRecords = messageService.countMessage(params); // 메시지 총 개수
+	    int totalPages = (int) Math.ceil((double) totalRecords / size); // 전체 페이지 수
 
+	    // 페이지 오프셋 계산
+	    int offset = (currentPage - 1) * size;
+	    if (offset < 0) {
+	        offset = 0; // OFFSET이 음수가 되지 않도록 설정
+	    }
+	    
+	    // 페이지 파라미터 추가
+	    params.put("offset", offset);
+	    params.put("limit", size);
+	    
 	    // 페이지 된 쪽지목록
-	    List<Map<String, Object>> messageList = messageService.getMessageList(empNo, page, searchKeyword);
+	    List<Map<String, Object>> messageList = messageService.getMessageList(params);
 
 	    // model 추가
 	    model.addAttribute("messageList", messageList);
-	    model.addAttribute("page", page);
+	    model.addAttribute("currentPage", currentPage);
+	    model.addAttribute("totalPages", totalPages);
+	    model.addAttribute("totalResults", totalRecords);
 	    model.addAttribute("searchKeyword", searchKeyword);
 	    
 	    return "message/messageList";
@@ -117,24 +134,59 @@ public class MessageController {
 
 	// 오자윤 : /employee/messageBin 휴지통 페이지
 	@GetMapping("message/messageBin")
-	public String messageBin(Authentication auth, Model model, Page page, @RequestParam(required = false) String searchKeyword)
-    {
+	public String messageBin(Authentication auth, Model model,
+							@RequestParam(defaultValue = "1") Integer currentPage,
+							@RequestParam(defaultValue = "10") Integer size, 
+							@RequestParam(required = false) String searchKeyword)	{
 		// 시큐리티 empNo 가져오기
 		EmpUserDetails empUserDetails = (EmpUserDetails)auth.getPrincipal();
 		log.debug(TeamColor.OJY + "empUserDetails------>" + empUserDetails + TeamColor.RESET);
 		String empNo = empUserDetails.getUsername();
 	
+		 // 페이지네이션 유효성 검사
+	    if (currentPage < 1) {
+	        currentPage = 1; // 기본값
+	    }
+	    if (size < 1 || size > 100) { // 최대 100개
+	        size = 10; // 기본값
+	    }
+	    
+	    // 전체 메시지 개수 가져오기
+	    Map<String, Object> params = new HashMap<>();
+	    params.put("empNo", empNo);
+	    params.put("searchKeyword", searchKeyword);
+	    
+	    int totalRecords = messageService.countMessage(params); // 메시지 총 개수
+	    int totalPages = (int) Math.ceil((double) totalRecords / size); // 전체 페이지 수
+
+	    // 페이지 오프셋 계산
+	    int offset = (currentPage - 1) * size;
+	    if (offset < 0) {
+	        offset = 0; // OFFSET이 음수가 되지 않도록 설정
+	    }
+	    
+	    // 페이지 파라미터 추가
+	    params.put("offset", offset);
+	    params.put("limit", size);
+	    
 		// 쪽지 목록 조회
-		List<Map<String, Object>> messageList = messageService.getMessageList(empNo, page, searchKeyword);
+		List<Map<String, Object>> messageList = messageService.getMessageList(params);
 		model.addAttribute("messageList", messageList);
 		log.debug(TeamColor.OJY + "messageList------>" + messageList + TeamColor.RESET);
 		
+		 // model 추가
+	    model.addAttribute("messageList", messageList);
+	    model.addAttribute("currentPage", currentPage);
+	    model.addAttribute("totalPages", totalPages);
+	    model.addAttribute("totalResults", totalRecords);
+	    model.addAttribute("searchKeyword", searchKeyword);
+	    
 		return "message/messageBin";
 	}
 	
 	// 오자윤 : /employee/messageBin 휴지통 영구삭제 -->
 	@PostMapping("message/messageDelete")
-	public String messageBin(@RequestParam List<Integer> messageNo, Authentication auth, Model model, Page page, @RequestParam(required = false) String searchKeyword) {
+	public String messageBin(@RequestParam List<Integer> messageNo, Authentication auth, Model model,  @RequestParam(required = false) String searchKeyword) {
 		
 		// 시큐리티 empNo 가져오기
 		EmpUserDetails empUserDetails = (EmpUserDetails)auth.getPrincipal();
@@ -145,15 +197,27 @@ public class MessageController {
 		messageService.deleteMessage(messageNo);
 		log.debug(TeamColor.OJY + "messageNo------>" + messageNo + TeamColor.RESET);
 		
+	    // 쪽지 목록 조회를 위한 파라미터 설정
+	    Map<String, Object> params = new HashMap<>();
+	    params.put("empNo", empNo);
+	    params.put("searchKeyword", searchKeyword);
+	    
+	    // 페이지네이션 기본값 설정
+	    int size = 10;
+	    int offset = 0; 
+	    params.put("limit", size);
+	    params.put("offset", offset);
+
 		// 쪽지 목록 조회
-		List<Map<String, Object>> messageList = messageService.getMessageList(empNo, page, searchKeyword);
+		List<Map<String, Object>> messageList = messageService.getMessageList(params);
 		model.addAttribute("messageList", messageList);
+		
 		return "redirect:/message/messageBin";
 	}
 	
 	// 오자윤 : /employee/messageBin 메시지 보관함 복구 -->
 	@PostMapping("message/messageRestore")
-	public String messageRestore(@RequestParam List<Long> messageNo, Authentication auth, Model model, Page page,@RequestParam(required = false) String searchKeyword) {
+	public String messageRestore(@RequestParam List<Long> messageNo, Authentication auth, Model model, @RequestParam(required = false) String searchKeyword) {
 		log.debug(TeamColor.OJY + "messageNo------>" + messageNo + TeamColor.RESET);
 		 
 		// 시큐리티 empNo 가져오기
@@ -164,8 +228,19 @@ public class MessageController {
 		// 쪽지보관함 복원 
 		messageService.restoreMessage(messageNo);
 		
+		// 쪽지 목록 조회를 위한 파라미터 설정
+	    Map<String, Object> params = new HashMap<>();
+	    params.put("empNo", empNo);
+	    params.put("searchKeyword", searchKeyword);
+	  
+	    // 페이지네이션 기본값 설정
+	    int size = 10; 
+	    int offset = 0;
+	    params.put("limit", size);
+	    params.put("offset", offset);
+
 		// 쪽지 목록 조회
-		List<Map<String, Object>> messageList = messageService.getMessageList(empNo, page, searchKeyword);
+		List<Map<String, Object>> messageList = messageService.getMessageList(params);
 		model.addAttribute("messageList", messageList);
 		
 		return "redirect:/message/messageBin";
