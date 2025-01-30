@@ -37,7 +37,7 @@ public class MainController {
 		EmpUserDetails emp = (EmpUserDetails)auth.getPrincipal();
 		String empStatus = emp.getEmpStatus();
 		log.debug(TeamColor.OJY + "empStatus------> " + empStatus + TeamColor.RESET);
-		
+		model.addAttribute("empStatus", empStatus);
 		if(empStatus != null && empStatus.equals("T")) {
 			String changePwMsg = "비밀번호를 수정하세요!";
 			
