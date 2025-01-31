@@ -18,14 +18,12 @@ public class EmpUserDetails implements UserDetails {
 
 	private final Employee employee;
 	private final Map<String, Object> employeeFile;
-	private final Map<String, Object> notReadYet;
-	private final List<Map<String, Object>> messageNotiList;
 
-	public EmpUserDetails(Employee employee, Map<String, Object> employeeFile, Map<String, Object> notReadYet , List<Map<String, Object>> messageNotiList) {
+
+	public EmpUserDetails(Employee employee, Map<String, Object> employeeFile) {
 		this.employee = employee;
 		this.employeeFile = employeeFile;
-		this.notReadYet = notReadYet;
-		this.messageNotiList = messageNotiList;
+
 	}
 
 	@Override
@@ -181,16 +179,7 @@ public class EmpUserDetails implements UserDetails {
 		return (String) employeeFile.get("rankName"); 
 	}
 		
-	// 안읽은 쪽지 알람
-	public String getNotReadYet() {
-		return String.valueOf(notReadYet.get("notReadYet")); 
-	}
-	
-	
-	// messageList
-	public List<Map<String, Object>> getMessageNotiList() {
-	    return this.messageNotiList;
-	}
+
 	
 	
 	
