@@ -16,7 +16,7 @@ public interface NoticeMapper {
 	Integer insertNotice(Notice notice);
 	
 	// 오자윤 : /notice/addNotice 첨부파일 추가 
-	void saveAll(List<NoticeFile> files);
+	void saveAll(Map<String, Object> params);
 	
 	// 공지사항 리스트 : 부서 목록
 	List<Division> selectDivisionList();

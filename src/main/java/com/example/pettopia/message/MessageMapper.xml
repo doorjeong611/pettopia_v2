@@ -108,7 +108,6 @@
 		    e.emp_status = #{empStatus}  <!-- 재직 상태 필터 -->
 		    AND (#{deptCode} IS NULL OR dep.dept_code = #{deptCode})  
     		AND (#{empName} IS NULL OR e.emp_name LIKE CONCAT('%', #{empName}, '%'));
-    	LIMIT #{limit} OFFSET #{offset};
 	</select>
 	
 	<!-- 오자윤 : /message/messageOne 쪽지 상세조히 -->

@@ -122,7 +122,7 @@
 							                    <div class="file_input">
 							                        <input type="text" readonly />
 							                        <label> 첨부파일
-							                            <input type="file" name="files" onchange="selectFile(this);" />
+							                            <input type="file" name="file" onchange="selectFile(this);" />
 							                        </label>
 							                    </div>
 							                    <button type="button" onclick="removeFile(this);" class="btns del_btn"><span>삭제</span></button>
