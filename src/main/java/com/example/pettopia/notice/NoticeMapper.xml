@@ -40,20 +40,20 @@
 	</sql>
 	
 	<!-- 파일 정보 저장 -->
-	<insert id="saveAll" parameterType="list">
+	<insert id="saveAll" parameterType="map">
 	    INSERT INTO notice_file (
 	        <include refid="noticeFileColumns" />
 	    ) VALUES
-	    <foreach item="file" collection="list" separator=",">
+	    <foreach item="file" collection="files" separator=",">
 	    (
-	          NULL
-	        , #{file.noticeNo}
-	        , #{file.originFileName}
-	        , #{file.fileName}
-	        , #{file.fileExt}
-	        , #{file.fileType}
-	        , NOW()
-	        , NOW()
+	        NULL,
+            #{noticeNo},  
+            #{file.originFileName},
+            #{file.fileName},
+            #{file.fileExt},
+            #{file.fileType},
+            NOW(),
+            NOW()
 	    )
 	    </foreach>
 	</insert>
