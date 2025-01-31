@@ -7,6 +7,7 @@
 		SELECT division_code AS divisionCode
 				, division_name AS divisionName
 		FROM division
+		ORDER BY division_name ASC
 	</select>
 	
 	<!-- 부서 등록 -->

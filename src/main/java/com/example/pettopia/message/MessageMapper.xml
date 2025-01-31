@@ -174,5 +174,27 @@
 	    SET message_state = 'Y'
 	    WHERE message_no = #{messageNo}; 
 	</update>
+	
+	<!-- header : messageNotification -->
+	<select id="selectMessageNoti" parameterType="String" resultType="map">
+		SELECT m.message_no AS messageNo
+		     , m.sender_emp_no AS senderEmpNo
+		     , e.emp_name AS senderEmpName
+		     , m.recipient_emp_no AS recipientEmpNo
+		     , m.message_title AS messageTitle
+		     , m.create_datetime AS createDateTime
+		     , CONCAT(ef.file_name, ef.file_ext) AS fileName
+		     , m.message_state AS messageState
+		FROM message m
+		JOIN employee e ON m.sender_emp_no = e.emp_no
+		LEFT JOIN employee_file ef ON e.emp_no = ef.emp_no
+		AND (ef.file_purpose = 'P' OR ef.file_purpose IS NULL)
+		WHERE m.recipient_emp_no = #{empNo}
+		AND m.message_state = 'N'
+		AND m.message_bin = '0'
+		ORDER BY m.create_datetime DESC	
+	</select>
+	
+	
 
 </mapper>

@@ -55,11 +55,11 @@ public class DivisionController {
 		log.debug(TeamColor.KMJ + "row : " + row);
 		
 		if(row == 1) {
-			return "division/divisionList";
+			return "redirect:/employee/divisionList";
 		}
 		
 		
-		return "division/divisionList";
+		return "redirect:/employee/divisionList";
 	}
 	
 	
@@ -85,11 +85,11 @@ public class DivisionController {
 		log.debug(TeamColor.KMJ + "row : " + row);
 		
 		if(row == 1) {
-			return "division/divisionList";
+			return "redirect:/employee/divisionList";
 		}
 		
 		
-		return "division/divisionList";
+		return "redirect:/employee/divisionList";
 		
 	}
 	
@@ -125,7 +125,7 @@ public class DivisionController {
 				log.debug(TeamColor.KMJ + "result : " + result);
 				
 				if(result == 1) {
-					return "division/divisionList";
+					return "redirect:/employee/divisionList";
 				}
 			}
 			
@@ -138,7 +138,7 @@ public class DivisionController {
 			log.debug(TeamColor.KMJ + "result : " + result);
 			
 			if(result == 1) {
-				return "division/divisionList";
+				return "redirect:/employee/divisionList";
 			}
 		
 		}

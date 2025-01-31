@@ -2,6 +2,7 @@ package com.example.pettopia.dto;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -18,11 +19,13 @@ public class EmpUserDetails implements UserDetails {
 	private final Employee employee;
 	private final Map<String, Object> employeeFile;
 	private final Map<String, Object> notReadYet;
+	private final List<Map<String, Object>> messageNotiList;
 
-	public EmpUserDetails(Employee employee, Map<String, Object> employeeFile, Map<String, Object> notReadYet ) {
+	public EmpUserDetails(Employee employee, Map<String, Object> employeeFile, Map<String, Object> notReadYet , List<Map<String, Object>> messageNotiList) {
 		this.employee = employee;
 		this.employeeFile = employeeFile;
 		this.notReadYet = notReadYet;
+		this.messageNotiList = messageNotiList;
 	}
 
 	@Override
@@ -183,6 +186,11 @@ public class EmpUserDetails implements UserDetails {
 		return String.valueOf(notReadYet.get("notReadYet")); 
 	}
 	
+	
+	// messageList
+	public List<Map<String, Object>> getMessageNotiList() {
+	    return this.messageNotiList;
+	}
 	
 	
 	
