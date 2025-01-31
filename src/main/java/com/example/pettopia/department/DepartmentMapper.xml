@@ -9,6 +9,7 @@
 				, dept_name AS deptName
 		FROM department
 		WHERE division_code LIKE #{divisionCode}
+		ORDER BY dept_name ASC	
 	</select>
 
 

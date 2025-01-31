@@ -14,8 +14,12 @@
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/assets/images/pettopia_favicon.ico">
     <!-- Layout config Js -->
     <script src="${pageContext.request.contextPath}/assets/js/layout.js"></script>
+    
     <!-- Tailwind CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tailwind2.css">
+    <script src="https://cdn.jsdelivr.net/npm/dragscroll/dragscroll.min.js"></script>
+    <script src="https://unpkg.com/simplebar@5.3.0/dist/simplebar.min.js"></script>
+    
     
     <!-- Jquery -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -32,6 +36,21 @@
 	    pointer-events: none; /* 클릭 차단 */
 	    background-color: #f1f1f1; /* 읽기 전용처럼 보이게 */
 	}
+	
+	
+	@font-face {
+	    font-family: 'GmarketSansMedium';
+	    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+	    font-weight: normal;
+	    font-style: normal;
+	}
+	
+	#divifont{
+		font-family: 'GmarketSansMedium' , 'cursive';
+	}
+	
+
+	
 
 	</style>
     
@@ -79,7 +98,8 @@
 			            name: node.empName , 			// 이름과 직급 표시
 			            pid: '', 						// pid 미리 빈 문자열로 설정
 			            title: node.rankName,			// 직급
-			            img : "${pageContext.request.contextPath}/employeeFile/"+node.fileName
+			            img : "${pageContext.request.contextPath}/employeeFile/"+node.fileName,
+			            nameWithRank: node.empName + " (" + node.rankName + ")" // "이름 (직급)" 형식으로 출력
 			            
 			        };
 			
@@ -128,13 +148,18 @@
                 	template: 'ula',
                     mouseScrool: OrgChart.none,
                     enableSearch: false,
+                    scaleInitial: 0.8,
                     nodes: hierarchy,
                     nodeBinding: {// 노드에 표시할 내용
                     	 img_0: "img",
-                         field_0: "name",
-                         field_1: "title" 
+                         field_0: "nameWithRank",
+                         field_1: "id"  
+                                                 
                     }
                 });
+                
+                
+             
             }
         }); /* 끝:  팀을 클릭하면 해당 팀의 조직도를 띄워줘야함 */
         
@@ -158,8 +183,8 @@
    	<header id="page-topbar" class="ltr:md:left-vertical-menu rtl:md:right-vertical-menu group-data-[sidebar-size=md]:ltr:md:left-vertical-menu-md group-data-[sidebar-size=md]:rtl:md:right-vertical-menu-md group-data-[sidebar-size=sm]:ltr:md:left-vertical-menu-sm group-data-[sidebar-size=sm]:rtl:md:right-vertical-menu-sm group-data-[layout=horizontal]:ltr:left-0 group-data-[layout=horizontal]:rtl:right-0 fixed right-0 z-[1000] left-0 print:hidden group-data-[navbar=bordered]:m-4 group-data-[navbar=bordered]:[&.is-sticky]:mt-0 transition-all ease-linear duration-300 group-data-[navbar=hidden]:hidden group-data-[navbar=scroll]:absolute group/topbar group-data-[layout=horizontal]:z-[1004]">
        	<c:import url="/WEB-INF/view/inc/header.jsp"></c:import>
    	</header>
-    
-    <div class="relative min-h-screen group-data-[sidebar-size=sm]:min-h-sm">
+
+    <div class="relative min-h-screen group-data-[sidebar-size=sm]:min-h-sm:relative">
         <div class="group-data-[sidebar-size=lg]:ltr:md:ml-vertical-menu group-data-[sidebar-size=lg]:rtl:md:mr-vertical-menu group-data-[sidebar-size=md]:ltr:ml-vertical-menu-md group-data-[sidebar-size=md]:rtl:mr-vertical-menu-md group-data-[sidebar-size=sm]:ltr:ml-vertical-menu-sm group-data-[sidebar-size=sm]:rtl:mr-vertical-menu-sm pt-[calc(theme('spacing.header')_*_1)] pb-[calc(theme('spacing.header')_*_0.8)] px-4 group-data-[navbar=bordered]:pt-[calc(theme('spacing.header')_*_1.3)] group-data-[navbar=hidden]:pt-0 group-data-[layout=horizontal]:mx-auto group-data-[layout=horizontal]:max-w-screen-2xl group-data-[layout=horizontal]:px-0 group-data-[layout=horizontal]:group-data-[sidebar-size=lg]:ltr:md:ml-auto group-data-[layout=horizontal]:group-data-[sidebar-size=lg]:rtl:md:mr-auto group-data-[layout=horizontal]:md:pt-[calc(theme('spacing.header')_*_1.6)] group-data-[layout=horizontal]:px-3 group-data-[layout=horizontal]:group-data-[navbar=hidden]:pt-[calc(theme('spacing.header')_*_0.9)]">
             <div class="container-fluid group-data-[content=boxed]:max-w-boxed mx-auto">
                 <div class="flex flex-col gap-2 py-4 md:flex-row md:items-center print:hidden">
@@ -176,31 +201,8 @@
                     </ul>
                 </div>
                 <!-- Main content -->
-				<div class="card">
-					<div class="card-body flex gap-4 ">
-				    
-				        <!-- 상위 부서 목록 -->
-						<div class="grid xl:grid-cols-1" id="divisionDiv" style="border: solid 1px green;">
-				        </div>
-				        
-				        <!-- 하위 팀 목록 -->
-				        <div class="grid xl:grid-cols-1" id="departDiv" style="border: solid 1px purple;">
-				            <div class="grid xl:grid-cols-1 px-5">
-				                <span>부서를 선택해 주세요</span>
-				            </div>
-				        </div >
-				        
-				        <!-- 조직도 -->
-				        <div id="orgchart" class="grid xl:grid-cols-1" style="border: solid 1px blue;  width: 80%; " >
-				        	<div class="grid xl:grid-cols-4 px-5 hidden">
-				                <span>팀을 선택해 주세요</span>
-				            </div>
-				        </div>
-				        
-				        
-					</div>
-				    
-				   	<!-- 버튼 -->
+				<div class="card pl-8" style="height:50rem;">
+					<!-- 버튼 -->
 					<div class="px-4 py-4 flex justify-end gap-1">
 						<button id="manageDiviBtn" type="button" class="bg-white text-custom-500 btn border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100">
 						    부서 관리
@@ -209,10 +211,36 @@
 						    팀 관리
 						</button>
 					</div>
-				    
-				    
-				</div>
 
+
+					<div class="card pl-8 overflow-y-auto simplebar-scrollable-y shadow-none" style="height:45rem;" data-simplebar>
+						   	
+						
+							<div class="card-body flex gap-6 ">
+						    
+						        <!-- 상위 부서 목록 -->
+								<div class="grid xl:grid-cols-1" id="divisionDiv" >
+						        </div>
+						        
+						        <!-- 하위 팀 목록 -->
+						        <div class="" id="departDiv" >
+						            <div class="grid xl:grid-cols-1 px-5">
+						                <span>부서를 선택해 주세요</span>
+						            </div>
+						        </div >
+						        
+						        <!-- 조직도 -->
+						        <div id="orgchart" class="grid xl:grid-cols-1 " style="width:50%"  >
+						        	<div class="grid xl:grid-cols-4 px-5 hidden">
+						                <span>팀을 선택해 주세요</span>
+						            </div>
+						        </div>
+
+							</div>
+					    
+					    
+					</div>
+				</div>
 				<!-- 끝 :  card -->
                 
                 
@@ -1352,11 +1380,12 @@ $(document).ready(function () {
     }).done(function (result) {
         console.log("응답받은 결과:", result);
 
+        
         // 상위 부서 목록 추가
         $(result).each(function (index, item) {
             $('#divisionDiv').append(
-                '<div class="p-3 m-2 w-64" id="clickDiviDiv" onclick="fetchDepartmentList(\'' + item.divisionCode + '\')" style="border: solid 1px blue;">' +
-                '<span>' + item.divisionName + '</span>' +
+                '<div class="relative p-3 pl-2 mb-5 w-52 h-16 text-lg border border-t-2 border-transparent rounded-md border-t-custom-500 text-custom-500 bg-custom-50 flex justify-center items-center text-center" id="clickDiviDiv" onclick="fetchDepartmentList(\'' + item.divisionCode + '\')" style="text-align: center;">' +
+                '<span  id="divifont">' + item.divisionName + '</span>' +
                 '</div>'
             );
         });
@@ -1381,8 +1410,7 @@ $(document).ready(function () {
             console.log("OrgChart 인스턴스가 존재하지 않습니다.");
         } 
    	
-        
-        
+      
         
         /* 하위 팀 조회 */
         $.ajax({
@@ -1394,8 +1422,8 @@ $(document).ready(function () {
             // 하위 팀 목록 추가
             $(result).each(function (index, item) {
                 $('#departDiv').append(
-                    '<div id="deptDivSel" class="p-3 m-2 w-64" style="border: solid 1px red;">' +
-                    '<span>' + item.deptName + '</span>' +
+                    '<div id="deptDivSel" class="relative mb-5 w-52 h-24 text-lg text-green-500 border border-t-2 border-transparent rounded-md bg-green-50 border-t-green-300 flex justify-center items-center text-center" style="text-align: center;" >' +
+                    '<span id="divifont">' + item.deptName + '</span>' +
                     '<input class="hidden" id="deptCode" value="'+item.deptCode+'">' +
                     '</div>'
                 );
@@ -1404,15 +1432,21 @@ $(document).ready(function () {
         }).fail(function () {
             alert('팀 호출 실패');
         });
+    
     };
 
     // 클릭된 상위 부서 강조
     $(document).on('click', '#divisionDiv > div', function () {
-        $('#divisionDiv > div').removeClass('bg-blue-500 text-white'); // 기존 강조 제거
-        $(this).addClass('bg-blue-500 text-white'); // 클릭한 항목 강조
-        
-       
-        
+        $('#divisionDiv > div').removeClass('text-white bg-custom-500'); // 기존 강조 제거
+        $(this).addClass('text-white bg-custom-500'); // 클릭한 항목 강조
+          
+    });
+    
+    // 클릭된 하위 부서 강조
+    $(document).on('click', '#departDiv > div', function () {
+        $('#departDiv > div').removeClass('text-white bg-green-500'); // 기존 강조 제거
+        $(this).addClass('text-white bg-green-500'); // 클릭한 항목 강조
+          
     });
 
     

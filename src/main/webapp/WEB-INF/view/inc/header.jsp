@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <!-- 시큐리티 세션 사용을 위한 taglib -->
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
@@ -153,8 +154,39 @@
                                             <a href="${pageContext.request.contextPath}/message/messageList"  data-filter="all" class="inline-block nav-link px-1.5 w-full py-1 text-xs transition-all duration-300 ease-linear rounded-md text-slate-500 border border-transparent [&.active]:bg-white [&.active]:text-custom-500 hover:text-custom-500 active:text-custom-500 dark:text-zink-200 dark:hover:text-custom-500 dark:[&.active]:bg-zink-600 -mb-[1px] active">View All</a>
                                         </li>
                                     </ul>
+                                    <div style="max-height:27rem;">
+                                    	<div class="flex flex-col gap-1" id="notification-list">
+                                    	
+                                    		<c:forEach var="message" items="${loginEmp.messageNotiList}">
+												<a href="${pageContext.request.contextPath}/message/messageOne?messageNo=${message.messageNo}" class="flex gap-3 p-4 product-item hover:bg-slate-50 dark:hover:bg-zink-500 follower">
+												     <div class="w-10 h-10 rounded-md shrink-0 bg-slate-100">
+												         <img src="${pageContext.request.contextPath}/employeeFile/${message.fileName != null? fileName : 'placeholder.png'}" alt="" class="rounded-md">
+												     </div>
+												     <div class="grow">
+												     	 <div>
+													        <h6 class="mb-1 font-medium"><b>${message.senderEmpName}</b> </h6>
+												     	 	<div class="w-1.5 h-1.5 bg-custom-500 rounded-full"></div>${message.arrivalAlert}
+												     	 </div>
+												         <div class="flex">
+													         <p class="mb-0 text-sm text-slate-500 dark:text-zink-300">${message.messageTitle}</p>
+													         <p class="mb-0 text-sm text-slate-500 dark:text-zink-300"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="clock" class="lucide lucide-clock inline-block w-3.5 h-3.5 mr-1"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> <span class="align-middle"></span>${message.createDateTime}</p>
+												     	 </div>
+												     </div>
+												     <div class="flex items-center self-start gap-2 text-xs text-slate-500 shrink-0 dark:text-zink-300">
+												         
+												     </div>
+												</a>
+												<hr>
+	                                        </c:forEach>
+	                                        
+	                                        
+                                    	</div>
+                                    </div>
+                                    
+                                    
     
                                 </div>
+                                
                                 <div data-simplebar class="max-h-[350px]">
                                     <div class="flex flex-col gap-1" id="notification-list">
                                     </div>

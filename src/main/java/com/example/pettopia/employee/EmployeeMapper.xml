@@ -256,12 +256,13 @@
 		AND (ef.file_purpose = 'P' OR ef.file_purpose IS NULL)  
 	</select>
 
-	<!--  -->
+	<!-- 메세지 알림 -->
 	<select id="selectNotReadYet" parameterType="String" resultType="map">
 		SELECT COUNT(*) AS notReadYet
 		FROM message 
 		WHERE recipient_emp_no = #{empNo}
 		AND message_state = 'N'
+		AND message_bin = '0'
 	</select>
 
 

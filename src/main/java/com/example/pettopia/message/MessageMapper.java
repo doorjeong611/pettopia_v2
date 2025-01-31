@@ -50,4 +50,10 @@ public interface MessageMapper {
 	// 오자윤 : /employee/messageList 메시지 읽음 상태 변환
 	Integer updateMessageState(String message);
 	
+	// header : messageNotification 
+	List<Map<String, Object>> selectMessageNoti(String empNo);
+	
+	
+	
+	
 }
