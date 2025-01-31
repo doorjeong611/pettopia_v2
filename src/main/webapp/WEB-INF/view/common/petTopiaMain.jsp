@@ -18,6 +18,30 @@
     <!-- Tailwind CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tailwind2.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    
+    <!-- Simplebar CSS -->
+	<link href="https://cdn.jsdelivr.net/npm/simplebar@5.0.0/dist/simplebar.min.css" rel="stylesheet" />
+	<!-- Simplebar JS -->
+	<script src="https://cdn.jsdelivr.net/npm/simplebar@5.0.0/dist/simplebar.min.js"></script>
+    
+    
+    <style>
+    .last-div-class {
+	    border-left: none; /* 선 제거 */
+	}
+	
+	@font-face {
+	    font-family: 'Cafe24Ssurround';
+	    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/Cafe24Ssurround.woff') format('woff');
+	    font-weight: normal;
+	    font-style: normal;
+	}
+	
+	.custom-font {
+		font-family: 'Cafe24Ssurround';
+	}
+	
+    </style>
 </head>
 
 <body class="text-base bg-body-bg text-body font-public dark:text-zink-100 dark:bg-zink-800 group-data-[skin=bordered]:bg-body-bordered group-data-[skin=bordered]:dark:bg-zink-700">
@@ -45,23 +69,23 @@
 					        <div class="grid items-center grid-cols-12">
 					            <div class="col-span-12 lg:col-span-12 2xl:col-span-12">
 					            	<div class="flex items-center">
-					                    <h3 class="card-title text-custom-600 mb-3">
-					                        <i class="ri-calendar-fill"></i> <span>오늘의 근무</span>
+					                    <h3 class="card-title text-custom-600 mb-3 custom-font">
+					                        <i class="ri-calendar-line"></i> <span>오늘의 근무</span>
 					                    </h3>
 									</div>
 									<p class="mb-4 relative before:absolute before:border-b before:border-slate-200 before:bottom-2 before:right-0 before:left-0"><span class="relative pr-2 bg-white dark:bg-zink-700 dark:text-zink-200 text-slate-500">Welcome PetTopia</span></p>
 					                <div class="flex justify-between items-end">
 					                    <div>
-					                    	<c:if test="${not empty attendanceList }">
+					                    	<c:if test="${not empty attendanceList}">
 					                    		<c:forEach var="attendance" items="${attendanceList}">
-						                            <div class="text-slate-900 font-bold" id="attendanceClockInTime" style="font-size: large;">
+						                            <div class="text-slate-900 custom-font" id="attendanceClockInTime" style="font-size: large;">
 						                                <c:if test="${attendance.clockInTime != null}">
 						                                    <p style="display: flex; align-items: center;">
 															    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-dog"><path d="M11.25 16.25h1.5L12 17z"/><path d="M16 14v.5"/><path d="M4.42 11.247A13.152 13.152 0 0 0 4 14.556C4 18.728 7.582 21 12 21s8-2.272 8-6.444a11.702 11.702 0 0 0-.493-3.309"/><path d="M8 14v.5"/><path d="M8.5 8.5c-.384 1.05-1.083 2.028-2.344 2.5-1.931.722-3.576-.297-3.656-1-.113-.994 1.177-6.53 4-7 1.923-.321 3.651.845 3.651 2.235A7.497 7.497 0 0 1 14 5.277c0-1.39 1.844-2.598 3.767-2.277 2.823.47 4.113 6.006 4 7-.08.703-1.725 1.722-3.656 1-1.261-.472-1.855-1.45-2.239-2.5"/></svg>
 															    <c:set var="clockInTime" value="${attendance.clockInTime}" />
 																<c:set var="hour" value="${fn:substring(clockInTime, 0, 2)}" />
 																<c:set var="minute" value="${fn:substring(clockInTime, 3, 5)}" />
-															    &nbsp;출근 시간 : ${hour}시 ${minute}분
+															    <span class="custom-font">&nbsp;출근 시간 : ${hour}시 ${minute}분</span>
 															</p>
 						                                </c:if>
 						                                <c:if test="${attendance.clockInTime == null}">
@@ -71,7 +95,7 @@
 						                                    </p>
 						                                </c:if>
 						                            </div>
-						                            <div class="text-slate-900 font-bold" id="attendanceClockOutTime" style="font-size: large;">
+						                            <div class="text-slate-900 font-bold custom-font" id="attendanceClockOutTime" style="font-size: large;">
 						                                <c:if test="${attendance.clockOutTime != null}">
 							                                <p style="display: flex; align-items: center;">
 							                                	<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-dog"><path d="M11.25 16.25h1.5L12 17z"/><path d="M16 14v.5"/><path d="M4.42 11.247A13.152 13.152 0 0 0 4 14.556C4 18.728 7.582 21 12 21s8-2.272 8-6.444a11.702 11.702 0 0 0-.493-3.309"/><path d="M8 14v.5"/><path d="M8.5 8.5c-.384 1.05-1.083 2.028-2.344 2.5-1.931.722-3.576-.297-3.656-1-.113-.994 1.177-6.53 4-7 1.923-.321 3.651.845 3.651 2.235A7.497 7.497 0 0 1 14 5.277c0-1.39 1.844-2.598 3.767-2.277 2.823.47 4.113 6.006 4 7-.08.703-1.725 1.722-3.656 1-1.261-.472-1.855-1.45-2.239-2.5"/></svg>
@@ -121,17 +145,56 @@
 					</div>
 					
 					<!-- 오늘 일정 리스트 -->
-                    <div class="col-span-12 card 2xl:col-span-4 2xl:row-span-2" style="height: 450px;">
-                        <div class="card-body">
+                    <div class="col-span-12 card 2xl:col-span-3 2xl:row-span-2" style="height: 450px;">
+                        <div class="card-body h-full flex flex-col" style="height: 100%; display: flex; flex-direction: column;">
                             <div class="flex items-center mb-3">
-                                <h6 class="grow text-15">2. Today 일정 List</h6>
+                                <h6 class="grow text-16 text-green-600" id="scheduleTitle"></h6>
+                                <div class="relative">
+                                    <a href="${pageContext.request.contextPath}/schedule/scheduleCalendar" class="transition-all duration-200 ease-linear text-custom-500 hover:text-custom-600">View Schedule<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="move-right" class="lucide lucide-move-right inline-block align-middle size-4 ltr:ml-1 rtl:mr-1"><path d="M18 8L22 12L18 16"></path><path d="M2 12H22"></path></svg></a>
+                                </div>
                             </div>
+                            <hr class="mb-2">
+				    		<c:if test="${not empty todayScheduleByAllDay}">
+	                            <div class="flex flex-col justify-start simplebar-scrollable-y" style="mix-height: 380px; max-height: 380px;" data-simplebar="init" data-simplebar-track="custom">
+							    	<c:forEach var="ts" items="${todayScheduleByAllDay}" varStatus="status">
+									    <div class="relative ltr:pl-6 before:absolute ltr:before:border-l ltr:before:left-[.22rem] before:border-slate-200 before:top-1.5 before:-bottom-1.5 after:absolute after:w-2 after:h-2 after:bg-custom-500 after:rounded-full ltr:after:left-0 after:top-1.5 pb-2">
+											<!-- 개인 -->
+											<c:if test="${ts.scheduleType == 'I'}">
+											    <span class="px-2.5 py-0.5 text-xs inline-block font-medium rounded border bg-green-100 border-green-200 text-green-500">개인</span>
+											</c:if>
+											<c:if test="${ts.scheduleType == 'T'}">
+											    <span class="px-2.5 py-0.5 text-xs inline-block font-medium rounded border bg-yellow-100 border-yellow-200 text-yellow-500">팀</span>
+											</c:if>
+											<c:if test="${ts.scheduleType == 'V'}">
+											    <span class="px-2.5 py-0.5 text-xs inline-block font-medium rounded border bg-sky-100 border-sky-200 text-sky-500">휴가</span>
+											</c:if>
+											<c:if test="${ts.scheduleType == 'C'}">
+											    <span class="px-2.5 py-0.5 text-xs inline-block font-medium rounded border bg-purple-100 border-purple-200 text-purple-500">회의</span>
+											</c:if>
+											
+											<!-- 내용 부분 -->
+									        <h6 class="mb-1 ml-2 text-15 inline-block">${ts.scheduleTitle}</h6>
+											
+									        <p class="text-sm text-slate-400">${ts.startDatetime}</p>
+								    	</div>
+									</c:forEach>
+								</div>
+						    </c:if>
+						    <c:if test="${empty todayScheduleByAllDay}">
+						    	<div class="flex flex-col justify-start" style="mix-height: 380px; max-height: 380px;">
+							    	<div class="relative ltr:pl-6 before:absolute ltr:before:border-l ltr:before:left-[.22rem] before:border-slate-200 before:top-1.5 before:-bottom-1.5 after:absolute after:w-2 after:h-2 after:bg-custom-500 after:rounded-full ltr:after:left-0 after:top-1.5 pb-2">
+										<!-- 내용 부분 -->
+								        <h6 class="mb-1 text-15">일정이 없습니다.</h6>
+								        <p class="text-sm text-slate-400" id="noSchedule"></p>
+								    </div>
+								</div>
+						    </c:if>
                         </div>
                     </div>
 
                     
-                    <!-- 객실 예약 현황 선 그래프 -->
-                    <div class="col-span-12 card 2xl:col-span-4 2xl:row-span-2" style="height: 450px;">
+                    <!-- 객실 누적 매출 그래프 (1월 ~ 12월 까지, 작년과 비교) -->
+                    <div class="col-span-12 card 2xl:col-span-5 2xl:row-span-2" style="height: 450px;">
                         <div class="card-body">
                             <div class="flex items-center mb-3">
                                 <h6 class="grow text-15">3. 객실 예약 현황 선 그래프 (1월 ~ 12월 까지)</h6>
@@ -141,10 +204,69 @@
                     
                     <!-- 안 읽은 쪽지 조회 -->
                     <div class="col-span-12 card 2xl:col-span-4 2xl:row-span-2" style="height: 250px;">
-                        <div class="card-body">
+                        <div class="card-body h-full flex flex-col" style="height: 100%; display: flex; flex-direction: column;">
                             <div class="flex items-center mb-3">
-                                <h6 class="grow text-15">4. 안 읽은 쪽지 조회</h6>
+                                <h6 class="grow text-16 text-green-600"><i class="ri-mail-check-line mr-1"></i>최근 메세지</h6>
+                                <div class="relative">
+                                    <a href="${pageContext.request.contextPath}/message/messageList" class="transition-all duration-200 ease-linear text-custom-500 hover:text-custom-600">All Message<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="move-right" class="lucide lucide-move-right inline-block align-middle size-4 ltr:ml-1 rtl:mr-1"><path d="M18 8L22 12L18 16"></path><path d="M2 12H22"></path></svg></a>
+                                </div>
                             </div>
+                            <hr class="mb-1">
+                            
+                            <c:if test="${not empty messageListByMain}">
+	                            <c:forEach var="ml" items="${messageListByMain}">
+	                            	<div class="flex items-center space-x-2">
+									    <div class="w-10 h-10 rounded-md shrink-0 bg-slate-100">
+									        <img src="${pageContext.request.contextPath}/employeeFile/${message.fileName != null ? fileName : 'placeholder.png'}" alt="" class="rounded-md">
+									    </div>
+									    <div class="flex items-center justify-between w-full h-12"> <!-- h-20: 원하는 높이 설정 -->
+									    	<div>
+											    <h6 class="mb-1 font-medium flex items-center"><b>${ml.senderEmpName}</b></h6>
+											    <p class="mb-0 text-sm text-slate-500 dark:text-zink-300">${ml.messageTitle}</p>
+										    </div>
+										    <div class="flex flex-col space-y-2">
+											    <div class="flex justify-end">
+											        <div class="w-1.5 h-1.5 bg-custom-500 rounded-full"></div>
+											        <span>${ml.arrivalAlert}</span>
+											    </div>
+											    <div>
+											        <p class="mb-0 text-sm text-slate-500 dark:text-zink-300">
+											            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="clock" class="lucide lucide-clock inline-block w-3.5 h-3.5 mr-1">
+											                <circle cx="12" cy="12" r="10"></circle>
+											                <polyline points="12 6 12 12 16 14"></polyline>
+											            </svg>
+											            <span class="align-middle"></span>2025-01-31T12:00
+											        </p>
+											    </div>
+											</div>
+										</div>
+								     </div>
+								     <hr class="my-1">
+	                            </c:forEach>
+                            </c:if>
+                            <c:if test="${empty messageListByMain}">
+                            </c:if>
+                            
+                            <a href="/pettopia/message/messageOne?messageNo=364" class="flex gap-3 p-4 product-item hover:bg-slate-50 dark:hover:bg-zink-500 follower">
+							     <div class="w-10 h-10 rounded-md shrink-0 bg-slate-100">
+							         <img src="/pettopia/employeeFile/placeholder.png" alt="" class="rounded-md">
+							     </div>
+							     <div class="grow">
+							     	 <div>
+								        <h6 class="mb-1 font-medium"><b>최민주</b> </h6>
+							     	 	<div class="w-1.5 h-1.5 bg-custom-500 rounded-full"></div>Today
+							     	 </div>
+							         <div class="flex">
+								         <p class="mb-0 text-sm text-slate-500 dark:text-zink-300">소통 툴 도입 안내</p>
+								         <p class="mb-0 text-sm text-slate-500 dark:text-zink-300"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="clock" class="lucide lucide-clock inline-block w-3.5 h-3.5 mr-1"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> <span class="align-middle"></span>2025-01-31T12:00</p>
+							     	 </div>
+							     </div>
+							     <div class="flex items-center self-start gap-2 text-xs text-slate-500 shrink-0 dark:text-zink-300">
+							         
+							     </div>
+							</a>
+                            
+                            
                         </div>
                     </div>
                     
@@ -152,19 +274,33 @@
                     
                     <!-- 고정 공지사항 및 오늘의 공지사항 -->
                     <div class="col-span-12 card 2xl:col-span-8 2xl:row-span-2"style="height: 450px;">
-                        <div class="card-body">
+                        <div class="card-body h-full flex flex-col" style="height: 100%; display: flex; flex-direction: column;">
                             <div class="flex items-center mb-3">
-                                <h6 class="grow text-15">5. 고정 공지사항 및 오늘의 공지사항</h6>
+                                <h6 class="grow text-16 text-green-600"><i class="ri-notification-2-line mr-1"></i>Today’s 공지사항</h6>
+                                <div class="relative">
+                                    <a href="${pageContext.request.contextPath}/notice/getNoticeList" class="transition-all duration-200 ease-linear text-custom-500 hover:text-custom-600">All Notice<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="move-right" class="lucide lucide-move-right inline-block align-middle size-4 ltr:ml-1 rtl:mr-1"><path d="M18 8L22 12L18 16"></path><path d="M2 12H22"></path></svg></a>
+                                </div>
                             </div>
+                            <hr class="mb-2">
+                            
+                            
+                            
                         </div>
                     </div>
                     
                     <!-- 결재 할 문서 -->
                     <div class="col-span-12 card 2xl:col-span-4 2xl:row-span-2" style="height: 450px;">
-                        <div class="card-body">
+                        <div class="card-body h-full flex flex-col" style="height: 100%; display: flex; flex-direction: column;">
                             <div class="flex items-center mb-3">
-                                <h6 class="grow text-15">6. 결재 할 문서</h6>
+                                <h6 class="grow text-16 text-green-600"><i class="ri-file-text-line mr-1"></i>결재 대기 문서</h6>
+                                <div class="relative">
+                                    <a href="${pageContext.request.contextPath}/document/documentList" class="transition-all duration-200 ease-linear text-custom-500 hover:text-custom-600">All Document<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="move-right" class="lucide lucide-move-right inline-block align-middle size-4 ltr:ml-1 rtl:mr-1"><path d="M18 8L22 12L18 16"></path><path d="M2 12H22"></path></svg></a>
+                                </div>
                             </div>
+                            <hr class="mb-2">
+                            
+                            
+                            
                         </div>
                     </div>
                     
@@ -230,15 +366,28 @@
 <!-- App js -->
 <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
 <script>
-$(document).ready(function() {
 	/* 로그인시 empStatus -> 'T'라면 비밀번호 변경 alert */
 	/* var changePwMsg = "${changePwMsg}"; */
+	
+    var date = new Date();
+    var year = date.getFullYear();
+    var month = ("0" + (1 + date.getMonth())).slice(-2);
+    var day = ("0" + date.getDate()).slice(-2);
+
+    const formattedDate = year + '-' + month + '-' + day;
+    console.log('Formatted Date:', formattedDate); // debug
+    
+    $('#scheduleTitle').html('<i class="ri-calendar-check-line mr-1"></i> ' + month + '월  ' + day +'일 일정');
+    $('#noSchedule').html(formattedDate);
+	
+$(document).ready(function() {
 	
     var empStatus = "${empStatus}"; 
     console.log(empStatus);
     if(empStatus == 'T'){
         alert("비밀번호를 변경해주세요 😊");
     }
+    
 });
 </script>
 
