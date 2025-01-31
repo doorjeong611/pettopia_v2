@@ -51,9 +51,9 @@ public class MessageService {
 		return messageMapper.deleteMessage(messageNo);
 	}
 	
-	// 오자윤 : /message/messageNote (모달)직원 조회 -->
-	public List<Map<String, Object>> getEmployeeList(Map<String, Object> params) {
-	    return messageMapper.getEmployeeList(params);
+	// 오자윤 : /employee/messageNote (모달)직원 조회 -->
+	public List<Map<String, Object>> getEmployeeList(String empStatus, String deptCode, String empName) {
+		return messageMapper.getEmployeeList(empStatus, deptCode, empName);
 	}
 
 	// 오자윤 : /message/messageOne 쪽지 상세보기 페이지

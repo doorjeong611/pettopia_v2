@@ -182,18 +182,24 @@ public class NoticeController {
 	
 	// 오자윤 : /notice/addNotice 공지사항 추가
 	@PostMapping("/notice/addNotice")
-	public String addNoticeSubmit(@ModelAttribute Notice notice, @RequestParam(value = "file", required = false) List<MultipartFile> files, Authentication auth, Model model) {
+	public String addNoticeSubmit(Notice notice, @RequestParam(value = "file", required = false) List<MultipartFile> files, Authentication auth, Model model) {
 	    // 관리자 권한 확인
 	    EmpUserDetails empUserDetails = (EmpUserDetails) auth.getPrincipal();
 	    String writerEmpNo = empUserDetails.getUsername();
 		
 	    // 1. 공지사항 저장
 	    notice.setWriterEmpNo(writerEmpNo); // 로그인된 관리자 empNo 저장
-	    Integer noticeId = noticeService.insertNotice(notice); // 저장 후 ID반환
+	    Integer noticeNo = noticeService.insertNotice(notice); // 저장 후 ID반환
 	    
 	    // 2. 파일 업로드 및 저장
-	    List<NoticeFile> noticeFiles = fileUtils.uploadFiles(notice.getFiles()); // 파일 업로드
-	    noticeService.saveFiles(noticeId, noticeFiles); // 파일 저장
+	    List<NoticeFile> noticeFiles = fileUtils.uploadFiles(files); // 파일 업로드
+	    
+	    // noticeNo를 각 파일 객체에 설정
+	    for (NoticeFile file : noticeFiles) {
+	        file.setNoticeNo(noticeNo); 
+	    }
+	    
+	    noticeService.saveFiles(noticeNo, noticeFiles); // 파일 저장
  
 	    return "redirect:/notice/getNoticeList"; // 공지사항 목록으로 리다이렉트
 	}

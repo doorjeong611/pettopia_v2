@@ -27,9 +27,7 @@
     }
 
     tbody {
-      display: block;
       max-height: 200px;  
-      overflow-y: auto;   
     }
 
     tr {
@@ -64,6 +62,28 @@
 	    padding: 20px;
 	    border-radius: 5px;
 	}
+	
+	.overflow-y-auto {
+    max-height: 200px; 
+    overflow-y: auto;   /* 수직 스크롤 추가 */
+	}
+	
+	table {
+	    width: 100%;
+	    border-collapse: collapse; 
+	}
+	
+	thead {
+	    position: sticky;  
+	    top: 0;            
+	    background-color: white; 
+	    z-index: 1;         
+	}
+	
+	#employeeTable tbody tr:hover {
+    background-color: #f0f0f0 ; 
+    cursor: pointer; 
+}
 </style>
   </head>
 	<meta charset="utf-8">
@@ -121,7 +141,7 @@
 							<div class="mb-4">
 							    <span class="font-semibold">받는사람 :</span>
 							    <input id="recipientInput" type="text" name="recipient" value="${recipientName != null ? recipientName : ''}"class="text-slate-500 border-b-0 focus:outline-none focus:ring focus:ring-slate-200 dark:bg-zink-700 dark:border-zink-600 dark:text-zink-200 text-center" placeholder="직원을 검색하세요." readonly/>
-							    <button type="button" id="openModalBtn" class="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20">
+							    <button type="button" id="openModalBtn" class="mr-1 bg-white text-custom-500 btn border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100">
 							    	직원검색
 							    </button>
 							 <!-- message 전송을 위한 hidden값 -->
@@ -156,7 +176,7 @@
                 
 				<!-- 모달창 HTML -->
 				<div id="recipientModal" class="fixed inset-0 z-50 bg-gray-800 hidden bg-opacity-50 flex items-center justify-center">
-				    <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-2xl">
+				    <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-2xl" >
 				        <div class="flex justify-between items-center mb-4">
 				            <h2 class="text-lg font-semibold">직원 검색</h2>
 				            <button id="closeModalBtn" class="text-gray-500 hover:text-gray-700">
@@ -195,7 +215,7 @@
 				        <div id="selectedEmployee" class="mb-4"></div>
 						
 				        <!-- 직원 리스트 테이블 -->
-				        <div class="overflow-y-auto">
+				        <div class="overflow-y-auto" style="max-height: 200px; overflow-y: auto;">
 				        <table id="employeeTable" style="width: 100%; border-collapse: collapse;">
 						    <thead class="ltr:text-left rtl:text-right ">
 						        <tr>

@@ -1,5 +1,6 @@
 package com.example.pettopia.notice;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,20 +26,33 @@ public class NoticeService {
 	
 	// 오자윤 : /notice/addNotice 공지사항 추가
 	public Integer insertNotice(Notice notice) {
-		return noticeMapper.insertNotice(notice); // 공지사항 저장 후 ID반환
+		noticeMapper.insertNotice(notice); 
+		return notice.getNoticeNo(); // // 공지사항 저장 후 ID반환
 	}
 	
 	// 오자윤 : /notice/addNotice 공지사항 파일 추가
 	@Transactional
-	 public void saveFiles(final Integer noticeId, final List<NoticeFile> files) {
+	 public void saveFiles(Integer noticeId, List<NoticeFile> files) {
         if (CollectionUtils.isEmpty(files)) {
             return;
         }
+        
+        log.debug(TeamColor.OJY + "noticeId-------> " + noticeId);
+        log.debug(TeamColor.OJY + "file.setNoticeNo-------> " + files.size());
+        
+        // NoticeId를 각 파일 객체에 저장
         for (NoticeFile file : files) {
-            // NoticeFile 객체 생성 및 설정
         	file.setNoticeNo(noticeId); // 공지사항 ID 설정
+        	log.debug(TeamColor.OJY + "file.setNoticeNo-------> " + file.getOriginFileName());;
         }
-            noticeMapper.saveAll(files); // 파일 저장
+        
+        // noticeId와 files를 Map으로 전달
+        Map<String, Object> params = new HashMap<>();
+        params.put("noticeNo", noticeId);
+        params.put("files", files);
+        
+        noticeMapper.saveAll(params); // 파일 저장
+    
     }
 	
 	
