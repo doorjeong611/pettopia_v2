@@ -15,7 +15,36 @@
 </head>
 <body>
 
+<style>
+.message-container {
+    width: 170px; /* 원하는 너비로 설정 */
+    overflow: hidden; /* 자식 요소의 넘침을 숨김 */
+}
 
+.message-title {
+    white-space: nowrap; /* 텍스트 줄 바꿈 방지 */
+    overflow: hidden; /* 넘친 텍스트 숨기기 */
+    text-overflow: ellipsis; /* 텍스트가 넘칠 경우 '...' 표시 */
+}
+</style>
+
+
+
+
+<!-- dayjs -->
+<script src="https://cdn.jsdelivr.net/npm/dayjs@1.10.7/dayjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dayjs@1.10.7/locale/ko.js"></script>
+
+<script type="text/javascript">
+document.addEventListener('DOMContentLoaded', function () {
+    // 모든 .date-output 요소에 대해 날짜 포맷 처리
+    document.querySelectorAll('.date-output').forEach(function (element) {
+        const dateStr = element.getAttribute('data-date');  // data-date 속성에서 날짜를 읽음
+        const formattedDate = dayjs(dateStr).locale('ko').format('dddd hh:mm A');  // '수요일 03:42 PM' 형식으로
+        element.textContent = formattedDate;  // 포맷된 날짜를 요소에 삽입
+    });
+});
+</script>
 
 <div class="layout-width">
             <div class="flex items-center px-4 mx-auto bg-topbar border-b-2 border-topbar group-data-[topbar=dark]:bg-topbar-dark group-data-[topbar=dark]:border-topbar-dark group-data-[topbar=brand]:bg-topbar-brand group-data-[topbar=brand]:border-topbar-brand shadow-md h-header shadow-slate-200/50 group-data-[navbar=bordered]:rounded-md group-data-[navbar=bordered]:group-[.is-sticky]/topbar:rounded-t-none group-data-[topbar=dark]:dark:bg-zink-700 group-data-[topbar=dark]:dark:border-zink-700 dark:shadow-none group-data-[topbar=dark]:group-[.is-sticky]/topbar:dark:shadow-zink-500 group-data-[topbar=dark]:group-[.is-sticky]/topbar:dark:shadow-md group-data-[navbar=bordered]:shadow-none group-data-[layout=horizontal]:group-data-[navbar=bordered]:rounded-b-none group-data-[layout=horizontal]:shadow-none group-data-[layout=horizontal]:dark:group-[.is-sticky]/topbar:shadow-none">
@@ -62,13 +91,13 @@
                                     <h6 class="mb-4 text-16">Notifications <span class="inline-flex items-center justify-center w-5 h-5 ml-1 text-[11px] font-medium border rounded-full text-white bg-orange-500 border-orange-500">15</span></h6>
                                     <ul class="flex flex-wrap w-full p-1 mb-2 text-sm font-medium text-center rounded-md filter-btns text-slate-500 bg-slate-100 nav-tabs dark:bg-zink-500 dark:text-zink-200" data-filter-target="notification-list">
                                         <li class="grow">
-                                            <a href="javascript:void(0);" data-filter="all" class="inline-block nav-link px-1.5 w-full py-1 text-xs transition-all duration-300 ease-linear rounded-md text-slate-500 border border-transparent [&.active]:bg-white [&.active]:text-custom-500 hover:text-custom-500 active:text-custom-500 dark:text-zink-200 dark:hover:text-custom-500 dark:[&.active]:bg-zink-600 -mb-[1px] active">View All</a>
+                                            <a href="javascript:void(0);" data-filter="all" class="inline-block nav-link px-1.5 w-full py-1 text-xs transition-all duration-300 ease-linear rounded-md text-slate-500 border border-transparent [&.active]:bg-white [&.active]:text-custom-500 hover:text-custom-500 active:text-custom-500 dark:text-zink-200 dark:hover:text-custom-500 dark:[&.active]:bg-zink-600 -mb-[1px] active">일정</a>
                                         </li>
                                         <li class="grow">
-                                            <a href="javascript:void(0);" data-filter="mention" class="inline-block nav-link px-1.5 w-full py-1 text-xs transition-all duration-300 ease-linear rounded-md text-slate-500 border border-transparent [&.active]:bg-white [&.active]:text-custom-500 hover:text-custom-500 active:text-custom-500 dark:text-zink-200 dark:hover:text-custom-500 dark:[&.active]:bg-zink-600 -mb-[1px]">Mentions</a>
+                                            <a href="javascript:void(0);" data-filter="mention" class="inline-block nav-link px-1.5 w-full py-1 text-xs transition-all duration-300 ease-linear rounded-md text-slate-500 border border-transparent [&.active]:bg-white [&.active]:text-custom-500 hover:text-custom-500 active:text-custom-500 dark:text-zink-200 dark:hover:text-custom-500 dark:[&.active]:bg-zink-600 -mb-[1px]">결재</a>
                                         </li>
                                         <li class="grow">
-                                            <a href="javascript:void(0);" data-filter="follower" class="inline-block nav-link px-1.5 w-full py-1 text-xs transition-all duration-300 ease-linear rounded-md text-slate-500 border border-transparent [&.active]:bg-white [&.active]:text-custom-500 hover:text-custom-500 active:text-custom-500 dark:text-zink-200 dark:hover:text-custom-500 dark:[&.active]:bg-zink-600 -mb-[1px]">Followers</a>
+                                            <a href="javascript:void(0);" data-filter="follower" class="inline-block nav-link px-1.5 w-full py-1 text-xs transition-all duration-300 ease-linear rounded-md text-slate-500 border border-transparent [&.active]:bg-white [&.active]:text-custom-500 hover:text-custom-500 active:text-custom-500 dark:text-zink-200 dark:hover:text-custom-500 dark:[&.active]:bg-zink-600 -mb-[1px]">공지사항</a>
                                         </li>
                                         <li class="grow">
                                             <a href="javascript:void(0);" data-filter="invite" class="inline-block nav-link px-1.5 w-full py-1 text-xs transition-all duration-300 ease-linear rounded-md text-slate-500 border border-transparent [&.active]:bg-white [&.active]:text-custom-500 hover:text-custom-500 active:text-custom-500 dark:text-zink-200 dark:hover:text-custom-500 dark:[&.active]:bg-zink-600 -mb-[1px]">Invites</a>
@@ -158,23 +187,29 @@
                                     	<div class="flex flex-col gap-1" id="notification-list">
                                     	
                                     		<c:forEach var="message" items="${loginEmp.messageNotiList}">
-												<a href="${pageContext.request.contextPath}/message/messageOne?messageNo=${message.messageNo}" class="flex gap-3 p-4 product-item hover:bg-slate-50 dark:hover:bg-zink-500 follower">
+												<a href="${pageContext.request.contextPath}/message/messageOne?messageNo=${message.messageNo}" class="flex gap-3 p-2 product-item hover:bg-slate-50 dark:hover:bg-zink-500 follower">
 												     <div class="w-10 h-10 rounded-md shrink-0 bg-slate-100">
-												         <img src="${pageContext.request.contextPath}/employeeFile/${message.fileName != null? fileName : 'placeholder.png'}" alt="" class="rounded-md">
+												         <img src="${pageContext.request.contextPath}/employeeFile/${message.fileName != null? message.fileName : 'placeholder.png'}" alt="" class="rounded-md">
 												     </div>
 												     <div class="grow">
-												     	 <div>
-													        <h6 class="mb-1 font-medium"><b>${message.senderEmpName}</b> </h6>
-												     	 	<div class="w-1.5 h-1.5 bg-custom-500 rounded-full"></div>${message.arrivalAlert}
-												     	 </div>
-												         <div class="flex">
-													         <p class="mb-0 text-sm text-slate-500 dark:text-zink-300">${message.messageTitle}</p>
-													         <p class="mb-0 text-sm text-slate-500 dark:text-zink-300"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="clock" class="lucide lucide-clock inline-block w-3.5 h-3.5 mr-1"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> <span class="align-middle"></span>${message.createDateTime}</p>
-												     	 </div>
+														<div class="grid grid-cols-2 gap-6">
+															<div>
+															    <h6 class="mb-1 font-medium"><b>${message.senderEmpName}</b></h6>
+															</div>
+															<div class="flex justify-end items-center gap-2 text-xs text-slate-500 shrink-0 dark:text-zink-300">
+															    <div class="w-1.5 h-1.5 bg-custom-500 rounded-full"></div>${message.arrivalAlert}
+															</div>
+														</div>
+												        <div class="grid grid-cols-2 gap-6">
+												        	<div class="message-container">
+													        	<p class="mb-0 text-sm text-slate-500 dark:text-zink-300 message-title">${message.messageTitle}</p>
+													        </div>
+													        <div>
+													        	<p class="flex justify-end mb-0 text-sm text-slate-500 dark:text-zink-300 "><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="clock" class=" lucide lucide-clock inline-block w-3.5 h-3.5 mr-1 mt-1"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg><span class="align-middle date-output" data-date="${message.createDateTime}" style="margin-top : 1.5px;">${message.createDateTime}</span></p>
+												     		</div>
+												     	</div>
 												     </div>
-												     <div class="flex items-center self-start gap-2 text-xs text-slate-500 shrink-0 dark:text-zink-300">
-												         
-												     </div>
+  
 												</a>
 												<hr>
 	                                        </c:forEach>
