@@ -149,10 +149,10 @@
 		                        	<div class="categoryBox">
 		                        		<label for="boardCategory">말머리</label>
 			                        		<select id="boardCategory" name="category"  class="form-select border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200">
-												<option value="ALL" ${boardCategory == 'ALL' ? 'selected' : ''}>전체</option>
+												<option value="" ${boardCategory == '' ? 'selected' : ''}>전체</option>
 												<option value="SG" ${boardCategory == 'SG' ? 'selected' : ''}>건의사항</option>
 												<option value="DS" ${boardCategory == 'DS' ? 'selected' : ''}>토론</option>
-												<option value="CT" ${boardCategory == 'CT' ? 'selected' : ''}>잡답</option>
+												<option value="CT" ${boardCategory == 'CT' ? 'selected' : ''}>잡담</option>
 												<option value="IN" ${boardCategory == 'IN' ? 'selected' : ''}>정보</option>
 												<option value="QA" ${boardCategory == 'QA' ? 'selected' : ''}>질문</option>
 												<option value="CP" ${boardCategory == 'CP' ? 'selected' : ''}>칭찬</option>
@@ -174,7 +174,7 @@
 		                        	<div class="fileBox">
 			                        	<div class="fileContentBox">
 			                        		<label for="boardImg">이미지 첨부</label>
-		                        			<input type="file" name="boardImg" class="form-file" multiple="multiple">
+		                        			<input type="file" name="boardImg" class="form-file" >
 			                        	</div>
 			                        	<div class="fileBtnBox">
 				                        	<div class="fileBtnRightBox">
@@ -231,16 +231,14 @@
 <!-- jQuery library -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script>
-   document.querySelector("#formCategory").addEventListener("submit", function(event) {
-        var boardCategory = document.getElementById("boardCategory").value;
-        
-        // 말머리 값이 선택되지 않았으면 경고창 띄우기
-        if (boardCategory == "") {
-            event.preventDefault();  // 폼 제출 막기
-            alert("말머리를 선택해주세요.");
-        }
+    $(document).ready(function() {
+        // 파일 삭제 버튼 클릭 시
+        $(".cancel-btn").click(function() {
+            // 해당하는 파일 입력 필드를 초기화
+            $("input[type='file']").val('');
+        });
     });
-    </script>
+</script>
 </body>
 
 </html>

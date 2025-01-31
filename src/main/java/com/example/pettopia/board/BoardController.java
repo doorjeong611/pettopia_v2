@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import com.example.pettopia.dto.EmpUserDetails;
 import com.example.pettopia.util.TeamColor;
 import com.example.pettopia.vo.Board;
+import com.example.pettopia.vo.BoardComment;
 import com.example.pettopia.vo.BoardFile;
 import com.example.pettopia.vo.Division;
 import com.example.pettopia.vo.Employee;
@@ -34,24 +35,70 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class BoardController {
 	@Autowired BoardService boardService;
 	
-	@GetMapping("/board/modifyBoard")
-	public String modifyBoard(Authentication auth,
-			Model model,
-			@ModelAttribute Board board,
-			@RequestParam(required = false) Integer boardNo,
-	        @RequestParam(value = "category") String boardCategory) {
-		 // 로그인 세션
+	  // 댓글 작성
+	@PostMapping("/board/boardComment")
+	public String addComment(BoardComment boardComment,
+	                         Authentication auth,
+	                         @RequestParam("boardNo") Integer boardNo) {
+	    
+	    // 로그인 세션에서 사용자 정보 가져오기
 	    EmpUserDetails empUserDetails = (EmpUserDetails) auth.getPrincipal();
 	    String empNo = empUserDetails.getUsername();
-	    String boardWriterNo = board.getBoardWriterNo();
+	    
+	    // BoardComment 객체에 commentWriterNo 설정
+	    boardComment.setCommentWriterNo(empNo);
+	    
+	    // 댓글 작성 처리
+	    int result = boardService.addComment(boardComment);
+
+	    // 댓글 작성 결과 처리
+	    if (result > 0) {
+	        // 댓글이 정상적으로 작성되었으면 해당 게시글 상세보기 페이지로 리다이렉트
+	        return "redirect:/board/getBoardOne?boardNo=" + boardNo;
+	    } else {
+	        // 작성 실패 시 에러 메시지 또는 실패 처리
+	        return "redirect:/board/getBoardOne?boardNo=" + boardNo + "&error=true";
+	    }
+	}
+
+    // 대댓글 작성
+    @PostMapping("/board/boardCommentDepth")
+    public String addCommentDepth(BoardComment boardComment,
+    							Authentication auth,
+								@RequestParam("boardNo") Integer boardNo) {
+    	 // 로그인 세션에서 사용자 정보 가져오기
+	    EmpUserDetails empUserDetails = (EmpUserDetails) auth.getPrincipal();
+	    String empNo = empUserDetails.getUsername();
+	    
+    	boardComment.setCommentWriterNo(empNo);
+    	// 대댓글 작성 처리
+        int result = boardService.addCommentDepth(boardComment);
+
+        if (result > 0) {
+            // 대댓글이 정상적으로 작성되었으면 해당 게시글 상세보기 페이지로 리다이렉트
+            return "redirect:/board/getBoardOne?boardNo=" + boardNo;
+        } else {
+            // 대댓글 작성 실패 시 에러 메시지 처리
+            return "redirect:/board/getBoardOne?boardNo=" + boardNo + "&error=true";
+        }
+    }
+	
+	@GetMapping("/board/modifyBoard")
+	public String modifyBoard(Authentication auth,
+							  Model model,
+							  @RequestParam(required = false) Integer boardNo) {
+		 // 로그인 세션
+	    EmpUserDetails empUserDetails = (EmpUserDetails) auth.getPrincipal();
+	    String empNo = empUserDetails.getUsername();;
 		
+	
 	    // 상세 글보기 셀렉트
 	    Map<String, Object> boardOneMap = boardService.getListByBoardOne(boardNo);
+	
+	    
 	    
 	    // 모델값
 	    
-	    model.addAttribute("boardCategory", boardCategory);
-	    model.addAttribute("boardWriterNo",boardWriterNo);
 	    model.addAttribute("empNo", empNo);
 		model.addAttribute("boardMap",boardOneMap);
 		model.addAttribute("boardNo",boardNo);
@@ -61,7 +108,6 @@ public class BoardController {
 
 	@PostMapping("/board/modifyBoard")
 	public String getModifyBoard(Authentication auth,
-								Model model,
 								@ModelAttribute Board board,
 								@RequestParam(required = false) Integer boardNo,
 								@RequestParam("boardImg") MultipartFile boardImg,
@@ -70,11 +116,14 @@ public class BoardController {
 								HttpSession session
 								) {
 		log.debug(TeamColor.LJH + "updateBoard : " + board + TeamColor.RESET);
-		
-		 
+		 // category가 빈 값일 경우 null로 설정
+	    if (boardCategory.isEmpty()) {
+	        boardCategory = null;
+	    }
+		board.setBoardHeader(boardCategory);
 		String boardImagePath = session.getServletContext().getRealPath("/boardFile/");
 		try {
-			boardService.modifyBoard(board, boardImg, boardImagePath);
+			boardService.modifyBoardFile(board, boardImg, boardImagePath);
 		} catch (Exception e) {
 			log.debug(TeamColor.LJH + "게시글 수정 중 오류 발생 : " + e + TeamColor.RESET);
 			
@@ -90,13 +139,15 @@ public class BoardController {
 	public String getBoardOne(Model model,
 								Board board,
 								Authentication auth,
+								@RequestParam(defaultValue = "") String boardComment,
 								@RequestParam(required = false) Integer boardNo
 								) {
-	    Map<String, Object> map = new HashMap<>();
+	    // 댓글 셀렉트
+        List<Map<String, Object>> comments = boardService.getSelectBoardComment(boardNo);
+        log.debug("comment : " + comments);
 	   
 	    // 조회수 증가
 	    int successViewByBoard = boardService.addBoardView(board);
-	    
 	    // 상세 글보기 셀렉트
 	    Map<String, Object> boardOneMap = boardService.getListByBoardOne(boardNo);
 	    
@@ -115,7 +166,7 @@ public class BoardController {
 
 
 	    // 모델값  
-
+	    model.addAttribute("comment", comments);
 	    model.addAttribute("boardCategory", boardHeader);
 	    model.addAttribute("boardWriterNo",boardWriterNo);
 	    model.addAttribute("empNo", empNo);
@@ -136,6 +187,12 @@ public class BoardController {
 	        @RequestParam(value = "content", defaultValue = "빈 값입니다.") String boardContent,
 	        Authentication auth) {
 		  
+
+	    // category가 빈 값일 경우 null로 설정
+	    if (boardCategory.isEmpty()) {
+	        boardCategory = null;
+	    }
+	    
 	    // boardCategory를 boardHeader로 설정
 	    board.setBoardHeader(boardCategory);  // boardCategory 값이 boardHeader로 사용됨
 	    
@@ -145,7 +202,7 @@ public class BoardController {
 	    // 작성자ID 삽입 
 	    board.setBoardWriterNo(boardWriterNo);
 	    
-	  
+	    
 	    	String boardImagePath = session.getServletContext().getRealPath("/boardFile/");
 			try {
 				boardService.addBoardOne(board, boardImg, boardImagePath);
@@ -161,7 +218,9 @@ public class BoardController {
 	    	log.debug(TeamColor.LJH + "boardContent: " + board.getBoardContent() + TeamColor.RESET);
 	    }
 	   
-	    
+		
+		log.debug("카테고리값 : " + boardCategory);
+		
 	    // 카테고리 모델에 추가
 	    model.addAttribute("boardCategory", boardCategory);
 	    
@@ -188,9 +247,7 @@ public class BoardController {
 		List<Division> divisionList = boardService.getDivisionList();
 		
 		Map<String, Object> categoryByAddBoard = new HashMap<>();
-		
-		
-		
+	
 		categoryByAddBoard.put("division", divisionCode);
 		categoryByAddBoard.put("divisionList", divisionList);
 		
@@ -252,7 +309,7 @@ public class BoardController {
 	//	게시글 댓글 통합 삭제 /board/removeBoard 작업자 : 이준호
 	@GetMapping("/board/removeBoard")
 	public String removeBoard(@RequestParam Integer boardNo) {
-		
+	
 		boardService.deleteBoardWithComment(boardNo);
 		return "redirect:/board/boardList";
 	}

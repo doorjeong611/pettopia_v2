@@ -119,7 +119,38 @@
         background-color: #898989;
         color: #FFFFFF;
     }
-    .boardContentBox .boardFileBox {width: 100%; border: 1px solid red; margin: 1% 0; height: auto;}
+   	.boardFileBox {width: 100%; margin: 1% 0; height: auto;}
+   	.boardFileBox > img {margin: 0 auto;}
+   	
+   	
+   	.commentMainBox {width: 70%; height: auto; margin: 3% auto;}
+	.commentBox, .replyBox {
+    width: 100%;
+    height: auto; /* 두 박스가 자동 높이로 맞춰지도록 */
+    margin: 0 auto; /* 중앙 정렬 */
+    padding: 1%;
+}
+
+.commentBox textarea, .replyBox textarea {
+    height: 80px; /* 높이를 동일하게 설정 */
+    resize: none; /* 텍스트 영역 크기 조정 불가 */
+}
+	.commentBox button {float: right; margin-right: 2%; margin-top: 1%;}
+	.commentBox .btn {float: right; margin-right: 2%; margin-top: 1%;}
+	.lineBox {width: 100%; border: 1px solid #f1f5f9; margin: 0 auto;}
+	
+	.replyBox {
+	 width: 100%;
+    height: auto; /* 두 박스가 자동 높이로 맞춰지도록 */
+    margin: 0 auto; /* 중앙 정렬 */}
+	.commentMainBox .replyBox {padding: 3%; width: 100%; height: 100%; margin: 0 auto;}
+	.replyBox button {float: right; margin-right: 2%; margin-top: 1%;}
+	.replyBox .btn {float: right; margin-right: 2%; margin-top: 1%;}
+	.replyBox textarea {
+		height: 80px;
+		text-align: left;
+        resize: none;
+     }
 </style>
 
 <body class="text-base bg-body-bg text-body font-public dark:text-zink-100 dark:bg-zink-800 group-data-[skin=bordered]:bg-body-bordered group-data-[skin=bordered]:dark:bg-zink-700">
@@ -162,7 +193,14 @@
                             <div class="boardHeaderBox">
                                 <div>
                                     <label for="category_input" class="inline-block text-base">말머리</label>
-                                    <input type="text" class="form-input" id="category_input" name="category" value="${boardCategory == 'SG' ? '건의사항' : boardCategory == 'DS' ? '토론' : boardCategory == 'CT' ? '잡담' : boardCategory == 'IN' ? '정보' : boardCategory == 'QA' ? '질문' : boardCategory == 'CP' ? '칭찬' : ''}" readonly>
+                                    <input type="text" class="form-input" id="category_input" name="category" 
+       value="${boardCategory == 'SG' ? '건의사항' 
+              : boardCategory == 'DS' ? '토론' 
+              : boardCategory == 'CT' ? '잡담' 
+              : boardCategory == 'IN' ? '정보' 
+              : boardCategory == 'QA' ? '질문' 
+              : boardCategory == 'CP' ? '칭찬' 
+              : boardCategory == null ? '전체' : ''}" readonly>
                                 </div>
                                  <div>
                                     <label for="view_input" class="inline-block text-base">조회 수</label>
@@ -181,14 +219,16 @@
                             <div class="boardContentBox">
                                 <textarea class="form-input" readonly onfocus='this.blur();'>${boardMap.boardContent}</textarea>
 								
-								<div class="boardFileBox">
-									 <img src="${pageContext.request.contextPath}/boardFile/${boardMap.fileName}" alt="게시글 이미지">
-								</div>
+								<c:if test="${not empty boardMap.fileName}">
+  									<div class="boardFileBox">
+										 <img src="${pageContext.request.contextPath}/boardFile/${boardMap.fileName}" alt="게시글 이미지">
+									</div>
+								</c:if>
                                 <div class="contentFooterBox">
                                     <!-- 버튼 박스 -->
                                     <c:if test="${empNo == boardMap.boardWriterNo}">
                                         <div class="btnBox">
-                                            <div class="modifyBtn"><a href="${pageContext.request.contextPath}/board/modifyBoard">수정하기</a></div>
+                                            <div class="modifyBtn"><a href="${pageContext.request.contextPath}/board/modifyBoard?boardNo=${boardMap.boardNo}">수정하기</a></div>
                                             <div class="deleteBtn"><a href="${pageContext.request.contextPath}/board/removeBoard?boardNo=${boardMap.boardNo}">삭제하기</a></div>
                                             <div class="returnBtn"><a href="${pageContext.request.contextPath}/board/boardList">돌아가기</a></div>
                                         </div>
@@ -202,6 +242,41 @@
                             </div>
                         </div>
                        <!-- End card-body -->
+	                   	   
+          
+                   <!-- Start card-body -->
+						                    <div class="card-body">
+					    <div class="lineBox"></div>
+					
+					   <!-- 댓글 목록 (c:forEach) 부분) -->
+						<c:forEach var="c" items="${comment}">
+						    <c:if test="${c.commentDepth == 1}">
+						        <div class="commentMainBox">
+						            <div class="lineBox"></div>
+						            <div class="replyBox">
+						                <textarea class="form-input" name="commentContent" readonly>${c.commentContent}</textarea>
+						                <a class="btn replyBtn" href="javascript:void(0);" data-comment-id="${c.commentNo}">답글 작성</a>
+						            </div>
+						        </div>
+						    </c:if>
+						</c:forEach>
+					
+					    <div class="lineBox"></div>
+					
+					    <!-- 댓글 작성 폼 -->
+					    <div class="commentMainBox">
+					        <div class="commentBox">
+					            <form id="formCategory" action="${pageContext.request.contextPath}/board/boardComment" method="post">
+					                <input type="hidden" name="boardNo" value="${boardNo}">
+					                <textarea class="form-input" name="commentContent"></textarea>
+					                <button type="submit">댓글 작성</button>
+					            </form>
+					        </div>
+					    </div>
+					</div>
+                   <!-- End card-body -->
+                  
+                        
 	                   	   <!-- Start Footer -->
 					        <footer class="ltr:md:left-vertical-menu rtl:md:right-vertical-menu group-data-[sidebar-size=md]:ltr:md:left-vertical-menu-md group-data-[sidebar-size=md]:rtl:md:right-vertical-menu-md group-data-[sidebar-size=sm]:ltr:md:left-vertical-menu-sm group-data-[sidebar-size=sm]:rtl:md:right-vertical-menu-sm absolute right-0 bottom-0 px-4 h-14 group-data-[layout=horizontal]:ltr:left-0 group-data-[layout=horizontal]:rtl:right-0 left-0 border-t py-3 flex items-center dark:border-zink-600">
 					            <c:import url="/WEB-INF/view/inc/footer.jsp"></c:import>
@@ -228,6 +303,44 @@
     <script src="${pageContext.request.contextPath}/assets/libs/apexcharts/apexcharts.min.js"></script>
     <script src="${pageContext.request.contextPath}/assets/js/pages/dashboards-ecommerce.init.js"></script>
     <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
+     <script>
+     document.addEventListener("DOMContentLoaded", function() {
+    	    const replyButtons = document.querySelectorAll('.replyBtn');
+    	    
+    	    replyButtons.forEach(button => {
+    	        button.addEventListener('click', function() {
+    	            const commentId = button.getAttribute('data-comment-id');
+    	            
+    	            // 이미 답글 폼이 존재하는지 확인
+    	            const existingForm = button.parentNode.querySelector('.replyForm');
+    	            
+    	            if (existingForm) {
+    	                // 이미 답글 폼이 있다면, 다시 만들지 않고 그냥 보여줍니다.
+    	                existingForm.style.display = 'block';
+    	            } else {
+    	                // 새로운 답글 폼을 생성하여 해당 댓글 아래에 추가
+    	                const newReplyForm = document.createElement('div');
+    	                newReplyForm.classList.add('commentMainBox', 'replyForm');
+    	                newReplyForm.innerHTML = `
+    	                    <div class="commentBox">
+    	                        <form action="${pageContext.request.contextPath}/board/boardCommentDepth" method="post">
+    	                            <input type="hidden" name="boardNo" value="${boardNo}">
+    	                            <input type="hidden" name="parentCommentNo" value="${commentId}">
+    	                            <textarea class="form-input" name="commentContent" placeholder="답글을 작성하세요"></textarea>
+    	                            <button type="submit">대댓글 작성</button>
+    	                        </form>
+    	                    </div>
+    	                `;
+    	                
+    	                // 버튼 클릭한 댓글 아래에 폼 추가
+    	                button.parentNode.parentNode.appendChild(newReplyForm);
+    	                
+    	                // 답글 작성 폼을 추가한 후, 버튼은 숨김 처리
+    	                button.style.display = 'none';
+    	            }
+    	        });
+    	    });
+    	});
+    </script>
 </body>
-
 </html>

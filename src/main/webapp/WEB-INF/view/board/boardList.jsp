@@ -22,14 +22,19 @@
 	a,p {font-size: 14px;}
 	.listHeader {width: 100%; height: 50px; }
 	
-	.listHeader .selectBox{width: 8%;float: left; margin-right: 0.5%;}
+	.listHeader .selectBox{min-width: 12%; max-width:15%; float: left; margin-right: 0.5%;}
 	.listHeader .selectBox option:hover{background-color: #666;}
 	
 	
-	.listHeader .searchBox {max-width: 35%; min-width: 20%; float: left;}
+	.listHeader .searchBox {max-width: 40%; min-width: 20%; float: left;}
 	.listHeader .addBox {float: right;}
 	
 	.boardList {width: 100%;}
+
+	.emptyBox {border-radius:8px; position: relative;  width: 100%; background-color: #f1f5f9; height: 150px; margin: 2% auto;}
+	.emptyBox h3 {color:#94A3B8; text-align: center; padding-top: 3%; }
+	.emptyBox p {color:#94A3B8; font-size: 18px; text-align: center;margin-top: 1%; opacity: 0.7;}
+	
 
 </style>
 <body class="text-base bg-body-bg text-body font-public dark:text-zink-100 dark:bg-zink-800 group-data-[skin=bordered]:bg-body-bordered group-data-[skin=bordered]:dark:bg-zink-700">
@@ -105,14 +110,24 @@
                 	 	</div>
                 	 	<!-- listHeader 종료 -->
                 	 	
-                	 
-                	 <!-- boardList 시작 -->
-				<div class="boardList overflow-x-auto">
+                	 	
+                	  <!-- 결과값이 비어있다면 -->
+                	  <c:if test="${empty boardList}">
+                	  	<div class="emptyBox">
+                	  		<h3>현재 게시글이 없습니다. 새로운 게시글을 작성해 주세요.</h3>
+               	  			<p>사내 게시판 사용 시 올바른 게시판 문화 유지에 협조 부탁드립니다.</p>
+                	  	</div>
+                	  </c:if>
+                	  
+                	  
+                	  <!-- 결과값이 비어있지않다면 -->
+                	  <c:if test="${not empty boardList}">
+<div class="boardList overflow-x-auto">
 				    <table class="w-full whitespace-nowrap">
 				        <thead class="bg-slate-100">
 				            <tr>
 				                <th class="px-3.5 py-3 font-semibold border-b border-slate-200 ltr:text-center" style="width:15%;">글 번호</th>
-				                <th class="px-3.5 py-3 font-semibold border-b border-slate-200 ltr:text-center" style="width:45ㄴ%;">제목</th>
+				                <th class="px-3.5 py-3 font-semibold border-b border-slate-200 ltr:text-center" style="width:45%;">제목</th>
 				                <th class="px-3.5 py-3 font-semibold border-b border-slate-200 ltr:text-center" style="width:20%;">조회수</th>
 				                <th class="px-3.5 py-3 font-semibold border-b border-slate-200 ltr:text-center" style="width:20%;">작성일</th>
 				            </tr>
@@ -123,12 +138,22 @@
 				                <tr>
 				                    <td class="px-3.5 py-3 border-y border-slate-200 text-center">${bl.boardNo}</td>
 				                    <td class="px-3.5 py-3 border-y border-slate-200 text-center">
-				                        <a href="${pageContext.request.contextPath}/board/getBoardOne?boardNo=${bl.boardNo}">[${bl.boardHeader}]&nbsp;${bl.boardTitle}
+				                    	<c:if test="${bl.boardHeader == null}">
+										  <a href="${pageContext.request.contextPath}/board/getBoardOne?boardNo=${bl.boardNo}">${bl.boardTitle}
 				                            <!-- 댓글 수가 0이 아니면 댓글 수 표시 -->
 				                            <c:if test="${bl.commentCnt != 0}">
 				                                &nbsp;[${bl.commentCnt}]
 				                            </c:if>
 				                        </a>
+										</c:if>
+										<c:if test="${bl.boardHeader != null}">
+										  	<a href="${pageContext.request.contextPath}/board/getBoardOne?boardNo=${bl.boardNo}">[${bl.boardHeader}]&nbsp;${bl.boardTitle}
+					                            <!-- 댓글 수가 0이 아니면 댓글 수 표시 -->
+					                            <c:if test="${bl.commentCnt != 0}">
+					                                &nbsp;[${bl.commentCnt}]
+					                            </c:if>
+					                        </a>
+										</c:if>
 				                    </td>
 				                    <td class="px-3.5 py-3 border-y border-slate-200 text-center">${bl.boardView}</td>
 				                    <td class="px-3.5 py-3 border-y border-slate-200 text-center">${bl.createDate}</td>
@@ -172,6 +197,8 @@
 						<!-- 페이징 끝 -->
 					
 				</div>
+			  </c:if>
+                	 <!-- boardList 시작 -->
 				
 				
 				<!-- boardList 종료 -->
@@ -217,12 +244,14 @@ $(document).ready(function(){
         // currentPage를 1로 설정
         $("input[name='currentPage']").val(1);
 
+        // 검색어를 초기화
+        $("input[name='searchBoard']").val("");
+
         // #formCategory 폼을 제출하여 페이지를 갱신
         $('#formCategory').submit();
     });
-
-
 });
+</script>
 </script>
 </body>
 

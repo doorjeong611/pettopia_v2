@@ -2,6 +2,59 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.pettopia.board.BoardMapper">
 
+
+
+
+<!-- 댓글 작성 -->
+<insert id="insertComment" parameterType="com.example.pettopia.vo.BoardComment">
+INSERT INTO
+	board_comment (
+    board_no ,
+    comment_writer_no,
+    comment_content , 
+    comment_depth , 
+    create_datetime , 
+    update_datetime 
+) 
+VALUES
+	(#{boardNo},#{commentWriterNo},#{commentContent}, 1, NOW(), NOW());
+</insert>
+
+
+
+<!-- 대댓글 작성 -->
+<insert id="insertCommentDepth" parameterType="com.example.pettopia.vo.BoardComment">
+INSERT INTO
+	board_comment (
+    board_no ,
+    comment_writer_no,
+    comment_content , 
+    comment_depth , 
+    create_datetime , 
+    update_datetime 
+) 
+VALUES
+	(#{boardNo},#{commentWriterNo},#{commentContent},2, NOW(), NOW());
+</insert>
+
+<select id="selectBoardComment" parameterType="Integer">
+SELECT 
+    comment_no commentNo, 
+    board_no boardNo, 
+    comment_writer_no commentWriterNo, 
+    comment_content commentContent, 
+    comment_depth commentDepth, 
+    create_datetime createDatetime, 
+    update_datetime updateDatetime
+FROM 
+    board_comment
+WHERE 
+    board_no = #{boardNo}
+ORDER BY 
+    comment_depth ASC, create_datetime ASC;
+
+</select>
+
 <!-- 게시글 수정 -->
 <update id="updateBoard" parameterType="com.example.pettopia.vo.Board" >
 UPDATE
@@ -9,7 +62,7 @@ UPDATE
 SET
     board_title = #{boardTitle},
     board_header = #{boardHeader},
-    board_content = #{boardContent}
+    board_content = #{boardContent},
     update_datetime = NOW()
 WHERE
 	board_no = #{boardNo}
@@ -18,12 +71,12 @@ WHERE
 <!-- 이미지 파일 수정 -->
 <update id="updateBoardFile" parameterType="com.example.pettopia.vo.BoardFile">
 	UPDATE
-		boardFile
+		board_file
 	SET
 		origin_file_name = #{originFileName},
 		file_name = #{fileName},
 		file_ext = #{fileExt},
-		file_type = #{file_type},
+		file_type = #{fileType},
 		update_datetime = NOW()
 	WHERE
 		board_no = #{boardNo}
@@ -100,27 +153,27 @@ WHERE
 	
 	<!-- 게시글 작성 쿼리 /board/addBoard 작업자 : 이준호 -->
 	<insert id="insertBoard" parameterType="com.example.pettopia.vo.Board">
-	<selectKey resultType="Integer" keyProperty="boardNo" order="AFTER">
-			SELECT LAST_INSERT_ID()
-		</selectKey>
-		INSERT INTO board(
-			board_title,
-			board_writer_no,
-			board_content,
-			board_header,
-			board_like,
-			board_view,
-			create_datetime
-		) VALUES (
-			#{boardTitle},
-			#{boardWriterNo},
-			#{boardContent},
-			#{boardHeader},
-			0,
-			0,
-			NOW()
-		)
-	</insert>
+  <selectKey resultType="Integer" keyProperty="boardNo" order="AFTER">
+    SELECT LAST_INSERT_ID()
+  </selectKey>
+  INSERT INTO board(
+    board_title,
+    board_writer_no,
+    board_content,
+    board_header,
+    board_like,
+    board_view,
+    create_datetime
+  ) VALUES (
+    #{boardTitle},
+    #{boardWriterNo},
+    #{boardContent},
+    #{boardHeader, jdbcType=VARCHAR},  
+    0,
+    0,
+    NOW()
+  )
+</insert>
 	
 	<!-- 상세 글 보기 셀렉트 쿼리 /board/getBoardOne 작업자 : 이준호 -->
 	<select id="selectBoardByBoardOne" parameterType="map">
@@ -143,49 +196,49 @@ WHERE
 			 b.board_no = #{boardNo} 
 	</select>
 	
-	<select id="selectBoardList" parameterType="Map" resultType="Map">
-	    SELECT
-	        b.board_no AS boardNo,
-	        b.board_writer_no AS boardWriterNo,
-	        b.board_title AS boardTitle,
-	        COUNT(bc.comment_no) AS commentCnt,
-	        CASE
-	            WHEN b.board_header = 'IN' THEN '정보'
-	            WHEN b.board_header = 'SG' THEN '건의사항'
-	            WHEN b.board_header = 'DS' THEN '토론'
-	            WHEN b.board_header = 'CT' THEN '잡담'
-	            WHEN b.board_header = 'QA' THEN '질문'
-	            WHEN b.board_header = 'CP' THEN '칭찬'
-	            ELSE b.board_header
-	        END AS boardHeader,
-	        b.board_like AS boardLike,
-	        b.board_view AS boardView,
-	        DATE_FORMAT(b.create_datetime, '%y-%m-%d') AS createDate
-	    FROM
-	        board b
-	    LEFT JOIN
-	        board_comment bc ON b.board_no = bc.board_no
-	    <where>
-	        <!-- 전체 카테고리 확인 -->
-	        <if test="boardCategory == 'ALL'">
-	            AND b.board_header IN ('IN', 'SG', 'DS', 'CT', 'QA', 'CP')
-	        </if>
-	        <if test="boardCategory != 'ALL'">
-	            AND b.board_header = #{boardCategory}
-	        </if>
-	        <!-- 게시글 검색 조건 -->
-	        <if test="searchBoard != null and searchBoard != ''">
-	            AND (LOWER(b.board_title) LIKE CONCAT('%', LOWER(#{searchBoard}), '%') 
-           		OR LOWER(b.board_content) LIKE CONCAT('%', LOWER(#{searchBoard}), '%'))
-	        </if>
-	    </where>
-	    GROUP BY
-	        b.board_no
-	    ORDER BY
-	        boardNo DESC
-        LIMIT
-        	#{beginRow}, #{rowPerPage}
-	</select>
+<select id="selectBoardList" parameterType="Map" resultType="Map">
+    SELECT
+        b.board_no AS boardNo,
+        b.board_writer_no AS boardWriterNo,
+        b.board_title AS boardTitle,
+        COUNT(bc.comment_no) AS commentCnt,
+        CASE
+            WHEN b.board_header = 'IN' THEN '정보'
+            WHEN b.board_header = 'SG' THEN '건의사항'
+            WHEN b.board_header = 'DS' THEN '토론'
+            WHEN b.board_header = 'CT' THEN '잡담'
+            WHEN b.board_header = 'QA' THEN '질문'
+            WHEN b.board_header = 'CP' THEN '칭찬'
+            ELSE b.board_header
+        END AS boardHeader,
+        b.board_like AS boardLike,
+        b.board_view AS boardView,
+        DATE_FORMAT(b.create_datetime, '%y-%m-%d') AS createDate
+    FROM
+        board b
+    LEFT JOIN
+        board_comment bc ON b.board_no = bc.board_no
+    <where>
+        <!-- 전체 카테고리 확인 -->
+        <if test="boardCategory == 'ALL'">
+            AND (b.board_header IN ('IN', 'SG', 'DS', 'CT', 'QA', 'CP') OR b.board_header IS NULL)
+        </if>
+        <if test="boardCategory != 'ALL'">
+            AND b.board_header = #{boardCategory}
+        </if>
+        <!-- 게시글 검색 조건 -->
+        <if test="searchBoard != null and searchBoard != ''">
+            AND (LOWER(b.board_title) LIKE CONCAT('%', LOWER(#{searchBoard}), '%') 
+            OR LOWER(b.board_content) LIKE CONCAT('%', LOWER(#{searchBoard}), '%'))
+        </if>
+    </where>
+    GROUP BY
+        b.board_no
+    ORDER BY
+        boardNo DESC
+    LIMIT
+        #{beginRow}, #{rowPerPage}
+</select>
 	
 	<!-- 조회수 증가 /board/boardList 작업자 : 이준호 -->
 	<update id="updateBoardView" parameterType="com.example.pettopia.vo.Board" >
