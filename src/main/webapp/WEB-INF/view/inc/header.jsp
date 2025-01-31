@@ -17,33 +17,183 @@
 
 <style>
 .message-container {
-    width: 170px; /* 원하는 너비로 설정 */
-    overflow: hidden; /* 자식 요소의 넘침을 숨김 */
+    width: 170px; 
+    overflow: hidden; 
 }
 
 .message-title {
-    white-space: nowrap; /* 텍스트 줄 바꿈 방지 */
-    overflow: hidden; /* 넘친 텍스트 숨기기 */
-    text-overflow: ellipsis; /* 텍스트가 넘칠 경우 '...' 표시 */
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
 }
 </style>
 
 
-
+<!-- Jquery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+ 
 
 <!-- dayjs -->
 <script src="https://cdn.jsdelivr.net/npm/dayjs@1.10.7/dayjs.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/dayjs@1.10.7/locale/ko.js"></script>
 
-<script type="text/javascript">
-document.addEventListener('DOMContentLoaded', function () {
-    // 모든 .date-output 요소에 대해 날짜 포맷 처리
-    document.querySelectorAll('.date-output').forEach(function (element) {
-        const dateStr = element.getAttribute('data-date');  // data-date 속성에서 날짜를 읽음
-        const formattedDate = dayjs(dateStr).locale('ko').format('dddd hh:mm A');  // '수요일 03:42 PM' 형식으로
-        element.textContent = formattedDate;  // 포맷된 날짜를 요소에 삽입
+
+
+<script>
+$(document).ready(function () {
+	
+	/* MESSAGE */
+	/* 안 읽은 쪽지 수 */
+    function updateNotReadYetCount() {
+        $.ajax({
+            url: '/pettopia/rest/notReadYet', 
+            method: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                console.log("response : " + response);
+                
+                // 읽지 않은 쪽지 개수를 업데이트
+                if (response != '0') {
+                    $("#notReadYetCount").text(response).show(); // 개수 표시
+                    $("#notReadYetCnt").text(response).show(); // 개수 표시
+                } else {
+                    $("#notReadYetCount").hide(); // 0이면 숨김
+                    $("#notReadYetCnt").hide(); // 0이면 숨김
+                }
+            },
+            error: function (error) {
+                alert('안 읽은 쪽지 ajax 실패');
+            }
+        });
+    }
+
+    updateNotReadYetCount(); // 페이지 로드 시 실행
+    setInterval(updateNotReadYetCount, 1000 * 60 * 60); // 1시간마다 최신 데이터 가져오기
+	
+	/* 안 읽은 메세지 내역 */
+	function updateNotReadMessageList() {
+	    $.ajax({
+	        url: '/pettopia/rest/messageNotiList', 
+	        method: 'GET',
+	        dataType: 'json',
+	        success: function (response) {
+	            console.log("response : " + response);
+	            
+	            var messageList = $('#message-list'); 
+	
+	            // 기존 내용 지우기
+	            messageList.empty();
+	            
+	            if(response.length == 0){
+	                messageList.append('<div> 모든 메시지를 확인하셨습니다. </div>');
+	            }
+	
+	            // 받은 데이터로 목록 추가
+	            response.forEach(function (messageMap) {
+	                var messageNo = messageMap.messageNo;  
+	                var senderEmpName = messageMap.senderEmpName;  
+	                var messageTitle = messageMap.messageTitle;  
+	                var createDateTime = messageMap.createDateTime;  
+	                var arrivalAlert = messageMap.arrivalAlert; 
+	                var fileName = messageMap.fileName || 'placeholder.png';  
+	
+	                var messageItem = '<a href="/message/messageOne?messageNo=' + messageNo + '" class="flex gap-3 p-2 product-item hover:bg-slate-50 dark:hover:bg-zink-500 follower">' +
+	                    '<div class="w-10 h-10 rounded-md shrink-0 bg-slate-100">' +
+	                        '<img src="${pageContext.request.contextPath}/employeeFile/' + fileName + '" alt="" class="rounded-md">' +
+	                    '</div>' +
+	                    '<div class="grow">' +
+	                        '<div class="grid grid-cols-2 gap-6">' +
+	                            '<div>' +
+	                                '<h6 class="mb-1 font-medium"><b>' + senderEmpName + '</b></h6>' +
+	                            '</div>' +
+	                            '<div class="flex justify-end items-center gap-2 text-xs text-slate-500 shrink-0 dark:text-zink-300">' +
+	                                '<div class="w-1.5 h-1.5 bg-custom-500 rounded-full"></div>' + arrivalAlert +
+	                            '</div>' +
+	                        '</div>' +
+	                        '<div class="grid grid-cols-2 gap-6">' +
+	                            '<div class="message-container">' +
+	                                '<p class="mb-0 text-sm text-slate-500 dark:text-zink-300 message-title">' + messageTitle + '</p>' +
+	                            '</div>' +
+	                            '<div>' +
+	                                '<p class="flex justify-end mb-0 text-sm text-slate-500 dark:text-zink-300">' +
+	                                    '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="clock" class="lucide lucide-clock inline-block w-3.5 h-3.5 mr-1 mt-1">' +
+	                                        '<circle cx="12" cy="12" r="10"></circle>' +
+	                                        '<polyline points="12 6 12 12 16 14"></polyline>' +
+	                                    '</svg>' +
+	                                    '<span class="align-middle date-output" data-date="' + createDateTime + '" style="margin-top : 1.5px;">' + createDateTime + '</span>' +
+	                                '</p>' +
+	                            '</div>' +
+	                        '</div>' +
+	                    '</div>' +
+	                '</a>' +
+	                '<hr>';
+	                
+	                // 메시지 항목을 목록에 추가
+	                messageList.append(messageItem);
+	            });
+	
+	            // 메시지 목록이 업데이트된 후, 날짜 포맷 처리
+	            document.querySelectorAll('.date-output').forEach(function (element) {
+	                const dateStr = element.getAttribute('data-date');  // data-date 속성에서 날짜를 읽음
+	                const formattedDate = dayjs(dateStr).locale('ko').format('dddd hh:mm A');  // '수요일 03:42 PM' 형식으로
+	                element.textContent = formattedDate;  // 포맷된 날짜를 요소에 삽입
+	            });
+	        },
+	        error: function (error) {
+	            alert('안 읽은 쪽지 리스트 ajax 실패');
+	        }
+	    });
+	}
+
+	
+
+	// 페이지 로드 시 한 번 호출하고, 주기적으로 갱신
+	updateNotReadMessageList();
+	setInterval(updateNotReadMessageList, 1000 * 60 * 60); // 1시간마다 최신 데이터 가져오기
+	
+	
+	
+/* --------------------------------------------------------------------------------------------------------------------------------------  */
+	
+	/* NOTIFICATION */
+	/* 전체 */
+    $("#allNoti").click(function () {
+        $("#schedule").removeClass("active"); 
+        $("#notice").removeClass("active"); 
+        $("#document").removeClass("active"); 
+
+        $("#allNoti").addClass("active"); 
     });
-});
+    
+	/* 일정 */
+    $("#schedule").click(function () {
+        $("#allNoti").removeClass("active"); 
+        $("#notice").removeClass("active"); 
+        $("#document").removeClass("active"); 
+
+        $("#schedule").addClass("active"); 
+    });
+    
+	/* 공지사항 */
+    $("#notice").click(function () {
+        $("#schedule").removeClass("active"); 
+        $("#allNoti").removeClass("active"); 
+        $("#document").removeClass("active"); 
+
+        $("#notice").addClass("active"); 
+    });
+    
+	/* 결재 */
+    $("#document").click(function () {
+        $("#schedule").removeClass("active"); 
+        $("#notice").removeClass("active"); 
+        $("#allNoti").removeClass("active"); 
+
+        $("#document").addClass("active"); 
+    });
+    
+    
+});	
 </script>
 
 <div class="layout-width">
@@ -77,7 +227,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     <div class="flex gap-3 ms-auto">
                     
                     
-    					<!-- bell-ring -->
+    					<!-- notification -->
                         <div class="relative flex items-center dropdown h-header">
                             <button type="button" class="inline-flex justify-center relative items-center p-0 text-topbar-item transition-all w-[37.5px] h-[37.5px] duration-200 ease-linear bg-topbar rounded-md dropdown-toggle btn hover:bg-topbar-item-bg-hover hover:text-topbar-item-hover group-data-[topbar=dark]:bg-topbar-dark group-data-[topbar=dark]:hover:bg-topbar-item-bg-hover-dark group-data-[topbar=dark]:hover:text-topbar-item-hover-dark group-data-[topbar=brand]:bg-topbar-brand group-data-[topbar=brand]:hover:bg-topbar-item-bg-hover-brand group-data-[topbar=brand]:hover:text-topbar-item-hover-brand group-data-[topbar=dark]:dark:bg-zink-700 group-data-[topbar=dark]:dark:hover:bg-zink-600 group-data-[topbar=brand]:text-topbar-item-brand group-data-[topbar=dark]:dark:hover:text-zink-50 group-data-[topbar=dark]:dark:text-zink-200 group-data-[topbar=dark]:text-topbar-item-dark" id="notificationDropdown" data-bs-toggle="dropdown">
                                 <i data-lucide="bell-ring" class="inline-block w-5 h-5 stroke-1 fill-slate-100 group-data-[topbar=dark]:fill-topbar-item-bg-hover-dark group-data-[topbar=brand]:fill-topbar-item-bg-hover-brand"></i>
@@ -89,23 +239,25 @@ document.addEventListener('DOMContentLoaded', function () {
                             <div class="absolute z-50 hidden ltr:text-left rtl:text-right bg-white rounded-md shadow-md !top-4 dropdown-menu min-w-[20rem] lg:min-w-[26rem] dark:bg-zink-600" aria-labelledby="notificationDropdown">
                                 <div class="p-4">
                                     <h6 class="mb-4 text-16">Notifications <span class="inline-flex items-center justify-center w-5 h-5 ml-1 text-[11px] font-medium border rounded-full text-white bg-orange-500 border-orange-500">15</span></h6>
-                                    <ul class="flex flex-wrap w-full p-1 mb-2 text-sm font-medium text-center rounded-md filter-btns text-slate-500 bg-slate-100 nav-tabs dark:bg-zink-500 dark:text-zink-200" data-filter-target="notification-list">
+                                    <ul id="notificationNav" class="flex flex-wrap w-full p-1 mb-2 text-sm font-medium text-center rounded-md filter-btns text-slate-500 bg-slate-100 nav-tabs dark:bg-zink-500 dark:text-zink-200" data-filter-target="notification-list">
                                         <li class="grow">
-                                            <a href="javascript:void(0);" data-filter="invite" class="inline-block nav-link px-1.5 w-full py-1 text-xs transition-all duration-300 ease-linear rounded-md text-slate-500 border border-transparent [&.active]:bg-white [&.active]:text-custom-500 hover:text-custom-500 active:text-custom-500 dark:text-zink-200 dark:hover:text-custom-500 dark:[&.active]:bg-zink-600 -mb-[1px]">전체</a>
+                                            <div id="allNoti" class="inline-block nav-link px-1.5 w-full py-1 text-xs transition-all duration-300 ease-linear rounded-md text-slate-500 border border-transparent [&.active]:bg-white [&.active]:text-custom-500 hover:text-custom-500 active:text-custom-500 dark:text-zink-200 dark:hover:text-custom-500 dark:[&.active]:bg-zink-600 -mb-[1px]">전체</div>
                                         </li>
                                         <li class="grow">
-                                            <a href="javascript:void(0);" data-filter="all" class="inline-block nav-link px-1.5 w-full py-1 text-xs transition-all duration-300 ease-linear rounded-md text-slate-500 border border-transparent [&.active]:bg-white [&.active]:text-custom-500 hover:text-custom-500 active:text-custom-500 dark:text-zink-200 dark:hover:text-custom-500 dark:[&.active]:bg-zink-600 -mb-[1px] active">일정</a>
+                                            <div id="schedule" class="inline-block nav-link px-1.5 w-full py-1 text-xs transition-all duration-300 ease-linear rounded-md text-slate-500 border border-transparent [&.active]:bg-white [&.active]:text-custom-500 hover:text-custom-500 active:text-custom-500 dark:text-zink-200 dark:hover:text-custom-500 dark:[&.active]:bg-zink-600 -mb-[1px] ">일정</div>
                                         </li>
                                         <li class="grow">
-                                            <a href="javascript:void(0);" data-filter="mention" class="inline-block nav-link px-1.5 w-full py-1 text-xs transition-all duration-300 ease-linear rounded-md text-slate-500 border border-transparent [&.active]:bg-white [&.active]:text-custom-500 hover:text-custom-500 active:text-custom-500 dark:text-zink-200 dark:hover:text-custom-500 dark:[&.active]:bg-zink-600 -mb-[1px]">결재</a>
+                                            <div id="document" class="inline-block nav-link px-1.5 w-full py-1 text-xs transition-all duration-300 ease-linear rounded-md text-slate-500 border border-transparent [&.active]:bg-white [&.active]:text-custom-500 hover:text-custom-500 active:text-custom-500 dark:text-zink-200 dark:hover:text-custom-500 dark:[&.active]:bg-zink-600 -mb-[1px] " >결재</div>
                                         </li>
                                         <li class="grow">
-                                            <a href="javascript:void(0);" data-filter="follower" class="inline-block nav-link px-1.5 w-full py-1 text-xs transition-all duration-300 ease-linear rounded-md text-slate-500 border border-transparent [&.active]:bg-white [&.active]:text-custom-500 hover:text-custom-500 active:text-custom-500 dark:text-zink-200 dark:hover:text-custom-500 dark:[&.active]:bg-zink-600 -mb-[1px]">공지사항</a>
+                                            <div id="notice" class="inline-block nav-link px-1.5 w-full py-1 text-xs transition-all duration-300 ease-linear rounded-md text-slate-500 border border-transparent [&.active]:bg-white [&.active]:text-custom-500 hover:text-custom-500 active:text-custom-500 dark:text-zink-200 dark:hover:text-custom-500 dark:[&.active]:bg-zink-600 -mb-[1px]">공지사항</div>
                                         </li>
                                     </ul>
     
                                 </div>
-                                <div data-simplebar class="max-h-[350px]">
+                                
+                                <!-- 일정 -->
+                                <div data-simplebar class="max-h-[350px]" style="border:solid 1px red;">
                                     <div class="flex flex-col gap-1" id="notification-list">
                                         <a href="#!" class="flex gap-3 p-4 product-item hover:bg-slate-50 dark:hover:bg-zink-500 follower">
                                             <div class="w-10 h-10 rounded-md shrink-0 bg-slate-100">
@@ -163,6 +315,32 @@ document.addEventListener('DOMContentLoaded', function () {
                                         </a>
                                     </div>
                                 </div>
+                                <!-- 끝 : 일정 -->
+                                
+                                <!-- 결재 -->
+                                <div data-simplebar class="max-h-[350px] hidden" style="border:solid 1px green;">
+                                    <div class="flex flex-col gap-1" id="notification-list">
+                                        <a href="#!" class="flex gap-3 p-4 product-item hover:bg-slate-50 dark:hover:bg-zink-500 follower">
+                                            <div class="w-10 h-10 rounded-md shrink-0 bg-slate-100">
+                                                <img src="${pageContext.request.contextPath}/assets/images/avatar-3.png" alt="" class="rounded-md">
+                                            </div>
+                                            <div class="grow">
+                                                <h6 class="mb-1 font-medium"><b>HOMEZONE</b> followed you</h6>
+                                                <p class="mb-0 text-sm text-slate-500 dark:text-zink-300"><i data-lucide="clock" class="inline-block w-3.5 h-3.5 mr-1"></i> <span class="align-middle">Wednesday 03:42 PM</span></p>
+                                            </div>
+                                            <div class="flex items-center self-start gap-2 text-xs text-slate-500 shrink-0 dark:text-zink-300">
+                                                <div class="w-1.5 h-1.5 bg-custom-500 rounded-full"></div> 4 sec
+                                            </div>
+                                        </a>
+                                       
+                                    </div>
+                                </div>
+                                <!-- 끝 : 결재 -->
+                                
+                                
+                                
+                                
+                                
                             </div>
                         </div>
                         
@@ -177,49 +355,17 @@ document.addEventListener('DOMContentLoaded', function () {
                             </button>
                             <div class="absolute z-50 hidden ltr:text-left rtl:text-right bg-white rounded-md shadow-md !top-4 dropdown-menu min-w-[20rem] lg:min-w-[26rem] dark:bg-zink-600" aria-labelledby="notificationDropdown">
                                 <div class="p-4">
-                                    <h6 class="mb-4 text-16">Message <span class="inline-flex items-center justify-center w-5 h-5 ml-1 text-[11px] font-medium border rounded-full text-white bg-orange-500 border-orange-500">${loginEmp.notReadYet}</span></h6>
+                                    <h6 class="mb-4 text-16">Message <span id="notReadYetCount" class="inline-flex items-center justify-center w-5 h-5 ml-1 text-[11px] font-medium border rounded-full text-white bg-orange-500 border-orange-500"></span></h6>
                                     <ul class="flex flex-wrap w-full p-1 mb-2 text-sm font-medium text-center rounded-md filter-btns text-slate-500 bg-slate-100 nav-tabs dark:bg-zink-500 dark:text-zink-200" data-filter-target="notification-list">
                                         <li class="grow">
                                             <a href="${pageContext.request.contextPath}/message/messageList"  data-filter="all" class="inline-block nav-link px-1.5 w-full py-1 text-xs transition-all duration-300 ease-linear rounded-md text-slate-500 border border-transparent [&.active]:bg-white [&.active]:text-custom-500 hover:text-custom-500 active:text-custom-500 dark:text-zink-200 dark:hover:text-custom-500 dark:[&.active]:bg-zink-600 -mb-[1px] active">View All</a>
                                         </li>
                                     </ul>
                                     <div style="max-height:27rem;">
-                                    	<div class="flex flex-col gap-1" id="notification-list">
-                                    	
-                                    		<c:forEach var="message" items="${loginEmp.messageNotiList}">
-												<a href="${pageContext.request.contextPath}/message/messageOne?messageNo=${message.messageNo}" class="flex gap-3 p-2 product-item hover:bg-slate-50 dark:hover:bg-zink-500 follower">
-												     <div class="w-10 h-10 rounded-md shrink-0 bg-slate-100">
-												         <img src="${pageContext.request.contextPath}/employeeFile/${message.fileName != null? message.fileName : 'placeholder.png'}" alt="" class="rounded-md">
-												     </div>
-												     <div class="grow">
-														<div class="grid grid-cols-2 gap-6">
-															<div>
-															    <h6 class="mb-1 font-medium"><b>${message.senderEmpName}</b></h6>
-															</div>
-															<div class="flex justify-end items-center gap-2 text-xs text-slate-500 shrink-0 dark:text-zink-300">
-															    <div class="w-1.5 h-1.5 bg-custom-500 rounded-full"></div>${message.arrivalAlert}
-															</div>
-														</div>
-												        <div class="grid grid-cols-2 gap-6">
-												        	<div class="message-container">
-													        	<p class="mb-0 text-sm text-slate-500 dark:text-zink-300 message-title">${message.messageTitle}</p>
-													        </div>
-													        <div>
-													        	<p class="flex justify-end mb-0 text-sm text-slate-500 dark:text-zink-300 "><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="clock" class=" lucide lucide-clock inline-block w-3.5 h-3.5 mr-1 mt-1"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg><span class="align-middle date-output" data-date="${message.createDateTime}" style="margin-top : 1.5px;">${message.createDateTime}</span></p>
-												     		</div>
-												     	</div>
-												     </div>
-  
-												</a>
-												<hr>
-	                                        </c:forEach>
-	                                        
-	                                        
+                                    	<div class="flex flex-col gap-1" id="message-list">
+
                                     	</div>
                                     </div>
-                                    
-                                    
-    
                                 </div>
                                 
                                 <div data-simplebar class="max-h-[350px]">
@@ -257,7 +403,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                     </li>
                                     <li>
                                         <a href="${pageContext.request.contextPath}/message/messageList" class="block ltr:pr-4 rtl:pl-4 py-1.5 text-base font-medium transition-all duration-200 ease-linear text-slate-600 dropdown-item hover:text-custom-500 focus:text-custom-500 dark:text-zink-200 dark:hover:text-custom-500 dark:focus:text-custom-500" href="apps-mailbox.html"><i data-lucide="mail" class="inline-block size-4 ltr:mr-2 rtl:ml-2"></i> Message 
-                                        	<span class="inline-flex items-center justify-center w-5 h-5 ltr:ml-2 rtl:mr-2 text-[11px] font-medium border rounded-full text-white bg-red-500 border-red-500">${loginEmp.notReadYet}</span>
+                                        	<span id="notReadYetCnt" class="inline-flex items-center justify-center w-5 h-5 ltr:ml-2 rtl:mr-2 text-[11px] font-medium border rounded-full text-white bg-red-500 border-red-500"></span>
                                         </a>
                                     </li>
                                     <li class="pt-2 mt-2 border-t border-slate-200 dark:border-zink-500">
