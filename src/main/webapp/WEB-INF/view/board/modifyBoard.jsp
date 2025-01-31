@@ -96,7 +96,11 @@
 	.fileBtnRightBox button{
 	float: right;
 	}
-	.boardContentBox .boardFileBox {width: 100%; border: 1px solid red; margin: 1% 0; height: auto;}
+	.boardContent.boardFileBox { margin: 1% 0;}
+	.boardContent .boardFileBox > img {
+	max-width: 100%;
+    max-height: 300px;
+    object-fit: contain;}
 	
 </style>
 <body class="text-base bg-body-bg text-body font-public dark:text-zink-100 dark:bg-zink-800 group-data-[skin=bordered]:bg-body-bordered group-data-[skin=bordered]:dark:bg-zink-700">
@@ -125,7 +129,7 @@
                             <a href="${pageContext.request.contextPath}/board/boardList" class="text-slate-400 dark:text-zink-200 ">사내 게시판</a>
                         </li>
                          <li class="text-slate-700 dark:text-zink-100 before:text-slate-400 dark:text-zink-200">
-                            게시글 수정하기 ${boardMap.boardTitle}
+                            게시글 수정하기
                         </li>
                     </ul>
                 </div>
@@ -137,17 +141,18 @@
                 	 	
                         
 	                    <!-- 게시글 작성 -->
-                        <form id="formCategory" action="${pageContext.request.contextPath}/board/addBoard" method="post" enctype="multipart/form-data" >
+                        <form id="formCategory" action="${pageContext.request.contextPath}/board/modifyBoard" method="post" enctype="multipart/form-data" >
+	                        <input type="hidden" name="boardNo" value="${boardMap.boardNo}">
 	                        <!-- boardHeader 시작 -->
 	                        <div class="boardHeader">
 		                        <div class="inputBox">
 		                        	<div class="categoryBox">
 		                        		<label for="boardCategory">말머리</label>
-			                        		<select id="boardCategory"  data-category="${boardCategory}" name="category"  class="form-select border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200">
-												<option value="ALL" ${boardCategory == 'ALL' ? 'selected' : ''}>전체</option>
+			                        		<select id="boardCategory" name="category"  class="form-select border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200">
+												<option value="" ${boardCategory == '' ? 'selected' : ''}>전체</option>
 												<option value="SG" ${boardCategory == 'SG' ? 'selected' : ''}>건의사항</option>
 												<option value="DS" ${boardCategory == 'DS' ? 'selected' : ''}>토론</option>
-												<option value="CT" ${boardCategory == 'CT' ? 'selected' : ''}>잡답</option>
+												<option value="CT" ${boardCategory == 'CT' ? 'selected' : ''}>잡담</option>
 												<option value="IN" ${boardCategory == 'IN' ? 'selected' : ''}>정보</option>
 												<option value="QA" ${boardCategory == 'QA' ? 'selected' : ''}>질문</option>
 												<option value="CP" ${boardCategory == 'CP' ? 'selected' : ''}>칭찬</option>
@@ -155,7 +160,7 @@
 								</div>
 			                        <div class="titleBox">
 			                        	<label for="boardTitle">제목</label>
-			                        		<input type="text" class="form-input" name="boardTitle" value="${boardmap.boardTitle}">
+			                        		<input type="text" class="form-input" name="boardTitle" value="${boardMap.boardTitle}">
 		                        	</div>
                         		</div>
 	                        </div>
@@ -169,19 +174,18 @@
 		                        	<div class="fileBox">
 			                        	<div class="fileContentBox">
 			                        		<label for="boardImg">이미지 첨부</label>
-		                        			<input type="file" name="boardImg" class="form-file" multiple="multiple">
+		                        			<input type="file" name="boardImg" class="form-file">
 			                        	</div>
-		                        		<div class="boardFileBox">
-											 <img src="${pageContext.request.contextPath}/boardFile/${boardMap.fileName}" alt="게시글 이미지">
-										</div>
 			                        	<div class="fileBtnBox">
 				                        	<div class="fileBtnRightBox">
 				                        		<button type="button" class="text-red-500 cancel-btn bg-white btn hover:text-red-500 hover:bg-red-100 focus:text-red-500 focus:bg-red-100 active:text-red-500 active:bg-red-100 dark:bg-zink-700 dark:hover:bg-red-500/10 dark:focus:bg-red-500/10 dark:active:bg-red-500/10">파일삭제</button>
 		                        			</div>
 		                        		</div>
-			                        	
-		                        	
                         			</div>
+		                        		<div class="boardFileBox">
+											 <img src="${pageContext.request.contextPath}/boardFile/${boardMap.fileName}" alt="게시글 이미지">
+										</div>
+			                        	
 	                        	</div>
                         	</div>
                         	<!-- boardContent 종료 -->
@@ -228,31 +232,7 @@
 <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
 <!-- jQuery library -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-    // select 요소 가져오기
-    const selectElement = document.getElementById("boardCategory");
 
-    // select 태그의 data-category 값 가져오기
-    const previousCategory = selectElement.getAttribute("data-category");
-
-    // 이전에 선택했던 값으로 설정
-    if (previousCategory) {
-        selectElement.value = previousCategory;
-    }
-});
-
-   document.querySelector("#formCategory").addEventListener("submit", function(event) {
-        var boardCategory = document.getElementById("boardCategory").value;
-        
-        // 말머리 값이 선택되지 않았으면 경고창 띄우기
-        if (boardCategory == "") {
-            event.preventDefault();  // 폼 제출 막기
-            alert("말머리를 선택해주세요.");
-        }
-    });
-   
-    </script>
 </body>
 
 </html>

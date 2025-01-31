@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.pettopia.boardcomment.CommentMapper;
 import com.example.pettopia.util.TeamColor;
 import com.example.pettopia.vo.Board;
+import com.example.pettopia.vo.BoardComment;
 import com.example.pettopia.vo.BoardFile;
 import com.example.pettopia.vo.Division;
 
@@ -27,8 +28,22 @@ public class BoardService {
 	@Autowired BoardMapper boardMapper;
 	@Autowired CommentMapper commentMapper;
 	
+	
+	// 댓글 작성
+	public int addComment(BoardComment boardComment) {
+		return boardMapper.insertComment(boardComment);
+	}
+	// 대댓글 작성
+	public int addCommentDepth(BoardComment boardComment) {
+		return boardMapper.insertCommentDepth(boardComment);
+	}
+	// 댓글 셀렉트
+	List<Map<String,Object>> getSelectBoardComment(Integer boardNo){
+		return boardMapper.selectBoardComment(boardNo);
+	};
+	
 	// 게시글 수정
-	public void modifyBoard (Board board, MultipartFile boardImg, String boardImagePath) throws Exception {
+	public void modifyBoardFile (Board board, MultipartFile boardImg, String boardImagePath) throws Exception {
 		int updateBoard = boardMapper.updateBoard(board);
 		if(updateBoard == 0) {
 			throw new RuntimeException("게시글 수정 실패");
@@ -84,6 +99,11 @@ public class BoardService {
 		
 		File saveBoardFile = new File(boardImagePath,boardFileName);
 		boardImg.transferTo(saveBoardFile);
+		
+		
+		
+		
+		
 		log.debug(TeamColor.LJH + "Path ========> " + saveBoardFile.getAbsolutePath() + TeamColor.RESET);
 	       
 		return board.getBoardNo();
@@ -135,6 +155,7 @@ public class BoardService {
 	
 //	게시글 댓글 통합 삭제 /board/removeBoard 작업자 : 이준호 
 	public void deleteBoardWithComment(int boardNo) {
+		boardMapper.deleteBoardFile(boardNo);
 		// 댓글 삭제
 		commentMapper.deleteComment(boardNo);
 		// 게시글 삭제 

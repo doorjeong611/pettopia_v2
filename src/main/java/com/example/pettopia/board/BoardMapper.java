@@ -6,12 +6,20 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.example.pettopia.vo.Board;
+import com.example.pettopia.vo.BoardComment;
 import com.example.pettopia.vo.BoardFile;
 import com.example.pettopia.vo.Division;
 import com.example.pettopia.vo.RoomImg;
 
 @Mapper
 public interface BoardMapper {
+	
+// 대댓글 작성
+	int insertComment(BoardComment boardComment);
+// 댓글 작성
+	int insertCommentDepth(BoardComment boardComment);
+// 댓글 셀렉트
+	List<Map<String, Object>> selectBoardComment(Integer boardNo);
 // 게시글 수정
 	int updateBoard(Board board);
 	
