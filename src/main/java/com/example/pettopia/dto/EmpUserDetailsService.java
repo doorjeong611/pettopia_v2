@@ -54,7 +54,7 @@ public class EmpUserDetailsService implements UserDetailsService {
 		return details;
 	}
 	
-	private List<Map<String, Object>> processMessageList(List<Map<String, Object>> messageList) {
+	public List<Map<String, Object>> processMessageList(List<Map<String, Object>> messageList) {
 		
 				List<Map<String, Object>> messageNotiList = new ArrayList<>();
 				

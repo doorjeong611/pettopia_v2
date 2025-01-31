@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.pettopia.common.MainMapper">
+
+	<!-- selectTodayScheduleByAllDay : 오늘 일정 조회(allDay) -->
+	<select id="selectTodayScheduleByAllDay" parameterType="String" resultType="com.example.pettopia.vo.Schedule">
+		SELECT schedule_no scheduleNo, schedule_title scheduleTitle, schedule_type scheduleType, all_day allDay, 
+			   start_datetime startDatetime, end_datetime endDatetime
+		FROM `schedule` WHERE emp_no = #{empNo} 
+			  AND CURDATE() BETWEEN DATE(`start_datetime`) AND DATE(`end_datetime`)
+		ORDER BY start_datetime ASC;
+	</select>
+
+
+</mapper>
