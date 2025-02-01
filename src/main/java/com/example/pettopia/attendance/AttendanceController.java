@@ -91,7 +91,7 @@ public class AttendanceController {
 	    attendanceList = attendanceService.getAttendance(attendance);
 	    
 	    model.addAttribute("attendanceList", attendanceList);
-		return "common/petTopiaMain";
+		return "redirect:/common/petTopiaMain";
 	}
 	
 	// 오자윤 : /common/petTopiaMain 퇴근등록
@@ -132,7 +132,7 @@ public class AttendanceController {
         List<Attendance> attendanceList = attendanceService.getAttendance(attendance);
         model.addAttribute("attendanceList", attendanceList);
         log.debug(TeamColor.OJY + "attendanceList------> " + attendanceList + TeamColor.RESET);
-        return "common/petTopiaMain";
+        return "redirect:/common/petTopiaMain";
     }
     
     // 오자윤 : 관리자 - 직원 근태조회

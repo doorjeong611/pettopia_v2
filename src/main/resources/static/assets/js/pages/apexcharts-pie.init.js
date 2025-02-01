@@ -68,12 +68,12 @@ function getChartColorsArray(chartId) {
 
 //simple pie
 var options = {
-    series: [44, 55, 13, 43, 22],
+    series: [45, 55],
     chart: {
-        height: 350,
+        height: 250,
         type: 'pie',
     },
-    labels: ['Team A', 'Team B', 'Team C', 'Team D', 'Team E'],
+    labels: ['Male', 'Female'],
     colors: getChartColorsArray("simplePie"),
     legend: {
         position: 'bottom'

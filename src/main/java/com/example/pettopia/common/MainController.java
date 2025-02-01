@@ -1,7 +1,6 @@
 package com.example.pettopia.common;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -13,9 +12,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import com.example.pettopia.attendance.AttendanceSerivce;
 import com.example.pettopia.dto.EmpUserDetails;
-import com.example.pettopia.dto.EmpUserDetailsService;
 import com.example.pettopia.employee.EmployeeService;
-import com.example.pettopia.message.MessageMapper;
+import com.example.pettopia.message.MessageService;
+import com.example.pettopia.notice.NoticeService;
 import com.example.pettopia.util.TeamColor;
 import com.example.pettopia.vo.Attendance;
 import com.example.pettopia.vo.Schedule;
@@ -29,7 +28,8 @@ public class MainController {
 	@Autowired AttendanceSerivce attendanceService;
 	@Autowired EmployeeService employeeService;
 	@Autowired MainService mainService;
-	@Autowired MessageMapper messageMapper;
+	@Autowired MessageService messageService;
+	@Autowired NoticeService noticeService;
 	
 	// 메인 페이지 Form
 	@GetMapping("/common/petTopiaMain")
@@ -76,15 +76,24 @@ public class MainController {
 		}
 		
 		/*** 안 읽은 쪽지 조회 ***/
-		List<Map<String, Object>> messageList = messageMapper.selectMessageNoti(empNo);
-		EmpUserDetailsService empDetail = new EmpUserDetailsService();
-		
-		List<Map<String, Object>> messageListByMain = new ArrayList<>();
-		   
+		List<Map<String, Object>> messageList = messageService.getNotReadMessageList(empNo);
 	    if (!messageList.isEmpty()) { // 메시지가 있다면 실행, 없으면 빈 리스트 전달
-	    	// messageListByMain = empDetail.processMessageList(messageList); 
-	    	model.addAttribute("messageListByMain", messageListByMain);
-	    	log.debug(TeamColor.KDH + "messageListByMain : " + messageListByMain.toString() + TeamColor.RESET);
+	    	model.addAttribute("messageList", messageList);
+	    	log.debug(TeamColor.KDH + "messageList : " + messageList.toString() + TeamColor.RESET);
+	    }
+	    
+	    /*** 공지사항 조회 ***/
+	    List<Map<String, Object>> noticeListByMain = mainService.getNoticeListByMain();
+	    if (!noticeListByMain.isEmpty()) {
+	    	model.addAttribute("noticeListByMain", noticeListByMain);
+	    	log.debug(TeamColor.KDH + "noticeListByMain : " + noticeListByMain.toString() + TeamColor.RESET);
+	    }
+
+	    /*** 결재 할 문서 조회 ***/
+	    List<Map<String, Object>> documentListByMain = mainService.getDocumentListByMain(empNo);
+	    if (!documentListByMain.isEmpty()) {
+	    	model.addAttribute("documentListByMain", documentListByMain);
+	    	log.debug(TeamColor.KDH + "documentListByMain : " + documentListByMain.toString() + TeamColor.RESET);
 	    }
 	    
 		return "common/petTopiaMain";
