@@ -116,7 +116,7 @@ var dataLabelOptions = {
         }
     ],
     chart: {
-        height: 350,
+        height: 220,
         type: 'line',
         dropShadow: {
             enabled: true,
@@ -147,11 +147,11 @@ var dataLabelOptions = {
         }
     },
     yaxis: {
-        title: {
-            text: 'Temperature'
-        },
         min: 5,
-        max: 40
+		max: 40,
+	    labels: {
+	        padding: 10 // 적절한 값으로 조정
+	    },
     },
     legend: {
         position: 'top',

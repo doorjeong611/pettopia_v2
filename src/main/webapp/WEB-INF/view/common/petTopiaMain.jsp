@@ -24,7 +24,6 @@
 	<!-- Simplebar JS -->
 	<script src="https://cdn.jsdelivr.net/npm/simplebar@5.0.0/dist/simplebar.min.js"></script>
     
-    
     <style>
     .last-div-class {
 	    border-left: none; /* 선 제거 */
@@ -63,6 +62,7 @@
             <div class="container-fluid group-data-[content=boxed]:max-w-boxed mx-auto">
                 <!-- Main content -->
                 <div class="grid grid-cols-12 2xl:grid-cols-12 gap-x-5 py-5">
+                
                 	<!-- 출/퇴근 조회 및 버튼 -->
                 	<div class="relative col-span-12 overflow-hidden card 2xl:col-span-4">
 					    <div class="relative card-body" style="min-height: 180px;">
@@ -191,14 +191,153 @@
 						    </c:if>
                         </div>
                     </div>
-
                     
-                    <!-- 객실 누적 매출 그래프 (1월 ~ 12월 까지, 작년과 비교) -->
+                    <!-- 결재 할 문서 -->
                     <div class="col-span-12 card 2xl:col-span-5 2xl:row-span-2" style="height: 450px;">
-                        <div class="card-body">
+                        <div class="card-body h-full flex flex-col" style="height: 100%; display: flex; flex-direction: column;">
                             <div class="flex items-center mb-3">
-                                <h6 class="grow text-15">3. 객실 예약 현황 선 그래프 (1월 ~ 12월 까지)</h6>
+                                <h6 class="grow text-16 text-green-600"><i class="ri-file-text-line mr-1"></i>결재 대기 문서</h6>
+                                <div class="relative">
+                                    <a href="${pageContext.request.contextPath}/document/documentList" class="transition-all duration-200 ease-linear text-custom-500 hover:text-custom-600">All Document<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="move-right" class="lucide lucide-move-right inline-block align-middle size-4 ltr:ml-1 rtl:mr-1"><path d="M18 8L22 12L18 16"></path><path d="M2 12H22"></path></svg></a>
+                                </div>
                             </div>
+                            <c:if test="${not empty documentListByMain}">
+					           	<div class="simplebar-scrollable-y" style="flex-grow: 1; max-height: 360px;" data-simplebar="init" data-simplebar-track="custom">
+					                <table class="w-full whitespace-nowrap" style="table-layout: fixed; border-radius: 2px; overflow: hidden;">
+					                    <thead class="bg-slate-100">
+					                        <tr>
+					                            <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 ltr:text-center" style="width: 60px;">번호</th>
+		                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 ltr:text-center" style="width: 250px;">제목</th>
+		                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 ltr:text-center" style="width: 100px;">작성자</th>
+		                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 ltr:text-center" style="width: 90px;">결재 상태</th>
+		                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 ltr:text-center" style="width: 90px;">등록일</th>
+					                        </tr>
+					                    </thead>
+					                    <tbody>
+					                        <c:forEach var="dl" items="${documentListByMain}">
+					                            <tr onclick="window.location='${pageContext.request.contextPath}/document/documentOne?docNo=${dl.docNo}&docType=${dl.docType}'" style="cursor: pointer; "class="bg-transparent hover:bg-slate-100 rounded-md transition duration-500">
+					                                <td class="px-3.5 py-1.5 border-y border-slate-200 text-center" style="width: 60px;">
+					                                	<span style="font-size: 0.85em;">${dl.docNo}</span>
+					                                </td>
+					                                <td class="px-3.5 py-1.5 border-y border-slate-200 text-center" style="width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+					                                	<span class="text-gray-500" style="font-size: 0.85em;">[${dl.docType == 'D' ? '기안 문서' : dl.docType == 'V' ? '연차 신청서' : dl.docType == 'M' ? '비품 신청서' : dl.docType == 'R' ? '사직서' : d.docType}]</span>
+					                                 	<span>${dl.docTitle}</span>
+					                                </td>
+					                                <td class="px-3.5 py-1.5 border-y border-slate-200 text-center" style="width: 100px;">
+						                                <div>
+													        <div>${dl.docWriterName} <span style="font-size: 0.85em; color: gray;">[${dl.docWriterRank}]</span></div>
+													        <div style="font-size: 0.85em; color: gray;">${dl.writerDeptName}</div>
+													    </div>
+					                                </td>
+					                                <td class="px-3.5 py-1.5 border-y border-slate-200 text-center" style="width: 90px;">
+					                                    <span>
+													        <c:if test="${empty dl.initApprovalStatus}">
+												                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#101ee5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-dashed" style="display: inline;">
+																    <path d="M10.1 2.182a10 10 0 0 1 3.8 0"/>
+																    <path d="M13.9 21.818a10 10 0 0 1-3.8 0"/>
+																    <path d="M17.609 3.721a10 10 0 0 1 2.69 2.7"/>
+																    <path d="M2.182 13.9a10 10 0 0 1 0-3.8"/>
+																    <path d="M20.279 17.609a10 10 0 0 1-2.7 2.69"/>
+																    <path d="M21.818 10.1a10 10 0 0 1 0 3.8"/>
+																    <path d="M3.721 6.391a10 10 0 0 1 2.7-2.69"/>
+																    <path d="M6.391 20.279a10 10 0 0 1-2.69-2.7"/>
+																</svg>
+												            </c:if>
+												            <c:if test="${dl.initApprovalStatus == 'A'}">
+												                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2f8331" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check" style="display: inline;">
+													                <circle cx="12" cy="12" r="10"/>
+													                <path d="m9 12 2 2 4-4"/>
+												                </svg>
+												            </c:if>
+												            <c:if test="${dl.initApprovalStatus == 'R'}">
+												                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e60000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-x" style="display: inline;">
+													                <circle cx="12" cy="12" r="10"/>
+													                <path d="m15 9-6 6"/><path d="m9 9 6 6"/>
+												                </svg>
+												            </c:if>
+													    </span>
+													    
+													    <span>
+													        <c:if test="${empty dl.midApprovalStatus}">
+											                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#101ee5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-dashed" style="display: inline;">
+															    <path d="M10.1 2.182a10 10 0 0 1 3.8 0"/>
+															    <path d="M13.9 21.818a10 10 0 0 1-3.8 0"/>
+															    <path d="M17.609 3.721a10 10 0 0 1 2.69 2.7"/>
+															    <path d="M2.182 13.9a10 10 0 0 1 0-3.8"/>
+															    <path d="M20.279 17.609a10 10 0 0 1-2.7 2.69"/>
+															    <path d="M21.818 10.1a10 10 0 0 1 0 3.8"/>
+															    <path d="M3.721 6.391a10 10 0 0 1 2.7-2.69"/>
+															    <path d="M6.391 20.279a10 10 0 0 1-2.69-2.7"/>
+															</svg>
+											            </c:if>
+											            <c:if test="${dl.midApprovalStatus == 'A'}">
+											                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2f8331" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check" style="display: inline;">
+												                <circle cx="12" cy="12" r="10"/>
+												                <path d="m9 12 2 2 4-4"/>
+											                </svg>
+											            </c:if>
+											            <c:if test="${dl.midApprovalStatus == 'R'}">
+											                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e60000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-x" style="display: inline;">
+												                <circle cx="12" cy="12" r="10"/>
+												                <path d="m15 9-6 6"/><path d="m9 9 6 6"/>
+											                </svg>
+											            </c:if>
+													    </span>
+													    
+													    <span>
+													        <c:if test="${empty dl.finalApprovalStatus}">
+												                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#101ee5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-dashed" style="display: inline;">
+																    <path d="M10.1 2.182a10 10 0 0 1 3.8 0"/>
+																    <path d="M13.9 21.818a10 10 0 0 1-3.8 0"/>
+																    <path d="M17.609 3.721a10 10 0 0 1 2.69 2.7"/>
+																    <path d="M2.182 13.9a10 10 0 0 1 0-3.8"/>
+																    <path d="M20.279 17.609a10 10 0 0 1-2.7 2.69"/>
+																    <path d="M21.818 10.1a10 10 0 0 1 0 3.8"/>
+																    <path d="M3.721 6.391a10 10 0 0 1 2.7-2.69"/>
+																    <path d="M6.391 20.279a10 10 0 0 1-2.69-2.7"/>
+																</svg>
+												            </c:if>
+												            <c:if test="${dl.finalApprovalStatus == 'A'}">
+												                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2f8331" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check" style="display: inline;">
+													                <circle cx="12" cy="12" r="10"/>
+													                <path d="m9 12 2 2 4-4"/>
+												                </svg>
+												            </c:if>
+												            <c:if test="${dl.finalApprovalStatus == 'R'}">
+												                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e60000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-x" style="display: inline;">
+													                <circle cx="12" cy="12" r="10"/>
+													                <path d="m15 9-6 6"/><path d="m9 9 6 6"/>
+												                </svg>
+												            </c:if>
+														    </span>
+					                                </td>
+					                                <td class="px-3.5 py-1.5 border-y border-slate-200 text-center" style="width: 100px;">
+					                                	<span class="text-gray-500" style="font-size: 0.85em;">${fn:substringBefore(dl.updateDatetime, 'T')}</span>
+					                                </td>
+					                            </tr>
+					                        </c:forEach>
+					                    </tbody>
+					                </table>
+					            </div>
+					        </c:if>
+							
+                            <c:if test="${empty documentListByMain}">
+					            <table class="w-full whitespace-nowrap">
+					                <thead class="bg-slate-100">
+					                    <tr>
+	                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 ltr:text-center" style="width: 60px;">번호</th>
+	                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 ltr:text-center" style="width: 250px;">제목</th>
+	                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 ltr:text-center" style="width: 100px;">작성자</th>
+	                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 ltr:text-center" style="width: 90px;">결재 상태</th>
+	                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 ltr:text-center" style="width: 90px;">등록일</th>
+	                                    </tr>
+					                </thead>
+					            </table>
+						        <div class="noresult text-center p-7">
+						            <h5 class="mb-3">문서가 없습니다.</h5>
+						            <p class="mb-0 text-slate-500">결재 할 문서가 없습니다.</p>	
+					            </div>
+						    </c:if>
                         </div>
                     </div>
                     
@@ -211,62 +350,49 @@
                                     <a href="${pageContext.request.contextPath}/message/messageList" class="transition-all duration-200 ease-linear text-custom-500 hover:text-custom-600">All Message<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="move-right" class="lucide lucide-move-right inline-block align-middle size-4 ltr:ml-1 rtl:mr-1"><path d="M18 8L22 12L18 16"></path><path d="M2 12H22"></path></svg></a>
                                 </div>
                             </div>
-                            <hr class="mb-1">
+                            <hr class="mb-1" style="margin-right: 12px;">
                             
-                            <c:if test="${not empty messageListByMain}">
-	                            <c:forEach var="ml" items="${messageListByMain}">
-	                            	<div class="flex items-center space-x-2">
-									    <div class="w-10 h-10 rounded-md shrink-0 bg-slate-100">
-									        <img src="${pageContext.request.contextPath}/employeeFile/${message.fileName != null ? fileName : 'placeholder.png'}" alt="" class="rounded-md">
-									    </div>
-									    <div class="flex items-center justify-between w-full h-12"> <!-- h-20: 원하는 높이 설정 -->
-									    	<div>
-											    <h6 class="mb-1 font-medium flex items-center"><b>${ml.senderEmpName}</b></h6>
-											    <p class="mb-0 text-sm text-slate-500 dark:text-zink-300">${ml.messageTitle}</p>
+                            <c:if test="${not empty messageList}">
+                            	<div class="flex flex-col justify-start simplebar-scrollable-y" style="mix-height: 170px; max-height: 170px;" data-simplebar="init" data-simplebar-track="custom">
+		                            <c:forEach var="ml" items="${messageList}">
+		                            	<button onclick="window.location.href='${pageContext.request.contextPath}/message/messageOne?messageNo=${ml.messageNo}'" class="flex items-center space-x-2 w-full h-12 p-2 text-left bg-transparent hover:bg-slate-100 rounded-md transition duration-500" style="padding-right: 15px;">
+										    <div class="w-10 h-10 rounded-md shrink-0 bg-slate-100">
+										        <img src="${pageContext.request.contextPath}/employeeFile/${ml.fileName != null ? ml.fileName : 'placeholder.png'}" alt="" class="rounded-md">
 										    </div>
-										    <div class="flex flex-col space-y-2">
-											    <div class="flex justify-end">
-											        <div class="w-1.5 h-1.5 bg-custom-500 rounded-full"></div>
-											        <span>${ml.arrivalAlert}</span>
+										    <div class="flex items-center justify-between w-full h-12"> <!-- h-20: 원하는 높이 설정 -->
+										    	<div>
+												    <h6 class="mb-1 font-medium flex items-center"><b>${ml.senderEmpName}</b></h6>
+												    <p class="mb-0 text-sm text-slate-500 dark:text-zink-300">${ml.messageTitle}</p>
 											    </div>
-											    <div>
-											        <p class="mb-0 text-sm text-slate-500 dark:text-zink-300">
-											            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="clock" class="lucide lucide-clock inline-block w-3.5 h-3.5 mr-1">
-											                <circle cx="12" cy="12" r="10"></circle>
-											                <polyline points="12 6 12 12 16 14"></polyline>
-											            </svg>
-											            <span class="align-middle"></span>2025-01-31T12:00
-											        </p>
-											    </div>
+											    <div class="flex flex-col space-y-2">
+												    <div class="flex justify-end">
+												        <div class="flex justify-end items-center gap-2 text-xs text-slate-500 shrink-0 dark:text-zink-300">
+							                                <div class="w-1.5 h-1.5 bg-custom-500 rounded-full"></div>${ml.arrivalAlert}
+							                            </div>
+												    </div>
+												    <div>
+						                                <p class="flex justify-end mb-0 text-sm text-slate-500 dark:text-zink-300">
+						                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="clock" class="lucide lucide-clock inline-block w-3.5 h-3.5 mr-1 mt-1">
+						                                        <circle cx="12" cy="12" r="10"></circle>
+						                                        <polyline points="12 6 12 12 16 14"></polyline>
+						                                    </svg>
+						                                    <span class="align-middle date-output" data-date=${ml.createDateTime} style="margin-top : 1.5px;">${ml.createDateTime}</span>
+						                                </p>
+		                            				</div>
+												</div>
 											</div>
-										</div>
-								     </div>
-								     <hr class="my-1">
-	                            </c:forEach>
-                            </c:if>
-                            <c:if test="${empty messageListByMain}">
+									     </button>
+									     <hr class="my-1" style="margin-right: 12px;">
+		                            </c:forEach>
+	                            </div>
                             </c:if>
                             
-                            <a href="/pettopia/message/messageOne?messageNo=364" class="flex gap-3 p-4 product-item hover:bg-slate-50 dark:hover:bg-zink-500 follower">
-							     <div class="w-10 h-10 rounded-md shrink-0 bg-slate-100">
-							         <img src="/pettopia/employeeFile/placeholder.png" alt="" class="rounded-md">
-							     </div>
-							     <div class="grow">
-							     	 <div>
-								        <h6 class="mb-1 font-medium"><b>최민주</b> </h6>
-							     	 	<div class="w-1.5 h-1.5 bg-custom-500 rounded-full"></div>Today
-							     	 </div>
-							         <div class="flex">
-								         <p class="mb-0 text-sm text-slate-500 dark:text-zink-300">소통 툴 도입 안내</p>
-								         <p class="mb-0 text-sm text-slate-500 dark:text-zink-300"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="clock" class="lucide lucide-clock inline-block w-3.5 h-3.5 mr-1"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> <span class="align-middle"></span>2025-01-31T12:00</p>
-							     	 </div>
-							     </div>
-							     <div class="flex items-center self-start gap-2 text-xs text-slate-500 shrink-0 dark:text-zink-300">
-							         
-							     </div>
-							</a>
-                            
-                            
+                            <c:if test="${empty messageList}">
+                            	<div class="noresult text-center p-7">
+						            <h5 class="mb-3">쪽지가 없습니다.</h5>
+						            <p class="mb-0 text-slate-500">읽지 않은 쪽지가 없습니다.</p>	
+					            </div>
+                            </c:if>
                         </div>
                     </div>
                     
@@ -281,26 +407,73 @@
                                     <a href="${pageContext.request.contextPath}/notice/getNoticeList" class="transition-all duration-200 ease-linear text-custom-500 hover:text-custom-600">All Notice<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="move-right" class="lucide lucide-move-right inline-block align-middle size-4 ltr:ml-1 rtl:mr-1"><path d="M18 8L22 12L18 16"></path><path d="M2 12H22"></path></svg></a>
                                 </div>
                             </div>
-                            <hr class="mb-2">
-                            
-                            
-                            
+                            <c:if test="${not empty noticeListByMain}">
+					           	<div class="simplebar-scrollable-y" style="flex-grow: 1; max-height: 390px;" data-simplebar="init" data-simplebar-track="green">
+					                <table class="w-full whitespace-nowrap" style="table-layout: fixed; border-radius: 2px; overflow: hidden;">
+					                    <thead class="bg-green-100">
+					                        <tr>
+					                            <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 text-center" style="width: 70px;">번호</th>
+					                            <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 text-center" style="width: 500px;">제목</th>
+					                            <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 text-center" style="width: 70px;">조회수</th>
+					                            <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 text-center" style="width: 190px;">작성자</th>
+					                            <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 text-center" style="width: 170px;">등록일</th>
+					                        </tr>
+					                    </thead>
+					                    <tbody>
+					                        <c:forEach var="nl" items="${noticeListByMain}">
+					                            <tr onclick="window.location='${pageContext.request.contextPath}/notice/getNoticeOne?noticeNo=${nl.noticeNo}'" style="cursor: pointer; <c:if test="${nl.isPinned == 'Y'}">background-color: rgba(160, 232, 219, 0.2);</c:if>"class="bg-transparent hover:bg-slate-100 rounded-md transition duration-500">
+					                                <td class="px-3.5 py-1.5 border-y border-slate-200 text-center" style="width: 70px;">
+					                                	<span style="font-size: 0.85em;">${nl.noticeNo}</span>
+					                                </td>
+					                                <td class="px-3.5 py-1.5 border-y border-slate-200 text-center" style="width: 500px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+					                                    <span class="text-gray-500" style="font-size: 0.85em;">[${nl.divisionName}]&nbsp;</span>
+					                                    <span>${nl.noticeTitle}</span>
+					                                    
+					                                </td>
+					                                <td class="px-3.5 py-1.5 border-y border-slate-200 text-center" style="width: 70px;">
+					                                	<span class="text-gray-500" style="font-size: 0.85em;">${nl.noticeView}</span>
+					                                </td>
+					                                <td class="px-3.5 py-1.5 border-y border-slate-200 text-center" style="width: 190px;">
+					                                	<span class="text-gray-500" style="font-size: 0.85em;">&nbsp;${nl.deptName}</span>
+					                                    <span>${nl.writerEmpName}</span>
+					                                </td>
+					                                <td class="px-3.5 py-1.5 border-y border-slate-200 text-center" style="width: 170px;">
+					                                	<span class="text-gray-500" style="font-size: 0.85em;">${fn:substringBefore(nl.createDatetime, 'T')}</span>
+					                                </td>
+					                            </tr>
+					                        </c:forEach>
+					                    </tbody>
+					                </table>
+					            </div>
+					        </c:if>
+							
+                            <c:if test="${empty noticeListByMain}">
+					            <table class="w-full whitespace-nowrap">
+					                <thead class="bg-green-100">
+					                        <tr>
+					                            <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 text-center" style="width: 70px;">번호</th>
+					                            <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 text-center" style="width: 500px;">제목</th>
+					                            <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 text-center" style="width: 70px;">조회수</th>
+					                            <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 text-center" style="width: 190px;">작성자</th>
+					                            <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 text-center" style="width: 170px;">등록일</th>
+					                        </tr>
+					                    </thead>
+					            </table>
+						        <div class="noresult text-center p-7">
+						            <h5 class="mb-3">공지사항이 없습니다.</h5>
+						            <p class="mb-0 text-slate-500">최근에 등록된 공지사항이 없습니다.</p>	
+					            </div>
+						    </c:if>
                         </div>
                     </div>
                     
-                    <!-- 결재 할 문서 -->
+                    <!-- 객실 누적 매출 그래프 (1월 ~ 12월 까지, 작년과 비교) -->
                     <div class="col-span-12 card 2xl:col-span-4 2xl:row-span-2" style="height: 450px;">
-                        <div class="card-body h-full flex flex-col" style="height: 100%; display: flex; flex-direction: column;">
+                    	<div class="card-body">
                             <div class="flex items-center mb-3">
-                                <h6 class="grow text-16 text-green-600"><i class="ri-file-text-line mr-1"></i>결재 대기 문서</h6>
-                                <div class="relative">
-                                    <a href="${pageContext.request.contextPath}/document/documentList" class="transition-all duration-200 ease-linear text-custom-500 hover:text-custom-600">All Document<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="move-right" class="lucide lucide-move-right inline-block align-middle size-4 ltr:ml-1 rtl:mr-1"><path d="M18 8L22 12L18 16"></path><path d="M2 12H22"></path></svg></a>
-                                </div>
+                                <h6 class="grow text-15">3. 객실 예약 현황 선 그래프 (1월 ~ 12월 까지)</h6>
                             </div>
-                            <hr class="mb-2">
-                            
-                            
-                            
+                            <div id="orderStatisticsChart" class="apex-charts" data-chart-colors="[&quot;bg-purple-500&quot;, &quot;bg-sky-500&quot;]" dir="ltr" style="min-height:400px; max-height: 455px;"></div>
                         </div>
                     </div>
                     
@@ -312,6 +485,7 @@
 	                            <div class="flex items-center mb-3">
 	                                <h6 class="grow text-15">7. 오늘 객실 예약 남/여 비율</h6>
 	                            </div>
+	                            <div id="lineWithDataLabel" class="apex-charts" data-chart-colors="[&quot;bg-custom-500&quot;, &quot;bg-green-500&quot;]" dir="ltr" style="min-height: 220px;"></div>
 	                        </div>
                         </div>
                         
@@ -321,6 +495,20 @@
 	                            <div class="flex items-center mb-3">
 	                                <h6 class="grow text-15">8. 오늘의 객실 점유율</h6>
 	                            </div>
+	                            <div class="flex items-center mb-0">
+                                    <h5 class="grow"><span class="counter-value" data-target="1596">1,596</span></h5>
+                                    <span class="px-2.5 py-0.5 text-xs inline-block font-medium rounded border bg-white border-red-100 text-red-500 dark:bg-zink-700 dark:border-red-900">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="trending-down" class="lucide lucide-trending-down inline-block size-3 ltr:mr-1 rtl:ml-1"><polyline points="22 17 13.5 8.5 8.5 13.5 2 7"></polyline><polyline points="16 17 22 17 22 11"></polyline></svg> 6.8%</span>
+                                </div>
+                                <div>
+                                    <div class="flex items-center justify-between mt-2 mb-2">
+                                        <p class="text-slate-500 dark:text-zink-200">Total Orders</p>
+                                        <h6 class="mb-0 text-custom-500">85%</h6>
+                                    </div>
+                                    <div class="w-full bg-slate-200 rounded-full h-2.54 dark:bg-zink-600">
+                                        <div class="bg-custom-500 h-2.5 rounded-full" style="width: 85%"></div>
+                                    </div>
+                                </div>
 	                        </div>
                         </div>
                     </div>
@@ -328,9 +516,38 @@
                     <!-- 펫 서비스 매출 막대 그래프 -->
                     <div class="col-span-12 card 2xl:col-span-8 2xl:row-span-2"style="height: 450px;">
                         <div class="card-body">
-                            <div class="flex items-center mb-3">
-                                <h6 class="grow text-15">9. 펫 서비스 매출 막대 그래프 (1월 ~ 12월 까지)</h6>
+                            <div class="flex flex-col gap-4 mb-4 md:mb-3 md:items-center md:flex-row">
+                                <h6 class="grow text-15">펫 서비스 매출 막대 그래프</h6>
+                                <div class="relative">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="calendar-range" class="lucide lucide-calendar-range absolute size-4 ltr:left-3 rtl:right-3 top-3 text-slate-500 dark:text-zink-200"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect><line x1="16" x2="16" y1="2" y2="6"></line><line x1="8" x2="8" y1="2" y2="6"></line><line x1="3" x2="21" y1="10" y2="10"></line><path d="M17 14h-6"></path><path d="M13 18H7"></path><path d="M7 14h.01"></path><path d="M17 18h.01"></path></svg>
+                                    <input type="text" class="ltr:pl-10 rtl:pr-10 form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200 flatpickr-input" data-provider="flatpickr" data-date-format="d M, Y" data-range-date="true" readonly="readonly" placeholder="Select Date">
+                                </div>
                             </div>
+                            <div class="grid grid-cols-12 gap-4 mb-3">
+                                <div class="col-span-12 md:col-span-6 lg:col-span-3">
+                                    <div class="flex items-center gap-3">
+                                        <div class="flex items-center justify-center rounded-md size-12 text-sky-500 bg-sky-50 shrink-0 dark:bg-sky-500/10">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="bar-chart" class="lucide lucide-bar-chart"><line x1="12" x2="12" y1="20" y2="10"></line><line x1="18" x2="18" y1="20" y2="4"></line><line x1="6" x2="6" y1="20" y2="16"></line></svg>
+                                        </div>
+                                        <div class="grow">
+                                            <p class="mb-1 text-slate-500 dark:text-zink-200">Total Sales</p>
+                                            <h5 class="text-15">$<span class="counter-value" data-target="1517.36">1,517.36</span>k</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-span-12 md:col-span-6 lg:col-span-3">
+                                    <div class="flex items-center gap-3">
+                                        <div class="flex items-center justify-center text-green-500 rounded-md size-12 bg-green-50 shrink-0 dark:bg-green-500/10">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="trending-up" class="lucide lucide-trending-up"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline><polyline points="16 7 22 7 22 13"></polyline></svg>
+                                        </div>
+                                        <div class="grow">
+                                            <p class="mb-1 text-slate-500 dark:text-zink-200">Total Profit</p>
+                                            <h5 class="text-15">$<span class="counter-value" data-target="746.84">746.84</span>k</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="salesRevenueOverview" class="apex-charts" data-chart-colors="[&quot;bg-custom-500&quot;, &quot;bg-custom-400&quot;, &quot;bg-custom-300&quot;]" dir="ltr" style="min-height: 315px;"></div>
                         </div>
                     </div>
                 
@@ -353,16 +570,17 @@
 <script src='${pageContext.request.contextPath}/assets/libs/choices.js/public/assets/scripts/choices.min.js'></script>
 <script src="${pageContext.request.contextPath}/assets/libs/@popperjs/core/umd/popper.min.js"></script>
 <script src="${pageContext.request.contextPath}/assets/libs/tippy.js/tippy-bundle.umd.min.js"></script>
-<script src="${pageContext.request.contextPath}/assets/libs/simplebar/simplebar.min.js"></script>
 <script src="${pageContext.request.contextPath}/assets/libs/prismjs/prism.js"></script>
 <script src="${pageContext.request.contextPath}/assets/libs/lucide/umd/lucide.js"></script>
 <script src="${pageContext.request.contextPath}/assets/js/tailwick.bundle.js"></script>
+<script src="${pageContext.request.contextPath}/assets/libs/flatpickr/flatpickr.min.js"></script>
 <!--apexchart js-->
 <script src="${pageContext.request.contextPath}/assets/libs/apexcharts/apexcharts.min.js"></script>
-
+<!--dashboard analytics init js-->
+<script src="${pageContext.request.contextPath}/assets/js/pages/apexcharts-pie.init.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/pages/apexcharts-line.init.js"></script>
 <!--dashboard ecommerce init js-->
 <script src="${pageContext.request.contextPath}/assets/js/pages/dashboards-ecommerce.init.js"></script>
-
 <!-- App js -->
 <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
 <script>
@@ -379,6 +597,12 @@
     
     $('#scheduleTitle').html('<i class="ri-calendar-check-line mr-1"></i> ' + month + '월  ' + day +'일 일정');
     $('#noSchedule').html(formattedDate);
+    
+    document.querySelectorAll('.date-output').forEach(function (element) {
+        const dateStr = element.getAttribute('data-date');  // data-date 속성에서 날짜를 읽음
+        const formattedCreateDate = dayjs(dateStr).locale('ko').format('dddd hh:mm A');  // '수요일 03:42 PM' 형식으로
+        element.textContent = formattedCreateDate;  // 포맷된 날짜를 요소에 삽입
+    });
 	
 $(document).ready(function() {
 	

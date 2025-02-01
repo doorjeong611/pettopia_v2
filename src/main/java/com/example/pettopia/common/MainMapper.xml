@@ -10,6 +10,55 @@
 			  AND CURDATE() BETWEEN DATE(`start_datetime`) AND DATE(`end_datetime`)
 		ORDER BY start_datetime ASC;
 	</select>
+	
+	<!-- selectNoticeListByMain : 공지사항 목록 조회 -->
+	<select id="selectNoticeListByMain" resultType="Map">
+		SELECT n.notice_no noticeNo, n.writer_emp_no writerEmpNo, e.emp_name writerEmpName, n.dept_code deptCode, d.division_name divisionName,
+			   e2.dept_code depeCode, de.dept_name deptName,
+    		   n.notice_title noticeTitle, n.notice_view noticeView, n.is_pinned isPinned, n.create_datetime createDatetime
+		FROM notice n 
+		INNER JOIN division d ON n.dept_code = d.division_code
+		INNER JOIN employee e ON n.writer_emp_no = e.emp_no
+		INNER JOIN employee e2 ON n.writer_emp_no = e2.emp_no
+		INNER JOIN department de ON e2.dept_code = de.dept_code
+		WHERE 
+		    (n.create_datetime >= NOW() - INTERVAL 14 DAY AND n.is_pinned = 'N') 
+		    OR n.is_pinned = 'Y'
+		ORDER BY 
+		    CASE n.is_pinned 
+		        WHEN 'Y' THEN 1 
+		        WHEN 'N' THEN 2 
+		    END,
+		    n.create_datetime DESC;
+	</select>
+	
+	<!-- selectDocumentListByMain : 결재 할 문서 조회 -->
+	<select id="selectDocumentListByMain" parameterType="String" resultType="Map">
+		SELECT d.doc_no docNo, d.doc_title docTitle, d.doc_writer_no docWriterNo, e1.emp_name docWriterName, dp1.dept_name writerDeptName,
+    		   d.doc_type docType, d.approval_status approvalStatus, d.doc_bin docBin, d.create_datetime updateDatetime,
+			   da.init_approver_no initApproverNo, e2.emp_name initApproversName, dp2.dept_name initApproversDeptName, da.init_approval_status initApprovalStatus,
+				da.mid_approver_no midApproverNo, e3.emp_name midApproversName, dp3.dept_name midApproversDeptName, da.mid_approval_status midApprovalStatus,
+				da.final_approver_no finalApproverNo, e4.emp_name finalApproversName, dp4.dept_name finalApproversDeptName, da.final_approval_status finalApprovalStatus, 
+				r1.rank_name docWriterRank, r2.rank_name initApproverRank, r3.rank_name midApproverRank, r4.rank_name finalApproverRank  
+		FROM document d
+		INNER JOIN document_approvers da ON d.doc_no = da.doc_no
+		INNER JOIN employee e1 ON e1.emp_no = d.doc_writer_no
+		INNER JOIN employee e2 ON e2.emp_no = da.init_approver_no
+		INNER JOIN employee e3 ON e3.emp_no = da.mid_approver_no
+		INNER JOIN employee e4 ON e4.emp_no = da.final_approver_no
+		INNER JOIN department dp1 ON e1.dept_code = dp1.dept_code
+		INNER JOIN department dp2 ON e2.dept_code = dp2.dept_code
+		INNER JOIN department dp3 ON e3.dept_code = dp3.dept_code
+		INNER JOIN department dp4 ON e4.dept_code = dp4.dept_code
+		INNER JOIN `rank` r1 ON e1.rank_no = r1.rank_no
+		INNER JOIN `rank` r2 ON e2.rank_no = r2.rank_no
+		INNER JOIN `rank` r3 ON e3.rank_no = r3.rank_no
+		INNER JOIN `rank` r4 ON e4.rank_no = r4.rank_no
+		WHERE d.doc_bin = '0' 
+		AND ((da.init_approver_no = #{empNo} AND da.init_approval_status IS NULL)
+			OR (da.mid_approver_no = #{empNo} AND da.mid_approval_status IS NULL AND da.init_approval_status IS NOT NULL)
+			OR (da.final_approver_no = #{empNo} AND da.final_approval_status IS NULL AND da.mid_approval_status IS NOT NULL))
+	</select>
 
 
 </mapper>
