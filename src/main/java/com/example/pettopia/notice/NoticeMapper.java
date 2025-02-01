@@ -12,6 +12,9 @@ import com.example.pettopia.vo.NoticeFile;
 @Mapper
 public interface NoticeMapper {
 	
+	// 오자윤 : /notice/noticeOne 첨부파일 삭제
+	Integer deleteNotice(Integer noticeNo);
+	
 	// 오자윤 : /notice/addNotice 공지사항 추가
 	Integer insertNotice(Notice notice);
 	

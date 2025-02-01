@@ -90,11 +90,6 @@
 								      <a href="${pageContext.request.contextPath}/notice/addNotice" class="mr-1 bg-white text-custom-500 btn border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100" method="get"> 
 								        게시글 작성
 								      </a>
-								      <form id="binForm" action="${pageContext.request.contextPath}/admin/deleteNotice" method="post" class="inline">
-								        <button type="button" id="binBtn" class="text-red-500 bg-white border-red-500 btn hover:text-white hover:bg-red-600 hover:border-red-600 focus:text-white focus:bg-red-600 focus:border-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:border-red-600 active:ring active:ring-red-100">
-								         삭제
-								        </button>
-								      </form>
 								    </div> 
 								  </form>
 								</div>

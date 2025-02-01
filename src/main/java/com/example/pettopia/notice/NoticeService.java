@@ -1,14 +1,18 @@
 package com.example.pettopia.notice;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.example.pettopia.noticefile.NoticeFileMapper;
 import com.example.pettopia.util.TeamColor;
 import com.example.pettopia.vo.Division;
 import com.example.pettopia.vo.Notice;
@@ -23,37 +27,63 @@ import lombok.extern.slf4j.Slf4j;
 public class NoticeService {
 	
 	@Autowired NoticeMapper noticeMapper;
+	@Autowired NoticeFileMapper noticeFileMapper;
 	
-	// 오자윤 : /notice/addNotice 공지사항 추가
-	public Integer insertNotice(Notice notice) {
-		noticeMapper.insertNotice(notice); 
-		return notice.getNoticeNo(); // // 공지사항 저장 후 ID반환
+	// 오자윤 : /notice/noticeOne 공지사항 삭제
+	public void removeNotice(Integer noticeNo, String path) {
+		
+		List<Integer> noticeFileNoList = noticeFileMapper.selectNoticeFileNoList(noticeNo);
+		
+			if(noticeFileNoList != null) {
+			    for (Integer noticeFileNo : noticeFileNoList) {
+			    	NoticeFile noticeFile = noticeFileMapper.selectNoticeFileOne(noticeFileNo);
+			        int deleteNoticeFile = noticeFileMapper.deleteNoticeFile(noticeFileNo); // 각 파일 삭제
+			        log.debug(TeamColor.KDH + "documentFile : " + noticeFile.toString() + TeamColor.RESET);
+			        if(deleteNoticeFile == 1) {
+		    			String fullname = path + noticeFile.getFileName() + "." + noticeFile.getFileExt();
+		    			File file = new File(fullname);
+		    			file.delete();
+			        }
+			    }
+			}
+		noticeMapper.deleteNotice(noticeNo);
 	}
 	
-	// 오자윤 : /notice/addNotice 공지사항 파일 추가
-	@Transactional
-	 public void saveFiles(Integer noticeId, List<NoticeFile> files) {
-        if (CollectionUtils.isEmpty(files)) {
-            return;
-        }
-        
-        log.debug(TeamColor.OJY + "noticeId-------> " + noticeId);
-        log.debug(TeamColor.OJY + "file.setNoticeNo-------> " + files.size());
-        
-        // NoticeId를 각 파일 객체에 저장
-        for (NoticeFile file : files) {
-        	file.setNoticeNo(noticeId); // 공지사항 ID 설정
-        	log.debug(TeamColor.OJY + "file.setNoticeNo-------> " + file.getOriginFileName());;
-        }
-        
-        // noticeId와 files를 Map으로 전달
-        Map<String, Object> params = new HashMap<>();
-        params.put("noticeNo", noticeId);
-        params.put("files", files);
-        
-        noticeMapper.saveAll(params); // 파일 저장
-    
-    }
+	// 오자윤 : /notice/addNotice 공지사항 추가
+	public Integer addNotice(Notice notice, NoticeFile noticeFile, String path) {
+		int addNotice = noticeMapper.insertNotice(notice);
+		
+		Integer noticeNo = notice.getNoticeNo(); // selectKey 값
+		
+		if(addNotice == 1 && noticeFile.getNoticeFile() != null) {
+			// GoodsFile 입력
+			List<MultipartFile> noticeFileList = noticeFile.getNoticeFile();
+			for (MultipartFile mf : noticeFileList) {
+				int dotIdx = mf.getOriginalFilename().lastIndexOf(".");
+				String orginName = mf.getOriginalFilename().substring(0, dotIdx);
+				String fileName = UUID.randomUUID().toString().replace("-", "").substring(0, 16);
+				String ext = mf.getOriginalFilename().substring(dotIdx + 1);
+				
+				noticeFile.setNoticeNo(noticeNo);
+				noticeFile.setOriginFileName(orginName);
+				noticeFile.setFileName(fileName);
+				noticeFile.setFileExt(ext);
+				noticeFile.setFileType(mf.getContentType());
+				
+				int addNoticeFileRow = noticeFileMapper.insertNoticeFile(noticeFile);
+				if(addNoticeFileRow == 1) {
+					// 물리적 파일 저장
+					try {
+						mf.transferTo(new File(path + fileName + "." + ext));
+					} catch (Exception e) {
+						e.printStackTrace();
+						throw new RuntimeException();
+					}
+				}
+			}
+		}
+		return 1;
+	}
 	
 	
 	// 공지사항 리스트 : 부서 목록

@@ -103,35 +103,33 @@
 									</div>
 				
 				                    <!-- Title -->
-				                    <div class="col-span-1">
+				                    <div class="col-span-1 mb-4">
 				                        <label class="block mb-2 text-base font-medium">제목</label>
 				                        <input type="text" name="noticeTitle" class="w-full form-input border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-custom-500" placeholder="제목을 입력하세요">
 				                    </div>
 				                </div>
 				
 				                <!-- CKEditor -->
-				                <textarea name="noticeContent" id="editor">
-								</textarea>
+				                <div class="col-span-1 mb-4">
+					                <textarea name="noticeContent" id="editor">
+									</textarea>
+								</div>
 								
-								 <!-- File Upload -->
-				               <tr>
-							        <th>첨부파일</th>
-							        <td colspan="3">
-							            <div class="file_list">
-							                <div>
-							                    <div class="file_input">
-							                        <input type="text" readonly />
-							                        <label> 첨부파일
-							                            <input type="file" name="file" onchange="selectFile(this);" />
-							                        </label>
-							                    </div>
-							                    <button type="button" onclick="removeFile(this);" class="btns del_btn"><span>삭제</span></button>
-							                    <button type="button" onclick="addFile();" class="btns fn_add_btn"><span>파일추가</span></button>
-							                </div>
-							            </div>
-							        </td>
-							    </tr>
-
+				                <!-- 파일 다운로드 -->
+                            	<div class="grid grid-cols-1 gap-2 lg:grid-cols-1 xl:grid-cols-12 m-2 mt-4">
+                                    <div class="lg:col-span-2 xl:col-span-12">
+                                        <label for="fileUpload" class="inline-block text-base font-medium">파일 업로드</label>
+                                	</div>
+                                	<div class="lg:col-span-2 xl:col-span-12">
+                                		<button type="button" id="btnAddFile"class="mr-1 p-2 bg-white text-custom-500 btn btn-sm hover:text-custom-500 hover:bg-custom-100 focus:text-custom-500 focus:bg-custom-100 active:text-custom-500 active:bg-custom-100">파일 추가</button>
+                                		<button type="button" id="btnRemoveFile" class="p-2 text-red-500 bg-white btn hover:text-red-500 hover:bg-red-100 focus:text-red-500 focus:bg-red-100 active:text-red-500 active:bg-red-100">파일 삭제</button>
+									</div>
+								</div>
+								<div id="fileDiv" class="grid grid-cols-1 gap-2 lg:grid-cols-1 xl:grid-cols-12 m-2">
+									<!-- 파일 input append 부분 -->
+								</div>
+                           		
+                               
 								<!-- Pinned Checkbox -->
 				                <div class="mt-4">
 				                    <label class="block mb-2 text-base font-medium">
@@ -144,10 +142,10 @@
 				                <!-- Buttons -->
 				                <div class="flex justify-end gap-4 mt-8">
 				                    <a href="${pageContext.request.contextPath}">
-				                        <button type="submit" class="px-4 py-2 text-white bg-custom-500 border border-custom-500 rounded-lg hover:bg-custom-600 focus:ring-2 focus:ring-custom-300">업로드</button>
+				                        <button type="submit" class="mr-1 bg-white text-custom-500 btn border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100">업로드</button>
 				                    </a>
 				                    <a href="${pageContext.request.contextPath}/notice/getNoticeList">
-				                        <button type="button" class="px-4 py-2 text-white bg-green-500 border border-green-500 rounded-lg hover:bg-green-600 focus:ring-2 focus:ring-green-300">목록</button>
+				                        <button type="button" class="text-green-500 bg-white border-green-500 btn hover:text-white hover:bg-green-600 hover:border-green-600 focus:text-white focus:bg-green-600 focus:border-green-600 focus:ring focus:ring-green-100 active:text-white active:bg-green-600 active:border-green-600 active:ring active:ring-green-100">목록</button>
 				                    </a>
 				                </div>
 			                </form>
@@ -185,59 +183,26 @@
 <script src="https://cdn.ckeditor.com/ckeditor5/44.1.0/translations/ko.umd.js" crossorigin></script>
 <script src="./main.js"></script>
 <script>
-// 파일 선택
-	function selectFile(element) {
-	
-	    const file = element.files[0];
-	    const filename = element.closest('.file_input').firstElementChild;
-	
-	    // 1. 파일 선택 창에서 취소 버튼이 클릭된 경우
-	    if ( !file ) {
-	        filename.value = '';
-	        return false;
-	    }
-	
-	    // 2. 파일 크기가 50MB를 초과하는 경우
-	    const fileSize = Math.floor(file.size / 1024 / 1024);
-	    if (fileSize > 10) {
-	        alert('50MB 이하의 파일로 업로드해 주세요.');
-	        filename.value = '';
-	        element.value = '';
-	        return false;
-	    }
-	
-	    // 3. 파일명 지정
-	    filename.value = file.name;
-	}
-	
-	
-	// 파일 추가
-	function addFile() {
-	    const fileDiv = document.createElement('div');
-	    fileDiv.innerHTML =`
-	        <div class="file_input">
-	            <input type="text" readonly />
-	            <label> 첨부파일
-	                <input type="file" name="files" onchange="selectFile(this);" />
-	            </label>
-	        </div>
-	        <button type="button" onclick="removeFile(this);" class="btns del_btn"><span>삭제</span></button>
-	    `;
-	    document.querySelector('.file_list').appendChild(fileDiv);
-	}
 
-
-	// 파일 삭제
-	function removeFile(element) {
-	    const fileAddBtn = element.nextElementSibling;
-	    if (fileAddBtn) {
-	        const inputs = element.previousElementSibling.querySelectorAll('input');
-	        inputs.forEach(input => input.value = '')
-	        return false;
+	$('#btnAddFile').click(function() {
+	    if ($('.noticeFile').last().val() == '') { // 마지막 input=file값이 공백이라면
+	        alert('첨부하지 않은 파일이 이미 존재');
+	    } else if ($('.noticeFile').length >= 3) { // 파일 개수가 3개 이상이면
+	        alert('파일은 최대 3개까지 첨부할 수 있습니다.');
+	    } else {
+	        let html = '<div class="lg:col-span-4 xl:col-span-4 mx-2 mb-2"><input type="file" name="noticeFile" class="noticeFile cursor-pointer form-file form-file-sm border-slate-200 focus:outline-none focus:border-custom-500"></div>';
+	        $('#fileDiv').append(html);
 	    }
-	    element.parentElement.remove();
-	}
-    
+	});
+	
+	$('#btnRemoveFile').click(function() {
+		if($('.noticeFile').length == 0) {
+			alert('삭제 할 파일이 존재하지 않습니다');
+		} else {
+			$('.noticeFile').last().closest('div').remove();	
+		}
+	});
+		
     // 고정게시글 체크박스
     function setPinnedValue() {
             const checkbox = document.getElementById('pinnedCheckbox');
