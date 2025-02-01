@@ -1,6 +1,7 @@
 package com.example.pettopia.employee;
 
 
+import java.net.URLEncoder;
 import java.sql.Date;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -11,6 +12,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.authentication.configuration.EnableGlobalAuthentication;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
@@ -34,7 +36,13 @@ import jakarta.servlet.http.HttpSession;
 public class EmployeeController {
 	
 	@Autowired EmployeeService employeeService;
-
+	
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
+	
+	
+	
+	
 	// 직원 등록
 	@GetMapping("/admin/addEmployee")
 	public String addEmployee( Model model) {
@@ -145,7 +153,7 @@ public class EmployeeController {
 		
 		EmpUserDetails empUserDetails = (EmpUserDetails) auth.getPrincipal();
 		String diviCode = empUserDetails.getDeptCode().substring(0, 2); // divisionCode
-		String roleName = empUserDetails.getRoleNameo();
+		String roleName = empUserDetails.getRoleName();
 		
 		log.debug(TeamColor.KMJ+"diviCode -  "+ diviCode + TeamColor.RESET);
 		log.debug(TeamColor.KMJ+"roleName -  "+ roleName + TeamColor.RESET);
@@ -190,6 +198,7 @@ public class EmployeeController {
 		empInfo = employeeService.getSimpleEmpInfo(employee); // 일치한다면 사번, 이름, 이메일, 팀장여부 가져옴
 		
 		String msg = "임시 비밀번호 발급 성공!";
+
 		
 		// 사번과 이메일이 db와 일치한다면 임시비밀번호로 db 수정, 성공시 메일 보내기
 		if(empInfo != null) {												// db와 일치하면 
@@ -199,7 +208,7 @@ public class EmployeeController {
 			String tempPw = UUID.randomUUID().toString().replace("-", "").substring(0, 7)+"!";
 			log.debug(TeamColor.KMJ + "임시 비밀번호 발급 : " + tempPw);
 			
-			employee.setEmpPw(tempPw);
+			employee.setEmpPw(bCryptPasswordEncoder.encode(tempPw));
 			employee.setIsTeamLeader(empInfo.getIsTeamLeader());
 			
 			// 발급받은 임시 비밀번호로 db 수정 
@@ -231,7 +240,7 @@ public class EmployeeController {
 			
 			// 메일 전송 성공시
 			log.debug(TeamColor.KMJ + "msg : " + msg);
-			return "redirect:/loginForm?msg="+msg;
+			return "redirect:/loginForm";
 			
 		}
 		
@@ -356,7 +365,7 @@ public class EmployeeController {
 		
 		// 로그인 한 직원 권한 확인 (인사부 관리자)
 		EmpUserDetails empUserDetails = (EmpUserDetails) auth.getPrincipal();
-		String loginEmpRoleName = empUserDetails.getRoleNameo();
+		String loginEmpRoleName = empUserDetails.getRoleName();
 		String loginEmpDeptCode = empUserDetails.getDeptCode().substring(0, 2);
 		
 		boolean isAdmin = false; // 인사부 관리자라면 true

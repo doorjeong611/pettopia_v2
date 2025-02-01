@@ -97,7 +97,7 @@ $(document).ready(function () {
 	                var arrivalAlert = messageMap.arrivalAlert; 
 	                var fileName = messageMap.fileName || 'placeholder.png';  
 	
-	                var messageItem = '<a href="/message/messageOne?messageNo=' + messageNo + '" class="flex gap-3 p-2 product-item hover:bg-slate-50 dark:hover:bg-zink-500 follower">' +
+	                var messageItem = '<a href="${pageContext.request.contextPath}/message/messageOne?messageNo=' + messageNo + '" class="flex gap-3 p-2 product-item hover:bg-slate-50 dark:hover:bg-zink-500 follower">' +
 	                    '<div class="w-10 h-10 rounded-md shrink-0 bg-slate-100">' +
 	                        '<img src="${pageContext.request.contextPath}/employeeFile/' + fileName + '" alt="" class="rounded-md">' +
 	                    '</div>' +
@@ -155,43 +155,7 @@ $(document).ready(function () {
 	
 /* --------------------------------------------------------------------------------------------------------------------------------------  */
 	
-	/* NOTIFICATION */
-	/* 전체 */
-    $("#allNoti").click(function () {
-        $("#schedule").removeClass("active"); 
-        $("#notice").removeClass("active"); 
-        $("#document").removeClass("active"); 
-
-        $("#allNoti").addClass("active"); 
-    });
-    
-	/* 일정 */
-    $("#schedule").click(function () {
-        $("#allNoti").removeClass("active"); 
-        $("#notice").removeClass("active"); 
-        $("#document").removeClass("active"); 
-
-        $("#schedule").addClass("active"); 
-    });
-    
-	/* 공지사항 */
-    $("#notice").click(function () {
-        $("#schedule").removeClass("active"); 
-        $("#allNoti").removeClass("active"); 
-        $("#document").removeClass("active"); 
-
-        $("#notice").addClass("active"); 
-    });
-    
-	/* 결재 */
-    $("#document").click(function () {
-        $("#schedule").removeClass("active"); 
-        $("#notice").removeClass("active"); 
-        $("#allNoti").removeClass("active"); 
-
-        $("#document").addClass("active"); 
-    });
-    
+	
     
 });	
 </script>
@@ -229,119 +193,7 @@ $(document).ready(function () {
                     
     					<!-- notification -->
                         <div class="relative flex items-center dropdown h-header">
-                            <button type="button" class="inline-flex justify-center relative items-center p-0 text-topbar-item transition-all w-[37.5px] h-[37.5px] duration-200 ease-linear bg-topbar rounded-md dropdown-toggle btn hover:bg-topbar-item-bg-hover hover:text-topbar-item-hover group-data-[topbar=dark]:bg-topbar-dark group-data-[topbar=dark]:hover:bg-topbar-item-bg-hover-dark group-data-[topbar=dark]:hover:text-topbar-item-hover-dark group-data-[topbar=brand]:bg-topbar-brand group-data-[topbar=brand]:hover:bg-topbar-item-bg-hover-brand group-data-[topbar=brand]:hover:text-topbar-item-hover-brand group-data-[topbar=dark]:dark:bg-zink-700 group-data-[topbar=dark]:dark:hover:bg-zink-600 group-data-[topbar=brand]:text-topbar-item-brand group-data-[topbar=dark]:dark:hover:text-zink-50 group-data-[topbar=dark]:dark:text-zink-200 group-data-[topbar=dark]:text-topbar-item-dark" id="notificationDropdown" data-bs-toggle="dropdown">
-                                <i data-lucide="bell-ring" class="inline-block w-5 h-5 stroke-1 fill-slate-100 group-data-[topbar=dark]:fill-topbar-item-bg-hover-dark group-data-[topbar=brand]:fill-topbar-item-bg-hover-brand"></i>
-                                <span class="absolute top-0 right-0 flex w-1.5 h-1.5">
-                                    <span class="absolute inline-flex w-full h-full rounded-full opacity-75 animate-ping bg-sky-400"></span>
-                                    <span class="relative inline-flex w-1.5 h-1.5 rounded-full bg-red-500"></span>
-                                </span>
-                            </button>
-                            <div class="absolute z-50 hidden ltr:text-left rtl:text-right bg-white rounded-md shadow-md !top-4 dropdown-menu min-w-[20rem] lg:min-w-[26rem] dark:bg-zink-600" aria-labelledby="notificationDropdown">
-                                <div class="p-4">
-                                    <h6 class="mb-4 text-16">Notifications <span class="inline-flex items-center justify-center w-5 h-5 ml-1 text-[11px] font-medium border rounded-full text-white bg-orange-500 border-orange-500">15</span></h6>
-                                    <ul id="notificationNav" class="flex flex-wrap w-full p-1 mb-2 text-sm font-medium text-center rounded-md filter-btns text-slate-500 bg-slate-100 nav-tabs dark:bg-zink-500 dark:text-zink-200" data-filter-target="notification-list">
-                                        <li class="grow">
-                                            <div id="allNoti" class="inline-block nav-link px-1.5 w-full py-1 text-xs transition-all duration-300 ease-linear rounded-md text-slate-500 border border-transparent [&.active]:bg-white [&.active]:text-custom-500 hover:text-custom-500 active:text-custom-500 dark:text-zink-200 dark:hover:text-custom-500 dark:[&.active]:bg-zink-600 -mb-[1px]">전체</div>
-                                        </li>
-                                        <li class="grow">
-                                            <div id="schedule" class="inline-block nav-link px-1.5 w-full py-1 text-xs transition-all duration-300 ease-linear rounded-md text-slate-500 border border-transparent [&.active]:bg-white [&.active]:text-custom-500 hover:text-custom-500 active:text-custom-500 dark:text-zink-200 dark:hover:text-custom-500 dark:[&.active]:bg-zink-600 -mb-[1px] ">일정</div>
-                                        </li>
-                                        <li class="grow">
-                                            <div id="document" class="inline-block nav-link px-1.5 w-full py-1 text-xs transition-all duration-300 ease-linear rounded-md text-slate-500 border border-transparent [&.active]:bg-white [&.active]:text-custom-500 hover:text-custom-500 active:text-custom-500 dark:text-zink-200 dark:hover:text-custom-500 dark:[&.active]:bg-zink-600 -mb-[1px] " >결재</div>
-                                        </li>
-                                        <li class="grow">
-                                            <div id="notice" class="inline-block nav-link px-1.5 w-full py-1 text-xs transition-all duration-300 ease-linear rounded-md text-slate-500 border border-transparent [&.active]:bg-white [&.active]:text-custom-500 hover:text-custom-500 active:text-custom-500 dark:text-zink-200 dark:hover:text-custom-500 dark:[&.active]:bg-zink-600 -mb-[1px]">공지사항</div>
-                                        </li>
-                                    </ul>
-    
-                                </div>
-                                
-                                <!-- 일정 -->
-                                <div data-simplebar class="max-h-[350px]" style="border:solid 1px red;">
-                                    <div class="flex flex-col gap-1" id="notification-list">
-                                        <a href="#!" class="flex gap-3 p-4 product-item hover:bg-slate-50 dark:hover:bg-zink-500 follower">
-                                            <div class="w-10 h-10 rounded-md shrink-0 bg-slate-100">
-                                                <img src="${pageContext.request.contextPath}/assets/images/avatar-3.png" alt="" class="rounded-md">
-                                            </div>
-                                            <div class="grow">
-                                                <h6 class="mb-1 font-medium"><b>@willie_passem</b> followed you</h6>
-                                                <p class="mb-0 text-sm text-slate-500 dark:text-zink-300"><i data-lucide="clock" class="inline-block w-3.5 h-3.5 mr-1"></i> <span class="align-middle">Wednesday 03:42 PM</span></p>
-                                            </div>
-                                            <div class="flex items-center self-start gap-2 text-xs text-slate-500 shrink-0 dark:text-zink-300">
-                                                <div class="w-1.5 h-1.5 bg-custom-500 rounded-full"></div> 4 sec
-                                            </div>
-                                        </a>
-                                        <a href="#!" class="flex gap-3 p-4 product-item hover:bg-slate-50 dark:hover:bg-zink-500 mention">
-                                            <div class="w-10 h-10 bg-yellow-100 rounded-md shrink-0">
-                                                <img src="${pageContext.request.contextPath}/assets/images/avatar-5.png" alt="" class="rounded-md">
-                                            </div>
-                                            <div class="grow">
-                                                <h6 class="mb-1 font-medium"><b>@caroline_jessica</b> commented on your post</h6>
-                                                <p class="mb-3 text-sm text-slate-500 dark:text-zink-300"><i data-lucide="clock" class="inline-block w-3.5 h-3.5 mr-1"></i> <span class="align-middle">Wednesday 03:42 PM</span></p>
-                                                <div class="p-2 rounded bg-slate-100 text-slate-500 dark:bg-zink-500 dark:text-zink-300">Amazing! Fast, to the point, professional and really amazing to work with them!!!</div>
-                                            </div>
-                                            <div class="flex items-center self-start gap-2 text-xs text-slate-500 shrink-0 dark:text-zink-300">
-                                                <div class="w-1.5 h-1.5 bg-custom-500 rounded-full"></div> 15 min
-                                            </div>
-                                        </a>
-                                        <a href="#!" class="flex gap-3 p-4 product-item hover:bg-slate-50 dark:hover:bg-zink-500 invite">
-                                            <div class="flex items-center justify-center w-10 h-10 bg-red-100 rounded-md shrink-0">
-                                                <i data-lucide="shopping-bag" class="w-5 h-5 text-red-500 fill-red-200"></i>
-                                            </div>
-                                            <div class="grow">
-                                                <h6 class="mb-1 font-medium">Successfully purchased a business plan for <span class="text-red-500">$199.99</span></h6>
-                                                <p class="mb-0 text-sm text-slate-500 dark:text-zink-300"><i data-lucide="clock" class="inline-block w-3.5 h-3.5 mr-1"></i> <span class="align-middle">Monday 11:26 AM</span></p>
-                                            </div>
-                                            <div class="flex items-center self-start gap-2 text-xs text-slate-500 shrink-0 dark:text-zink-300">
-                                                <div class="w-1.5 h-1.5 bg-custom-500 rounded-full"></div> Yesterday
-                                            </div>
-                                        </a>
-                                        <a href="#!" class="flex gap-3 p-4 product-item hover:bg-slate-50 dark:hover:bg-zink-500 mention">
-                                            <div class="relative shrink-0">
-                                                <div class="w-10 h-10 bg-pink-100 rounded-md">
-                                                    <img src="${pageContext.request.contextPath}/assets/images/avatar-7.png" alt="" class="rounded-md">
-                                                </div>
-                                                <div class="absolute text-orange-500 -bottom-0.5 -right-0.5 text-16">
-                                                    <i class="ri-heart-fill"></i>
-                                                </div>
-                                            </div>
-                                            <div class="grow">
-                                                <h6 class="mb-1 font-medium"><b>@scott</b> liked your post</h6>
-                                                <p class="mb-0 text-sm text-slate-500 dark:text-zink-300"><i data-lucide="clock" class="inline-block w-3.5 h-3.5 mr-1"></i> <span class="align-middle">Thursday 06:59 AM</span></p>
-                                            </div>
-                                            <div class="flex items-center self-start gap-2 text-xs text-slate-500 shrink-0 dark:text-zink-300">
-                                                <div class="w-1.5 h-1.5 bg-custom-500 rounded-full"></div> 1 Week
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
-                                <!-- 끝 : 일정 -->
-                                
-                                <!-- 결재 -->
-                                <div data-simplebar class="max-h-[350px] hidden" style="border:solid 1px green;">
-                                    <div class="flex flex-col gap-1" id="notification-list">
-                                        <a href="#!" class="flex gap-3 p-4 product-item hover:bg-slate-50 dark:hover:bg-zink-500 follower">
-                                            <div class="w-10 h-10 rounded-md shrink-0 bg-slate-100">
-                                                <img src="${pageContext.request.contextPath}/assets/images/avatar-3.png" alt="" class="rounded-md">
-                                            </div>
-                                            <div class="grow">
-                                                <h6 class="mb-1 font-medium"><b>HOMEZONE</b> followed you</h6>
-                                                <p class="mb-0 text-sm text-slate-500 dark:text-zink-300"><i data-lucide="clock" class="inline-block w-3.5 h-3.5 mr-1"></i> <span class="align-middle">Wednesday 03:42 PM</span></p>
-                                            </div>
-                                            <div class="flex items-center self-start gap-2 text-xs text-slate-500 shrink-0 dark:text-zink-300">
-                                                <div class="w-1.5 h-1.5 bg-custom-500 rounded-full"></div> 4 sec
-                                            </div>
-                                        </a>
-                                       
-                                    </div>
-                                </div>
-                                <!-- 끝 : 결재 -->
-                                
-                                
-                                
-                                
-                                
-                            </div>
+                            
                         </div>
                         
                         <!-- message -->

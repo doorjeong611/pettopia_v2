@@ -255,6 +255,14 @@ public class MessageController {
 		Map<String, Object> selectedMessage = messageService.getMessageById(messageNo);
 		log.debug(TeamColor.OJY + "selectedMessage------>" + selectedMessage + TeamColor.RESET);
 		
+		
+		// message_state 'N' -> 'Y'로 변경
+		String messageState = (String)selectedMessage.get("messageState");
+		
+		if(messageState.equalsIgnoreCase("N")) {// 메시지 읽음으로 변경하기
+			messageService.markAsRead(messageNo);
+		}
+		
 		model.addAttribute("selectedMessage",selectedMessage);
 		
 		return "message/messageOne";
