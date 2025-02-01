@@ -16,9 +16,9 @@ public interface ServiceMapper {
 	// 서비스 등록 (추가)
 	void insertService(PetService service);
 	
-	// 서비스 수정
-	void modifyService(PetService petService);
-	
 	// 총 서비스 리스트 조회
-    int countServiceList();
+    int countServiceList(Map<String, Object> params);
+
+    // 삭제
+	void deleteByServiceNo(String serviceNo);
 }
