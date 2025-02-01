@@ -1,6 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.pettopia.petservice.ServiceMapper">
+	<!-- 서비스 예약내역 조회 -->
+	<select id="selectServiceRsvList" resultType="java.util.Map">
+		SELECT
+				pr.rsv_no rsvNo,
+				c.customer_name customerName,
+				pr.service_no serviceNo,
+				pr.rsv_datetime rsvDatetime,
+				pr.rsv_status rsvStatus,
+				pr.rsv_no_show rsvNoShow,
+				ps.service_name serviceName,
+				ps.service_desc serviceDesc
+		FROM 
+				pet_service_rsv pr
+		INNER JOIN
+				pet_service ps
+		ON
+				pr.service_no = ps.service_no
+		INNER JOIN
+				customer c
+		ON
+				pr.customer_no = c.customer_no
+		WHERE 1=1
+		<if test="searchWord != null and searchWord != ''">
+	        AND (service_name LIKE CONCAT('%', #{searchWord}, '%')
+	             OR service_desc LIKE CONCAT('%', #{searchWord}, '%'))
+	    </if>
+	    
+		LIMIT #{pageSize} OFFSET #{offset}
+		
+	</select>
+	
+	<!-- 총 서비스 예약 내역 갯수 조회 -->
+    <select id="countServiceRsvList" resultType="int">
+        SELECT COUNT(*) FROM pet_service_rsv WHERE 1=1
+        <if test="searchWord != null and searchWord != ''">
+	        AND (service_name LIKE CONCAT('%', #{searchWord}, '%')
+	             OR service_desc LIKE CONCAT('%', #{searchWord}, '%'))
+	    </if>
+    </select>
 
 	<!-- 서비스 삭제 -->
 	<delete id="deleteByServiceNo">

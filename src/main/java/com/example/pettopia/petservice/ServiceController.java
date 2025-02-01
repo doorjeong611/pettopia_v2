@@ -27,8 +27,27 @@ public class ServiceController {
     
     // 서비스 예약내역
     @GetMapping("/service/getServiceRsvList")
-    public String getServiceRsvList() {
-    	return "service/serviceRsvList";
+    public String getServiceRsvList(Model model,
+    		@RequestParam(defaultValue = "1") int currentPage,
+            @RequestParam(defaultValue = "10") int pageSize,
+            @RequestParam(required = false) String searchWord) {
+    	
+    	// 검색과 페이징 처리
+        List<PetService> serviceRsvList = serviceService.getServiceRsvList(searchWord, pageSize, currentPage);
+        int totalRecords = serviceService.countServiceRsvList(searchWord); // 총 고객 수 조회
+        int totalPages = (int) Math.ceil((double) totalRecords / pageSize);
+        
+        
+        model.addAttribute("serviceRsvList", serviceRsvList);
+        log.debug(TeamColor.WJ + "serviceRsvList 뭐들어있는지 ========> " + serviceRsvList + TeamColor.RESET);
+        model.addAttribute("currentPage", currentPage); // 현재 페이지 번호
+        model.addAttribute("totalPages", totalPages); // 총 페이지 수
+        model.addAttribute("totalRecords", totalRecords); // 총 고객 수
+        model.addAttribute("pageSize", pageSize); // 페이지 크기
+        model.addAttribute("searchWord", searchWord); // 검색어
+        log.debug(TeamColor.WJ + "검색어 ========> " + searchWord + TeamColor.RESET);
+        
+        return "service/serviceRsvList";
     }
     
     
