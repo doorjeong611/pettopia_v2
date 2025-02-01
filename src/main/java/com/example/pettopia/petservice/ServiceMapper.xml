@@ -2,18 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.pettopia.petservice.ServiceMapper">
 
-	<!-- 서비스 수정 -->
-	<update id="modifyService" parameterType="com.example.pettopia.vo.PetService">
-	    UPDATE pet_service
-	    SET 
-	        service_name = #{serviceName},
-	        service_desc = #{serviceDesc},
-	        service_price = #{servicePrice},
-	        service_option1 = #{serviceOption1},
-	        service_option2 = #{serviceOption2},
-	        update_datetime = NOW()
-	    WHERE service_no = #{serviceNo}
-	</update>
+	<!-- 서비스 삭제 -->
+	<delete id="deleteByServiceNo">
+	    DELETE FROM pet_service WHERE service_no = #{serviceNo}
+	</delete>
+
 	<!-- 서비스 등록 -->
     <insert id="insertService" parameterType="com.example.pettopia.vo.PetService">
         INSERT INTO pet_service (service_no, service_name, service_desc, service_price, create_datetime, update_datetime)
@@ -27,11 +20,22 @@
 				service_desc serviceDesc
 		FROM 
 				pet_service
+		WHERE 1=1
+		<if test="searchWord != null and searchWord != ''">
+	        AND (service_name LIKE CONCAT('%', #{searchWord}, '%')
+	             OR service_desc LIKE CONCAT('%', #{searchWord}, '%'))
+	    </if>
+	    
 		LIMIT #{pageSize} OFFSET #{offset}
+		
 	</select>
 	
 	<!-- 총 서비스 갯수 조회 -->
     <select id="countServiceList" resultType="int">
-        SELECT COUNT(*) FROM pet_service
+        SELECT COUNT(*) FROM pet_service WHERE 1=1
+        <if test="searchWord != null and searchWord != ''">
+	        AND (service_name LIKE CONCAT('%', #{searchWord}, '%')
+	             OR service_desc LIKE CONCAT('%', #{searchWord}, '%'))
+	    </if>
     </select>
 </mapper>

@@ -25,20 +25,18 @@ public class ServiceController {
     @Autowired
     private ServiceService serviceService;
     
-    // 서비스 상세보기 뷰 및 수정 페이지
-    @PostMapping("/service/modifyService")
-    public String modifyService(PetService petService) {
-        // 서비스 수정 처리
-        serviceService.modifyService(petService);
-        return "redirect:/service/getServiceList"; // 수정 후 리스트 페이지로 이동
+    // 서비스 삭제
+    @PostMapping("/service/deleteService")
+    public String deleteService(@RequestParam("serviceNos") String serviceNos) {
+        String[] serviceNoArray = serviceNos.split(",");
+        for (String serviceNo : serviceNoArray) {
+            serviceService.deleteService(serviceNo);  // 서비스 삭제 로직
+        }
+        return "redirect:/service/getServiceList";  // 삭제 후 서비스 목록 페이지로 리다이렉트
     }
     
-    @GetMapping("/service/modifyService")
-    public String modifyService() {
-        return "service/getModifyService";
-    }
     
-
+    
     // 서비스 등록 페이지
     @GetMapping("/service/addService")
     public String addService() {
@@ -57,24 +55,27 @@ public class ServiceController {
         return "redirect:/service/getServiceList"; // 등록 페이지로 리다이렉트
     }
 
-    // 펫 서비스 조회
+    // 펫 서비스 조회, 페이징, 검색
     @GetMapping("/service/getServiceList")
     public String getServiceList(Model model,
     		@RequestParam(defaultValue = "1") int currentPage,
-            @RequestParam(defaultValue = "10") int pageSize) {
+            @RequestParam(defaultValue = "10") int pageSize,
+            @RequestParam(required = false) String searchWord) {
     	
-        List<PetService> serviceList = serviceService.getAllServices(pageSize, currentPage);
-        int totalRecords = serviceService.countServiceList(); // 총 고객 수 조회
+    	// 검색과 페이징 처리
+        List<PetService> serviceList = serviceService.getAllServices(searchWord, pageSize, currentPage);
+        int totalRecords = serviceService.countServiceList(searchWord); // 총 고객 수 조회
         int totalPages = (int) Math.ceil((double) totalRecords / pageSize);
-        log.debug(TeamColor.WJ + "총 서비스 갯수 ========> " + totalRecords + TeamColor.RESET);
         
         
         model.addAttribute("serviceList", serviceList);
         model.addAttribute("currentPage", currentPage); // 현재 페이지 번호
         model.addAttribute("totalPages", totalPages); // 총 페이지 수
-        log.debug(TeamColor.WJ + "총 페이지 갯수 ========> " + totalPages + TeamColor.RESET);
         model.addAttribute("totalRecords", totalRecords); // 총 고객 수
         model.addAttribute("pageSize", pageSize); // 페이지 크기
+        model.addAttribute("searchWord", searchWord); // 검색어
+        log.debug(TeamColor.WJ + "검색어 ========> " + searchWord + TeamColor.RESET);
+        
         return "service/petService"; // View 경로
     }
 }

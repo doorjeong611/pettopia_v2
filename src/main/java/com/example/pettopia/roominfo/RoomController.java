@@ -102,9 +102,6 @@ public class RoomController {
 
 		    return response;  // JSON 형식으로 반환
 		}
-
-
-		
 		
 		// 객실 추가
 		@GetMapping("/room/getAddRoom")
@@ -121,6 +118,32 @@ public class RoomController {
 		    
 			return "room/addRoomRsv";
 		}
+		
+		// 객실 예약 등록 요청 처리
+	    @PostMapping("/room/getAddRoomRsv")
+	    public String getAddRoomRsv(@RequestParam("roomNo") int roomNo,
+	                              @RequestParam("customerNo") int customerNo,
+	                              @RequestParam("checkInDatetime") String checkInDatetime,
+	                              @RequestParam("checkOutDatetime") String checkOutDatetime,
+	                              Model model) {
+
+	        // 예약 객체 생성
+	        RoomRsv roomRsv = new RoomRsv();
+	        roomRsv.setRoomNo(roomNo);
+	        roomRsv.setCustomerNo(customerNo);
+	        roomRsv.setCheckInDatetime(checkInDatetime);
+	        roomRsv.setCheckOutDatetime(checkOutDatetime);
+
+	        try {
+	            // 예약 추가
+	            roomService.addRoomRsv(roomRsv);
+	            model.addAttribute("message", "객실 예약이 완료되었습니다.");
+	        } catch (Exception e) {
+	            model.addAttribute("message", "예약 실패: " + e.getMessage());
+	        }
+
+	        return "roomReservationResult"; // 결과 페이지로 이동
+	    }
 
 		// 객실 등록 처리
 	    @PostMapping("/room/addRoom")

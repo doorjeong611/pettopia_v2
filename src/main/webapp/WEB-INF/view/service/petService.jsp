@@ -50,10 +50,18 @@
                     <div class="card-body">
                         <div class="grid grid-cols-1 gap-5 mb-5 xl:grid-cols-2">
                             <div>
-                                <div class="relative xl:w-3/6">
+                            <form action="${pageContext.request.contextPath}/service/getServiceList" method="get" style="justify-content: flex-end;">
+				                <div class="relative xl:w-3/6">
+				                        <input type="text" name="searchWord" value="${searchWord}" class="ltr:pl-8 rtl:pr-8 search form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="Search for ...">
+				                         <button type="submit" class="absolute right-0 top-0 h-full px-4 text-slate-500">
+				                        	<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="search" class="lucide lucide-search inline-block size-4 absolute ltr:left-2.5 rtl:right-2.5 top-2.5 text-slate-500 dark:text-zink-200 fill-slate-100 dark:fill-zink-600"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+				                        </button>
+				                </div>
+			                </form>
+                               <!--  <div class="relative xl:w-3/6">
                                     <input type="text" class="ltr:pl-8 rtl:pr-8 search form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="Search for ..." autocomplete="off">
                                     <i data-lucide="search" class="inline-block size-4 absolute ltr:left-2.5 rtl:right-2.5 top-2.5 text-slate-500 dark:text-zink-200 fill-slate-100 dark:fill-zink-600"></i>
-                                </div>
+                                </div> -->
                             </div>
                             <div class="ltr:md:text-end rtl:md:text-start"> 
 							    <!-- 서비스 추가 버튼, href 속성으로 addService 페이지로 이동 -->
@@ -194,6 +202,41 @@
 
 <!-- App js -->
 <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
+<script>
+	function deleteMultiple() {
+	    var selectedServices = [];
+	    
+	    // 체크된 서비스 목록 가져오기
+	    document.querySelectorAll('input[type="checkbox"]:checked').forEach(function(checkbox) {
+	        // 체크박스가 체크된 서비스의 serviceNo 값 모음
+	        selectedServices.push(checkbox.closest('tr').querySelector('td a').textContent);
+	    });
+	    
+	    if (selectedServices.length === 0) {
+	        alert('삭제할 서비스를 선택하세요.');
+	        return;
+	    }
+	
+	    // 확인 메시지
+	    if (confirm("선택한 서비스를 삭제하시겠습니까?")) {
+	        // 삭제할 서비스들을 서버로 전송
+	        var form = document.createElement('form');
+	        form.method = 'POST';
+	        form.action = '${pageContext.request.contextPath}/service/deleteService';  // 서버의 삭제 처리 URL
+	        
+	        var input = document.createElement('input');
+	        input.type = 'hidden';
+	        input.name = 'serviceNos';
+	        input.value = selectedServices.join(',');
+	        form.appendChild(input);
+	        
+	        document.body.appendChild(form);
+	        form.submit(); // 폼 전송
+	        
+	        confirm("삭제되었습니다.")
+	    }
+	}
+</script>
 
 </body>
 
