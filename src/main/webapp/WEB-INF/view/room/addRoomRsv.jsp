@@ -45,10 +45,10 @@
                <div class="card">
                     <div class="card-body">
                         <form id="formAddRoom" method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/room/getAddRoomRsv">
-                            <div class="grid grid-cols-1 gap-x-5 md:grid-cols-2 xl:grid-cols-3">
-                                <div class="mb-4">
+                            <div>
+                                <div class="mb-4" style="width: 15%">
                                     <label class="inline-block mb-2 text-base font-medium"> 룸 선택 <span class="text-red-500">*</span></label>
-                                    <select name="roomNo" id="roomSelect" onchange="getRoomInfo(this.value)" class="form-select border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200">
+                                    <select name="roomNo" id="roomSelect" onchange="getRoomInfo()" class="form-select border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200">
 								         <option value="">-- 객실 선택 --</option>
 										    <c:forEach var="room" items="${roomList}">
 										        <option value="${room.roomNo}">${room.roomName}(${room.roomType})</option>
@@ -56,21 +56,37 @@
    									 </select>
                                 </div>
                                 <!-- 객실 정보 뿌려질 div -->
-                                <div id="roomInfoDiv">
-                    <p id="roomName"></p>
-                    <p id="roomType"></p>
-                    <p id="roomCapacity"></p>
-                    <p id="roomDesc"></p>
-                    <p id="pricePerNight"></p>
-                </div>
-                                
-                                <div class="mb-4">
+                                <table id="roomInfoTable" class="w-full">
+                                    <thead class="ltr:text-left rtl:text-right">
+                                        <tr>
+                                        	<th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500">이미지</th>
+                                            <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500">방 이름</th>
+                                            <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500">방 타입</th>
+                                            <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500">수용 인원</th>
+                                            <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500">1박 가격</th>
+                                            <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500">방 설명</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                       <tr>
+                                       	<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500"><img id="roomImg" src="" alt="방 이미지" width="100"></td>
+                                           <td id="roomName" class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500"></td>
+                                           <td id="roomType" class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500"></td>
+                                           <td id="roomCapacity" class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500"></td>
+                                           <td id="pricePerNight"class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500"></td>
+                                           <td id="roomDesc" class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500"></td>
+                                       </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="grid grid-cols-1 gap-x-5 md:grid-cols-2 xl:grid-cols-3">
+	                            <div class="mb-4">
                                     <label class="inline-block mb-2 text-base font-medium"> 예약자 <span class="text-red-500">*</span></label>
-                                    <input type="text" id="roomName" name="roomName" class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="타입 선택">
+                                    <input type="text" id="RsvCustomerName" name="RsvCustomerName" class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="타입 선택">
                                 </div>
                                 <div class="mb-4">
                                     <label class="inline-block mb-2 text-base font-medium">예약자 H.P<span class="text-red-500">*</span></label>
-                                    <input type="text" id="roomCapacity" name="roomCapacity" class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="최대 수용인원을 입력하세요">
+                                    <input type="text" id="RsvCustomerHP" name="RsvCustomerHP" class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="최대 수용인원을 입력하세요">
                                 </div>
                                 <div class="mb-4">
                                     <label class="inline-block mb-2 text-base font-medium">체크인<span class="text-red-500">*</span></label>
@@ -85,7 +101,7 @@
                                     <label class="inline-block mb-2 text-base font-medium">메모 <span class="text-red-500">*</span></label>
                                    <textarea id="memo" name="roomDesc" class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="객실 설명을 입력하세요"></textarea>
                                 </div>
-                            </div>
+                             </div>
                            
                         <div class="flex justify-end gap-2">
                             <button type="button" class="text-red-500 bg-white btn hover:text-red-500 hover:bg-red-100 focus:text-red-500 focus:bg-red-100 active:text-red-500 active:bg-red-100 dark:bg-zink-700 dark:hover:bg-red-500/10 dark:focus:bg-red-500/10 dark:active:bg-red-500/10"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="x" class="lucide lucide-x inline-block size-4"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg> <span class="align-middle">Cancel</span></button>
@@ -121,19 +137,25 @@
 <!-- App js -->
 <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
 <script>
+	$('#roomInfoTable').hide();
     // 객실 정보를 가져오는 함수
-    function getRoomInfo(roomNo) {
+    function getRoomInfo() {
+    	$('#roomInfoTable').show();
+    	var roomNo = document.getElementById('roomSelect').value;
+
         if (roomNo) {
             // 서버에서 객실 정보 조회
-             fetch("${pageContext.request.contextPath}/room/getRoomInfo?roomNo=${roomNo}")
+    		fetch('${pageContext.request.contextPath}/room/getRoomInfo?roomNo=' + roomNo)
                 .then(response => response.json())
                 .then(data => {
                     // 데이터를 화면에 출력
             		console.log("객실 정보:", data);
-                    document.getElementById('roomName').value = data.roomName;   // 객실 이름
-	                document.getElementById('roomCapacity').value = data.roomCapacity; // 최대 수용 인원
-	                //document.getElementById('pricePerNightInput').value = data.pricePerNight; // 1박당 가격
-	                document.getElementById('memo').value = data.roomDesc; // 객실 설명
+                    document.getElementById('roomName').textContent = data.roomName;   // 객실 이름
+                    document.getElementById('roomType').textContent = data.roomType;   // 객실 이름
+	                document.getElementById('roomCapacity').textContent = data.roomCapacity; // 최대 수용 인원
+	                document.getElementById('pricePerNight').textContent = data.pricePerNight; // 1박당 가격
+	                document.getElementById('roomDesc').textContent = data.roomDesc; // 객실 설명
+	                document.getElementById('roomImg').src = "${pageContext.request.contextPath}/upload/" + data.fileName; // 객실 이미지
                 })
                 .catch(error => {
                     console.error("오류 발생. 에러 메시지: ", error);

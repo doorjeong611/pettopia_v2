@@ -96,8 +96,10 @@ public class RoomController {
 		    response.put("roomCapacity", roomInfo.get("roomCapacity"));
 		    response.put("roomDesc", roomInfo.get("roomDesc"));
 		    response.put("pricePerNight", roomInfo.get("pricePerNight"));
+		    response.put("roomNo", roomInfo.get("roomNo"));
+		    response.put("fileName", roomInfo.get("fileName"));
 
-	    	log.debug(TeamColor.WJ + response + TeamColor.RESET);
+
 		    return response;  // JSON 형식으로 반환
 		}
 
