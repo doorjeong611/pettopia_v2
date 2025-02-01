@@ -135,7 +135,7 @@ public class EmpUserDetails implements UserDetails {
 	}
 	
 	// 직원 권한
-	public String getRoleNameo() {
+	public String getRoleName() {
 		return employee.getRoleName();
 	}
 	
