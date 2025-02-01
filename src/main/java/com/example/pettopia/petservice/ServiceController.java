@@ -25,6 +25,13 @@ public class ServiceController {
     @Autowired
     private ServiceService serviceService;
     
+    // 서비스 예약내역
+    @GetMapping("/service/getServiceRsvList")
+    public String getServiceRsvList() {
+    	return "service/serviceRsvList";
+    }
+    
+    
     // 서비스 삭제
     @PostMapping("/service/deleteService")
     public String deleteService(@RequestParam("serviceNos") String serviceNos) {
