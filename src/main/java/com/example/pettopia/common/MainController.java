@@ -82,7 +82,7 @@ public class MainController {
 		List<Map<String, Object>> messageListByMain = new ArrayList<>();
 		   
 	    if (!messageList.isEmpty()) { // 메시지가 있다면 실행, 없으면 빈 리스트 전달
-	    	messageListByMain = empDetail.processMessageList(messageList); 
+	    	// messageListByMain = empDetail.processMessageList(messageList); 
 	    	model.addAttribute("messageListByMain", messageListByMain);
 	    	log.debug(TeamColor.KDH + "messageListByMain : " + messageListByMain.toString() + TeamColor.RESET);
 	    }

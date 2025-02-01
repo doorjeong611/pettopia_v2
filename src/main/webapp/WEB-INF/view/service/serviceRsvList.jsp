@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
 <html lang="en" class="light scroll-smooth group" data-layout="vertical" data-sidebar="light" data-sidebar-size="lg" data-mode="light" data-topbar="light" data-skin="default" data-navbar="sticky" data-content="fluid" dir="ltr">
@@ -69,35 +70,38 @@
                             <table class="w-full whitespace-nowrap" id="serviceTable">
                                 <thead class="bg-slate-100 dark:bg-zink-600">
                                     <tr>
-                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500" scope="col" style="width: 50px;">
-                                            <input class="border rounded-sm appearance-none cursor-pointer size-4 bg-slate-100 border-slate-200 dark:bg-zink-600 dark:border-zink-500 checked:bg-custom-500 checked:border-custom-500 dark:checked:bg-custom-500 dark:checked:border-custom-500 checked:disabled:bg-custom-400 checked:disabled:border-custom-400" type="checkbox" id="checkAll" value="option">
-                                        </th>
-                                        <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right" data-sort="customer_name">Service No</th>
-                                        <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right" data-sort="email">서비스 이름</th>
-                                        <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right" data-sort="phone">서비스 설명</th>
+                                        <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right" data-sort="customer_name">No</th>
+                                        <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right" data-sort="email">예약자</th>
+                                        <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right" data-sort="phone">예약날짜</th>
+                                        <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right" data-sort="phone">예약상태</th>
+                                        <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right" data-sort="phone">노쇼여부</th>
+                                        <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right" data-sort="phone">서비스이름</th>
+                                        <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right" data-sort="phone">서비스설명</th>
+                                        
                                     </tr>
                                 </thead>
                                  <tbody>
-		                                <c:forEach var="c" items="${serviceList}">
+		                                <c:forEach var="serviceRsvList" items="${serviceRsvList}">
 		                                    <tr class="even:bg-slate-50 hover:bg-slate-50 even:hover:bg-slate-100 dark:even:bg-zink-600/50 dark:hover:bg-zink-600 dark:even:hover:bg-zink-600">
 		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">
-		                                        	<input class="border rounded-sm appearance-none cursor-pointer size-4 bg-slate-100 border-slate-200 dark:bg-zink-600 dark:border-zink-500 checked:bg-custom-500 checked:border-custom-500 dark:checked:bg-custom-500 dark:checked:border-custom-500 checked:disabled:bg-custom-400 checked:disabled:border-custom-400" type="checkbox" id="" value="option"> 
+		                                            <a href="#" class="transition-all duration-150 ease-linear text-custom-500 hover:text-custom-600">${serviceRsvList.rsvNo}</a>
 		                                        </td>
-		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">
-		                                            <a href="#" class="transition-all duration-150 ease-linear text-custom-500 hover:text-custom-600">${c.serviceNo}</a>
-		                                        </td>
-		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${c.serviceName}</td>
-		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${c.serviceDesc}</td>
+		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${serviceRsvList.customerName}</td>
+		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${serviceRsvList.rsvDatetime}</td>
+		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">  
+		                                        	${serviceRsvList.rsvStatus == 'CF' ? '예약완료' : 
+												      serviceRsvList.rsvStatus == 'CC' ? '취소' :
+												      serviceRsvList.rsvStatus == 'IP' ? '진행중' :
+												      serviceRsvList.rsvStatus == 'CM' ? '이용완료' : ''}
+												</td>
+		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${serviceRsvList.rsvNoShow == '1' ? '노쇼' : ''}</td>
+		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${serviceRsvList.serviceName}</td>
+		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${serviceRsvList.serviceDesc}</td>
+		                                        
 		                                    </tr>
 		                                </c:forEach> 
                             		</tbody>
                             </table>
-                            <div class="noresult" style="display: none">
-                                <div class="text-center p-7">
-                                    <h5 class="mb-2">Sorry! No Result Found</h5>
-                                    <p class="mb-0 text-slate-500 dark:text-zink-200">We've searched more than 150+ Orders We did not find any orders for you search.</p>
-                                </div>
-                            </div>
                         </div>
                            <!-- 페이징 시작 -->
 						<div class="flex justify-end mt-4">

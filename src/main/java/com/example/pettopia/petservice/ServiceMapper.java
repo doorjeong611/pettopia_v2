@@ -21,4 +21,10 @@ public interface ServiceMapper {
 
     // 삭제
 	void deleteByServiceNo(String serviceNo);
+
+	// 서비스 예약 리스트 조회
+	List<PetService> selectServiceRsvList(Map<String, Object> params);
+
+	// 서비스 예약 리스트 갯수 카운트
+	int countServiceRsvList(Map<String, Object> params);
 }
