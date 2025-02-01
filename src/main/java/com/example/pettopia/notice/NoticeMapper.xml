@@ -2,8 +2,16 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.pettopia.notice.NoticeMapper">
 	
+	<!-- 오자윤 : /notice/noticeOne : 공지사항 삭제 -->
+	<delete id="deleteNotice" parameterType="Integer">
+	DELETE FROM notice WHERE notice_no = #{noticeNo}
+	</delete>
+	
 	<!-- 오자윤 : /notice/addNotice 공지사항 추가, 자동 생성된 키 반환 -->
-	<insert id="insertNotice" parameterType="com.example.pettopia.vo.Notice" useGeneratedKeys="true" keyProperty="noticeNo">
+	<insert id="insertNotice" parameterType="com.example.pettopia.vo.Notice">
+    <selectKey resultType="Integer" keyProperty="noticeNo" order="AFTER">
+        SELECT LAST_INSERT_ID()
+    </selectKey>
 	    INSERT INTO notice (
 	        writer_emp_no,
 	        dept_code,
@@ -26,37 +34,6 @@
 	    )
 	</insert>
 	
-	<!-- 오자윤 : /notice/addNotice 첨부파일 추가 -->
-	<!-- 테이블 전체 컬럼 -->
-	 <sql id="noticeFileColumns">
-	      notice_file_no
-	    , notice_no
-	    , origin_file_name
-	    , file_name
-	    , file_ext
-	    , file_type
-	    , create_datetime
-	    , update_datetime
-	</sql>
-	
-	<!-- 파일 정보 저장 -->
-	<insert id="saveAll" parameterType="map">
-	    INSERT INTO notice_file (
-	        <include refid="noticeFileColumns" />
-	    ) VALUES
-	    <foreach item="file" collection="files" separator=",">
-	    (
-	        NULL,
-            #{noticeNo},  
-            #{file.originFileName},
-            #{file.fileName},
-            #{file.fileExt},
-            #{file.fileType},
-            NOW(),
-            NOW()
-	    )
-	    </foreach>
-	</insert>
 
 	<!-- 공지사항 리스트 : 부서 목록 -->
 	<select id="selectDivisionList" resultType="com.example.pettopia.vo.Division">
@@ -183,16 +160,10 @@
 				, n.notice_view AS noticeView
 				, n.create_datetime AS createDateTime
 				, n.is_pinned AS isPinned
-				, IFNULL(nf.notice_file_no, 'No') AS noticeFileNo
-				, IFNULL(nf.origin_file_name, 'No') AS originFileName
-				, IFNULL(nf.file_name, 'No') AS fileName
-				, IFNULL(nf.file_ext , 'No') AS fileExt
-				, IFNULL(nf.file_type , 'No') AS fileType
 		FROM notice n 
 		LEFT OUTER JOIN department d ON n.dept_code = d.dept_code
 		LEFT OUTER JOIN division di ON d.division_code = di.division_code
 		LEFT OUTER JOIN employee e ON n.writer_emp_no = e.emp_no
-		LEFT JOIN notice_file nf ON n.notice_no = nf.notice_no
 		WHERE n.notice_no = #{noticeNo}
 	</select>
 

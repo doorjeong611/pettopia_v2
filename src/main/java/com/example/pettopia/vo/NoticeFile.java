@@ -1,10 +1,13 @@
 package com.example.pettopia.vo;
 
-import lombok.Builder;
+
+import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.Data;
 
 @Data
-@Builder
 public class NoticeFile {
 	private Integer noticeFileNo; // PK
 	private Integer noticeNo; // FK
@@ -14,7 +17,7 @@ public class NoticeFile {
 	private String fileType;
 	private String createDatetime;
 	private String updateDatetime;
-	
+    private List<MultipartFile> noticeFile;
 
 }
 	

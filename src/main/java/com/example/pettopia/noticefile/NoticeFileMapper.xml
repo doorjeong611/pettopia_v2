@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.pettopia.noticefile.NoticeFileMapper">
+
+	<!-- notice/addNotice : addNotice → 게시글작성 사 파일 추가 -->
+	<insert id="insertNoticeFile" parameterType="com.example.pettopia.vo.NoticeFile">
+		INSERT INTO notice_file(notice_no, origin_file_name, file_name, file_ext, file_type) 
+		VALUES(#{noticeNo}, #{originFileName}, #{fileName}, #{fileExt}, #{fileType})
+	</insert>
+	
+	<!-- notice/noticeOne : 파일 삭제할 때 파일 정보 가져오기 -->
+	<select id="selectNoticeFileOne" parameterType="Integer" resultType="com.example.pettopia.vo.NoticeFile">
+		SELECT notice_file_no noticeFileNo, notice_no noticeNo, origin_file_name originFileName, file_name fileName, file_ext fileExt,  
+			   file_type fileType, create_datetime createDatetime, update_datetime updateDatetime
+		FROM notice_file WHERE notice_file_no = #{noticeFileNo}
+	</select>
+
+	<!-- notice/noticeOne : 파일 삭제 하기 -->
+	<delete id="deleteNoticeFile" parameterType="Integer">
+		DELETE FROM notice_file WHERE notice_file_no = #{noticeFileNo}
+	</delete>
+	
+		<!-- 오자윤 : notice/noticeOne selectNoticeFileList : 파일 리스트 조회 -->
+	<select id="selectNoticeFileList" parameterType="Integer" resultType="com.example.pettopia.vo.NoticeFile">
+		SELECT notice_file_no noticeFileNo, notice_no noticeNo, origin_file_name originFileName, file_name fileName,
+		       file_ext fileExt, file_type fileType, create_datetime createDatetime, update_datetime updateDatetime
+		FROM notice_file WHERE notice_no = #{noticeNo}
+		LIMIT 8
+	</select>
+	
+		<!-- notice/addNotice : 게시글 삭제 시 파일 삭제를 위한 파일 No 조회 -->
+	<select id="selectNoticeFileNoList" parameterType="Integer" resultType="Integer">
+		SELECT notice_file_no noticeFileNo FROM notice_file WHERE notice_No = ${noticeNo}
+	</select>
+	
+</mapper>
