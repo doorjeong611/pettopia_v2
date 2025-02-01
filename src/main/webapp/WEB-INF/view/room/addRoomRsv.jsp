@@ -44,11 +44,11 @@
                 <!-- Main content -->
                <div class="card">
                     <div class="card-body">
-                        <form id="formAddRoom" method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/room/addRoomRsv">
+                        <form id="formAddRoom" method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/room/getAddRoomRsv">
                             <div class="grid grid-cols-1 gap-x-5 md:grid-cols-2 xl:grid-cols-3">
                                 <div class="mb-4">
                                     <label class="inline-block mb-2 text-base font-medium"> 룸 선택 <span class="text-red-500">*</span></label>
-                                    <select name="roomNo" id="roomSelect" onchange="getRoomInfo()" class="form-select border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200">
+                                    <select name="roomNo" id="roomSelect" onchange="getRoomInfo(this.value)" class="form-select border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200">
 								         <option value="">-- 객실 선택 --</option>
 										    <c:forEach var="room" items="${roomList}">
 										        <option value="${room.roomNo}">${room.roomName}(${room.roomType})</option>
@@ -122,29 +122,25 @@
 <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
 <script>
     // 객실 정보를 가져오는 함수
-    function getRoomInfo() {
-        var roomNo = document.getElementById('roomSelect').value;
-
+    function getRoomInfo(roomNo) {
         if (roomNo) {
             // 서버에서 객실 정보 조회
-            fetch('/room/getRoomInfo?roomNo=' + roomNo)
+             fetch("${pageContext.request.contextPath}/room/getRoomInfo?roomNo=${roomNo}")
                 .then(response => response.json())
                 .then(data => {
                     // 데이터를 화면에 출력
-                    document.getElementById('roomName').textContent = "Room Name: " + data.roomName;
-                    document.getElementById('roomType').textContent = "Room Type: " + data.roomType;
-                    document.getElementById('roomCapacity').textContent = "Capacity: " + data.roomCapacity;
-                    document.getElementById('roomDesc').textContent = "Description: " + data.roomDesc;
-                    document.getElementById('pricePerNight').textContent = "Price per Night: " + data.pricePerNight;
+            		console.log("객실 정보:", data);
+                    document.getElementById('roomName').value = data.roomName;   // 객실 이름
+	                document.getElementById('roomCapacity').value = data.roomCapacity; // 최대 수용 인원
+	                //document.getElementById('pricePerNightInput').value = data.pricePerNight; // 1박당 가격
+	                document.getElementById('memo').value = data.roomDesc; // 객실 설명
                 })
                 .catch(error => {
-                    console.error("Error fetching room info:", error);
+                    console.error("오류 발생. 에러 메시지: ", error);
                 });
         }
     }
 
-    // 셀렉트 박스에서 선택된 객실 정보를 가져오기
-    document.getElementById('roomSelect').addEventListener('change', getRoomInfo);
 </script>
 
 
