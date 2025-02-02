@@ -1,7 +1,11 @@
 package com.example.pettopia.meetingroom;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -17,6 +21,7 @@ import com.example.pettopia.util.TeamColor;
 import com.example.pettopia.vo.MeetingRoom;
 import com.example.pettopia.vo.MeetingRoomForm;
 import com.example.pettopia.vo.MeetingRoomImg;
+import com.example.pettopia.vo.MeetingRoomRsv;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -291,6 +296,107 @@ public class MeetingRoomService {
 		
 		return result;
 	}
+	
+	
+	// 회의실 예약 가능 시간대
+	public List<Map<String, Object>> getReserveTime(String roomNo, String rsvDate){
+	    log.debug(TeamColor.KMJ+"[MeetingRoomService - getReserveTime()]");
+
+	    MeetingRoomRsv mrr = new MeetingRoomRsv();
+	    mrr.setRoomNo(Integer.parseInt(roomNo));
+	    mrr.setRsvDate(rsvDate);
+
+	    // DB에서 예약된 시간대 가져오기 (S1, S2, S3, ...)
+	    List<String> reservedTimes = meetingRoomRsvMapper.selectRsvTime(mrr);
+	    
+	    // 전체 회의 시간대 정의 순서 유지를 위해 LinkedHashMap 사용
+	    Map<String, String> allTimes = new LinkedHashMap<>();
+	    allTimes.put("S1", "09:00 AM – 11:00 AM");
+	    allTimes.put("S2", "11:00 AM – 12:00 PM");
+	    allTimes.put("S3", "01:00 PM – 03:00 PM");
+	    allTimes.put("S4", "03:00 PM – 05:00 PM");
+	    allTimes.put("S5", "05:00 PM – 07:00 PM");
+
+	    // 예약되지 않은 시간대 
+	    List<Map<String, Object>> availableTimes = new ArrayList<>();
+
+	    // 예약된 시간대 비교
+	    for (Map.Entry<String, String> entry : allTimes.entrySet()) {
+	        String timeSession = entry.getKey(); 
+	        String timeRange = entry.getValue(); 
+
+	        // 예약된 시간대 목록에 해당 시간이 없다면 예약 가능
+	        if (!reservedTimes.contains(timeSession)) {
+	            // 예약되지 않은 시간대와 시간 범위를 리스트에 추가
+	            Map<String, Object> timeMap = new HashMap<>();
+	            timeMap.put("timePeriod", timeSession);
+	            timeMap.put("timeRange", timeRange); 
+	            availableTimes.add(timeMap);
+	        }
+	    }
+
+	    // 예약되지 않은 시간대 리스트 정렬 : 시간 순서 정렬
+	    availableTimes.sort(Comparator.comparing(map -> map.get("timePeriod").toString()));
+
+	    log.debug(TeamColor.KMJ+"availableTimes : " + availableTimes.toString());
+	    
+	    return availableTimes;
+	}
+	
+	
+	// 회의실 예약 등록
+	public boolean addRsvMeetingRoom(MeetingRoomRsv mrr) {
+		
+		boolean result = false;
+		
+		Integer row = meetingRoomRsvMapper.insertMeetingRoomRsv(mrr);
+		
+		if(row != 0) {
+			result = true;
+		}
+		
+		return result;
+	}
+	
+	// 회의실 예약 조회
+	public List<Map<String, Object>> getMeetingRoomRsvList(){
+		
+		List<Map<String, Object>> rsvList = new ArrayList<>();
+		
+		// 예약 List
+		List<MeetingRoomRsv> list = meetingRoomRsvMapper.selectMeetingRoomRsvList();
+		
+		// "S1", "09:00 AM – 11:00 AM""S2", "11:00 AM – 12:00 PM" "S3", "01:00 PM – 03:00 PM" "S4", "03:00 PM – 05:00 PM""S5", "05:00 PM – 07:00 PM"
+		
+		for(int i=0; i<list.size(); i++) {
+			Map<String, Object> map = new HashMap<>();
+		
+			map.put("roomNo", list.get(i).getRoomNo());
+			map.put("empNo", list.get(i).getEmpNo());
+			map.put("rsvDate", list.get(i).getRsvDate());
+			map.put("conferenceTitle", list.get(i).getConferenceTitle());
+			map.put("conferenceDesc", list.get(i).getConferenceDesc());
+			map.put("conferenceUsers", list.get(i).getConferenceUsers());
+			map.put("timePeriod", list.get(i).getTimePeriod());
+			
+			switch (list.get(i).getTimePeriod()) {
+				case "S1": map.put("timeRange", "09:00 AM – 11:00 AM"); break;
+				case "S2": map.put("timeRange", "11:00 AM – 12:00 PM"); break;
+				case "S3": map.put("timeRange", "01:00 PM – 03:00 PM"); break;
+				case "S4": map.put("timeRange", "03:00 PM – 05:00 PM"); break;
+				default : map.put("timeRange", "05:00 PM – 07:00 PM"); break;
+			
+			}
+			
+			rsvList.add(map);
+		
+		}
+		return rsvList;
+	}
+	
+	
+	
+	
 	
 	
 

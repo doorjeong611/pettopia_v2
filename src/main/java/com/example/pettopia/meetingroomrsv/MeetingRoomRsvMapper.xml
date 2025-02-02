@@ -14,7 +14,31 @@
 		DELETE FROM meeting_room_rsv WHERE room_no = #{roomNo}
 	</delete>
 	
+	<!-- 회의실 예약 가능 시간대 조회 -->
+	<select id="selectRsvTime" parameterType="com.example.pettopia.vo.MeetingRoomRsv" resultType="String">
+		SELECT time_period AS timePeriod
+		FROM meeting_room_rsv
+		WHERE room_no = #{roomNo}
+		AND rsv_date = #{rsvDate}
+	</select>
 	
+	<!-- 회의실 예약 등록 -->
+	<insert id="insertMeetingRoomRsv" parameterType="com.example.pettopia.vo.MeetingRoomRsv">
+		INSERT INTO meeting_room_rsv (room_no, emp_no, rsv_date, conference_title, conference_desc, conference_users, time_period)
+		VALUES (#{roomNo}, #{empNo}, #{rsvDate}, #{conferenceTitle}, #{conferenceDesc}, #{conferenceUsers}, #{timePeriod} ) 		
+	</insert>
+	
+	<!-- 회의실 예약 조회 -->
+	<select id="selectMeetingRoomRsvList" resultType="com.example.pettopia.vo.MeetingRoomRsv">
+		SELECT room_no AS roomNo
+				, emp_no AS empNo
+				, rsv_date AS rsvDate
+				, conference_title AS conferenceTitle
+				, conference_desc AS conferenceDesc
+				, conference_users AS conferenceUsers
+				, time_period AS timePeriod
+		FROM meeting_room_rsv
+	</select>
 	
 	
 </mapper>
