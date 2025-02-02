@@ -88,13 +88,20 @@
 		                                        </td>
 		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${serviceRsvList.customerName}</td>
 		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${serviceRsvList.rsvDatetime}</td>
-		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">  
-		                                        	${serviceRsvList.rsvStatus == 'CF' ? '예약완료' : 
-												      serviceRsvList.rsvStatus == 'CC' ? '취소' :
-												      serviceRsvList.rsvStatus == 'IP' ? '진행중' :
-												      serviceRsvList.rsvStatus == 'CM' ? '이용완료' : ''}
-												</td>
-		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${serviceRsvList.rsvNoShow == '1' ? '노쇼' : ''}</td>
+												<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">
+									                <select class="rsv-status border rounded px-2 py-1"
+									                        onchange="updateRsvStatus(this, '${serviceRsvList.rsvNo}', '${serviceRsvList.rsvDatetime}')">
+									                    <option value="CF" ${serviceRsvList.rsvStatus == 'CF' ? 'selected' : ''}>예약완료</option>
+									                    <option value="CC" ${serviceRsvList.rsvStatus == 'CC' ? 'selected' : ''}>취소</option>
+									                    <option value="IP" ${serviceRsvList.rsvStatus == 'IP' ? 'selected' : ''}>진행중</option>
+									                    <option value="CM" ${serviceRsvList.rsvStatus == 'CM' ? 'selected' : ''}>이용완료</option>
+									                </select>
+									            </td>
+									             <td id="noShow_${serviceRsvList.rsvNo}">
+									             	<span>
+									                	${serviceRsvList.rsvNoShow == '1' ? '노쇼' : ''}
+									                </span>
+									            </td>
 		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${serviceRsvList.serviceName}</td>
 		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${serviceRsvList.serviceDesc}</td>
 		                                        
@@ -196,6 +203,62 @@
 <!-- App js -->
 <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
 <script>
+//예약 상태 변경 시 실행되는 함수
+function updateRsvStatus(selectElement, rsvNo, rsvDatetime) {
+	console.log(`updateRsvStatus 실행됨! rsvNo: ${rsvNo}, rsvDatetime: ${rsvDatetime}`);
+    const row = selectElement.closest('tr'); // 해당 행 찾기
+    const noShowElement = document.getElementById(`noShow_${rsvNo}`); // 노쇼 여부 요소
+    const selectedStatus = selectElement.value; // 선택한 예약 상태
+
+    // 오늘 날짜 가져오기 (YYYY-MM-DD 형식)
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // 시간 초기화
+
+    // 예약 날짜 가져오기
+    const rsvDate = new Date(rsvDatetime.replace(/-/g, '/')); // YYYY-MM-DD 형식을 처리하기 위해 변환
+
+    console.log("예약 날짜:", rsvDate);
+    console.log("오늘 날짜:", today);
+
+    // 노쇼 여부 판단: 예약 상태가 '예약완료'이고 예약 날짜가 오늘보다 이전이면 '노쇼'
+    let isNoShow = 0; // 기본값: 0 (공백)
+    if (rsvDate < today && selectedStatus === 'CF') {
+        isNoShow = 1; // 노쇼
+        noShowElement.textContent = '노쇼';
+    } else {
+        noShowElement.textContent = ''; // 노쇼 해제
+    }
+
+    // 서버로 상태 업데이트 요청 (AJAX)
+    fetch('/service/updateRsvStatus', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            rsvNo: rsvNo,
+            rsvStatus: selectedStatus,
+            rsvDatetime: rsvDatetime, // 예약 날짜 추가
+            rsvNoShow: isNoShow
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            console.log('예약 상태 업데이트 성공');
+        } else {
+            alert('예약 상태 업데이트 실패');
+        }
+    })
+    .catch(error => {
+        console.error('예약 상태 업데이트 중 오류 발생:', error);
+        alert('서버 오류 발생');
+    });
+}
+
+
+
+	// 삭제
 	function deleteMultiple() {
 	    var selectedServices = [];
 	    
