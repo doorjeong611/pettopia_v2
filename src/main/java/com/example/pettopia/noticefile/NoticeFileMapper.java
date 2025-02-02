@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.example.pettopia.vo.DocumentFile;
 import com.example.pettopia.vo.NoticeFile;
 
 @Mapper
