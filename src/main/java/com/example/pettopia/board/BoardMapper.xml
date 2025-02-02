@@ -11,13 +11,14 @@ INSERT INTO
 	board_comment (
     board_no ,
     comment_writer_no,
+    parent_comment_no,
     comment_content , 
     comment_depth , 
     create_datetime , 
     update_datetime 
 ) 
 VALUES
-	(#{boardNo},#{commentWriterNo},#{commentContent}, 1, NOW(), NOW());
+	(#{boardNo}, #{commentWriterNo}, NULL,#{commentContent}, 1, NOW(), NOW());
 </insert>
 
 
@@ -28,31 +29,33 @@ INSERT INTO
 	board_comment (
     board_no ,
     comment_writer_no,
+    parent_comment_no,
     comment_content , 
     comment_depth , 
     create_datetime , 
     update_datetime 
 ) 
 VALUES
-	(#{boardNo},#{commentWriterNo},#{commentContent},2, NOW(), NOW());
+	(#{boardNo},#{commentWriterNo},#{parentCommentNo, jdbcType=INTEGER},#{commentContent},2, NOW(), NOW());
 </insert>
-
-<select id="selectBoardComment" parameterType="Integer">
+<select id="selectBoardComment" parameterType="Integer" resultType="com.example.pettopia.vo.BoardComment">
 SELECT 
-    comment_no commentNo, 
-    board_no boardNo, 
-    comment_writer_no commentWriterNo, 
-    comment_content commentContent, 
-    comment_depth commentDepth, 
-    create_datetime createDatetime, 
-    update_datetime updateDatetime
+    comment_no AS commentNo, 
+    board_no AS boardNo, 
+    comment_writer_no AS commentWriterNo, 
+    comment_content AS commentContent, 
+    parent_comment_no AS parentCommentNo, 
+    comment_depth AS commentDepth, 
+    create_datetime AS createDatetime, 
+    update_datetime AS updateDatetime
 FROM 
     board_comment
 WHERE 
     board_no = #{boardNo}
 ORDER BY 
-    comment_depth ASC, create_datetime ASC;
-
+    parent_comment_no IS NULL DESC, 
+    parent_comment_no ASC,
+    create_datetime ASC;
 </select>
 
 <!-- 게시글 수정 -->

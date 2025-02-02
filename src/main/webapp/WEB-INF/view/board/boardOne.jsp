@@ -323,10 +323,10 @@
     	                newReplyForm.classList.add('commentMainBox', 'replyForm');
     	                newReplyForm.innerHTML = `
     	                    <div class="commentBox">
-    	                        <form action="${pageContext.request.contextPath}/board/boardCommentDepth" method="post">
+    	                        <form action="${pageContext.request.contextPath}/board/boardCommentDepth" method="post" id="replyForm_${commentId}">
     	                            <input type="hidden" name="boardNo" value="${boardNo}">
-    	                            <input type="hidden" name="parentCommentNo" value="${commentId}">
-    	                            <textarea class="form-input" name="commentContent" placeholder="답글을 작성하세요"></textarea>
+    	                            <input type="hidden" name="parentCommentNo" value="${c.commentNo}">
+    	                            <textarea class="form-input" name="commentContent" placeholder="답글을 작성하세요" required></textarea>
     	                            <button type="submit">대댓글 작성</button>
     	                        </form>
     	                    </div>
@@ -340,7 +340,23 @@
     	            }
     	        });
     	    });
+
+    	    // 유효성 검사: 폼 제출 전에 답글 내용이 비어있는지 체크
+    	    const replyForms = document.querySelectorAll('[id^="replyForm_"]');
+    	    
+    	    replyForms.forEach(form => {
+    	        form.addEventListener('submit', function(event) {
+    	            const textarea = form.querySelector('textarea');
+    	            
+    	            // 텍스트 영역이 비어 있으면 제출을 막고 경고 메시지 표시
+    	            if (!textarea.value.trim()) {
+    	                event.preventDefault();
+    	                alert('답글 내용을 입력해주세요!');
+    	            }
+    	        });
+    	    });
     	});
-    </script>
+     </script>
+
 </body>
 </html>

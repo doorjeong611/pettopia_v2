@@ -34,54 +34,58 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Slf4j
 public class BoardController {
 	@Autowired BoardService boardService;
-	
-	  // 댓글 작성
+	// 댓글 작성
 	@PostMapping("/board/boardComment")
 	public String addComment(BoardComment boardComment,
 	                         Authentication auth,
 	                         @RequestParam("boardNo") Integer boardNo) {
-	    
+
 	    // 로그인 세션에서 사용자 정보 가져오기
 	    EmpUserDetails empUserDetails = (EmpUserDetails) auth.getPrincipal();
 	    String empNo = empUserDetails.getUsername();
 	    
 	    // BoardComment 객체에 commentWriterNo 설정
 	    boardComment.setCommentWriterNo(empNo);
-	    
+
 	    // 댓글 작성 처리
 	    int result = boardService.addComment(boardComment);
 
 	    // 댓글 작성 결과 처리
 	    if (result > 0) {
-	        // 댓글이 정상적으로 작성되었으면 해당 게시글 상세보기 페이지로 리다이렉트
 	        return "redirect:/board/getBoardOne?boardNo=" + boardNo;
 	    } else {
-	        // 작성 실패 시 에러 메시지 또는 실패 처리
 	        return "redirect:/board/getBoardOne?boardNo=" + boardNo + "&error=true";
 	    }
 	}
 
-    // 대댓글 작성
-    @PostMapping("/board/boardCommentDepth")
-    public String addCommentDepth(BoardComment boardComment,
-    							Authentication auth,
-								@RequestParam("boardNo") Integer boardNo) {
-    	 // 로그인 세션에서 사용자 정보 가져오기
+	// 대댓글 작성
+	@PostMapping("/board/boardCommentDepth")
+	public String addCommentDepth(BoardComment boardComment,
+	                               Authentication auth,
+	                               @RequestParam("boardNo") Integer boardNo,
+	                               @RequestParam("parentCommentNo") Integer parentCommentNo) {
+
+	    // 로그인 세션에서 사용자 정보 가져오기
 	    EmpUserDetails empUserDetails = (EmpUserDetails) auth.getPrincipal();
 	    String empNo = empUserDetails.getUsername();
 	    
-    	boardComment.setCommentWriterNo(empNo);
-    	// 대댓글 작성 처리
-        int result = boardService.addCommentDepth(boardComment);
+	    // BoardComment 객체에 commentWriterNo 설정
+	    boardComment.setCommentWriterNo(empNo);
+	    boardComment.setBoardNo(boardNo);
+	    boardComment.setParentCommentNo(parentCommentNo); 
+	    boardComment.setCommentDepth(String.valueOf(2));  
 
-        if (result > 0) {
-            // 대댓글이 정상적으로 작성되었으면 해당 게시글 상세보기 페이지로 리다이렉트
-            return "redirect:/board/getBoardOne?boardNo=" + boardNo;
-        } else {
-            // 대댓글 작성 실패 시 에러 메시지 처리
-            return "redirect:/board/getBoardOne?boardNo=" + boardNo + "&error=true";
-        }
-    }
+	    // 대댓글 작성 처리
+	    int result = boardService.addCommentDepth(boardComment);
+
+	    // 대댓글 작성 결과 처리
+	    if (result > 0) {
+	        return "redirect:/board/getBoardOne?boardNo=" + boardNo;
+	    } else {
+	        return "redirect:/board/getBoardOne?boardNo=" + boardNo + "&error=true";
+	    }
+	}
+
 	
 	@GetMapping("/board/modifyBoard")
 	public String modifyBoard(Authentication auth,
