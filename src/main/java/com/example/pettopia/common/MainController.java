@@ -96,6 +96,13 @@ public class MainController {
 	    	log.debug(TeamColor.KDH + "documentListByMain : " + documentListByMain.toString() + TeamColor.RESET);
 	    }
 	    
+	    /*** 오늘의 객실 점유율 ***/
+	    Map<String, Object> reservationStats = mainService.getReservationStats();
+	    if (!reservationStats.isEmpty()) {
+	    	model.addAttribute("reservationStats", reservationStats);
+	    	log.debug(TeamColor.KDH + "reservationStats : " + reservationStats.toString() + TeamColor.RESET);
+	    }
+	    
 		return "common/petTopiaMain";
 	}
 }

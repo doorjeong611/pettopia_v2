@@ -29,5 +29,17 @@ public class MainService {
 	public List<Map<String, Object>> getDocumentListByMain(String empNo) {
 		return mainMapper.selectDocumentListByMain(empNo);
 	}
+	
+	public List<Map<String, Object>> getMonthlyReservationStatistics(Integer year) {
+		return mainMapper.selectMonthlyReservationStatistics(year);
+	}
+	
+	public List<Map<String, Object>> getGenderSignupStatistics(Integer year, String gender) {
+		return mainMapper.selectGenderSignupStatistics(year, gender);
+	}
+	
+	public Map<String, Object> getReservationStats() {
+		return mainMapper.selectReservationStats();
+	}
 
 }
