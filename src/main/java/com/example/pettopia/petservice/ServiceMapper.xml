@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.pettopia.petservice.ServiceMapper">
+<!-- 상태 업데이트 -->
+<update id="updateRsvStatus" parameterType="map">
+	UPDATE pet_service_rsv 
+	SET rsv_status = #{rsvStatus}, rsv_no_show = #{rsvNoShow}
+	WHERE rsv_no = #{rsvNo}
+</update>
+
 	<!-- 서비스 예약내역 조회 -->
 	<select id="selectServiceRsvList" resultType="java.util.Map">
 		SELECT
