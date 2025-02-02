@@ -198,44 +198,38 @@ public class RoomController {
 		// 객실 리스트에 이미지 뿌려주기
 		@GetMapping("/room/getRoomList")
 		public String getRoomList(Model model,
-								@RequestParam(defaultValue = "1") int currentPage, // 현재 페이지 번호
-						        @RequestParam(defaultValue = "6") int pageSize, // 페이지 크기
-						        @RequestParam(value = "roomType", required = false) String roomType) {
-			// 전체 객실 리스트 가져오기
-		    List<Map<String, Object>> roomListImg = roomService.getRoomListWithImages(); 
-		    log.debug(TeamColor.WJ + "roomListImg =======> " + roomListImg + TeamColor.RESET);
-		    
-		    // 특정 룸 타입에 해당하는 객실 목록 조회
+		                          @RequestParam(defaultValue = "1") int currentPage, // 현재 페이지 번호
+		                          @RequestParam(defaultValue = "6") int pageSize, // 페이지 크기
+		                          @RequestParam(value = "roomType", required = false) String roomType) {
+		    // 특정 룸 타입 필터링
+		    List<Map<String, Object>> roomListImg;
 		    if (roomType != null && !roomType.isEmpty()) {
-	            roomListImg = roomService.getRoomsByType(roomType);
-	        } else {
-	            // 전체 객실 조회
-	            roomListImg = roomService.getRoomListWithImages();
-	        }
-		    
-		    // 총 객실 수
-		    int totalRecords = roomListImg.size();
+		        roomListImg = roomService.getRoomsByType(roomType);
+		    } else {
+		        roomListImg = roomService.getRoomListWithImages();
+		    }
 
-		    // 총 페이지 수 계산
+		    log.debug(TeamColor.WJ + "roomListImg =======> " + roomListImg + TeamColor.RESET);
+
+		    // 총 객실 수 및 페이지 계산
+		    int totalRecords = roomListImg.size();
 		    int totalPages = (int) Math.ceil((double) totalRecords / pageSize);
 
-		    // 페이지 시작과 끝
+		    // 페이지네이션 적용
 		    int startIdx = (currentPage - 1) * pageSize;
 		    int endIdx = Math.min(startIdx + pageSize, totalRecords);
-
-		    // 현재 페이지 데이터 추출
 		    List<Map<String, Object>> paginatedList = roomListImg.subList(startIdx, endIdx);
-		    
-		    // 모델에 데이터 추가
-		    model.addAttribute("roomListImg", roomListImg); 
-		    model.addAttribute("paginatedList", paginatedList); // 현재 페이지의 데이터
-		    model.addAttribute("currentPage", currentPage); // 현재 페이지 번호
-		    model.addAttribute("totalPages", totalPages); // 총 페이지 수
-		    model.addAttribute("totalRecords", totalRecords); // 총 데이터 수
-		    model.addAttribute("roomType", roomType); // 현재 선택된 룸 타입
-		    
-		    return "room/roomList"; 
+
+		    // 모델에 추가
+		    model.addAttribute("roomListImg", paginatedList);  // 현재 페이지의 데이터만 전달
+		    model.addAttribute("currentPage", currentPage);
+		    model.addAttribute("totalPages", totalPages);
+		    model.addAttribute("totalRecords", totalRecords);
+		    model.addAttribute("roomType", roomType);
+
+		    return "room/roomList";
 		}
+
 		
 		//객실 삭제
 		@GetMapping("/room/deleteRoom")
