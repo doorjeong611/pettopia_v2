@@ -9,5 +9,57 @@
 		VALUES (#{roomNo}, #{originFileName}, #{fileName}, #{fileExt}, #{fileType}, now(), now())
 	
 	</insert>
+	
+	<!-- 회의실 이미지 조회 -->
+	<select id="selectMeetingRoomImgOne" parameterType="Integer" resultType="String">
+		SELECT CONCAT(file_name, file_ext) AS fileName
+		FROM meeting_room_img
+		<where>
+		    <choose>
+		        <when test="roomNo != null and roomNo != ''">
+		            room_no = #{roomNo}
+		        </when>
+		        <when test="roomImgNo != null and roomImgNo != ''">
+		            room_img_no = #{roomImgNo}
+		        </when>
+		    </choose>
+		</where>  	
+	</select>
+	
+	<!-- 회의실 이미지 수정 -->
+	<update id="updateMeetingRoomImg" parameterType="com.example.pettopia.vo.MeetingRoomImg">
+		UPDATE meeting_room_img
+	    <set>
+	    	<if test="roomNo != null || roomNo != '' ">
+	        	room_no = #{roomNo},
+	        </if>	
+	        <if test="originFileName != null || originFileName != '' ">
+	       		origin_file_name = #{originFileName},
+	        </if>
+	        <if test="fileName != null || fileName != '' ">
+	        	file_name = #{fileName},
+	        </if>
+	        <if test="fileType != null || fileType != '' ">
+	        	file_type = #{fileType},
+	        </if>
+	        <if test="fileExt != null || fileExt != '' ">
+	        	file_ext = #{fileExt},
+	        </if>
 
+	        update_datetime = NOW()
+	    </set>    
+	    WHERE room_img_no = #{roomImgNo}	
+	</update>
+	
+ 	<!-- 회의실 이미지 삭제 -->
+    <delete id="deleteMeetingRoomImg" parameterType="Integer">
+        DELETE FROM meeting_room_img WHERE room_no = #{roomNo}
+    </delete>
+
+
+
+ 
+ 
+	
+	
 </mapper>

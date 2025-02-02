@@ -2,6 +2,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+<!-- 시큐리티 세션 사용을 위한 taglib -->
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<!-- 시큐리티 세션정보 접근 -->
+<sec:authorize access="isAuthenticated()"><sec:authentication property="principal" var="loginEmp"/></sec:authorize>
+
+
+
 <!DOCTYPE html>
 <html lang="en" class="light scroll-smooth group" data-layout="vertical" data-sidebar="light" data-sidebar-size="lg" data-mode="light" data-topbar="light" data-skin="default" data-navbar="sticky" data-content="fluid" dir="ltr">
 
@@ -47,6 +54,18 @@
 
 
 </style>
+
+<script type="text/javascript">
+    // 메시지가 있을 경우 경고창을 띄움
+    window.onload = function() {
+        var message = "${errorMessage}";
+        if (message) {
+            alert(message);
+        }
+    }
+</script>
+
+
 <body class="text-base bg-body-bg text-body font-public dark:text-zink-100 dark:bg-zink-800 group-data-[skin=bordered]:bg-body-bordered group-data-[skin=bordered]:dark:bg-zink-700">
 <div class="group-data-[sidebar-size=sm]:min-h-sm group-data-[sidebar-size=sm]:relative">
     
@@ -96,11 +115,13 @@
 								                        ${room.roomName}호
 								                    </a>
 								                </h6>
-										    	<a href="${pageContext.request.contextPath}/meetingroom/deleteMeetingRoom?roomNo=${room.roomNo}"
-										    		id="deleteRoom"
-											    	class="text-red-500 bg-white border-red-500 btn hover:text-white hover:bg-red-600 hover:border-red-600 focus:text-white focus:bg-red-600 focus:border-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:border-red-600 active:ring active:ring-red-100">
-											    	<i class="ri-delete-bin-2-line"> 삭제 </i>
-										    	</a>
+								                <c:if test="${loginEmp.roleName == 'ROLE_ADMIN' }">
+											    	<a href="${pageContext.request.contextPath}/meetingroom/deleteMeetingRoom?roomNo=${room.roomNo}"
+											    		id="deleteRoom"
+												    	class="text-red-500 bg-white border-red-500 btn hover:text-white hover:bg-red-600 hover:border-red-600 focus:text-white focus:bg-red-600 focus:border-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:border-red-600 active:ring active:ring-red-100">
+												    	<i class="ri-delete-bin-2-line"> 삭제 </i>
+											    	</a>
+										    	</c:if>
 							                </div>
 							                
 
