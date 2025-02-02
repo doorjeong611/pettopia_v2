@@ -22,6 +22,7 @@ import com.example.pettopia.util.TeamColor;
 import com.example.pettopia.vo.MeetingRoom;
 import com.example.pettopia.vo.MeetingRoomForm;
 import com.example.pettopia.vo.MeetingRoomImg;
+import com.example.pettopia.vo.MeetingRoomRsv;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -156,6 +157,64 @@ public class MeetingRoomController {
 		
 		return "redirect:/meetingroom/getMeetingroomList";
 	}
+	
+	
+	// 회의실 예약 내역 페이지
+	@GetMapping("/meetingroom/meetingroomRsvList")
+	public String getMeetingroomRsvList(Model model) {
+		
+		log.debug(TeamColor.KMJ+"[MeetingRoomController - GET getMeetingroomRsvList()]");
+		
+		List<Map<String, Object>> rsvList = meetingRoomService.getMeetingRoomRsvList();
+		
+		if(rsvList.size() > 0) {			
+			log.debug(TeamColor.KMJ+"rsvList : " + rsvList);
+		}
+		model.addAttribute("rsvList", rsvList);
+		
+		return "meetingroom/meetingRoomRsvList";
+	}
+	
+	// 회의실 예약 등록 폼
+	@GetMapping("/meetingroom/addMeetingRoomRsv")
+	public String addMeetingRoomRsv(Model model) {
+		log.debug(TeamColor.KMJ+"[MeetingRoomController - GET addMeetingRoomRsv()]");
+		List<Map<String, Object>> meetingRoomList = meetingRoomService.getMeetingRoomList();
+		
+		model.addAttribute("roomList", meetingRoomList);
+		
+		
+		
+		return "meetingroom/addMeetingRoomRsv";
+	}
+	
+	
+	// 회의실 예약
+	@PostMapping("/meetingroom/addMeetingRoomRsv")
+	public String addMeetingRoomRsv(MeetingRoomRsv mrr, RedirectAttributes redirectAttributes) {
+		log.debug(TeamColor.KMJ+"[MeetingRoomController - POST addMeetingRoomRsv()]");
+		
+		log.debug(TeamColor.KMJ+"mrr : " + mrr.toString());
+		
+		
+		// 예약 등록
+		boolean result = meetingRoomService.addRsvMeetingRoom(mrr);
+		
+		if(result == false) { // 예약 실패시 
+			
+			String errorMessage = "회의실 예약 실패! 잠시후 다시 시도해주세요.";
+			redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
+			
+			return "redirect:/meetingroom/getMeetingroomList";
+		}
+		
+		return "redirect:/meetingroom/getMeetingroomList";
+	}
+	
+	
+	
+	
+	
 	
 	
 	
