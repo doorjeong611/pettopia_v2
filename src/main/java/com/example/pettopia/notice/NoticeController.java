@@ -34,7 +34,7 @@ public class NoticeController {
 	@Autowired NoticeFileService noticeFileService;
 	@Autowired NoticeService noticeService;
 	
-	// 공지사항 목록 페이지
+	// 김문정 : /notice/getNoticeList 공지사항 목록 페이지
 	@GetMapping("/notice/getNoticeList")
 	public String getNoticeList(@RequestParam(required = false) String divisionCode, @RequestParam(required = false) String searchTitle, Model model) {
 		
@@ -80,13 +80,69 @@ public class NoticeController {
 		return "notice/noticeList";
 	}
 	
+	// 오자윤 : /notice/modifyNoticeOne 공지사항 수정 페이지 (작성자만 가능)
+	@GetMapping("/notice/modifyNoticeOne")
+	public String modifyNoticeOne(@RequestParam Integer noticeNo, Model model, Authentication auth) {
+		
+        log.debug(TeamColor.OJY + "noticeNo------> " + noticeNo.toString());
+        
+		// 작성자 조회를 위한 empNo 가져오기
+	    EmpUserDetails empUserDetails = (EmpUserDetails) auth.getPrincipal();
+	    String empNo = empUserDetails.getUsername();
+	    log.debug(TeamColor.OJY + "empNo------> " + empNo);
+	    
+	    // 기존 공지사항 정보
+	    Map<String, Object> existingNotice = noticeService.getNoticeOne(noticeNo);
+	    model.addAttribute("existingNotice", existingNotice);
+	    log.debug(TeamColor.OJY + "existingNotice------> " + existingNotice.toString());
+	    
+	    // 공지사항 작성자 empNo 가져오기
+	    String noticeWriterEmpNo = (String) existingNotice.get("writerEmpNo"); 
+	    
+	    // 작성자가 아닌 경우 리다이렉트
+	    if (!empNo.equals(noticeWriterEmpNo)) {
+	        return "redirect:/notice/getNoticeList"; 
+	    }
+	    
+	    // 부서 목록 가져오기
+	    List<Division> divisionList = noticeService.getDivisionList();
+	    model.addAttribute("divisionList", divisionList);
+	    log.debug(TeamColor.OJY + "divisionList------> " + divisionList.toString());
+	    
+	    // 게시글 파일 가져오기
+		List<NoticeFile> noticeFileList = noticeFileService.getNoticeFileList(noticeNo); 
+		model.addAttribute("noticeFileList", noticeFileList);		
+		log.debug(TeamColor.OJY + "noticeFileList------> " + noticeFileList.toString());
+	    
+	    return "notice/modifyNoticeOne";
+	}
+	
+	
+	// 오자윤 : /notice/modifyNoticeOne 공지사항 수정 update
+	@PostMapping("/notice/modifyNoticeOne")
+	public String postMethodName(@RequestParam Integer noticeNo,
+								 @RequestParam(required = false) List<Integer> noticeFileNoListToDelete, // 삭제할 파일 번호 리스트
+								 HttpSession session, NoticeFile noticeFile, Notice notice, Model model) {
+		
+		// 게시글 가져오기
+	    Map<String, Object> noticeOne = noticeService.getNoticeOne(noticeNo); 
+	    log.debug(TeamColor.OJY + "수정할 게시글 가져오기-------> " + noticeOne.toString());
+
+	    // 게시글 파일 가져오기
+	    List<NoticeFile> noticeFileList = noticeFileService.getNoticeFileList(noticeNo); 
+	    log.debug(TeamColor.OJY + "파일 가져오기------> " + noticeFileList.toString());
+
+	    // 수정할 공지사항 저장
+	    String path = session.getServletContext().getRealPath("/noticeFile/");
+	    noticeService.updateNotice(notice, noticeFile, path, noticeFileNoListToDelete);
+	    
+		return "redirect:/notice/getNoticeList";
+	}
+	
+	
 	// 오자윤 : /notice/noticeOne 공지사항 상세보기 (전체 조회 가능)
 	@GetMapping("/notice/getNoticeOne") 
 	public String getNoticeOne(@RequestParam Integer noticeNo, Model model) {
-		
-		log.debug(TeamColor.KMJ+"[NoticeController - getNoticeOne]");
-		log.debug(TeamColor.KMJ+ "noticeNo : " + noticeNo );
-	
 		
 		Notice notice = new Notice();
 		notice.setNoticeNo(noticeNo);
@@ -106,6 +162,7 @@ public class NoticeController {
 		log.debug(TeamColor.OJY+ "파일 가져오기------> " + noticeFileList.toString());
 		
 		model.addAttribute("noticeOne", noticeOne);		
+		log.debug(TeamColor.OJY+ "noticeOne------> " + noticeOne);
 		model.addAttribute("noticeFileList", noticeFileList);		
 		
 		return "notice/noticeOne";
@@ -115,9 +172,10 @@ public class NoticeController {
 	// 오자윤 : /notice/noticeOne 공지사항 삭제 (관리자만 삭제 가능)
 	@PostMapping("/notice/noticeRemove")
 	public String getNoticeRemove(Authentication auth, Model model, HttpSession session, @RequestParam(required = false) Integer noticeNo) {
+			
 			// 관리자 조회를 위한 empNo 가져오기
 		    EmpUserDetails empUserDetails = (EmpUserDetails) auth.getPrincipal();
-		    String roleName = empUserDetails.getRoleNameo();
+		    String roleName = empUserDetails.getRoleName();
 		    
 		    // 권한에 따라 접근 제어
 		    if ("ROLE_EMP".equals(roleName)) {
@@ -137,18 +195,18 @@ public class NoticeController {
 		
 		// 관리자 권한 확인
 	    EmpUserDetails empUserDetails = (EmpUserDetails) auth.getPrincipal();
-	    String roleName = empUserDetails.getRoleNameo();
+	    String roleName = empUserDetails.getRoleName();
 	    
 		 // 권한에 따라 접근 제어
-			/*
-			 * if ("ROLE_EMP".equals(roleName)) { return "redirect:/notice/getNoticeList";
-			 * // 직원 권한일 경우 공지사항 목록으로 리다이렉트 } else if ("ROLE_ADMIN".equals(roleName)) {
-			 */     // 부서 목록 가져오기
+	    if ("ROLE_EMP".equals(roleName)) { return "redirect:/notice/getNoticeList";
+			 // 직원 권한일 경우 공지사항 목록으로 리다이렉트 
+			 } else if ("ROLE_ADMIN".equals(roleName)) {
+			// 부서 목록 가져오기
 	        List<Division> divisionList = noticeService.getDivisionList();
 
 	        model.addAttribute("divisionList", divisionList);
-	        //return "notice/addNotice"; // 관리자 권한일 경우 공지사항 작성 페이지로 이동
-	   		//}
+	        return "notice/addNotice"; // 관리자 권한일 경우 공지사항 작성 페이지로 이동
+	   		}
 	    
 		return "notice/addNotice";
 	}
@@ -180,23 +238,12 @@ public class NoticeController {
 	        String path = session.getServletContext().getRealPath("/noticeFile/");
 	        noticeService.addNotice(notice, noticeFile, path);
 	        
-	        log.debug(TeamColor.OJY + "notice------>" + notice + TeamColor.RESET); // 파일 사이즈
-	        log.debug(TeamColor.OJY + "noticeFile------>" + noticeFile + TeamColor.RESET); // 파일 사이즈
-	        log.debug(TeamColor.OJY + "path------>" + path + TeamColor.RESET); // 파일 사이즈
-	        
-	        log.debug(TeamColor.OJY + "noticeService------>" + noticeService + TeamColor.RESET); // 파일 사이즈
-	        log.debug(TeamColor.OJY + "path------>" + path + TeamColor.RESET); // 파일 사이즈
-	        
     		}	else {
     			
     		// 파일이 첨부되지 않은 경우
     		String path = null;
     		noticeService.addNotice(notice, noticeFile, path);
     		
-    		log.debug(TeamColor.OJY + "noticeService------>" + noticeService + TeamColor.RESET); // 파일 사이즈
-  	        log.debug(TeamColor.OJY + "path------>" + path + TeamColor.RESET); // 파일 사이즈
-  	        
-      		
     		}
     	
 	    return "redirect:/notice/getNoticeList";

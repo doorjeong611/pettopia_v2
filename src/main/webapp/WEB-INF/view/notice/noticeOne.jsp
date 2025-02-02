@@ -54,9 +54,6 @@
                         <div class="card max-w-4xl mx-auto">
                             <div class="card-body">
                                 
-                                
-                                <form id="formAddDocument" method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/document/addDocument">
-                                    
                                    <div class="grid grid-cols-1 gap-5 lg:grid-cols-2 xl:grid-cols-12">
 									    <!-- 부서, 제목 -->
 									    <div class="flex-1 col-span-1">
@@ -137,11 +134,6 @@
 																		${fileSizeInMBFormatted}
 																	</c:if>
 																</strong> MB
-														<!-- 		<c:if test="${documentOne.approvalStatus == 'T' }">
-																	<span style="float: right;">
-																		<a href="${pageContext.request.contextPath}/document/removeDocumentFile?docFileNo=${documentFile.docFileNo}&docNo=${documentFile.docNo}&docType=${documentOne.docType}" id="removeFileBtn" class="px-2 py-1 font-bold text-xs text-red-500 bg-white btn hover:text-red-500 hover:bg-red-100 focus:text-red-500 focus:bg-red-100 active:text-red-500 active:bg-red-100">삭제</a>
-																	</span>
-																</c:if>	 -->
 															</p>
 														</div>
 													</div>
@@ -154,11 +146,10 @@
                                     
                                     <div class="flex justify-end gap-2 mt-4">
                                       
-                                        <a href="${pageContext.request.contextPath}" ><button type="button" class="mr-1 bg-white text-custom-500 btn border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100">수정</button></a>
+                                        <a href="${pageContext.request.contextPath}/notice/modifyNoticeOne?noticeNo=${noticeOne.noticeNo}" ><button type="button" class="mr-1 bg-white text-custom-500 btn border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100">수정</button></a>
 										<a href="${pageContext.request.contextPath}/notice/getNoticeList" ><button type="button" class="text-green-500 bg-white border-green-500 btn hover:text-white hover:bg-green-600 hover:border-green-600 focus:text-white focus:bg-green-600 focus:border-green-600 focus:ring focus:ring-green-100 active:text-white active:bg-green-600 active:border-green-600 active:ring active:ring-green-100">목록</button></a>
 
                                     </div>
-                                </form>
                             </div>
                         </div><!--end card-->
                     </div>

@@ -1,15 +1,12 @@
 package com.example.pettopia.notice;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.pettopia.noticefile.NoticeFileMapper;
@@ -18,16 +15,63 @@ import com.example.pettopia.vo.Division;
 import com.example.pettopia.vo.Notice;
 import com.example.pettopia.vo.NoticeFile;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@RequiredArgsConstructor
 @Service
 @Slf4j
 public class NoticeService {
 	
 	@Autowired NoticeMapper noticeMapper;
 	@Autowired NoticeFileMapper noticeFileMapper;
+	
+	// 오자윤 : /notice/modifyNoticeOne 공지사항 수정
+	public void updateNotice(Notice notice, NoticeFile noticeFile, String path, List<Integer> noticeFileNoListToDelete) {
+		
+		// 공지사항 수정
+		noticeMapper.updateNoticeContent(notice);
+		
+		// 파일이 새로 추가되는 경우
+	    if (noticeFile.getNoticeFile() != null) {
+	        List<MultipartFile> noticeFileList = noticeFile.getNoticeFile();
+	        for (MultipartFile mf : noticeFileList) {
+	            int dotIdx = mf.getOriginalFilename().lastIndexOf(".");
+	            String orginName = mf.getOriginalFilename().substring(0, dotIdx);
+	            String fileName = UUID.randomUUID().toString().replace("-", "").substring(0, 16);
+	            String ext = mf.getOriginalFilename().substring(dotIdx + 1);
+	            
+	            noticeFile.setNoticeNo(notice.getNoticeNo());
+	            noticeFile.setOriginFileName(orginName);
+	            noticeFile.setFileName(fileName);
+	            noticeFile.setFileExt(ext);
+	            noticeFile.setFileType(mf.getContentType());
+	            
+	            int addNoticeFileRow = noticeFileMapper.insertNoticeFile(noticeFile);
+	            if (addNoticeFileRow == 1) {
+	                // 물리적 파일 저장
+	                try {
+	                    mf.transferTo(new File(path + fileName + "." + ext));
+	                } catch (Exception e) {
+	                    e.printStackTrace();
+	                    throw new RuntimeException();
+	                }
+	            }
+	        }
+	    }
+
+	    // 기존 파일 삭제
+	    if (noticeFileNoListToDelete != null) {
+	        for (Integer fileNo : noticeFileNoListToDelete) {
+	            int removeDocumentFileRow = noticeFileMapper.deleteNoticeFile(fileNo);
+	            if (removeDocumentFileRow == 1) {
+	                NoticeFile existingFile = noticeFileMapper.selectNoticeFileOne(fileNo);
+	                String fullname = path + existingFile.getFileName() + "." + existingFile.getFileExt();
+	                File file = new File(fullname);
+	                file.delete();
+	            }
+	        }
+	    }
+	}
+	
 	
 	// 오자윤 : /notice/noticeOne 공지사항 삭제
 	public void removeNotice(Integer noticeNo, String path) {
