@@ -380,7 +380,7 @@
 				}
 			]
 		},
-		initialData:'',
+		initialData:'${existingNotice.noticeContent}',
 		language: 'ko',
 		licenseKey: LICENSE_KEY,
 		link: {

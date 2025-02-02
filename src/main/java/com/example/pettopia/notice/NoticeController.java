@@ -36,10 +36,21 @@ public class NoticeController {
 	
 	// 김문정 : /notice/getNoticeList 공지사항 목록 페이지
 	@GetMapping("/notice/getNoticeList")
-	public String getNoticeList(@RequestParam(required = false) String divisionCode, @RequestParam(required = false) String searchTitle, Model model) {
+	public String getNoticeList(@RequestParam(required = false) String divisionCode, 
+								@RequestParam(defaultValue = "1") Integer currentPage,
+								@RequestParam(defaultValue = "10") Integer size,
+								@RequestParam(required = false) String searchTitle, Model model) {
 		
 		log.debug(TeamColor.KMJ+"[NoticeController - getNoticeList]");
 		
+		// 페이지네이션 유효성 검사
+	    if (currentPage < 1) {
+	        currentPage = 1; // 기본값
+	    }
+	    if (size < 1 || size > 100) { // 최대 100개
+	        size = 10; // 기본값
+	    }
+	    
 		Map<String, Object> paramMap = new HashMap<>();
 		
 		// 부서 카테고리
@@ -59,7 +70,18 @@ public class NoticeController {
 			log.debug(TeamColor.KMJ+ "searchTitle : " + searchTitle);
 			paramMap.put("searchTitle", null);
 		}
-
+		
+	    // 페이지 오프셋 계산
+	    int offset = (currentPage - 1) * size;
+	    paramMap.put("offset", offset);
+	    paramMap.put("limit", size);
+	    
+		// 전체 메시지 개수 가져오기
+	    int totalRecords = noticeService.getNoticeCount(paramMap); // 총 공지사항 개수
+	    log.debug(TeamColor.KMJ + "totalRecords : " + totalRecords);
+	    
+	    int totalPages = (int) Math.ceil((double) totalRecords / size); // 전체 페이지 수
+	    
 		// 부서 목록 가져오기
 		List<Division> divisionList = noticeService.getDivisionList();
 		log.debug(TeamColor.KMJ+ "divisionList : " + divisionList.toString());
@@ -73,34 +95,34 @@ public class NoticeController {
 		noList.put("noticeList", noticeList);
 		noList.put("searchTitle", searchTitle);
 		noList.put("division", divisionCode);
+	    noList.put("totalPages", totalPages); 
+	    noList.put("currentPage", currentPage); 
 		
 		model.addAttribute("noticeList", noList);
 		model.addAttribute("CurrentdivisionCode", divisionCode);
+		log.debug(TeamColor.OJY+ "noticeList : " + noList + TeamColor.RESET);
+		log.debug(TeamColor.OJY+ "CurrentdivisionCode : " + divisionCode + TeamColor.RESET);
 		
 		return "notice/noticeList";
 	}
 	
-	// 오자윤 : /notice/modifyNoticeOne 공지사항 수정 페이지 (작성자만 가능)
+	// 오자윤 : /notice/modifyNoticeOne 공지사항 수정 페이지 (관리자만 수정 가능)
 	@GetMapping("/notice/modifyNoticeOne")
 	public String modifyNoticeOne(@RequestParam Integer noticeNo, Model model, Authentication auth) {
 		
         log.debug(TeamColor.OJY + "noticeNo------> " + noticeNo.toString());
         
-		// 작성자 조회를 위한 empNo 가져오기
+		// 관리자 조회를 위한 empNo 가져오기
 	    EmpUserDetails empUserDetails = (EmpUserDetails) auth.getPrincipal();
-	    String empNo = empUserDetails.getUsername();
-	    log.debug(TeamColor.OJY + "empNo------> " + empNo);
+	    String roleName = empUserDetails.getRoleName();
 	    
 	    // 기존 공지사항 정보
 	    Map<String, Object> existingNotice = noticeService.getNoticeOne(noticeNo);
 	    model.addAttribute("existingNotice", existingNotice);
 	    log.debug(TeamColor.OJY + "existingNotice------> " + existingNotice.toString());
 	    
-	    // 공지사항 작성자 empNo 가져오기
-	    String noticeWriterEmpNo = (String) existingNotice.get("writerEmpNo"); 
-	    
-	    // 작성자가 아닌 경우 리다이렉트
-	    if (!empNo.equals(noticeWriterEmpNo)) {
+	    // 관리자가 아닌 경우 리다이렉트
+	    if ("ROLE_EMP".equals(roleName)) {
 	        return "redirect:/notice/getNoticeList"; 
 	    }
 	    
