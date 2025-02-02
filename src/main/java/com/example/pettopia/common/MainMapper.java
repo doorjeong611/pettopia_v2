@@ -18,4 +18,14 @@ public interface MainMapper {
 	
 	// PetTopiaMain → 결재 할 문서 조회
 	List<Map<String, Object>> selectDocumentListByMain(String empNo);
+	
+	// PetTopiaMain → 월 별 객실 예약 현황
+	List<Map<String, Object>> selectMonthlyReservationStatistics(Integer year);
+	
+	// PetTopiaMain → 연간 성별 가입 추이
+	List<Map<String, Object>> selectGenderSignupStatistics(Integer year, String gender);
+	
+	// PetTopiaMain → 오늘의 객실 점유율
+	Map<String, Object> selectReservationStats();
+	
 }

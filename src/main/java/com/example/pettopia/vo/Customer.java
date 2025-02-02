@@ -9,6 +9,7 @@ public class Customer {
 	private String postalCode;
 	private String basicAddress;
 	private String detailAddress;
+	private String customerGender;
 	private String customerPhone;
 	private String createDatetime;
 	private String updateDatetime;

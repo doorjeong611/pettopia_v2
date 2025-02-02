@@ -467,57 +467,84 @@
                         </div>
                     </div>
                     
-                    <!-- 객실 누적 매출 그래프 (1월 ~ 12월 까지, 작년과 비교) -->
+                    <!-- 월 별 객실 예약 현황 -->
                     <div class="col-span-12 card 2xl:col-span-4 2xl:row-span-2" style="height: 450px;">
                     	<div class="card-body">
                             <div class="flex items-center mb-3">
-                                <h6 class="grow text-15">3. 객실 예약 현황 선 그래프 (1월 ~ 12월 까지)</h6>
+                                <h6 class="grow text-16 text-custom-600"><i class="ri-line-chart-line"></i>&nbsp;월 별 객실 예약 현황</h6>
                             </div>
-                            <div id="orderStatisticsChart" class="apex-charts" data-chart-colors="[&quot;bg-purple-500&quot;, &quot;bg-sky-500&quot;]" dir="ltr" style="min-height:400px; max-height: 455px;"></div>
+                            <div id="monthlyReservationStatistics" class="apex-charts" data-chart-colors="[&quot;bg-purple-500&quot;, &quot;bg-sky-500&quot;]" dir="ltr" style="min-height:380px; max-height: 455px;"></div>
                         </div>
                     </div>
                     
-                    <!-- 오늘 객실 예약 남/여 비율 및 오늘의 객실 점유율 -->
+                    <!-- 연간 성별 가입 추이 및 오늘의 객실 점유율 -->
                     <div class="col-span-12 2xl:col-span-4 2xl:row-span-2">
-                    	<!-- 오늘 객실 예약 남/여 비율 -->
-                    	<div class="col-span-12 card 2xl:col-span-12" style="height: 280px;">
+                    	<!-- 연간 성별 가입 추이 -->
+                    	<div class="col-span-12 card 2xl:col-span-12" style="height: 350px;">
 	                        <div class="card-body">
-	                            <div class="flex items-center mb-3">
-	                                <h6 class="grow text-15">7. 오늘 객실 예약 남/여 비율</h6>
-	                            </div>
-	                            <div id="lineWithDataLabel" class="apex-charts" data-chart-colors="[&quot;bg-custom-500&quot;, &quot;bg-green-500&quot;]" dir="ltr" style="min-height: 220px;"></div>
+	                            <div class="flex justify-between items-center mb-1">
+								    <h6 id="yearTitle" class="text-16 text-custom-600">
+								        <i class="ri-line-chart-line"></i>&nbsp;연간 성별 가입 추이 (<span id="selectedYear" class="text-green-600">2024</span>년)
+								    </h6>
+								    <div class="relative">
+								        <select id="yearSelect" class="ml-4 border border-custom-200 text-custom-600" style="border-radius: 5px;">
+										    <option value="2023">2023년</option>
+										    <option value="2024" selected="selected">2024년</option>
+										    <option value="2025">2025년</option>
+										</select>
+								    </div>
+								</div>
+	                            <div id="genderSignupStatistics" class="apex-charts" data-chart-colors="[&quot;bg-custom-500&quot;, &quot;bg-green-500&quot;]" dir="ltr" style="min-height: 280px;"></div>
 	                        </div>
                         </div>
                         
                         <!-- 오늘의 객실 점유율 -->
-                        <div class="col-span-12 card 2xl:col-span-12" style="height: 150px;">
+                        <div class="col-span-12 card 2xl:col-span-12" style="height: 180px;">
 	                        <div class="card-body">
-	                            <div class="flex items-center mb-3">
-	                                <h6 class="grow text-15">8. 오늘의 객실 점유율</h6>
+	                            <div class="flex items-center mb-5">
+	                            	<h6 class="grow text-16 text-custom-600" id="reservationStatsTitle"></h6>>
 	                            </div>
-	                            <div class="flex items-center mb-0">
-                                    <h5 class="grow"><span class="counter-value" data-target="1596">1,596</span></h5>
-                                    <span class="px-2.5 py-0.5 text-xs inline-block font-medium rounded border bg-white border-red-100 text-red-500 dark:bg-zink-700 dark:border-red-900">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="trending-down" class="lucide lucide-trending-down inline-block size-3 ltr:mr-1 rtl:ml-1"><polyline points="22 17 13.5 8.5 8.5 13.5 2 7"></polyline><polyline points="16 17 22 17 22 11"></polyline></svg> 6.8%</span>
+	                            <div class="flex items-center mb-3">
+	                            	<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-paw-print"><circle cx="11" cy="4" r="2"/><circle cx="18" cy="8" r="2"/><circle cx="20" cy="16" r="2"/><path d="M9 10a5 5 0 0 1 5 5v3.5a3.5 3.5 0 0 1-6.84 1.045Q6.52 17.48 4.46 16.84A3.5 3.5 0 0 1 5.5 10Z"/></svg>
+                                    <h6 class="grow"> 오늘 총 <span class="counter-value text-custom-600" data-target="${reservationStats.totalRooms}"></span>객실 중 <span class="counter-value text-custom-600" data-target="${reservationStats.todayReservedRooms}"></span>객실이 예약되었습니다.</h6>
+                                	<c:if test="${reservationStats.changeStatus == '증가'}">
+									    <span class="px-2.5 py-0.5 text-xs inline-block font-medium rounded border bg-white border-green-100 text-green-500">
+									        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="trending-up" class="lucide lucide-trending-up inline-block size-3 ltr:mr-1 rtl:ml-1">
+									            <polyline points="2 7 8.5 13.5 13.5 8.5 22 17"></polyline>
+									            <polyline points="8 17 2 17 2 11"></polyline>
+									        </svg> 
+									        ${reservationStats.changePercentage}%
+									    </span>
+									</c:if>
+									
+									<c:if test="${reservationStats.changeStatus == '감소'}">
+									    <span class="px-2.5 py-0.5 text-xs inline-block font-medium rounded border bg-white border-red-100 text-red-500">
+									        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="trending-down" class="lucide lucide-trending-down inline-block size-3 ltr:mr-1 rtl:ml-1">
+									            <polyline points="22 17 13.5 8.5 8.5 13.5 2 7"></polyline>
+									            <polyline points="16 17 22 17 22 11"></polyline>
+									        </svg> 
+									        ${reservationStats.changePercentage}%
+									    </span>
+									</c:if>
                                 </div>
-                                <div>
+                                <div class="mt-2 mb-5">
                                     <div class="flex items-center justify-between mt-2 mb-2">
-                                        <p class="text-slate-500 dark:text-zink-200">Total Orders</p>
-                                        <h6 class="mb-0 text-custom-500">85%</h6>
+                                        <p class="text-slate-500 dark:text-zink-200">Today Reservation</p>
+                                        <h6 class="mb-0 text-custom-500">${reservationStats.occupancyRate}%</h6>
                                     </div>
                                     <div class="w-full bg-slate-200 rounded-full h-2.54 dark:bg-zink-600">
-                                        <div class="bg-custom-500 h-2.5 rounded-full" style="width: 85%"></div>
+                                        <div class="bg-custom-500 h-2.5 rounded-full" style="width: ${reservationStats.occupancyRate}%"></div>
                                     </div>
                                 </div>
 	                        </div>
                         </div>
                     </div>
                     
-                    <!-- 펫 서비스 매출 막대 그래프 -->
-                    <div class="col-span-12 card 2xl:col-span-8 2xl:row-span-2"style="height: 450px;">
+                    <!-- 월 별 펫 서비스 매출 현황 -->
+                    <div class="col-span-12 card 2xl:col-span-8 2xl:row-span-2"style="height: 550px;">
                         <div class="card-body">
                             <div class="flex flex-col gap-4 mb-4 md:mb-3 md:items-center md:flex-row">
-                                <h6 class="grow text-15">펫 서비스 매출 막대 그래프</h6>
+                            	<h6 class="grow text-16 text-custom-600"><i class="ri-bar-chart-line"></i>&nbsp;월 별 펫 서비스 매출 현황</h6>
                                 <div class="relative">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="calendar-range" class="lucide lucide-calendar-range absolute size-4 ltr:left-3 rtl:right-3 top-3 text-slate-500 dark:text-zink-200"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect><line x1="16" x2="16" y1="2" y2="6"></line><line x1="8" x2="8" y1="2" y2="6"></line><line x1="3" x2="21" y1="10" y2="10"></line><path d="M17 14h-6"></path><path d="M13 18H7"></path><path d="M7 14h.01"></path><path d="M17 18h.01"></path></svg>
                                     <input type="text" class="ltr:pl-10 rtl:pr-10 form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200 flatpickr-input" data-provider="flatpickr" data-date-format="d M, Y" data-range-date="true" readonly="readonly" placeholder="Select Date">
@@ -547,7 +574,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div id="salesRevenueOverview" class="apex-charts" data-chart-colors="[&quot;bg-custom-500&quot;, &quot;bg-custom-400&quot;, &quot;bg-custom-300&quot;]" dir="ltr" style="min-height: 315px;"></div>
+                            <div id=petServiceSalesStatistics class="apex-charts" data-chart-colors="[&quot;bg-custom-500&quot;, &quot;bg-custom-400&quot;, &quot;bg-custom-300&quot;]" dir="ltr" style="min-height: 315px;"></div>
                         </div>
                     </div>
                 
@@ -576,11 +603,7 @@
 <script src="${pageContext.request.contextPath}/assets/libs/flatpickr/flatpickr.min.js"></script>
 <!--apexchart js-->
 <script src="${pageContext.request.contextPath}/assets/libs/apexcharts/apexcharts.min.js"></script>
-<!--dashboard analytics init js-->
-<script src="${pageContext.request.contextPath}/assets/js/pages/apexcharts-pie.init.js"></script>
-<script src="${pageContext.request.contextPath}/assets/js/pages/apexcharts-line.init.js"></script>
-<!--dashboard ecommerce init js-->
-<script src="${pageContext.request.contextPath}/assets/js/pages/dashboards-ecommerce.init.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/pages/apexcharts-petTopiaMain.init.js"></script>
 <!-- App js -->
 <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
 <script>
@@ -596,6 +619,7 @@
     console.log('Formatted Date:', formattedDate); // debug
     
     $('#scheduleTitle').html('<i class="ri-calendar-check-line mr-1"></i> ' + month + '월  ' + day +'일 일정');
+    $('#reservationStatsTitle').html('<i class="ri-pie-chart-line"></i> ' + month + '월  ' + day +'일 객실 점유율');
     $('#noSchedule').html(formattedDate);
     
     document.querySelectorAll('.date-output').forEach(function (element) {
@@ -604,15 +628,22 @@
         element.textContent = formattedCreateDate;  // 포맷된 날짜를 요소에 삽입
     });
 	
-$(document).ready(function() {
-	
-    var empStatus = "${empStatus}"; 
-    console.log(empStatus);
-    if(empStatus == 'T'){
-        alert("비밀번호를 변경해주세요 😊");
-    }
-    
-});
+    $(document).ready(function() {
+        var empStatus = "${empStatus}"; 
+        console.log(empStatus);
+        if (empStatus === 'T') {
+            alert("비밀번호를 변경해주세요 😊");
+        }
+        
+        $('#yearSelect').change(function() {
+            var selectedValue = $(this).val();
+            $('#selectedYear').text(selectedValue);
+        });
+    });
+
+
+
+
 </script>
 
 <script>

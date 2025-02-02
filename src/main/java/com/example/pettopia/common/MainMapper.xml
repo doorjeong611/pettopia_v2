@@ -59,6 +59,45 @@
 			OR (da.mid_approver_no = #{empNo} AND da.mid_approval_status IS NULL AND da.init_approval_status IS NOT NULL)
 			OR (da.final_approver_no = #{empNo} AND da.final_approval_status IS NULL AND da.mid_approval_status IS NOT NULL))
 	</select>
+	
+	<!-- selectMonthlyReservationStatistics : 월 별 객실 예약 현황 -->
+	<select id="selectMonthlyReservationStatistics" parameterType="Integer" resultType="Map">
+		SELECT months.month `month`, COALESCE(reservationCount, 0) reservationCount
+		FROM (SELECT 1 month UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9 UNION ALL SELECT 10 UNION ALL SELECT 11 UNION ALL SELECT 12) months
+		LEFT JOIN (SELECT MONTH(check_in_datetime) month, COUNT(*) reservationCount FROM room_rsv WHERE YEAR(check_in_datetime) = #{year} 
+		GROUP BY MONTH(check_in_datetime)) reservations
+		ON months.month = reservations.month
+		ORDER BY months.month;
+	</select>
+	
+	<!-- selectGenderSignupStatistics : 연간 성별 가입 추이 -->
+	<select id="selectGenderSignupStatistics" parameterType="Map" resultType="Map">
+		SELECT YEAR(create_datetime) `year`, MONTH(create_datetime) `month`, customer_gender, COUNT(*) population 
+		FROM customer 
+		WHERE YEAR(create_datetime) = #{year} AND customer_gender = #{gender}
+		GROUP BY `year`, `month`, customer_gender 
+		ORDER BY `year`, `month`, customer_gender;
+	</select>
+	
+	<!-- selectReservationStats : 오늘의 객실 점유율 -->
+	<select id="selectReservationStats" resultType="Map">
+		SELECT 
+		    today_reservations 'todayReservedRooms',
+		    yesterday_reservations 'yesterdayReservedRooms',
+		    ROUND(IFNULL((today_reservations - yesterday_reservations) / NULLIF(yesterday_reservations, 0) * 100, 0), 1) 'changePercentage',
+		    CASE 
+		        WHEN (today_reservations - yesterday_reservations) &lt; 0 THEN '감소'
+		        ELSE '증가'
+		    END 'changeStatus',
+		    40 'totalRooms',
+		    (SELECT COUNT(*) FROM room_rsv WHERE DATE(check_in_datetime) = CURDATE()) 'todayReservedRooms',
+		    ROUND(IFNULL((SELECT COUNT(*) FROM room_rsv WHERE DATE(check_in_datetime) = CURDATE()) / 40 * 100, 0), 1) 'occupancyRate'
+		FROM (
+		    SELECT 
+		        (SELECT COUNT(*) FROM room_rsv WHERE DATE(check_in_datetime) = CURDATE()) today_reservations,
+		        (SELECT COUNT(*) FROM room_rsv WHERE DATE(check_out_datetime) = CURDATE() - INTERVAL 1 DAY) yesterday_reservations
+		) reservationCounts;
+	</select>
 
 
 </mapper>
