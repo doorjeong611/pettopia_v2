@@ -13,7 +13,7 @@ public interface NoticeFileMapper {
 	Integer insertNoticeFile(NoticeFile noticeFile);
 
 	// notice/noticeOne : 파일 삭제할 때 파일 정보 가져오기 
-	NoticeFile selectNoticeFileOne(Integer noticeFileNo);
+	List<NoticeFile> selectNoticeFiles(List<Integer> noticeFileNoList);
 	
 	// notice/noticeOne : 파일 삭제 하기 -->
 	Integer deleteNoticeFile(Integer noticeFileNo);

@@ -59,18 +59,31 @@ public class NoticeService {
 	    }
 
 	    // 기존 파일 삭제
-	    if (noticeFileNoListToDelete != null) {
-	        for (Integer fileNo : noticeFileNoListToDelete) {
-	            int removeDocumentFileRow = noticeFileMapper.deleteNoticeFile(fileNo);
-	            if (removeDocumentFileRow == 1) {
-	                NoticeFile existingFile = noticeFileMapper.selectNoticeFileOne(fileNo);
+	    if (noticeFileNoListToDelete != null && !noticeFileNoListToDelete.isEmpty()) {
+	        // 삭제할 파일 정보 가져오기
+	        List<NoticeFile> existingFiles = noticeFileMapper.selectNoticeFiles(noticeFileNoListToDelete);
+	        for (NoticeFile existingFile : existingFiles) {
+	            if (existingFile != null) {
 	                String fullname = path + existingFile.getFileName() + "." + existingFile.getFileExt();
 	                File file = new File(fullname);
-	                file.delete();
+	                if (file.exists()) {
+	                    boolean deleted = file.delete();
+	                    if (!deleted) {
+	                        log.warn("파일 삭제 실패: " + fullname);
+	                    }
+	                }
+	            } else {
+	                log.warn("파일 정보가 존재하지 않습니다.");
 	            }
+	        }
+
+	        // 데이터베이스에서 파일 삭제
+	        for (Integer fileNo : noticeFileNoListToDelete) {
+	            noticeFileMapper.deleteNoticeFile(fileNo);
 	        }
 	    }
 	}
+
 	
 	
 	// 오자윤 : /notice/noticeOne 공지사항 삭제
@@ -78,11 +91,15 @@ public class NoticeService {
 		
 		List<Integer> noticeFileNoList = noticeFileMapper.selectNoticeFileNoList(noticeNo);
 		
-			if(noticeFileNoList != null) {
-			    for (Integer noticeFileNo : noticeFileNoList) {
-			    	NoticeFile noticeFile = noticeFileMapper.selectNoticeFileOne(noticeFileNo);
-			        int deleteNoticeFile = noticeFileMapper.deleteNoticeFile(noticeFileNo); // 각 파일 삭제
-			        log.debug(TeamColor.KDH + "documentFile : " + noticeFile.toString() + TeamColor.RESET);
+		// 파일 번호가 존재할 경우
+	    if (noticeFileNoList != null && !noticeFileNoList.isEmpty()) {
+	    	 // 기존 파일 정보를 한 번에 가져오기
+	        List<NoticeFile> noticeFiles = noticeFileMapper.selectNoticeFiles(noticeFileNoList);
+	        
+	        for (NoticeFile noticeFile : noticeFiles) {
+	        	if (noticeFile != null) {
+	                int deleteNoticeFile = noticeFileMapper.deleteNoticeFile(noticeFile.getNoticeFileNo()); // 각 파일 삭제
+	                
 			        if(deleteNoticeFile == 1) {
 		    			String fullname = path + noticeFile.getFileName() + "." + noticeFile.getFileExt();
 		    			File file = new File(fullname);
@@ -90,6 +107,7 @@ public class NoticeService {
 			        }
 			    }
 			}
+	    }
 		noticeMapper.deleteNotice(noticeNo);
 	}
 	

@@ -9,10 +9,13 @@
 	</insert>
 	
 	<!-- notice/noticeOne : 파일 삭제할 때 파일 정보 가져오기 -->
-	<select id="selectNoticeFileOne" parameterType="Integer" resultType="com.example.pettopia.vo.NoticeFile">
-		SELECT notice_file_no noticeFileNo, notice_no noticeNo, origin_file_name originFileName, file_name fileName, file_ext fileExt,  
-			   file_type fileType, create_datetime createDatetime, update_datetime updateDatetime
-		FROM notice_file WHERE notice_file_no = #{noticeFileNo}
+	<select id="selectNoticeFiles" parameterType="java.util.List" resultType="com.example.pettopia.vo.NoticeFile">
+	    SELECT notice_file_no noticeFileNo, notice_no noticeNo, origin_file_name originFileName, file_name fileName, file_ext fileExt,  
+	           file_type fileType, create_datetime createDatetime, update_datetime updateDatetime
+	    FROM notice_file WHERE notice_file_no IN
+	    <foreach item="fileNo" collection="list" open="(" separator="," close=")">
+	        #{fileNo}
+	    </foreach>
 	</select>
 
 	<!-- notice/noticeOne : 파일 삭제 하기 -->
