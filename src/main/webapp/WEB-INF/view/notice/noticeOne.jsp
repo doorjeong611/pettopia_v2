@@ -148,7 +148,10 @@
                                       
                                         <a href="${pageContext.request.contextPath}/notice/modifyNoticeOne?noticeNo=${noticeOne.noticeNo}" ><button type="button" class="mr-1 bg-white text-custom-500 btn border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100">수정</button></a>
 										<a href="${pageContext.request.contextPath}/notice/getNoticeList" ><button type="button" class="text-green-500 bg-white border-green-500 btn hover:text-white hover:bg-green-600 hover:border-green-600 focus:text-white focus:bg-green-600 focus:border-green-600 focus:ring focus:ring-green-100 active:text-white active:bg-green-600 active:border-green-600 active:ring active:ring-green-100">목록</button></a>
-
+										<form id="binForm" action="${pageContext.request.contextPath}/notice/removeNotice" method="post" class="inline">
+											 <input type="hidden" name="noticeNo" value="${noticeOne.noticeNo}"/>
+									    	<button type="submit" id="binBtn" class="text-red-500 bg-white border-red-500 btn hover:text-white hover:bg-red-600 hover:border-red-600 focus:text-white focus:bg-red-600 focus:border-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:border-red-600 active:ring active:ring-red-100">삭제</button>
+										</form>
                                     </div>
                             </div>
                         </div><!--end card-->

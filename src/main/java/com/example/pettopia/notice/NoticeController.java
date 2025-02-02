@@ -170,7 +170,7 @@ public class NoticeController {
 	
 
 	// 오자윤 : /notice/noticeOne 공지사항 삭제 (관리자만 삭제 가능)
-	@PostMapping("/notice/noticeRemove")
+	@PostMapping("/notice/removeNotice")
 	public String getNoticeRemove(Authentication auth, Model model, HttpSession session, @RequestParam(required = false) Integer noticeNo) {
 			
 			// 관리자 조회를 위한 empNo 가져오기

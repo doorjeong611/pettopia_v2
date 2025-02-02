@@ -17,7 +17,7 @@ public class NoticeFileController {
 	@GetMapping("/notice/removeNoticeFile")
 	public String removeDocumentFile(HttpSession session, @RequestParam Integer noticeFileNo, @RequestParam Integer noticeNo, @RequestParam String noticeType) {
 		String path = session.getServletContext().getRealPath("/noticeFile/");
-		noticeFileService.removeNoticeFile(noticeFileNo, path);
+		// noticeFileService.removeNoticeFile(noticeFileNo, path);
 		return "redirect:/document/documentOne?docNo=" + noticeNo + "&noticeType=" + noticeType;
 	}
 

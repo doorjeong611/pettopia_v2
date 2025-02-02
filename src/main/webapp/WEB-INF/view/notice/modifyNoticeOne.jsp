@@ -17,12 +17,14 @@
     <script src="${pageContext.request.contextPath}/assets/js/layout.js"></script>
     <!-- Tailwind CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tailwind2.css">
-     <!--CKeditor -->		
+    <!--CKeditor -->		
 	<link rel="stylesheet" href="./style.css">
 	<link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/44.1.0/ckeditor5.css" crossorigin>
-	
+	<!-- Dropzone.js API -->
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dropzone@5.9.3/dist/dropzone.min.css">
+	<script src="https://cdn.jsdelivr.net/npm/dropzone@5.9.3/dist/dropzone.min.js"></script>
 </head>
-
 <style>
 
 	@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400;1,700&display=swap');
@@ -70,7 +72,7 @@
             <div class="container-fluid group-data-[content=boxed]:max-w-boxed mx-auto">
                 <div class="flex flex-col gap-2 py-4 md:flex-row md:items-center print:hidden">
                     <div class="grow">
-                        <h5 class="text-16">공지사항 수정하기</h5>
+                        <h3 class="text-16">공지사항 수정하기</h3>
                     </div>
                     <ul class="flex items-center gap-2 text-sm font-normal shrink-0">
                         <li class="relative before:content-['\ea54'] before:font-remix ltr:before:-right-1 rtl:before:-left-1  before:absolute before:text-[18px] before:-top-[3px] ltr:pr-4 rtl:pl-4 before:text-slate-400 dark:text-zink-200">
@@ -85,12 +87,11 @@
                 <div class="xl:col-span-9">
 				    <div class="card max-w-4xl mx-auto shadow-lg rounded-lg">
 				        <div class="card-body p-6">
-				            <form id="saveForm" action="${pageContext.request.contextPath}/notice/modifyNoticeOne" method="post" autocomplete="off" enctype="multipart/form-data">
-                				<input type="hidden" name="noticeNo" value="${existingNotice.noticeNo}">
-                				
+				        	 <form id="saveForm" action="${pageContext.request.contextPath}/notice/modifyNoticeOne" method="post" autocomplete="off" enctype="multipart/form-data">
+				        	 <input type="hidden" name="noticeNo" value="${existingNotice.noticeNo}">
 				                <!-- Department and Title -->
 				                <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
-				                    <!-- Department -->
+								<!-- Department -->
 				                    <div class="col-span-1">
 				                        <label class="block mb-2 text-base font-medium">부서</label>
 				                        <select name="divisionCode" id="division" class="mr-2" onchange="setDeptCode()">
@@ -111,10 +112,12 @@
 				
 				                <!-- CKEditor -->
 				                <div class="col-span-1 mb-4">
-				                    <textarea name="noticeContent" id="editor">${existingNotice.noticeContent}</textarea>
-				                </div>
-				
-				                 <!-- 기존 파일 다운로드 -->
+					                <textarea name="noticeContent" id="editor">
+								    <c:out value="${existingNotice.noticeContent}" escapeXml="false"/>
+									</textarea>
+								</div>
+								
+								<!-- 기존 파일 -->
 								<div class="grid grid-cols-1 gap-2 lg:grid-cols-1 xl:grid-cols-12 m-2 mt-4">
 								    <div class="lg:col-span-2 xl:col-span-12">
 								        <label class="inline-block text-base font-medium">현재 첨부된 파일</label>
@@ -130,40 +133,43 @@
 								    </div>
 								</div>
 								
-								<!-- 파일 추가 -->
-								<div class="grid grid-cols-1 gap-2 lg:grid-cols-1 xl:grid-cols-12 m-2">
+				                <!-- 파일 다운로드 -->
+								<div class="grid grid-cols-1 gap-2 lg:grid-cols-1 xl:grid-cols-12 m-2 mt-4">
 								    <div class="lg:col-span-2 xl:col-span-12">
 								        <label for="fileUpload" class="inline-block text-base font-medium">파일 업로드</label>
-								        <input type="file" name="noticeFile" multiple>
+								    </div>
+								    <div class="lg:col-span-2 xl:col-span-12">
+								        <button type="button" id="btnAddFile" class="mr-1 p-2 bg-white text-custom-500 btn btn-sm hover:text-custom-500 hover:bg-custom-100 focus:text-custom-500 focus:bg-custom-100 active:text-custom-500 active:bg-custom-100">파일 추가</button>
+								        <button type="button" id="btnRemoveFile" class="p-2 text-red-500 bg-white btn hover:text-red-500 hover:bg-red-100 focus:text-red-500 focus:bg-red-100 active:text-red-500 active:bg-red-100">파일 삭제</button>
 								    </div>
 								</div>
-
-				
-				                <!-- Pinned Checkbox -->
+								
+								<div id="fileDiv" class="grid grid-cols-1 gap-2 lg:grid-cols-1 xl:grid-cols-12 m-2">
+								    <!-- 파일 input append 부분 -->
+								</div>
+                               
+								<!-- Pinned Checkbox -->
 				                <div class="mt-4">
 				                    <label class="block mb-2 text-base font-medium">
 				                        <input type="checkbox" id="pinnedCheckbox" name="fixedPost" onclick="setPinnedValue()" <c:if test="${existingNotice.isPinned == 'Y'}">checked</c:if>>
 				                        고정 게시글로 설정
 				                    </label>
+									<input type="hidden" id="isPinned" name="isPinned" value="N">
 				                </div>
-				
+
+			                
 				                <!-- Buttons -->
 				                <div class="flex justify-end gap-4 mt-8">
-				                    <button type="submit" class="mr-1 bg-white text-custom-500 btn border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100">수정 완료</button>
+				                    <button type="submit" class="mr-1 bg-white text-custom-500 btn border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100">수정완료</button>
 				                    <a href="${pageContext.request.contextPath}/notice/getNoticeList">
-				                        <button type="button" class="text-green-500 bg-white border-green-500 btn hover:text-white hover:bg-green-600 hover:border-green-600 focus:text-white focus:bg-green-600 focus:border-green-600 focus:ring focus:ring-green-100 active:text-white active:bg-green-600 active:border-green-600 active:ring active:ring-green-100">목록</button>
-				                    </a>
+				                    <button type="button" class="text-green-500 bg-white border-green-500 btn hover:text-white hover:bg-green-600 hover:border-green-600 focus:text-white focus:bg-green-600 focus:border-green-600 focus:ring focus:ring-green-100 active:text-white active:bg-green-600 active:border-green-600 active:ring active:ring-green-100">목록</button>
+									</a>
 				                </div>
-				            </form>
+			                </form>
 				        </div>
 				    </div>
 				</div>
 				                
-                
-                
-                            </div>
-                        </div><!--end card-->
-                    </div>
                 
             </div>
             <!-- container-fluid -->
@@ -187,65 +193,81 @@
 <script src="${pageContext.request.contextPath}/assets/libs/prismjs/prism.js"></script>
 <script src="${pageContext.request.contextPath}/assets/libs/lucide/umd/lucide.js"></script>
 <script src="${pageContext.request.contextPath}/assets/js/tailwick.bundle.js"></script>
+<!-- App js -->
+<script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
 <!-- CKEditor -->
 <script src="https://cdn.ckeditor.com/ckeditor5/44.1.0/ckeditor5.umd.js" crossorigin></script>
 <script src="https://cdn.ckeditor.com/ckeditor5/44.1.0/translations/ko.umd.js" crossorigin></script>
 <script src="./main.js"></script>
-<!-- App js -->
-<script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.2/purify.min.js">
-// Get the content from CKEditor
-const editorContent = CKEDITOR.instances.editor.getData();
-
-// Sanitize HTML content to avoid XSS vulnerabilities
-const sanitizedContent = DOMPurify.sanitize(editorContent);
-
-// Display the sanitized HTML inside the div
-document.getElementById('displayArea').innerHTML = sanitizedContent;
-	
-</script>
 <script>
-let filesToDelete = []; // 삭제할 파일 번호를 저장할 배열
 
-function removeFile(fileNo) {
-    // 파일 삭제 요청을 위한 확인 대화상자
-    if (confirm("정말로 이 파일을 삭제하시겠습니까?")) {
-        // 파일 번호를 삭제할 리스트에 추가
-        if (!filesToDelete.includes(fileNo)) {
-            filesToDelete.push(fileNo);
+	$('#btnAddFile').click(function() {
+	    if ($('.noticeFile').last().val() == '') { // 마지막 input=file값이 공백이라면
+	        alert('첨부하지 않은 파일이 이미 존재');
+	    } else if ($('.noticeFile').length >= 3) { // 파일 개수가 3개 이상이면
+	        alert('파일은 최대 3개까지 첨부할 수 있습니다.');
+	    } else {
+	        let html = '<div class="lg:col-span-4 xl:col-span-4 mx-2 mb-2"><input type="file" name="noticeFile" class="noticeFile cursor-pointer form-file form-file-sm border-slate-200 focus:outline-none focus:border-custom-500"></div>';
+	        $('#fileDiv').append(html);
+	    }
+	});
+	
+	$('#btnRemoveFile').click(function() {
+		if($('.noticeFile').length == 0) {
+			alert('삭제 할 파일이 존재하지 않습니다');
+		} else {
+			$('.noticeFile').last().closest('div').remove();	
+		}
+	});
+		
+    // 고정게시글 체크박스
+    function setPinnedValue() {
+            const checkbox = document.getElementById('pinnedCheckbox');
+            const hiddenInput = document.getElementById('isPinned');
+            hiddenInput.value = checkbox.checked ? 'Y' : 'N';
         }
-        
-        // UI에서 파일 항목 제거
-        const fileElement = document.getElementById(`file-${fileNo}`);
-        if (fileElement) {
-            fileElement.remove(); // UI에서 파일 항목 제거
-        }
+    
+    // 폼 제출 전에 값을 설정
+    document.querySelector('form').addEventListener('submit', setPinnedValue);
+    
+    // 부서 코드 값 전달
+    function setDeptCode() {
+        const divisionSelect = document.getElementById('division');
+        const deptCodeInput = document.getElementById('deptCode');
+        deptCodeInput.value = divisionSelect.value;  // 선택된 부서 코드 전달
     }
-}
+    
+  //기존 파일 삭제 버튼 클릭 시 (숨김 처리)
+    function removeFile(fileNo) {
+        // 파일 div 숨기기
+        $('#file-' + fileNo).hide();
 
-// 수정 확인 버튼 클릭 시 삭제할 파일 번호를 전송
-function confirmModification() {
-    // AJAX 요청으로 삭제할 파일 번호 전송
-    fetch('/notice/modifyNoticeOne', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ filesToDelete: filesToDelete }) // 삭제할 파일 번호 배열
-    })
-    .then(response => {
-        if (response.ok) {
-            alert("수정이 완료되었습니다.");
-            // 수정 완료 후 필요한 작업 수행
-        } else {
-            alert("수정에 실패했습니다.");
+        // 삭제할 파일 번호를 hidden input에 추가
+        let deleteInput = $('<input>').attr({
+            type: 'hidden',
+            name: 'noticeFileNoListToDelete',
+            value: fileNo
+        });
+        
+        $('#fileDiv').append(deleteInput);
+    }
+
+    // 고정게시글 체크박스
+    function setPinnedValue() {
+            const checkbox = document.getElementById('pinnedCheckbox');
+            const hiddenInput = document.getElementById('isPinned');
+            hiddenInput.value = checkbox.checked ? 'Y' : 'N';
         }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert("수정 중 오류가 발생했습니다.");
-    });
-}
+    
+    // 폼 제출 전에 값을 설정
+    document.querySelector('form').addEventListener('submit', setPinnedValue);
+    
+    // 부서 코드 값 전달
+    function setDeptCode() {
+        const divisionSelect = document.getElementById('division');
+        const deptCodeInput = document.getElementById('deptCode');
+        deptCodeInput.value = divisionSelect.value;  // 선택된 부서 코드 전달
+    }
 </script>
 <script>
 //CKEditor
@@ -393,6 +415,7 @@ function confirmModification() {
      })
      .catch(error => console.error(error));
 </script>
+
 </body>
 
 </html>
