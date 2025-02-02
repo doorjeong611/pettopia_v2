@@ -29,7 +29,7 @@ public interface ServiceMapper {
 	int countServiceRsvList(Map<String, Object> params);
 
 	// 상태 업데이트
-	void updateRsvStatus(String rsvNo, String rsvStatus, int rsvNoShow);
+	void updateRsvStatus(String rsvNo, String rsvStatus, String rsvNoShow);
 	
 	
 }
