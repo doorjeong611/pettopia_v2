@@ -12,6 +12,9 @@ import com.example.pettopia.vo.NoticeFile;
 @Mapper
 public interface NoticeMapper {
 	
+	// 오자윤 : /notice/getNoticeList 공지사항 카운팅(페이징)	
+	int getNoticeCount(Map<String, Object> params);
+	
 	// 오자윤 : /notice/noticeOne 공지사항 수정
 	void updateNoticeContent(Notice notice);
 	

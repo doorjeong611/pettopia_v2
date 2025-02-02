@@ -24,6 +24,11 @@ public class NoticeService {
 	@Autowired NoticeMapper noticeMapper;
 	@Autowired NoticeFileMapper noticeFileMapper;
 	
+	// 오자윤 : /notice/getNoticeList 공지사항 카운팅(페이징)	
+	public int getNoticeCount(Map<String, Object> params) {
+		return noticeMapper.getNoticeCount(params);
+	}
+	
 	// 오자윤 : /notice/modifyNoticeOne 공지사항 수정
 	public void updateNotice(Notice notice, NoticeFile noticeFile, String path, List<Integer> noticeFileNoListToDelete) {
 		

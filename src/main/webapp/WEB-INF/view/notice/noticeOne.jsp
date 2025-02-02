@@ -17,8 +17,42 @@
     <script src="${pageContext.request.contextPath}/assets/js/layout.js"></script>
     <!-- Tailwind CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tailwind2.css">
+    <!--CKeditor -->		
+	<link rel="stylesheet" href="./style.css">
+	<link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/44.1.0/ckeditor5.css" crossorigin>
+	<link rel="stylesheet" href="path_to_ckeditor/ckeditor5.css">
 </head>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
+	@media print {
+		body {
+			margin: 0 !important;
+		}
+	}
+	
+	.main-container {
+		font-family: 'Lato';
+		width: fit-content;
+		margin-left: auto;
+		margin-right: auto;
+	}
+	
+	.ck-content {
+		font-family: 'Lato';
+		line-height: 1.6;
+		word-break: break-word;
+	}
+	
+	.ck-editor__editable_inline {
+	    min-height: 300px;
+	}
+
+	:root {
+	    /* Overrides the border radius setting in the theme. */
+	    --ck-border-radius: 4px;
+	}
+</style>
 <body class="text-base bg-body-bg text-body font-public dark:text-zink-100 dark:bg-zink-800 group-data-[skin=bordered]:bg-body-bordered group-data-[skin=bordered]:dark:bg-zink-700">
 <div class="group-data-[sidebar-size=sm]:min-h-sm group-data-[sidebar-size=sm]:relative">
     
@@ -54,37 +88,40 @@
                         <div class="card max-w-4xl mx-auto">
                             <div class="card-body">
                                 
-                                   <div class="grid grid-cols-1 gap-5 lg:grid-cols-2 xl:grid-cols-12">
-									    <!-- 부서, 제목 -->
-									    <div class="flex-1 col-span-1">
-									        <label for="docTitle" class="inline-block mb-2 text-base font-medium">부서</label>
-									        <input type="text" name="docTitle" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" value="${noticeOne.divisionName == null ? '전체공지' : noticeOne.divisionName }" readonly >
+                                   <div>
+									    
+									    <!-- 부서 -->
+									    <div class="flex-1 col-span-9" style="margin-left: 7px;">
+									        [<input type="text" name="docTitle" class="inline-block mb-2 text-base font-medium" value="${noticeOne.divisionName == null ? '전체공지' : noticeOne.divisionName}]" readonly >
 									    </div>
-									    <div class="col-span-1 lg:col-span-8 xl:col-span-9">
-									        <label for="docTitle" class="inline-block mb-2 text-base font-medium">제목</label>
-									        <input type="text" name="docTitle" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" style="border: none; outline: none;" value="${noticeOne.noticeTitle }" readonly >
+									    <!-- 작성자, 작성일, 조회수 -->
+									    <div class="col-span-1 lg:col-span-3" style="margin-left: 7px;">
+									        <label for="noticeWriterNo" class="inline-block mb-2 text-base font-medium">작성자 : ${noticeOne.empName}</label> 
+									        <input type="hidden" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" style="border: none; outline: none;" value="${noticeOne.empName }" readonly>
 									    </div><!--end col-->
 									    
-									    <!-- 작성자, 작성일, 조회수 -->
-									    <div class="col-span-1 lg:col-span-3">
-									        <label for="docWriterNo" class="inline-block mb-2 text-base font-medium">작성자</label> 
-									        <input type="text" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" style="border: none; outline: none;" value="${noticeOne.empName }" readonly>
+							    <div class="flex justify-between items-start" style="margin-top: 40px;" >
+								    <div class="col-span-1 lg:col-span-4" style="margin-right: 20px;">
+								        <label for="noticeTitle" class="inline-block mb-2 text-base font-medium" style="margin-left: 10px;">제목 : ${noticeOne.noticeTitle }</label>
+								        <input type="hidden" name="docTitle" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" style="border: none; outline: none;" value="${noticeOne.noticeTitle }" readonly >
+								    </div><!--end col-->
+								    
+									    <div class="col-span-1 lg:col-span-3" style="margin-right: -765px;">
+									        <label for="noticeWriterNo" class="inline-block mb-2 text-base font-medium">작성일 : ${fn:substring(noticeOne.createDateTime, 0, 10) }</label> 
+									        <input type="hidden" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" style="border: none; outline: none;" value="${fn:substring(noticeOne.createDateTime, 0, 10) }" readonly>
 									    </div><!--end col-->
-									    <div class="col-span-1 lg:col-span-3">
-									        <label for="docWriterNo" class="inline-block mb-2 text-base font-medium">작성일</label> 
-									        <input type="text" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" style="border: none; outline: none;" value="${fn:substring(noticeOne.createDateTime, 0, 10) }" readonly>
+								    <div class="flex flex-col items-end" style="margin-right: 20px;">
+									    <div class="col-span-1 lg:col-span-4">
+									        <label for="docWriterNo" class="inline-block mb-2 text-base font-medium">조회수 : ${noticeOne.noticeView }</label>
+									        <input type="hidden" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" style="border: none; outline: none;" value="${noticeOne.noticeView }" readonly>
 									    </div><!--end col-->
-									    <div class="col-span-1 lg:col-span-3">
-									        <label for="docWriterNo" class="inline-block mb-2 text-base font-medium">조회수</label>
-									        <input type="text" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" style="border: none; outline: none;" value="${noticeOne.noticeView }" readonly>
-									    </div><!--end col-->
-                                        
+									    
+                                    </div>  
+                                  </div>  
 										<!-- 공지사항 내용 -->
-                                        <div id="displayArea" class="lg:col-span-2 xl:col-span-12" style="display:block; width: 100%; max-width: 800px; height: auto; overflow: auto;">
-                                        	<div>
-                                    			<label for="noticeCOntent" class="inline-block mb-2 text-base font-medium">내용</label>
+                                        <div id="displayArea" class="lg:col-span-2 xl:col-span-12" style="margin-top: 10px; justify-content: center; align-items: center; width: 100%; max-width: 1300px; height: 400px; overflow: auto; border: 1px solid #ccc; border-radius: 8px; padding: 16px 16px">
+                                    			<label for="noticeCOntent" class="inline-block mb-2 text-base font-medium"></label>
                                         		${noticeOne.noticeContent}
-                                        	</div>
                                         </div>
  
                                         <!-- 업로드 한 파일 조회 -->
