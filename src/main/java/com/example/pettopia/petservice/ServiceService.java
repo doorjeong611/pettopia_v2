@@ -15,9 +15,10 @@ public class ServiceService {
     private ServiceMapper serviceMapper;
 	
 	// 상태 업데이트
-	 public void updateRsvStatus(String rsvNo, String rsvStatus, int rsvNoShow) {
-		 serviceMapper.updateRsvStatus(rsvNo, rsvStatus, rsvNoShow);
-	    }
+	public void updateRsvStatus(String rsvNo, String rsvStatus, int rsvNoShow) {
+	    String noShowValue = String.valueOf(rsvNoShow); // int를 String으로 변환
+	    serviceMapper.updateRsvStatus(rsvNo, rsvStatus, noShowValue);
+	}
 	
 	// 서비스 예약 리스트 조회
     public List<PetService> getServiceRsvList(String searchWord, int pageSize, int currentPage) {
