@@ -27,4 +27,9 @@ public interface ServiceMapper {
 
 	// 서비스 예약 리스트 갯수 카운트
 	int countServiceRsvList(Map<String, Object> params);
+
+	// 상태 업데이트
+	void updateRsvStatus(String rsvNo, String rsvStatus, String rsvNoShow);
+	
+	
 }

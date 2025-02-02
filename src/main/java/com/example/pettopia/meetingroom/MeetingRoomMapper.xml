@@ -37,11 +37,45 @@
 				, mri.room_img_no AS roomImgNo
 				, mri.origin_file_name AS originFileName
 				, CONCAT(mri.file_name, mri.file_ext) AS fileName
+				, mri.room_img_no AS roomImgNo
 		FROM meeting_room mr 
 		JOIN meeting_room_img mri ON mr.room_no = mri.room_no
 		WHERE mr.room_no = #{rommNo}	
 	</select>
 
 
+	<!-- 회의실 수정 -->
+	<update id="updateMeetingRoomInfo" parameterType="com.example.pettopia.vo.MeetingRoom">
+	    UPDATE meeting_room
+	    <set>
+	    	<if test="roomName != null || roomName != '' ">
+	        	room_name = #{roomName},
+	        </if>	
+	        <if test="roomCapacity != null || roomCapacity != '' ">
+	       		room_capacity = #{roomCapacity},
+	        </if>
+	        <if test="roomInfo != null || roomInfo != '' ">
+	        	room_info = #{roomInfo},
+	        </if>
+	        <if test="roomLocation != null || roomLocation != '' ">
+	        	room_location = #{roomLocation},
+	        </if>
+
+	        update_datetime = NOW()
+	    </set>    
+	    WHERE room_no = #{roomNo}
+	</update>
+
+
+    
+    <!-- 회의실 정보 삭제 -->
+    <delete id="deleteMeetingRoomInfo" parameterType="Integer">
+        DELETE FROM meeting_room WHERE room_no = #{roomNo}
+    </delete>
+	
+	
+	
+	
+	
 
 </mapper>

@@ -2,6 +2,13 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
+<!-- 시큐리티 세션 사용을 위한 taglib -->
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<!-- 시큐리티 세션정보 접근 -->
+<sec:authorize access="isAuthenticated()"><sec:authentication property="principal" var="loginEmp"/></sec:authorize>
+
+
+
 <!DOCTYPE html>
 <html lang="en" class="light scroll-smooth group" data-layout="vertical"
 	data-sidebar="light" data-sidebar-size="lg" data-mode="light"
@@ -355,39 +362,23 @@ $(document).ready(function() {
 	});
 
 	/* 부서 선택 시 */
-	$('#divisionSelect')
-			.change(
-					function() {
+	$('#divisionSelect').change(function() {
+		$.ajax({
+			url : '/pettopia/rest/departmentList/'+ $('#divisionSelect').val(),
+			method : 'GET'
+		}).done(function(result) {
+			// 팀 리셋
+			$('#departSelect').empty();
+			$('#departSelect').append('<option value="">팀 선택</option>');
 
-						$.ajax(
-								{
-								url : '/pettopia/rest/departmentList/'+ $('#divisionSelect').val(),
-								method : 'GET'
-										})
-								.done(
-										function(result) {
-											// 팀 리셋
-											$('#departSelect').empty();
-											$('#departSelect').append(
-															'<option value="">팀 선택</option>');
+			$(result).each(function(index,item) {
+				$('#departSelect').append('<option value="' + item.deptCode + '">'+ item.deptName + '</option>');
+			});
 
-											$(result)
-													.each(
-															function(
-																	index,
-																	item) {
-																$(
-																		'#departSelect')
-																		.append(
-																				'<option value="' + item.deptCode + '">'
-																						+ item.deptName
-																						+ '</option>');
-															});
-
-										}).fail(function() {
-									alert('팀 호출 실패');
-								});
-					});
+		}).fail(function() {
+				alert('팀 호출 실패');
+		});
+	});
 
 	/* 팀 선택 시 */
 	$('#departSelect').change(function() {

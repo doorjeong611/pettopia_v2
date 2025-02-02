@@ -1,20 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-
-<!-- 시큐리티 세션 사용을 위한 taglib -->
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-<!-- 시큐리티 세션정보 접근 -->
-<sec:authorize access="isAuthenticated()"><sec:authentication property="principal" var="loginEmp"/></sec:authorize>
-
-
 
 <!DOCTYPE html>
 <html lang="en" class="light scroll-smooth group" data-layout="vertical" data-sidebar="light" data-sidebar-size="lg" data-mode="light" data-topbar="light" data-skin="default" data-navbar="sticky" data-content="fluid" dir="ltr">
 
 <head>
 	<meta charset="utf-8">
-    <title>MeetingRoom List</title>
+    <title>PetTopia</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta content="Minimal Admin & Dashboard Template" name="description">
     <meta content="Themesdesign" name="author">
@@ -22,49 +14,9 @@
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/assets/images/pettopia_favicon.ico">
     <!-- Layout config Js -->
     <script src="${pageContext.request.contextPath}/assets/js/layout.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Tailwind CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tailwind2.css">
 </head>
-<style>
-.image-container {
-    width: 100%; /* 고정 너비 */
-    height: 250px; /* 고정 높이 */
-    overflow: hidden; /* 영역을 벗어난 이미지는 숨김 처리 */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #f0f0f0; /* 필요하면 배경색 추가 */
-    border-radius: 20px; /* 이미지 모서리 둥글게 처리 */
-}
-
-.image-container img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* 크기에 맞게 확대/자르기 */
-}
-
-.truncate {
-  display: inline-block;
-  max-width: 250px; 
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
-
-</style>
-
-<script type="text/javascript">
-    // 메시지가 있을 경우 경고창을 띄움
-    window.onload = function() {
-        var message = "${errorMessage}";
-        if (message) {
-            alert(message);
-        }
-    }
-</script>
-
 
 <body class="text-base bg-body-bg text-body font-public dark:text-zink-100 dark:bg-zink-800 group-data-[skin=bordered]:bg-body-bordered group-data-[skin=bordered]:dark:bg-zink-700">
 <div class="group-data-[sidebar-size=sm]:min-h-sm group-data-[sidebar-size=sm]:relative">
@@ -85,58 +37,81 @@
             <div class="container-fluid group-data-[content=boxed]:max-w-boxed mx-auto">
                 <div class="flex flex-col gap-2 py-4 md:flex-row md:items-center print:hidden">
                     <div class="grow">
-                        <h5 class="text-16">회의실 목록</h5>
+                        <h5 class="text-16">예약 내역</h5>
                     </div>
-                    <div class="ltr:md:text-end rtl:md:text-start"> 
-					    <!-- 서비스 추가 버튼, href 속성으로 addService 페이지로 이동 -->
-					    <a href="${pageContext.request.contextPath}/meetingroom/addMeetingroom" class="mr-1 bg-white text-custom-500 btn border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100">
-					        <i class="align-bottom ri-add-line me-1"></i> 회의실 등록
-					    </a>
-					</div>
-					
+                    <ul class="flex items-center gap-2 text-sm font-normal shrink-0">
+                        <li class="relative before:font-remix ltr:before:-right-1 rtl:before:-left-1  before:absolute before:text-[18px] before:-top-[3px] ltr:pr-4 rtl:pl-4 before:text-slate-400 dark:text-zink-200">
+                            <a href="#!" class="text-slate-400 dark:text-zink-200">객실 예약 내역</a>
+                        </li>
+                    </ul>
                 </div>
                 <!-- Main content -->
-                <div class="card">
-	                <div class="card-body">
-	                    <div class="overflow-x-auto">
-	                    	<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <div class="card" id="">
+                    <div class="card-body">
+                        <div class="grid grid-cols-1 gap-5 mb-5 xl:grid-cols-2">
+                            <div>
+                                <div class="relative xl:w-3/6">
+                                    <input type="text" class="ltr:pl-8 rtl:pr-8 search form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="Search for ..." autocomplete="off">
+                                    <i data-lucide="search" class="inline-block size-4 absolute ltr:left-2.5 rtl:right-2.5 top-2.5 text-slate-500 dark:text-zink-200 fill-slate-100 dark:fill-zink-600"></i>
+                                </div>
+                            </div>
+                            <div class="ltr:md:text-end rtl:md:text-start"> 
+							    <a href="${pageContext.request.contextPath}/meetingroom/addMeetingRoomRsv" class="mr-1 bg-white text-custom-500 btn border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100">
+							        <i class="align-bottom ri-add-line me-1"></i> 회의실 예약
+							    </a>
 							    
-							    <c:forEach var="room" items="${meetingRoomList}">
-							        <div class="flex flex-col p-4">
-							            <div class="image-container">
-							                <img src="${pageContext.request.contextPath}/meetingRoomFile/${room.fileName}" 
-							                     alt="${room.originFileName}">
-							            </div>
-							            <div class="mt-4">
-							            	<div style="display: flex; justify-content: space-between;">
-								                <h6 class="text-lg font-semibold text-slate-700 dark:text-white" style="line-height: 2;">
-								                    <a href="${pageContext.request.contextPath}/meetingroom/getMeetingRoomOne?roomNo=${room.roomNo}" 
-								                       class="transition-all duration-300 ease-linear hover:text-custom-500">
-								                        ${room.roomName}호
-								                    </a>
-								                </h6>
-								                <c:if test="${loginEmp.roleName == 'ROLE_ADMIN' }">
-											    	<a href="${pageContext.request.contextPath}/meetingroom/deleteMeetingRoom?roomNo=${room.roomNo}"
-											    		id="deleteRoom"
-												    	class="text-red-500 bg-white border-red-500 btn hover:text-white hover:bg-red-600 hover:border-red-600 focus:text-white focus:bg-red-600 focus:border-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:border-red-600 active:ring active:ring-red-100">
-												    	<i class="ri-delete-bin-2-line"> 삭제 </i>
-											    	</a>
-										    	</c:if>
-							                </div>
-							                
-
-							                <p class="text-sm text-slate-500">수용 인원: <span>${room.roomCapacity}</span> 명 </p>
-							                <p class="text-sm text-slate-500">회의실 위치: ${room.roomLocation}</p>
-							                <p class="text-sm text-slate-500 truncate" >설명: ${room.roomInfo}</p>
-							            </div>
-							        </div>
-							    </c:forEach>
+							    <!-- 삭제 버튼 -->
+							    <!-- <button type="button" class="text-red-500 bg-white border-red-500 btn hover:text-white hover:bg-red-600 hover:border-red-600 focus:text-white focus:bg-red-600 focus:border-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:border-red-600 active:ring active:ring-red-100" onClick="deleteMultiple()">
+							        <i class="ri-delete-bin-2-line">삭제</i>
+							    </button> -->
 							</div>
-	                    </div>
-	                    
-	                    
-	                    
-	                    <!-- 페이징 시작 -->
+                        </div>
+
+                        <div class="overflow-x-auto">
+                            <table class="w-full whitespace-nowrap" id="serviceTable">
+                                <thead class="bg-slate-100 dark:bg-zink-600">
+                                    <tr>
+                                        <!-- <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500" scope="col" style="width: 50px;">
+                                            <input class="border rounded-sm appearance-none cursor-pointer size-4 bg-slate-100 border-slate-200 dark:bg-zink-600 dark:border-zink-500 checked:bg-custom-500 checked:border-custom-500 dark:checked:bg-custom-500 dark:checked:border-custom-500 checked:disabled:bg-custom-400 checked:disabled:border-custom-400" type="checkbox" id="checkAll" value="option">
+                                        </th> -->
+                                        <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right">번호</th>
+                                        <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right">회의실 번호</th>
+                                        <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right">예약자 사번</th>
+                                        <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right">회의 이름</th>
+                                        <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right">인원</th>
+                                        <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right">날짜</th>
+                                        <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right">시간</th>
+                                        
+                                    </tr>
+                                </thead>
+                                 <tbody>
+		                                <c:forEach var="r" items="${rsvList}" varStatus="status">
+		                                    <tr class="even:bg-slate-50 hover:bg-slate-50 even:hover:bg-slate-100 dark:even:bg-zink-600/50 dark:hover:bg-zink-600 dark:even:hover:bg-zink-600">
+		                                       <!--  <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">
+		                                        	<input class="border rounded-sm appearance-none cursor-pointer size-4 bg-slate-100 border-slate-200 dark:bg-zink-600 dark:border-zink-500 checked:bg-custom-500 checked:border-custom-500 dark:checked:bg-custom-500 dark:checked:border-custom-500 checked:disabled:bg-custom-400 checked:disabled:border-custom-400" type="checkbox" id="" value="option"> 
+		                                        </td> -->
+		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">
+		                                            <a href="#" class="transition-all duration-150 ease-linear text-custom-500 hover:text-custom-600">${status.count}</a>		                                        </td>
+		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${r.roomNo}</td>
+		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${r.empNo}</td>
+		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${r.conferenceTitle}</td>
+		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${r.conferenceUsers}</td>
+		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${r.rsvDate}</td>
+		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${r.timeRange}</td>
+
+		                                        
+		                                    </tr>
+		                                </c:forEach> 
+                            		</tbody>
+                            </table>
+                            <div class="noresult" style="display: none">
+                                <div class="text-center p-7">
+                                    <h5 class="mb-2">Sorry! No Result Found</h5>
+                                    <p class="mb-0 text-slate-500 dark:text-zink-200">We've searched more than 150+ Orders We did not find any orders for you search.</p>
+                                </div>
+                            </div>
+                        </div>
+                           <!-- 페이징 시작 -->
 						<div class="flex justify-end mt-4">
 						    <div class="flex gap-2 pagination-wrap">
 						        <!-- 이전 페이지 -->
@@ -192,20 +167,20 @@
 						    </div>
 						</div>
 						<!-- 페이징 끝 -->
-		            </div>
-		          </div>
-               <!-- MAIN END -->
+                    </div>
+                </div>
+              </div>
         	</div>
-        </div>
-        <!-- End Page-content -->
         
+        <!-- End Page-content -->
+
 		<!-- Start Footer -->
         <footer class="ltr:md:left-vertical-menu rtl:md:right-vertical-menu group-data-[sidebar-size=md]:ltr:md:left-vertical-menu-md group-data-[sidebar-size=md]:rtl:md:right-vertical-menu-md group-data-[sidebar-size=sm]:ltr:md:left-vertical-menu-sm group-data-[sidebar-size=sm]:rtl:md:right-vertical-menu-sm absolute right-0 bottom-0 px-4 h-14 group-data-[layout=horizontal]:ltr:left-0  group-data-[layout=horizontal]:rtl:right-0 left-0 border-t py-3 flex items-center dark:border-zink-600">
         	<c:import url="/WEB-INF/view/inc/footer.jsp"></c:import>    
         </footer>
+        </div>
         <!-- End Footer -->
     </div>
-</div>
 <!-- End Main Content -->
 <c:import url="/WEB-INF/view/inc/customizerButton.jsp"></c:import>
 
@@ -216,30 +191,18 @@
 <script src="${pageContext.request.contextPath}/assets/libs/prismjs/prism.js"></script>
 <script src="${pageContext.request.contextPath}/assets/libs/lucide/umd/lucide.js"></script>
 <script src="${pageContext.request.contextPath}/assets/js/tailwick.bundle.js"></script>
-<!--product Grid init js-->
-<script src="${pageContext.request.contextPath}/assets/js/pages/apps-ecommerce-product-grid.init.js"></script>
+<!-- list js-->
+<script src="${pageContext.request.contextPath}/assets/libs/list.js/list.min.js"></script>
+<script src="${pageContext.request.contextPath}/assets/libs/list.pagination.js/list.pagination.min.js"></script>
+<script src="${pageContext.request.contextPath}/assets/libs/flatpickr/flatpickr.min.js"></script>
+<!-- Sweet Alerts js -->
+<script src="${pageContext.request.contextPath}/assets/libs/sweetalert2/sweetalert2.min.js"></script>
+
+<!-- listjs init -->
+<script src="${pageContext.request.contextPath}/assets/js/pages/listjs.init.js"></script>
+
 <!-- App js -->
 <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
-<script>
-	// 삭제 버튼
-	$('#deleteRoom').on('click', function(e) {
-	    e.preventDefault();
-	    
-	    if(confirm("정말 삭제 하시겠습니까?")) {
-	        alert('삭제 성공하였습니다.');
-	        window.location.href = $(this).attr('href');
-	    }
-	});
-	
-	// 룸타입 필터링 조회
-	$(document).ready(function() {
-        $('#roomTypeFilter').on('change', function() {
-            let selectedType = $(this).val();
-            let url = '${pageContext.request.contextPath}/room/getRoomList?roomType=' + selectedType;
-            window.location.href = url;
-        });
-    });
-</script>
 
 </body>
 

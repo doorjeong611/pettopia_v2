@@ -9,7 +9,7 @@
 <head>
 	<meta charset="utf-8">
     <title>add MeetingRoom</title>
-      <script type="text/javascript">
+    <script type="text/javascript">
         // 메시지가 있을 경우 경고창을 띄움
         window.onload = function() {
             var message = "${errorMessage}";

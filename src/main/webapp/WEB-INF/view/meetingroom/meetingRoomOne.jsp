@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
 
 <!-- 시큐리티 세션 사용을 위한 taglib -->
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
@@ -26,32 +28,46 @@
     <!-- Jquery -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
+
+    <style>
+    textarea {
+	    resize: none;
+	    overflow: auto; 
+	}
+    </style>
+<script type="text/javascript">
+    // 메시지가 있을 경우 경고창을 띄움
+    window.onload = function() {
+        var message = "${errorMessage}";
+        if (message) {
+            alert(message);
+        }
+    }
+</script>
 <script>
 $(document).ready(function() {
-	
-	// ${loginEmp.roleName} == 'ROLE_ADMIN' 수정하도록 readonly 제거
-    if ('${loginEmp.roleName}' === 'ROLE_ADMIN') {
-        
+    
+    // ${loginEmp.roleName} == 'ROLE_ADMIN' 수정하도록 readonly 제거
+    $('#modify').on('click', function() {
         $('input, textarea').removeAttr('readonly');
-    }
-	
-	
-	
-	/* 이미지 확인 모달 */
-	console.log($('#roomImg img').length);
-	
-	const modal = $('#modal');
-	const modalImage = $('#modalImage');
-	const closeModalBtn = $("#closeModal");
-	const modalBackground = $("#modalBackground");
-	
+        $('#file').removeClass('hidden');
+        $('input, textarea').removeClass('border-none focus:outline-none');
+        $('input, textarea').addClass('border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400 dark:placeholder:text-zink-200');
+        
+        
+    });
+    
+    /* 이미지 확인 모달 */
+    console.log($('#roomImg img').length);
+    
+    const modal = $('#modal');
+    const modalImage = $('#modalImage');
+    const closeModalBtn = $("#closeModal");
+    const modalBackground = $("#modalBackground");
+    
     // 이미지 클릭 시 모달 열기
     $('#roomImg').on('click', function() {
-       
-        
         console.log('이미지 클릭');
-
-        // 모달을 보이게 하기
         modal.removeClass('hidden');
     });
 
@@ -64,8 +80,28 @@ $(document).ready(function() {
     // 닫기 버튼
     closeModalBtn.click(closeModal);
     modalBackground.click(closeModal);
-	
-});    
+    
+    // Cancel 버튼 클릭 시
+    $('#cancel').on('click', function() {
+        console.log('취소취소');
+        
+        // 서버에서 값을 받아올 때 따옴표로 감싸주는 방법
+        const originalRoomName = "${roomInfo.roomName}";
+        const originalRoomCapacity = "${roomInfo.roomCapacity}";
+        const originalRoomLocation = "${roomInfo.roomLocation}";
+        const originalRoomInfo = `${fn:escapeXml(roomInfo.roomInfo)}`; // 개행문자가 포함되어 있으므로 `백틱`,  escapeXml사용
+
+        
+        // input, textarea 값을 원래 값으로 되돌리기
+        $('#roomName').val(originalRoomName);
+        $('#roomCapacity').val(originalRoomCapacity);
+        $('#pricePerNight').val(originalRoomLocation);
+        $('#roomInfo').val(originalRoomInfo);
+
+        // 파일 입력 초기화 (파일 첨부 초기화)
+        $('input[type="file"]').val('');
+    });    
+});
 </script>
 
 <body class="text-base bg-body-bg text-body font-public dark:text-zink-100 dark:bg-zink-800 group-data-[skin=bordered]:bg-body-bordered group-data-[skin=bordered]:dark:bg-zink-700">
@@ -93,27 +129,28 @@ $(document).ready(function() {
                 <!-- Main content -->
                <div class="card">
                     <div class="card-body">
-                        <form id="formUpdateRoom" method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/meetingroom/modifyMeetingRoom">
+                        <form id="formUpdateMeetingRoom" method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/meetingroom/modifyMeetingRoom" onsubmit="return validateForm(event);">
                         <!-- 수정 시 필요한 roomNo  -->
                         <input type="hidden" name="roomNo" value="${roomInfo.roomNo}">
+                        <input type="hidden" name="roomImgNo" value="${roomInfo.roomImgNo}">
                             <div class="grid grid-cols-1 gap-x-5 md:grid-cols-4 xl:grid-cols-4">
                                 
                                 <div class="mb-4">
                                     <label class="inline-block mb-2 text-base font-medium">회의실 이름<span class="text-red-500">*</span></label>
-                                    <input type="text" id="roomName" name="roomName" readonly class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="최대 수용인원을 입력하세요" value="${roomInfo.roomName}">
+                                    <input type="text" id="roomName" name="roomName" readonly class="form-input border-none focus:outline-none  placeholder:text-slate-400" placeholder="회의실 이름을 입력하세요." value="${roomInfo.roomName}">
                                 </div>
                                 <div class="mb-4">
                                     <label class="inline-block mb-2 text-base font-medium">수용 인원<span class="text-red-500">*</span></label>
-                                    <input type="text" id="roomCapacity" name="roomCapacity" readonly class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="최대 수용인원을 입력하세요" value="${roomInfo.roomCapacity}">
+                                    <input type="text" id="roomCapacity" name="roomCapacity" readonly class="form-input border-none focus:outline-none  placeholder:text-slate-400" placeholder="최대 수용인원을 입력하세요" value="${roomInfo.roomCapacity}">
                                 </div>
                                 <div class="mb-4">
                                     <label class="inline-block mb-2 text-base font-medium">위치<span class="text-red-500"> *</span></label>
-                                    <input type="text" id="pricePerNight" name="roomLocation" readonly class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="1박 당 가격을 입력하세요" value="${roomInfo.roomLocation}">
+                                    <input type="text" id="roomLocation" name="roomLocation" readonly class="form-input border-none focus:outline-none  placeholder:text-slate-400" placeholder="1박 당 가격을 입력하세요" value="${roomInfo.roomLocation}">
                                 </div>
                                 <div class="mb-4">
                                     <label class="inline-block mb-2 text-base font-medium">회의실 이미지 </label>
                                     <div>
-                                    	<button type="button" id="roomImg" class="text-slate-500 bg-white border-slate-500 btn hover:text-white hover:bg-slate-600 hover:border-slate-600 focus:text-white focus:bg-slate-600 focus:border-slate-600 focus:ring focus:ring-slate-100 active:text-white active:bg-slate-600 active:border-slate-600 active:ring active:ring-slate-100" >회의실 이미지 확인</button>
+                                    	<button type="button" id="roomImg" class="mr-1 bg-white text-slate-500 btn border-slate-500 hover:text-white hover:bg-slate-600 hover:border-slate-600 focus:text-white focus:bg-slate-600 focus:border-slate-600 focus:ring focus:ring-slate-100 active:text-white active:bg-slate-600 active:border-slate-600 active:ring active:ring-slate-100" >회의실 이미지 확인</button>
                                 		
                                 	</div>
                                 </div>
@@ -121,19 +158,20 @@ $(document).ready(function() {
                            
                             <div class="lg:col-span-2 xl:col-span-12 mb-4">
                                   <label class="inline-block mb-2 text-base font-medium">회의실 정보 <span class="text-red-500">*</span></label>
-                                  <textarea readonly rows="10" id="roomInfo" name="roomDesc" class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200">${roomInfo.roomInfo}</textarea>
+                                  <textarea readonly rows="10" id="roomInfo" name="roomInfo" class="form-input border-none focus:outline-none  placeholder:text-slate-400">${roomInfo.roomInfo}</textarea>
                             </div>
                             
                             
-                       <c:if test="${loginEmp.roleName == 'ROLE_ADMIN' }">  
-                            <div class="lg:col-span-2 xl:col-span-12 mb-4">
+                      
+                            <div class="lg:col-span-2 xl:col-span-12 mb-4 hidden" id="file">
 								<label class="inline-block mb-2 text-base font-medium">파일 첨부<span class="text-red-500">*</span></label>
 								<input readonly name="roomImg" type="file" class="cursor-pointer form-file border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500">	
 							</div>
                             
-						
+					  <c:if test="${loginEmp.roleName == 'ROLE_ADMIN' }">  	
 	                        <div class="flex justify-end gap-2">
-	                            <button type="button" id="cancel" class="text-red-500 bg-white border-red-500 btn hover:text-white hover:bg-red-600 hover:border-red-600 focus:text-white focus:bg-red-600 focus:border-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:border-red-600 active:ring active:ring-red-100"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="x" class="lucide lucide-x inline-block size-4"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg> <span class="align-middle">Cancel</span></button>
+	                            <button type="button" id="cancel" class="text-red-500 bg-white border-red-500 btn hover:text-white hover:bg-red-600 hover:border-red-600 focus:text-white focus:bg-red-600 focus:border-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:border-red-600 active:ring active:ring-red-100"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="x" class="lucide lucide-x inline-block size-4"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg> <span class="align-middle">되돌리기</span></button>
+	                            <button type="button" id="modify" class="mr-1 bg-white text-slate-500 btn border-slate-500 hover:text-white hover:bg-slate-600 hover:border-slate-600 focus:text-white focus:bg-slate-600 focus:border-slate-600 focus:ring focus:ring-slate-100 active:text-white active:bg-slate-600 active:border-slate-600 active:ring active:ring-slate-100">수정</button>
 	                            <button type="submit" class="mr-1 bg-white text-custom-500 btn border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100">저장</button>
 	                        </div>
                        </c:if>   
@@ -165,9 +203,9 @@ $(document).ready(function() {
 		    <div id="modalBackground" class="fixed inset-0" style="background-color: rgba(0, 0, 0, 0.75); z-index: 40;"></div>
 		
 		    <div class="fixed inset-0 flex items-center justify-center z-[1000] p-4">
-		    	<div class="w-screen md:w-[30rem] bg-white shadow rounded-md dark:bg-zink-600 flex flex-col ">
+		    	<div class="w-screen md:w-[40rem] bg-white shadow rounded-md dark:bg-zink-600 flex flex-col ">
 		    		<div class="flex items-center justify-between p-4 dark:border-zink-500  ml-auto">
-				         
+				         <div class="">${roomInfo.roomName}</div>
 				         <button type="button" id="closeModal" class="transition-all duration-200 ease-linear text-slate-500 hover:text-red-500 dark:text-zink-200 dark:hover:text-red-500">
 				         	&#10060;
 				         </button>
@@ -200,10 +238,43 @@ $(document).ready(function() {
 <!-- App js -->
 <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
 <script>
-// Cancel 버튼 클릭 시
-document.querySelector('#cancel').addEventListener('click', function() {
-	  window.location.href = '${pageContext.request.contextPath}/room/getRoomList'; 
-	});
+// 등록 버튼 클릭 시 모든 값이 다 있는지 확인
+function validateForm(event) {
+    event.preventDefault(); // 기본 폼 제출 방지
+
+    
+    const roomName = document.getElementById('roomName')?.value.trim() || null;
+    const roomCapacity = document.getElementById('roomCapacity')?.value.trim() || null;
+    const roomLocation = document.getElementById('roomLocation')?.value.trim() || null;
+    const roomInfo = document.getElementById('roomInfo')?.value.trim() || null;
+   
+
+    // 필수 입력값 검사
+
+    if (!roomName) {
+        alert('회의실 이름을 입력하세요.');
+        return false;
+    }
+
+    if (!roomCapacity) {
+        alert('수용 인원을 입력하세요.');
+        return false;
+    }
+    if (!roomLocation) {
+        alert('회의실 위치를 입력하세요.');
+        return false;
+    }
+
+    if (!roomInfo) {
+        alert('회의실 정보를 입력하세요.');
+        return false;
+    }
+
+
+    // 모든 필드가 정상적으로 입력된 경우 폼 제출
+    document.getElementById('formUpdateMeetingRoom').submit();
+    return true;
+}
 
 
 </script>

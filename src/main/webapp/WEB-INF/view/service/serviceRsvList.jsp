@@ -87,14 +87,20 @@
 		                                            <a href="#" class="transition-all duration-150 ease-linear text-custom-500 hover:text-custom-600">${serviceRsvList.rsvNo}</a>
 		                                        </td>
 		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${serviceRsvList.customerName}</td>
-		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${serviceRsvList.rsvDatetime}</td>
-		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">  
-		                                        	${serviceRsvList.rsvStatus == 'CF' ? '예약완료' : 
-												      serviceRsvList.rsvStatus == 'CC' ? '취소' :
-												      serviceRsvList.rsvStatus == 'IP' ? '진행중' :
-												      serviceRsvList.rsvStatus == 'CM' ? '이용완료' : ''}
-												</td>
-		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${serviceRsvList.rsvNoShow == '1' ? '노쇼' : ''}</td>
+												<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${serviceRsvList.rsvDatetime}</td>
+												
+												<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">
+									                <select class="rsv-status border rounded px-2 py-1"
+									                        onchange="updateRsvStatus(this, '${serviceRsvList.rsvNo}', '${serviceRsvList.rsvDatetime}')">
+									                    <option value="CF" ${serviceRsvList.rsvStatus == 'CF' ? 'selected' : ''}>예약완료</option>
+									                    <option value="CC" ${serviceRsvList.rsvStatus == 'CC' ? 'selected' : ''}>취소</option>
+									                    <option value="IP" ${serviceRsvList.rsvStatus == 'IP' ? 'selected' : ''}>진행중</option>
+									                    <option value="CM" ${serviceRsvList.rsvStatus == 'CM' ? 'selected' : ''}>이용완료</option>
+									                </select>
+									            </td>
+									             <td id="noShow_${serviceRsvList.rsvNo}">
+									             	 ${serviceRsvList.rsvNoShow == '1' ? '노쇼' : ''}
+									            </td>
 		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${serviceRsvList.serviceName}</td>
 		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${serviceRsvList.serviceDesc}</td>
 		                                        
@@ -196,6 +202,50 @@
 <!-- App js -->
 <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
 <script>
+//예약 상태 변경 시 호출
+function updateRsvStatus(selectElement, rsvNo, rsvDatetime) {
+    // querySelector를 사용하여 더 유연하게 요소 찾기
+    const row = selectElement.closest('tr');
+    const noShowElement = row.querySelector('td[id^="noShow_"]');
+    
+    if (!noShowElement) {
+        console.error('노쇼 상태를 표시할 요소를 찾을 수 없습니다.');
+        return;
+    }
+
+    const selectedStatus = selectElement.value;
+    const isoDatetime = rsvDatetime.replace(' ', 'T');
+
+    fetch('${pageContext.request.contextPath}/service/updateRsvStatus', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            rsvNo: rsvNo,
+            rsvStatus: selectedStatus,
+            rsvDatetime: isoDatetime
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            noShowElement.textContent = data.rsvNoShow === 1 ? '노쇼' : '';
+            console.log('예약 상태가 성공적으로 업데이트되었습니다.');
+        } else {
+            alert('예약 상태 업데이트 실패: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('서버 오류:', error);
+        alert('예약 상태 업데이트 중 오류가 발생했습니다.');
+    });
+}
+
+
+
+
+	// 삭제
 	function deleteMultiple() {
 	    var selectedServices = [];
 	    

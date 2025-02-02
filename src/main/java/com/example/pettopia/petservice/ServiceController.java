@@ -1,13 +1,19 @@
 package com.example.pettopia.petservice;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -25,6 +31,38 @@ public class ServiceController {
     @Autowired
     private ServiceService serviceService;
     
+    @PostMapping("/service/updateRsvStatus")
+    public ResponseEntity<?> updateRsvStatus(@RequestBody Map<String, Object> params) {
+        try {
+            // 요청에서 파라미터 추출
+            String rsvNo = (String) params.get("rsvNo");
+            String rsvStatus = (String) params.get("rsvStatus");
+            String rsvDateStr = (String) params.get("rsvDatetime"); // 예약 날짜 (ISO 형식)
+
+            // ISO 형식으로 LocalDateTime 변환
+            LocalDateTime rsvDate = LocalDateTime.parse(rsvDateStr, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+            LocalDate today = LocalDate.now();
+
+            // 노쇼 여부 판단
+            int rsvNoShow = 0; // 기본값: 노쇼 아님
+            if (rsvDate.toLocalDate().isBefore(today) && rsvStatus.equals("CF")) {
+                rsvNoShow = 1; // 예약일이 지났는데 상태가 '예약완료'면 노쇼 처리
+            }
+
+            // 서비스 호출하여 예약 상태 업데이트
+            serviceService.updateRsvStatus(rsvNo, rsvStatus, rsvNoShow);
+
+            // 성공 응답
+            return ResponseEntity.ok(Map.of("success", true, "rsvNoShow", rsvNoShow));
+        } catch (Exception e) {
+            // 실패 응답
+            return ResponseEntity.badRequest().body(Map.of("success", false, "message", e.getMessage()));
+        }
+    }
+
+
+    
+    
     // 서비스 예약내역
     @GetMapping("/service/getServiceRsvList")
     public String getServiceRsvList(Model model,
@@ -36,6 +74,7 @@ public class ServiceController {
         List<PetService> serviceRsvList = serviceService.getServiceRsvList(searchWord, pageSize, currentPage);
         int totalRecords = serviceService.countServiceRsvList(searchWord); // 총 고객 수 조회
         int totalPages = (int) Math.ceil((double) totalRecords / pageSize);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         
         
         model.addAttribute("serviceRsvList", serviceRsvList);
@@ -45,6 +84,7 @@ public class ServiceController {
         model.addAttribute("totalRecords", totalRecords); // 총 고객 수
         model.addAttribute("pageSize", pageSize); // 페이지 크기
         model.addAttribute("searchWord", searchWord); // 검색어
+        model.addAttribute("formatter", formatter); // 날짜
         log.debug(TeamColor.WJ + "검색어 ========> " + searchWord + TeamColor.RESET);
         
         return "service/serviceRsvList";

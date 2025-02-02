@@ -1,7 +1,9 @@
 package com.example.pettopia.meetingroom;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -12,12 +14,19 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.example.pettopia.meetingroomimg.MeetingRoomImgMapper;
 import com.example.pettopia.util.TeamColor;
+import com.example.pettopia.vo.MeetingRoom;
 import com.example.pettopia.vo.MeetingRoomForm;
+import com.example.pettopia.vo.MeetingRoomImg;
+import com.example.pettopia.vo.MeetingRoomRsv;
 
 import jakarta.servlet.http.HttpSession;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 
 @Controller
@@ -80,6 +89,133 @@ public class MeetingRoomController {
 		
 		return "meetingroom/meetingRoomOne";
 	}
+	
+	
+	// 회의실 수정하기
+	@PostMapping("/meetingroom/modifyMeetingRoom")
+	public String modifyMeetingRoom(HttpSession session, MeetingRoomForm meetingRoomForm, String roomNo, String roomImgNo, RedirectAttributes redirectAttributes) {
+		log.debug(TeamColor.KMJ+"[MeetingRoomController - POST modifyMeetingRoom()]");
+		
+		log.debug(TeamColor.KMJ+"roomNo : " + roomNo);
+		log.debug(TeamColor.KMJ+"roomImgNo : " + roomImgNo);
+		log.debug(TeamColor.KMJ+"meetingRoomForm : " + meetingRoomForm.toString());
+		
+		// 회의실 정보 수정
+		MeetingRoom roomInfo = new MeetingRoom();
+		roomInfo.setRoomNo(Integer.parseInt(roomNo));
+		roomInfo.setRoomName(meetingRoomForm.getRoomName());
+		roomInfo.setRoomLocation(meetingRoomForm.getRoomLocation());
+		roomInfo.setRoomCapacity(meetingRoomForm.getRoomCapacity());
+		roomInfo.setRoomInfo(meetingRoomForm.getRoomInfo());
+		
+		boolean roomInfoResult = meetingRoomService.modifyMeetingRoomInfo(roomInfo);
+		boolean roomImgResult = false;
+		// 정보 수정에 성공하고 수정할 회의실 이미지가 있다면 
+		if(roomInfoResult == true && meetingRoomForm.getRoomImg().getSize() > 0) {
+			
+			String path = session.getServletContext().getRealPath("/meetingRoomFile/");
+
+			MultipartFile roomImg = meetingRoomForm.getRoomImg();
+			
+			roomImgResult = meetingRoomService.modifyMeetingRoomImg(path, roomImg, roomImgNo, roomNo);
+			
+			log.debug(TeamColor.KMJ+"roomImgResult : " + roomImgResult);
+		}
+		
+		if(roomInfoResult != true || roomImgResult != true) {
+			String errorMessage = "회의실 수정 실패! 잠시후 다시 시도해주세요.";
+			redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
+			return "redirect:/meetingroom/getMeetingRoomOne";
+		}
+		
+		
+		
+		return "redirect:/meetingroom/getMeetingRoomOne?roomNo="+roomNo;
+	}
+	
+	// 회의실 삭제
+	@GetMapping("/meetingroom/deleteMeetingRoom")
+	public String deleteMeetingRoom(HttpSession session, @RequestParam String roomNo, RedirectAttributes redirectAttributes) {
+		
+		log.debug(TeamColor.KMJ+"[MeetingRoomController - GET deleteMeetingRoom()]");
+		
+		log.debug(TeamColor.KMJ+"roomNo : " + roomNo);
+		
+		String path = session.getServletContext().getRealPath("/meetingRoomFile/");
+		
+		boolean result = meetingRoomService.removeMeetingRoom(roomNo, path);
+		
+		log.debug(TeamColor.KMJ+"result : " + result);
+		
+		if(result == false) { // 삭제 실패시 
+			
+			String errorMessage = "회의실 삭제 실패! 잠시후 다시 시도해주세요.";
+			redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
+			
+			return "redirect:/meetingroom/getMeetingroomList";
+		}
+		
+		return "redirect:/meetingroom/getMeetingroomList";
+	}
+	
+	
+	// 회의실 예약 내역 페이지
+	@GetMapping("/meetingroom/meetingroomRsvList")
+	public String getMeetingroomRsvList(Model model) {
+		
+		log.debug(TeamColor.KMJ+"[MeetingRoomController - GET getMeetingroomRsvList()]");
+		
+		List<Map<String, Object>> rsvList = meetingRoomService.getMeetingRoomRsvList();
+		
+		if(rsvList.size() > 0) {			
+			log.debug(TeamColor.KMJ+"rsvList : " + rsvList);
+		}
+		model.addAttribute("rsvList", rsvList);
+		
+		return "meetingroom/meetingRoomRsvList";
+	}
+	
+	// 회의실 예약 등록 폼
+	@GetMapping("/meetingroom/addMeetingRoomRsv")
+	public String addMeetingRoomRsv(Model model) {
+		log.debug(TeamColor.KMJ+"[MeetingRoomController - GET addMeetingRoomRsv()]");
+		List<Map<String, Object>> meetingRoomList = meetingRoomService.getMeetingRoomList();
+		
+		model.addAttribute("roomList", meetingRoomList);
+		
+		
+		
+		return "meetingroom/addMeetingRoomRsv";
+	}
+	
+	
+	// 회의실 예약
+	@PostMapping("/meetingroom/addMeetingRoomRsv")
+	public String addMeetingRoomRsv(MeetingRoomRsv mrr, RedirectAttributes redirectAttributes) {
+		log.debug(TeamColor.KMJ+"[MeetingRoomController - POST addMeetingRoomRsv()]");
+		
+		log.debug(TeamColor.KMJ+"mrr : " + mrr.toString());
+		
+		
+		// 예약 등록
+		boolean result = meetingRoomService.addRsvMeetingRoom(mrr);
+		
+		if(result == false) { // 예약 실패시 
+			
+			String errorMessage = "회의실 예약 실패! 잠시후 다시 시도해주세요.";
+			redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
+			
+			return "redirect:/meetingroom/getMeetingroomList";
+		}
+		
+		return "redirect:/meetingroom/getMeetingroomList";
+	}
+	
+	
+	
+	
+	
+	
 	
 	
 
