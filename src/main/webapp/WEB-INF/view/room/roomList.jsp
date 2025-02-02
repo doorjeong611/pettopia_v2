@@ -123,7 +123,7 @@
 						        <!-- 이전 페이지 -->
 						        <c:if test="${currentPage > 1}">
 						            <a class="inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 focus:bg-custom-50 focus:text-custom-500"
-						               href="?currentPage=${currentPage - 1}&pageSize=${pageSize}">
+						               href="?currentPage=${currentPage - 1}&pageSize=6">
 						                이전
 						            </a>
 						        </c:if>
@@ -138,7 +138,6 @@
 						            <c:forEach var="num" begin="1" end="${totalPages}">
 						                <c:choose>
 						                    <c:when test="${num == currentPage}">
-						                        <!-- 현재 페이지 -->
 						                        <li class="active">
 						                            <span class="inline-flex items-center justify-center bg-custom-500 border border-custom-500 text-white h-8 px-3 rounded">
 						                                ${num}
@@ -146,10 +145,9 @@
 						                        </li>
 						                    </c:when>
 						                    <c:otherwise>
-						                        <!-- 다른 페이지 -->
 						                        <li>
 						                            <a class="inline-flex items-center justify-center bg-white border border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 h-8 px-3 rounded"
-						                               href="?currentPage=${num}&pageSize=${pageSize}">
+						                               href="?currentPage=${num}&pageSize=6">
 						                                ${num}
 						                            </a>
 						                        </li>
@@ -161,7 +159,7 @@
 						        <!-- 다음 페이지 -->
 						        <c:if test="${currentPage < totalPages}">
 						            <a class="inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 focus:bg-custom-50 focus:text-custom-500"
-						               href="?currentPage=${currentPage + 1}&pageSize=${pageSize}">
+						               href="?currentPage=${currentPage + 1}&pageSize=6">
 						                다음
 						            </a>
 						        </c:if>

@@ -63,7 +63,8 @@
 		SELECT
 				service_no serviceNo,
 				service_name serviceName,
-				service_desc serviceDesc
+				service_desc serviceDesc,
+				service_price servicePrice
 		FROM 
 				pet_service
 		WHERE 1=1
