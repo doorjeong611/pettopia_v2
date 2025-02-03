@@ -27,12 +27,12 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler{
 		GrantedAuthority auth = iter.next();
 		String role = auth.getAuthority();
 		
-		log.debug("role"+role);
+		log.debug("role : "+role);
 		
 		if(role.equals("ROLE_ADMIN")) {
-			response.sendRedirect("/common/petTopiaMain");			
+			response.sendRedirect("common/petTopiaMain");			
 		}else {
-			response.sendRedirect("/common/petTopiaMain");		
+			response.sendRedirect("common/petTopiaMain");		
 		}
 		
 		

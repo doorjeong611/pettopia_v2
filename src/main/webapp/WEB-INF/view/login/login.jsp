@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>    
+    
 
 <!DOCTYPE html>
 <html lang="en" class="light scroll-smooth group" data-layout="vertical" data-sidebar="light" data-sidebar-size="lg" data-mode="light" data-topbar="light" data-skin="default" data-navbar="sticky" data-content="fluid" dir="ltr">
@@ -82,7 +85,12 @@
                     <h4 class="mb-1 text-custom-500 dark:text-custom-500">PETTOPIA</h4>
                     
                 </div>
-        
+                <c:if test="${msg != null}">
+	                <div class="mt-8 text-center">
+	                    <h4 class="mb-1 text-red-500">${msg}</h4>
+	                    <c:remove var="msg" scope="session"/>
+	                </div>
+        		</c:if>
                 <form action="${pageContext.request.contextPath}/login" method="post" class="mt-10" id="signInForm">
                     
                     <div class="hidden px-4 py-3 mb-3 text-sm text-green-500 border border-green-200 rounded-md bg-green-50 dark:bg-green-400/20 dark:border-green-500/50" id="successAlert">
@@ -106,7 +114,7 @@
                         <div id="remember-error" class="hidden mt-1 text-sm text-red-500">Please check the "Remember me" before submitting the form.</div>
                     </div>
                     <div class="mt-10">
-                        <button type="submit" class="w-full text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20">로그인</button>
+                        <button type="button" id="loginBtn" class="w-full text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20">로그인</button>
                     </div>
    
                 </form>
@@ -151,6 +159,28 @@ document.getElementById("signInForm").addEventListener("submit", function(event)
         localStorage.removeItem("rememberEmpNo"); // 체크 해제 시 로컬스토리지에서 사번 삭제
     }
 });
+
+$('#loginBtn').click(function() {
+	
+	if($('#username').val() == null || $('#username').val()== ''){
+		alert('사번을 입력하세요.');
+		$('#username').focus();
+		return
+	}
+	if($('#password').val() == null || $('#password').val()== ''){
+		alert('비밀번호를을 입력하세요.');
+		$('#password').focus();
+		return
+	}
+	
+	$('#signInForm').submit();
+	
+	
+});
+
+
+
+
 
 </script>
 
