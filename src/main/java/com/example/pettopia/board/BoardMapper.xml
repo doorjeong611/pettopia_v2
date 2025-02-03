@@ -39,25 +39,25 @@ VALUES
 	(#{boardNo},#{commentWriterNo},#{parentCommentNo, jdbcType=INTEGER},#{commentContent},2, NOW(), NOW());
 </insert>
 <select id="selectBoardComment" parameterType="Integer" resultType="com.example.pettopia.vo.BoardComment">
-SELECT 
-    comment_no AS commentNo, 
-    board_no AS boardNo, 
-    comment_writer_no AS commentWriterNo, 
-    comment_content AS commentContent, 
-    parent_comment_no AS parentCommentNo, 
-    comment_depth AS commentDepth, 
-    create_datetime AS createDatetime, 
-    update_datetime AS updateDatetime
-FROM 
-    board_comment
-WHERE 
-    board_no = #{boardNo}
-ORDER BY 
-    parent_comment_no IS NULL DESC, 
-    parent_comment_no ASC,
-    create_datetime ASC;
+    SELECT 
+        comment_no AS commentNo, 
+        board_no AS boardNo, 
+        comment_writer_no AS commentWriterNo, 
+        comment_content AS commentContent, 
+        parent_comment_no AS parentCommentNo, 
+        comment_depth AS commentDepth, 
+        create_datetime AS createDatetime, 
+        update_datetime AS updateDatetime
+    FROM 
+        board_comment
+    WHERE 
+        board_no = #{boardNo}
+    ORDER BY 
+        parent_comment_no IS NULL DESC,   
+        parent_comment_no ASC,            
+        comment_depth ASC,                
+        create_datetime ASC;              
 </select>
-
 <!-- 게시글 수정 -->
 <update id="updateBoard" parameterType="com.example.pettopia.vo.Board" >
 UPDATE
