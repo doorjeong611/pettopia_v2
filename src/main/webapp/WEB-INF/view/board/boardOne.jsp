@@ -126,31 +126,32 @@
    	.commentMainBox {width: 70%; height: auto; margin: 3% auto;}
 	.commentBox, .replyBox {
     width: 100%;
-    height: auto; /* 두 박스가 자동 높이로 맞춰지도록 */
-    margin: 0 auto; /* 중앙 정렬 */
+    height: auto;
+    margin: 0 auto;
     padding: 1%;
 }
 
-.commentBox textarea, .replyBox textarea {
-    height: 80px; /* 높이를 동일하게 설정 */
-    resize: none; /* 텍스트 영역 크기 조정 불가 */
-}
+	.commentBox textarea, .replyBox textarea {
+	    height: 80px; 
+	    resize: none; 
+	}
 	.commentBox button {float: right; margin-right: 2%; margin-top: 1%;}
 	.commentBox .btn {float: right; margin-right: 2%; margin-top: 1%;}
 	.lineBox {width: 100%; border: 1px solid #f1f5f9; margin: 0 auto;}
 	
 	.replyBox {
-	 width: 100%;
-    height: auto; /* 두 박스가 자동 높이로 맞춰지도록 */
-    margin: 0 auto; /* 중앙 정렬 */}
+	   width: 100%;
+	   height: auto;
+	   margin: 0 auto;
+	   }
 	.commentMainBox .replyBox {padding: 3%; width: 100%; height: 100%; margin: 0 auto;}
 	.replyBox button {float: right; margin-right: 2%; margin-top: 1%;}
 	.replyBox .btn {float: right; margin-right: 2%; margin-top: 1%;}
 	.replyBox textarea {
 		height: 80px;
 		text-align: left;
-        resize: none;
-     }
+	       resize: none;
+	    }
 </style>
 
 <body class="text-base bg-body-bg text-body font-public dark:text-zink-100 dark:bg-zink-800 group-data-[skin=bordered]:bg-body-bordered group-data-[skin=bordered]:dark:bg-zink-700">
@@ -255,7 +256,7 @@
 						            <div class="lineBox"></div>
 						            <div class="replyBox">
 						                <textarea class="form-input" name="commentContent" readonly>${c.commentContent}</textarea>
-						                <a class="btn replyBtn" href="javascript:void(0);" data-comment-id="${c.commentNo}">답글 작성</a>
+						               <a class="btn replyBtn" href="javascript:void(0);" data-comment-id="${c.commentNo}" data-board-no="${boardNo}">답글 작성</a>
 						            </div>
 						        </div>
 						    </c:if>
@@ -291,7 +292,7 @@
         <!-- End Page-content -->
     </div>
     <c:import url="/WEB-INF/view/inc/customizerButton.jsp"></c:import>
-    <script src='${pageContext.request.contextPath}/assets/libs/choices.js/public/assets/scripts/choices.min.js'></script>
+    <script src="${pageContext.request.contextPath}/assets/libs/choices.js/public/assets/scripts/choices.min.js"></script>
     <script src="${pageContext.request.contextPath}/assets/libs/@popperjs/core/umd/popper.min.js"></script>
     <script src="${pageContext.request.contextPath}/assets/libs/tippy.js/tippy-bundle.umd.min.js"></script>
     <script src="${pageContext.request.contextPath}/assets/libs/simplebar/simplebar.min.js"></script>
@@ -303,60 +304,67 @@
     <script src="${pageContext.request.contextPath}/assets/libs/apexcharts/apexcharts.min.js"></script>
     <script src="${pageContext.request.contextPath}/assets/js/pages/dashboards-ecommerce.init.js"></script>
     <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
-     <script>
-     document.addEventListener("DOMContentLoaded", function() {
-    	    const replyButtons = document.querySelectorAll('.replyBtn');
-    	    
-    	    replyButtons.forEach(button => {
-    	        button.addEventListener('click', function() {
-    	            const commentId = button.getAttribute('data-comment-id');
-    	            
-    	            // 이미 답글 폼이 존재하는지 확인
-    	            const existingForm = button.parentNode.querySelector('.replyForm');
-    	            
-    	            if (existingForm) {
-    	                // 이미 답글 폼이 있다면, 다시 만들지 않고 그냥 보여줍니다.
-    	                existingForm.style.display = 'block';
-    	            } else {
-    	                // 새로운 답글 폼을 생성하여 해당 댓글 아래에 추가
-    	                const newReplyForm = document.createElement('div');
-    	                newReplyForm.classList.add('commentMainBox', 'replyForm');
-    	                newReplyForm.innerHTML = `
-    	                    <div class="commentBox">
-    	                        <form action="${pageContext.request.contextPath}/board/boardCommentDepth" method="post" id="replyForm_${commentId}">
-    	                            <input type="hidden" name="boardNo" value="${boardNo}">
-    	                            <input type="hidden" name="parentCommentNo" value="${c.commentNo}">
-    	                            <textarea class="form-input" name="commentContent" placeholder="답글을 작성하세요" required></textarea>
-    	                            <button type="submit">대댓글 작성</button>
-    	                        </form>
-    	                    </div>
-    	                `;
-    	                
-    	                // 버튼 클릭한 댓글 아래에 폼 추가
-    	                button.parentNode.parentNode.appendChild(newReplyForm);
-    	                
-    	                // 답글 작성 폼을 추가한 후, 버튼은 숨김 처리
-    	                button.style.display = 'none';
-    	            }
-    	        });
-    	    });
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const replyButtons = document.querySelectorAll('.replyBtn');
+        
+        replyButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                // 부모 댓글 번호 가져오기
+                const parentCommentNo = button.getAttribute('data-comment-id');
+                const boardNo = button.getAttribute('data-board-no');  // board_no 가져오기
 
-    	    // 유효성 검사: 폼 제출 전에 답글 내용이 비어있는지 체크
-    	    const replyForms = document.querySelectorAll('[id^="replyForm_"]');
-    	    
-    	    replyForms.forEach(form => {
-    	        form.addEventListener('submit', function(event) {
-    	            const textarea = form.querySelector('textarea');
-    	            
-    	            // 텍스트 영역이 비어 있으면 제출을 막고 경고 메시지 표시
-    	            if (!textarea.value.trim()) {
-    	                event.preventDefault();
-    	                alert('답글 내용을 입력해주세요!');
-    	            }
-    	        });
-    	    });
-    	});
-     </script>
+                // 이미 열린 답글 폼을 모두 닫기
+                const allReplyForms = document.querySelectorAll('.replyForm');
+                allReplyForms.forEach(form => {
+                    form.style.display = 'none'; // 다른 폼들은 숨김 처리
+                });
+
+                // 새 답글 폼이 존재하는지 확인
+                const existingForm = button.parentNode.querySelector('.replyForm');
+
+                if (existingForm) {
+                    // 이미 답글 폼이 있으면 그 폼만 표시
+                    existingForm.style.display = 'block';
+                } else {
+                    // 새로운 답글 폼을 생성하여 해당 댓글 아래에 추가
+                    const newReplyForm = document.createElement('div');
+                    newReplyForm.classList.add('commentMainBox', 'replyForm');
+                    newReplyForm.innerHTML = `
+                        <div class="commentBox">
+                            <form action="${pageContext.request.contextPath}/board/boardCommentDepth" method="post" id="replyForm_${parentCommentNo}">
+                                <input type="hidden" name="boardNo" value="${boardNo}">
+                                <input type="hidden" name="parentCommentNo" value="${parentCommentNo}"> <!-- 부모 댓글 번호 -->
+                                <textarea class="form-input" name="commentContent" placeholder="답글을 작성하세요" required></textarea>
+                                <button type="submit">대댓글 작성</button>
+                            </form>
+                        </div>
+                    `;
+                    
+                    // 버튼 클릭한 댓글 아래에 폼 추가
+                    button.parentNode.parentNode.appendChild(newReplyForm);
+                }
+            });
+        });
+
+        // 유효성 검사: 폼 제출 전에 답글 내용이 비어있는지 체크
+        const replyForms = document.querySelectorAll('[id^="replyForm_"]');
+        
+        replyForms.forEach(form => {
+            form.addEventListener('submit', function(event) {
+                const textarea = form.querySelector('textarea');
+                
+                // 텍스트 영역이 비어 있으면 제출을 막고 경고 메시지 표시
+                if (!textarea.value.trim()) {
+                    event.preventDefault();
+                    alert('답글 내용을 입력해주세요!');
+                }
+            });
+        });
+    });
+
+</script>
+
 
 </body>
 </html>

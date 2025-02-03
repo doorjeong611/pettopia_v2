@@ -13,7 +13,7 @@ import com.example.pettopia.vo.RoomImg;
 
 @Mapper
 public interface BoardMapper {
-	
+
 // 대댓글 작성
 	int insertComment(BoardComment boardComment);
 // 댓글 작성

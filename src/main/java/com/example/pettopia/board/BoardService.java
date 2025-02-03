@@ -27,16 +27,18 @@ import lombok.extern.slf4j.Slf4j;
 public class BoardService {
 	@Autowired BoardMapper boardMapper;
 	@Autowired CommentMapper commentMapper;
-	
-	
-	// 댓글 작성
-	public int addComment(BoardComment boardComment) {
-		return boardMapper.insertComment(boardComment);
-	}
-	// 대댓글 작성
-	public int addCommentDepth(BoardComment boardComment) {
-		return boardMapper.insertCommentDepth(boardComment);
-	}
+	   // 댓글 작성
+    public int addComment(BoardComment boardComment) {
+        return boardMapper.insertComment(boardComment);
+    }
+
+    // 대댓글 작성
+    public int addCommentDepth(BoardComment boardComment) {
+
+        return boardMapper.insertCommentDepth(boardComment);
+    }
+
+
 	// 댓글 셀렉트
 	List<Map<String,Object>> getSelectBoardComment(Integer boardNo){
 		return boardMapper.selectBoardComment(boardNo);
