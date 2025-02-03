@@ -9,6 +9,10 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+
+import com.example.pettopia.handler.LoginFailureHandler;
+import com.example.pettopia.handler.LoginSuccessHandler;
 
 import lombok.extern.slf4j.Slf4j;
 @Slf4j
@@ -30,7 +34,8 @@ public class SecurityConfig {
 			            .usernameParameter("empNo")
 			            .passwordParameter("empPw")
 			            .loginProcessingUrl("/login")
-			            .defaultSuccessUrl("/common/petTopiaMain", true)
+			            .successHandler(loginSuccessHandler())
+			            .failureHandler(loginFailureHandler())
 			            .permitAll()
 			            );
         
@@ -65,5 +70,19 @@ public class SecurityConfig {
 	public BCryptPasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
+	
+	
+	@Bean
+	public AuthenticationFailureHandler loginFailureHandler() {
+		return new LoginFailureHandler();
+	}
+	
+	@Bean
+	public LoginSuccessHandler loginSuccessHandler() {
+		return new LoginSuccessHandler();
+	}
+	
+	
+	
 
 }
