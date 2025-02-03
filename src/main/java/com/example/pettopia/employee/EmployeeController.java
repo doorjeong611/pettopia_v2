@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.pettopia.dto.EmpUserDetails;
 import com.example.pettopia.util.TeamColor;
@@ -183,7 +184,7 @@ public class EmployeeController {
 	
 	// 임시 비밀번호 발급 : (비밀번호 찾기)
 	@PostMapping("/sendTempPassword")
-	public String sendTempPassword(@RequestParam String empNo, @RequestParam String empEmail) {
+	public String sendTempPassword(@RequestParam String empNo, @RequestParam String empEmail, RedirectAttributes redirectAttributes , Model model) {
 		log.debug(TeamColor.KMJ+" EmployeeController : POST sendTempPassword()" + TeamColor.RESET);
 		
 		// 입력된 사번과 이메일이 db 정보와 일치여부 확인
@@ -220,7 +221,9 @@ public class EmployeeController {
 				msg = "임시 비밀번호 발급 실패! 인사팀으로 연락주세요";
 				log.debug(TeamColor.KMJ + "msg : " + msg);
 				
-				return "redirect:/loginForm?msg="+msg;
+				redirectAttributes.addFlashAttribute("msg", msg);
+				
+				return "redirect:/sendTempPassword";
 			}
 			
 			// update 성공
@@ -235,12 +238,17 @@ public class EmployeeController {
 				msg = "임시 비밀번호 발급 실패! 인사팀으로 연락주세요";
 				log.debug(TeamColor.KMJ + "msg : " + msg);
 				
-				return "redirect:/loginForm?msg="+msg;
+				redirectAttributes.addFlashAttribute("msg", msg);
+				
+				return "redirect:/sendTempPassword";
 			}
 			
 			// 메일 전송 성공시
-			log.debug(TeamColor.KMJ + "msg : " + msg);
-			return "redirect:/loginForm";
+			String tempmsg = "임시 비밀번호 발급 성공! 메일을 확인해주세요";
+			log.debug(TeamColor.KMJ + "tempmsg : " + tempmsg);
+			model.addAttribute("tempmsg", tempmsg);
+			
+			return "login/login";
 			
 		}
 		
@@ -248,7 +256,9 @@ public class EmployeeController {
 		msg = "임시 비밀번호 발급 실패! 인사팀으로 연락주세요";
 		log.debug(TeamColor.KMJ + "msg : " + msg);
 		
-		return "redirect:/loginForm?msg="+msg;
+		redirectAttributes.addFlashAttribute("msg", msg);
+		
+		return "redirect:/sendTempPassword";
 	}
 	
 	

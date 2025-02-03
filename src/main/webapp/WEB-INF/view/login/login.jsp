@@ -30,9 +30,18 @@
 
   <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tailwind2.css">
 </head>
+<script type="text/javascript">
+$(document).ready(function() {
+    var message = "${tempmsg}";
+    console.log('msg : '+message);
+    if (message) {
+        alert(message);
+    }
+});
+</script>
 
 <body class="flex items-center justify-center min-h-screen py-16 lg:py-10 bg-slate-50 dark:bg-zink-800 dark:text-zink-100 font-public">
-
+	
     <div class="relative">
         <div class="absolute hidden opacity-50 ltr:-left-16 rtl:-right-16 -top-10 md:block">
             <svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 125 316" width="125" height="316">
@@ -87,8 +96,8 @@
                 </div>
                 <c:if test="${msg != null}">
 	                <div class="mt-8 text-center">
-	                    <h4 class="mb-1 text-red-500">${msg}</h4>
-	                    <c:remove var="msg" scope="session"/>
+	                    <h4 class="mb-1 text-red-500">${Loginmsg}</h4>
+	                    <c:remove var="Loginmsg" scope="session"/>
 	                </div>
         		</c:if>
                 <form action="${pageContext.request.contextPath}/login" method="post" class="mt-10" id="signInForm">
