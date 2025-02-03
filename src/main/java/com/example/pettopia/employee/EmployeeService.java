@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.pettopia.employeefile.EmployeeFileMapper;
 import com.example.pettopia.util.TeamColor;
@@ -351,7 +352,7 @@ public class EmployeeService {
 	
 	
 	// sendTempPassword : 임시비밀번호 메일 전송
-	public boolean sendMailTempPassword(Employee empInfo) {
+	public boolean sendMailTempPassword(Employee empInfo ) {
 		log.debug(TeamColor.KMJ + "EmployeeService - sendMailTempPassword() " );
 		
 		String empNo = empInfo.getEmpNo();

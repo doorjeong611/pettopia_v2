@@ -82,6 +82,7 @@
                     <h4 class="mb-1 text-custom-500 dark:text-custom-500">PETTOPIA</h4>
                     
                 </div>
+
         
                 <form action="${pageContext.request.contextPath}/sendTempPassword" method="post" class="mt-10" id="sendTempPwForm">
                     
@@ -106,6 +107,18 @@
         </div>
     </div>
 
+<!-- loading overlay -->
+ 		<div id="loading-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 9999; align-items: center; justify-content: center;">
+		  	<div class="inline-flex rounded-full opacity-75 size-6 animate-bounce bg-slate-400 " style="animation-delay: 0s; margin-right: 10px;"></div>
+		  	<div class="inline-flex rounded-full opacity-75 size-6 animate-bounce bg-slate-400 " style="animation-delay: 1.5s; margin-right: 10px;"></div> 
+		  	<div class="inline-flex rounded-full opacity-75 size-6 animate-bounce bg-slate-400 " style="animation-delay: 2s; margin-right: 10px;"></div> 
+		</div>
+
+
+
+
+
+
     <script src='${pageContext.request.contextPath}/assets/libs/choices.js/public/assets/scripts/choices.min.js'></script>
     <script src="${pageContext.request.contextPath}/assets/libs/@popperjs/core/umd/popper.min.js"></script>
     <script src="${pageContext.request.contextPath}/assets/libs/tippy.js/tippy-bundle.umd.min.js"></script>
@@ -116,6 +129,17 @@
    <!--  <script src="${pageContext.request.contextPath}/assets/js/pages/auth-login.init.js"></script> --> <!-- 아이디, 비밀번호 유효성 검사 js -->
 
 <script>
+window.onload = function() {
+    var message = "${msg}";
+    if (message) {
+        alert(message);
+    }
+}
+
+
+
+
+
 $('#sendTempPwBtn').click(function(event) {
 	if($('#username').val() == ''){
 		alert('사번을 입력해주세요.');
@@ -139,6 +163,12 @@ $('#sendTempPwBtn').click(function(event) {
 		event.preventDefault(); /*  폼 제출 막기 */
     	return;
 	}	
+	
+	
+	console.log('overlay 시작');
+    $('#loading-overlay').css('display', 'flex');   /* 로딩 화면 표시 */
+	
+	
 	
 	 $('#sendTempPwForm').submit()    /* 모두 통과시 제출 */ 
 	
