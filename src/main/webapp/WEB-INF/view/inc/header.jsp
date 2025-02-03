@@ -59,6 +59,7 @@ $(document).ready(function () {
                 } else {
                     $("#notReadYetCount").hide(); // 0이면 숨김
                     $("#notReadYetCnt").hide(); // 0이면 숨김
+                    $('#alertBlue').addClass('hidden');
                 }
             },
             error: function (error) {
@@ -68,7 +69,8 @@ $(document).ready(function () {
     }
 
     updateNotReadYetCount(); // 페이지 로드 시 실행
-    setInterval(updateNotReadYetCount, 1000 * 60 * 60); // 1시간마다 최신 데이터 가져오기
+    setInterval(updateNotReadYetCount, 1000 * 60 * 60); // 1시간마다 최신 데이터 가져오기 
+    /* setInterval(updateNotReadYetCount, 1000 * 30); // 30초마다 최신 데이터 가져오기 */
 	
 	/* 안 읽은 메세지 내역 */
 	function updateNotReadMessageList() {
@@ -149,7 +151,8 @@ $(document).ready(function () {
 
 	// 페이지 로드 시 한 번 호출하고, 주기적으로 갱신
 	updateNotReadMessageList();
-	setInterval(updateNotReadMessageList, 1000 * 60 * 60); // 1시간마다 최신 데이터 가져오기
+	setInterval(updateNotReadMessageList, 1000 * 60 * 60); // 1시간마다 최신 데이터 가져오기 
+	/* setInterval(updateNotReadMessageList, 1000 * 30); // 30초마다 최신 데이터 가져오기 */
 	
 	
 	
@@ -200,14 +203,18 @@ $(document).ready(function () {
                         <div class="relative flex items-center dropdown h-header">
                             <button type="button" class="inline-flex justify-center relative items-center p-0 text-topbar-item transition-all w-[37.5px] h-[37.5px] duration-200 ease-linear bg-topbar rounded-md dropdown-toggle btn hover:bg-topbar-item-bg-hover hover:text-topbar-item-hover group-data-[topbar=dark]:bg-topbar-dark group-data-[topbar=dark]:hover:bg-topbar-item-bg-hover-dark group-data-[topbar=dark]:hover:text-topbar-item-hover-dark group-data-[topbar=brand]:bg-topbar-brand group-data-[topbar=brand]:hover:bg-topbar-item-bg-hover-brand group-data-[topbar=brand]:hover:text-topbar-item-hover-brand group-data-[topbar=dark]:dark:bg-zink-700 group-data-[topbar=dark]:dark:hover:bg-zink-600 group-data-[topbar=brand]:text-topbar-item-brand group-data-[topbar=dark]:dark:hover:text-zink-50 group-data-[topbar=dark]:dark:text-zink-200 group-data-[topbar=dark]:text-topbar-item-dark" id="notificationDropdown" data-bs-toggle="dropdown">
                                 <i data-lucide="mail" class="inline-block w-5 h-5 stroke-1 fill-slate-100 group-data-[topbar=dark]:fill-topbar-item-bg-hover-dark group-data-[topbar=brand]:fill-topbar-item-bg-hover-brand"></i>
-                                <span class="absolute top-0 right-0 flex w-1.5 h-1.5">
+                                
+                                <span class="absolute top-0 right-0 flex w-1.5 h-1.5" id="alertBlue">
                                     <span class="absolute inline-flex w-full h-full rounded-full opacity-75 animate-ping bg-sky-400"></span>
                                     <span class="relative inline-flex w-1.5 h-1.5 rounded-full bg-sky-500"></span>
                                 </span>
+                                
                             </button>
                             <div class="absolute z-50 hidden ltr:text-left rtl:text-right bg-white rounded-md shadow-md !top-4 dropdown-menu min-w-[20rem] lg:min-w-[26rem] dark:bg-zink-600" aria-labelledby="notificationDropdown">
                                 <div class="p-4">
-                                    <h6 class="mb-4 text-16">Message <span id="notReadYetCount" class="inline-flex items-center justify-center w-5 h-5 ml-1 text-[11px] font-medium border rounded-full text-white bg-orange-500 border-orange-500"></span></h6>
+                                    <h6 class="mb-4 text-16">Message 
+                                    	<span id="notReadYetCount" class="inline-flex items-center justify-center w-5 h-5 ml-1 text-[11px] font-medium border rounded-full text-white bg-orange-500 border-orange-500"></span>
+                                    </h6>
                                     <ul class="flex flex-wrap w-full p-1 mb-2 text-sm font-medium text-center rounded-md filter-btns text-slate-500 bg-slate-100 nav-tabs dark:bg-zink-500 dark:text-zink-200" data-filter-target="notification-list">
                                         <li class="grow">
                                             <a href="${pageContext.request.contextPath}/message/messageList"  data-filter="all" class="inline-block nav-link px-1.5 w-full py-1 text-xs transition-all duration-300 ease-linear rounded-md text-slate-500 border border-transparent [&.active]:bg-white [&.active]:text-custom-500 hover:text-custom-500 active:text-custom-500 dark:text-zink-200 dark:hover:text-custom-500 dark:[&.active]:bg-zink-600 -mb-[1px] active">View All</a>
