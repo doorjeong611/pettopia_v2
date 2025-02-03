@@ -30,10 +30,15 @@ public class NotificationRest {
 
 		log.debug(TeamColor.KMJ+" NotificationRest : GET getNotReadYet()" + TeamColor.RESET);
 		
-		// 로그인 한 사원의 사번
-		EmpUserDetails empUserDetails = (EmpUserDetails) auth.getPrincipal();
-		String empNo = empUserDetails.getUsername();
 		
+		String empNo ="";
+		
+		if(auth != null) {
+			// 로그인 한 사원의 사번
+			EmpUserDetails empUserDetails = (EmpUserDetails) auth.getPrincipal();
+			empNo = empUserDetails.getUsername();
+		}
+
 		Map<String, Object> notReadYet = employeeMapper.selectNotReadYet(empNo);
 		
 		String notReadYetCount =  String.valueOf(notReadYet.get("notReadYet"));
