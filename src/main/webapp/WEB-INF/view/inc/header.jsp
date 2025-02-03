@@ -46,7 +46,7 @@ $(document).ready(function () {
 	/* 안 읽은 쪽지 수 */
     function updateNotReadYetCount() {
         $.ajax({
-            url: '/PetTopia/rest/notReadYet', 
+            url: '/pettopia/rest/notReadYet', 
             method: 'GET',
             dataType: 'json',
             success: function (response) {
@@ -75,7 +75,7 @@ $(document).ready(function () {
 	/* 안 읽은 메세지 내역 */
 	function updateNotReadMessageList() {
 	    $.ajax({
-	        url: '/PetTopia/rest/messageNotiList', 
+	        url: '/pettopia/rest/messageNotiList', 
 	        method: 'GET',
 	        dataType: 'json',
 	        success: function (response) {
