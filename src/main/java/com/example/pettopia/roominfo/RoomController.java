@@ -55,11 +55,27 @@ public class RoomController {
 		
 		// 객실 예약 리스트
 		@GetMapping("/room/getRoomRsvList")
-		public String selectRoomRsvList(Model model) {
+		public String selectRoomRsvList(Model model, 
+										@RequestParam(defaultValue = "1") int currentPage, // 현재 페이지 번호
+						                @RequestParam(defaultValue = "10") int pageSize, // 페이지 크기
+						                @RequestParam(required = false) String searchWord) {
 			// 전체 객실 리스트 가져오기
-			List<Map<String, Object>> roomRsvList = roomService.selectRoomRsvList(); 
+			List<Map<String, Object>> roomRsvList = roomService.selectRoomRsvList(searchWord, pageSize, currentPage); 
+			 // 총 객실 수 및 페이지 계산
+			int totalRecords = roomService.countRoomRsvList(searchWord); // 총 고객 수 조회
+	        int totalPages = (int) Math.ceil((double) totalRecords / pageSize);
+
+		    // 페이지네이션 적용
+		    int startIdx = (currentPage - 1) * pageSize;
+		    int endIdx = Math.min(startIdx + pageSize, totalRecords);
+		    
 		    log.debug(TeamColor.WJ + "roomRsvList ====> " + roomRsvList + TeamColor.RESET);
+		    
 		    model.addAttribute("roomRsvList", roomRsvList); 
+		    model.addAttribute("currentPage", currentPage);
+		    model.addAttribute("totalPages", totalPages);
+		    model.addAttribute("pageSize", pageSize); // 페이지 크기
+		    model.addAttribute("totalRecords", totalRecords);
 			return "room/roomRsvList";
 		}
 		
