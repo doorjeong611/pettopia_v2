@@ -60,8 +60,15 @@
 			customer c
 	ON
 			c.customer_no = r.customer_no
+	WHERE
+			1=1
+	LIMIT #{pageSize} OFFSET #{offset}
 			
 	</select>
+	<!-- 총 예약 내역 갯수 조회 -->
+    <select id="countRoomRsvList" resultType="int">
+        SELECT COUNT(*) FROM room_rsv WHERE 1=1
+    </select>
 
   <!-- 객실 삭제 -->
   	<!-- 1. 예약 객실부터 삭제 -->

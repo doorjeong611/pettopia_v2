@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -39,7 +40,22 @@ public class RoomService {
 	    }
 	}
 
-	
+	// 객실 예약 리스트 조회 (페이징)
+    public List<Map<String, Object>> getRoomRsvList(int pageSize, int currentPage, String searchWord) {
+        int offset = (currentPage - 1) * pageSize;
+        Map<String, Object> params = new HashMap<>();
+        params.put("pageSize", pageSize);
+        params.put("offset", offset);
+        params.put("searchWord", searchWord);
+        return roomMapper.selectRoomRsvList(params);
+    }
+
+    // 총 예약 개수 조회
+    public int countRoomRsvList(String searchWord) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("searchWord", searchWord);
+        return roomMapper.countRoomRsvList(params);
+    }
 	
 	// 룸 타입으로 필터링된 목록 조회
     public List<Map<String, Object>> getRoomsByType(String roomType) {
@@ -52,8 +68,14 @@ public class RoomService {
     }
 	
 	// 객실 예약 전체 조회
-    public List<Map<String, Object>> selectRoomRsvList() {
-        return roomMapper.selectRoomRsvList();
+    public List<Map<String, Object>> selectRoomRsvList(String searchWord, int pageSize, int currentPage) {
+    	int offset = (currentPage - 1) * pageSize; // 시작 위치 계산
+        Map<String, Object> params = new HashMap<>();
+        params.put("searchWord", searchWord);
+        params.put("pageSize", pageSize);
+        params.put("offset", offset);
+    	
+    	return roomMapper.selectRoomRsvList(params);
     }
 	
 	// 객실 페이징

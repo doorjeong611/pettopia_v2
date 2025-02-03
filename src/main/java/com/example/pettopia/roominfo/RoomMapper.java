@@ -18,7 +18,7 @@ public interface RoomMapper {
     int countByRoomName(String roomName);
 
 	// 객실 예약 전체 조회
-	List<Map<String, Object>> selectRoomRsvList();
+	List<Map<String, Object>> selectRoomRsvList(Map<String, Object> params);
 	
 	// 객실 리스트 전체 조회
 	List<RoomInfo> selectRoom();
@@ -57,7 +57,9 @@ public interface RoomMapper {
 
 	// 객실 예약 추가
 	int insertRoomRsv(RoomRsv roomRsv);
-
+	
+	// 객실 예약 리스트 갯수 카운트
+	int countRoomRsvList(Map<String, Object> params);
 	
 
 }
