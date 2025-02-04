@@ -44,7 +44,7 @@
                 <!-- Main content -->
                <div class="card">
                     <div class="card-body">
-                        <form id="formAddRoom" method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/room/getAddRoomRsv">
+                        <form id="formAddRoom" method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/room/addRoomRsv">
                             <div>
                                 <div class="mb-4" style="width: 15%">
                                     <label class="inline-block mb-2 text-base font-medium"> 룸 선택 <span class="text-red-500">*</span></label>
@@ -83,6 +83,8 @@
 	                            <div class="mb-4">
                                     <label class="inline-block mb-2 text-base font-medium"> 예약자 <span class="text-red-500">*</span></label>
                                     <input type="text" id="RsvCustomerName" name="RsvCustomerName" class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="예약자 성명을 입력하세요.">
+                                	<input type="hidden" name="customerNo" value="${customerNo}">
+                                	
                                 </div>
                                 <div class="mb-4">
                                     <label class="inline-block mb-2 text-base font-medium">예약자 H.P<span class="text-red-500">*</span></label>
@@ -161,6 +163,24 @@
                 });
         }
     }
+    
+    document.getElementById("RsvCustomerName").addEventListener("change", function() {
+        let customerName = this.value;
+        fetch('/customer/getCustomerNo?customerName=' + customerName)
+        
+        .then(response => response.json()) // 응답이 JSON 형식으로 올 것으로 예상
+        .then(data => {
+          if (data.success) {
+            console.log('고객 번호:', data.customerNo);
+          } else {
+            console.error('오류:', data.message);
+          }
+        })
+        .catch(error => {
+          console.error('서버 오류:', error); // 응답이 HTML이라면 여기서 오류가 발생할 수 있음
+        });
+    });
+
 
 </script>
 

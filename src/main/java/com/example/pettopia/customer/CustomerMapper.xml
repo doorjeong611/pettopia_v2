@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.pettopia.customer.CustomerMapper">
+<select id="getCustomerNoByName" resultType="int">
+    SELECT customer_no FROM customer WHERE customer_name = #{customerName} LIMIT 1
+</select>
+
 	<!-- 고객 조회 -->
 	<select id="selectCustomerList" resultType="com.example.pettopia.vo.Customer" parameterType="map">
 	    SELECT 

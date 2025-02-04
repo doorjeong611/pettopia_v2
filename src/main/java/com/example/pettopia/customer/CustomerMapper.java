@@ -14,5 +14,8 @@ public interface CustomerMapper {
 
     // 총 고객 수 조회
     int countCustomerList(Map<String, Object> params);
+    
+    //고객 찾기
+    Integer getCustomerNoByName(String customerName);
 
 }
