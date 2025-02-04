@@ -47,6 +47,10 @@ public class BoardController {
 	    // BoardComment 객체에 commentWriterNo 설정
 	    boardComment.setCommentWriterNo(empNo);
 
+	    // 일반 댓글 작성 시에는 parentCommentNo를 설정하지 않음
+	    boardComment.setParentCommentNo(null);  // 일반 댓글이라면 부모 댓글 번호가 없으므로 null 설정
+	    boardComment.setCommentDepth("1");  // 일반 댓글이라면 깊이는 1로 설정
+
 	    // 댓글 작성 처리
 	    int result = boardService.addComment(boardComment);
 
@@ -57,23 +61,31 @@ public class BoardController {
 	        return "redirect:/board/getBoardOne?boardNo=" + boardNo + "&error=true";
 	    }
 	}
-
-	// 대댓글 작성
 	@PostMapping("/board/boardCommentDepth")
 	public String addCommentDepth(BoardComment boardComment,
 	                               Authentication auth,
 	                               @RequestParam("boardNo") Integer boardNo,
-	                               @RequestParam("parentCommentNo") Integer parentCommentNo) {
+	                               @RequestParam(value = "parentCommentNo", required = false) Integer parentCommentNo) {
 
 	    // 로그인 세션에서 사용자 정보 가져오기
 	    EmpUserDetails empUserDetails = (EmpUserDetails) auth.getPrincipal();
 	    String empNo = empUserDetails.getUsername();
-	    
+
 	    // BoardComment 객체에 commentWriterNo 설정
 	    boardComment.setCommentWriterNo(empNo);
 	    boardComment.setBoardNo(boardNo);
-	    boardComment.setParentCommentNo(parentCommentNo); 
-	    boardComment.setCommentDepth(String.valueOf(2));  
+
+	    // parentCommentNo가 null이면 일반 댓글, 아니면 대댓글
+	    if (parentCommentNo != null) {
+	        // 대댓글인 경우: parentCommentNo 설정하고, commentDepth는 2로 설정
+	        boardComment.setParentCommentNo(parentCommentNo);  // 부모 댓글 번호 (부모의 commentNo를 parentCommentNo로 설정)
+	        boardComment.setCommentDepth("2");  // 대댓글이면 깊이는 2
+
+	    } else {
+	        // 일반 댓글인 경우: parentCommentNo는 null, commentDepth는 1로 설정
+	        boardComment.setParentCommentNo(null); // 일반 댓글은 parentCommentNo가 null
+	        boardComment.setCommentDepth("1");  // 일반 댓글 깊이는 1
+	    }
 
 	    // 대댓글 작성 처리
 	    int result = boardService.addCommentDepth(boardComment);
@@ -86,7 +98,6 @@ public class BoardController {
 	    }
 	}
 
-	
 	@GetMapping("/board/modifyBoard")
 	public String modifyBoard(Authentication auth,
 							  Model model,

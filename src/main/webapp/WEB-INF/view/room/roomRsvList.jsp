@@ -119,14 +119,14 @@
                            <!-- 페이징 시작 -->
 						<div class="flex justify-end mt-4">
 						    <div class="flex gap-2 pagination-wrap">
-						        <!-- 이전 페이지 -->
-						        <c:if test="${currentPage > 1}">
+						        <!-- 이전 그룹 버튼 -->
+						        <c:if test="${currentPage > 10}">
 						            <a class="inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 focus:bg-custom-50 focus:text-custom-500"
-						               href="?currentPage=${currentPage - 1}&pageSize=${pageSize}">
+						               href="?currentPage=${currentPage - 10}&pageSize=${pageSize}">
 						                이전
 						            </a>
 						        </c:if>
-						        <c:if test="${currentPage == 1}">
+						        <c:if test="${currentPage <= 10}">
 						            <a class="inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 disabled:cursor-auto disabled:text-slate-400">
 						                이전
 						            </a>
@@ -134,37 +134,37 @@
 						
 						        <!-- 페이지 번호 -->
 						        <ul class="flex gap-2 mb-0">
-						            <c:forEach var="num" begin="1" end="${totalPages}">
-						                <c:choose>
-						                    <c:when test="${num == currentPage}">
-						                        <!-- 현재 페이지 -->
-						                        <li class="active">
-						                            <span class="inline-flex items-center justify-center bg-custom-500 border border-custom-500 text-white h-8 px-3 rounded">
-						                                ${num}
-						                            </span>
-						                        </li>
-						                    </c:when>
-						                    <c:otherwise>
-						                        <!-- 다른 페이지 -->
-						                        <li>
-						                            <a class="inline-flex items-center justify-center bg-white border border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 h-8 px-3 rounded"
-						                               href="?currentPage=${num}&pageSize=${pageSize}">
-						                                ${num}
-						                            </a>
-						                        </li>
-						                    </c:otherwise>
-						                </c:choose>
+						            <c:forEach var="num" begin="1" end="${totalPages}" varStatus="status">
+						                <c:if test="${status.index <= 10}">
+						                    <c:choose>
+						                        <c:when test="${num == currentPage}">
+						                            <li class="active">
+						                                <span class="inline-flex items-center justify-center bg-custom-500 border border-custom-500 text-white h-8 px-3 rounded">
+						                                    ${num}
+						                                </span>
+						                            </li>
+						                        </c:when>
+						                        <c:otherwise>
+						                            <li>
+						                                <a class="inline-flex items-center justify-center bg-white border border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 h-8 px-3 rounded"
+						                                   href="?currentPage=${num}&pageSize=${pageSize}">
+						                                    ${num}
+						                                </a>
+						                            </li>
+						                        </c:otherwise>
+						                    </c:choose>
+						                </c:if>
 						            </c:forEach>
 						        </ul>
 						
-						        <!-- 다음 페이지 -->
-						        <c:if test="${currentPage < totalPages}">
+						        <!-- 다음 그룹 버튼 -->
+						        <c:if test="${totalPages > 10}">
 						            <a class="inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 focus:bg-custom-50 focus:text-custom-500"
-						               href="?currentPage=${currentPage + 1}&pageSize=${pageSize}">
+						               href="?currentPage=${currentPage + 10}&pageSize=${pageSize}">
 						                다음
 						            </a>
 						        </c:if>
-						        <c:if test="${currentPage >= totalPages}">
+						        <c:if test="${totalPages <= 10}">
 						            <a class="inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 disabled:cursor-auto disabled:text-slate-400">
 						                다음
 						            </a>
