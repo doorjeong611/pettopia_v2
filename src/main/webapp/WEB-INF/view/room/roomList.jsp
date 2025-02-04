@@ -123,7 +123,7 @@
 						        <!-- 이전 페이지 -->
 						        <c:if test="${currentPage > 1}">
 						            <a class="inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 focus:bg-custom-50 focus:text-custom-500"
-						               href="?currentPage=${currentPage - 1}&pageSize=6">
+						               href="?currentPage=${currentPage - 1}&roomType=${roomType}">
 						                이전
 						            </a>
 						        </c:if>
@@ -147,7 +147,7 @@
 						                    <c:otherwise>
 						                        <li>
 						                            <a class="inline-flex items-center justify-center bg-white border border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 h-8 px-3 rounded"
-						                               href="?currentPage=${num}&pageSize=6">
+						                               href="?currentPage=${num}&roomType=${roomType}">
 						                                ${num}
 						                            </a>
 						                        </li>
@@ -159,7 +159,7 @@
 						        <!-- 다음 페이지 -->
 						        <c:if test="${currentPage < totalPages}">
 						            <a class="inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 focus:bg-custom-50 focus:text-custom-500"
-						               href="?currentPage=${currentPage + 1}&pageSize=6">
+						               href="?currentPage=${currentPage + 1}&roomType=${roomType}">
 						                다음
 						            </a>
 						        </c:if>
