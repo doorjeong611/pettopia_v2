@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 
 <!DOCTYPE html>
 <html lang="en" class="light scroll-smooth group" data-layout="vertical" data-sidebar="light" data-sidebar-size="lg" data-mode="light" data-topbar="light" data-skin="default" data-navbar="sticky" data-content="fluid" dir="ltr">
@@ -49,21 +53,18 @@
                   <div class="card" id="">
                     <div class="card-body">
                         <div class="grid grid-cols-1 gap-5 mb-5 xl:grid-cols-2">
-                            <div>
-                                <div class="relative xl:w-3/6">
-                                    <input type="text" class="ltr:pl-8 rtl:pr-8 search form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="Search for ..." autocomplete="off">
-                                    <i data-lucide="search" class="inline-block size-4 absolute ltr:left-2.5 rtl:right-2.5 top-2.5 text-slate-500 dark:text-zink-200 fill-slate-100 dark:fill-zink-600"></i>
-                                </div>
-                            </div>
+                           	<form action="${pageContext.request.contextPath}/room/getRoomRsvList" method="get" style="justify-content: flex-end;">
+			                    <div class="relative xl:w-3/6">
+			                        <input type="text" name="searchWord" value="${searchWord}" class="ltr:pl-8 rtl:pr-8 search form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="이름 / 제목을 입력하세요.">
+			                         <button type="submit" class="absolute right-0 top-0 h-full px-4 text-slate-500">
+			                        	<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="search" class="lucide lucide-search inline-block size-4 absolute ltr:left-2.5 rtl:right-2.5 top-2.5 text-slate-500 dark:text-zink-200 fill-slate-100 dark:fill-zink-600"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+			                        </button>
+			                    </div>
+			                </form>
                             <div class="ltr:md:text-end rtl:md:text-start"> 
 							    <a href="${pageContext.request.contextPath}/room/getAddRoomRsv" class="mr-1 bg-white text-custom-500 btn border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100">
 							        <i class="align-bottom ri-add-line me-1"></i> 예약 추가
 							    </a>
-							    
-							    <!-- 삭제 버튼 -->
-							    <button type="button" class="text-red-500 bg-white border-red-500 btn hover:text-white hover:bg-red-600 hover:border-red-600 focus:text-white focus:bg-red-600 focus:border-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:border-red-600 active:ring active:ring-red-100" onClick="deleteMultiple()">
-							        <i class="ri-delete-bin-2-line">삭제</i>
-							    </button>
 							</div>
                         </div>
 
@@ -71,9 +72,6 @@
                             <table class="w-full whitespace-nowrap" id="serviceTable">
                                 <thead class="bg-slate-100 dark:bg-zink-600">
                                     <tr>
-                                        <th class="px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500" scope="col" style="width: 50px;">
-                                            <input class="border rounded-sm appearance-none cursor-pointer size-4 bg-slate-100 border-slate-200 dark:bg-zink-600 dark:border-zink-500 checked:bg-custom-500 checked:border-custom-500 dark:checked:bg-custom-500 dark:checked:border-custom-500 checked:disabled:bg-custom-400 checked:disabled:border-custom-400" type="checkbox" id="checkAll" value="option">
-                                        </th>
                                         <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right">No</th>
                                         <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right">룸 번호</th>
                                         <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right">예약자번호</th>
@@ -83,28 +81,35 @@
                                         <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right">체크인 날짜</th>
                                         <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right">체크아웃 날짜</th>
                                         <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right">최초 예약 날짜</th>
-                                        <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right">마지막 수정 날짜</th>
                                     </tr>
                                 </thead>
                                  <tbody>
 		                                <c:forEach var="r" items="${roomRsvList}">
 		                                    <tr class="even:bg-slate-50 hover:bg-slate-50 even:hover:bg-slate-100 dark:even:bg-zink-600/50 dark:hover:bg-zink-600 dark:even:hover:bg-zink-600">
 		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">
-		                                        	<input class="border rounded-sm appearance-none cursor-pointer size-4 bg-slate-100 border-slate-200 dark:bg-zink-600 dark:border-zink-500 checked:bg-custom-500 checked:border-custom-500 dark:checked:bg-custom-500 dark:checked:border-custom-500 checked:disabled:bg-custom-400 checked:disabled:border-custom-400" type="checkbox" id="" value="option"> 
-		                                        </td>
-		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">
 		                                            <a href="#" class="transition-all duration-150 ease-linear text-custom-500 hover:text-custom-600">${r.rsvNo}</a>
 		                                        </td>
 		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${r.roomNo}</td>
 		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${r.customerNo}</td>
 		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${r.customerName}</td>
-		                                        <input type="hidden" id="customerNo" name="customerNo">
-		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${r.pricePerNight}</td>
+		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">
+												    <fmt:formatNumber value="${r.pricePerNight}" type="number" groupingUsed="true"/>
+												</td>
+
 		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${r.rsvStatus}</td>
-		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${r.checkInDatetime}</td>
-		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${r.checkOutDatetime}</td>
-		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${r.createDatetime}</td>
-		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${r.updateDatetime}</td>
+		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">
+												    <c:set var="formattedCheckIn" value="${fn:replace(r.checkInDatetime, 'T', ' ')}"/>
+												    ${formattedCheckIn}
+												</td>
+												<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">
+												    <c:set var="formattedCheckOut" value="${fn:replace(r.checkOutDatetime, 'T', ' ')}"/>
+												    ${formattedCheckOut}
+												</td>
+												<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">
+												    <c:set var="formattedCreateDate" value="${fn:replace(r.createDatetime, 'T', ' ')}"/>
+												    ${formattedCreateDate}
+												</td>
+
 		                                        
 		                                    </tr>
 		                                </c:forEach> 
