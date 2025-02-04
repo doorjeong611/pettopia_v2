@@ -128,7 +128,7 @@
 	                        <div class="boardHeader">
 		                        <div class="inputBox">
 		                        	<div class="categoryBox">
-		                        		<label for="boardCategory">말머리</label>
+		                        		<label for="boardCategory">말머리</label> <span class="text-red-500">*</span>
 			                        		<select id="boardCategory" name="category"  class="form-select border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200">
 												<option value="" ${boardCategory == '' ? 'selected' : ''}>전체</option>
 												<option value="SG" ${boardCategory == 'SG' ? 'selected' : ''}>건의사항</option>
@@ -140,7 +140,7 @@
 											</select>
 								</div>
 			                        <div class="titleBox">
-			                        	<label for="boardTitle">제목</label>
+			                        	<label for="boardTitle">제목</label> <span class="text-red-500">*</span>
 			                        		<input type="text" class="form-input" name="boardTitle" value="${boardMap.boardTitle}">
 		                        	</div>
                         		</div>
@@ -150,11 +150,11 @@
 	                        <!-- boardContent 시작 -->
                         	<div class="boardContent">	
 	                        	<div class="contentBox">
-		                        	<label for="boardContent">내용</label>
+		                        	<label for="boardContent">내용</label> <span class="text-red-500">*</span>
 			                        	<textarea name="boardContent" class="form-input">${boardMap.boardContent}</textarea>
 		                        	<div class="fileBox">
 			                        	<div class="fileContentBox">
-			                        		<label for="boardImg">이미지 첨부</label>
+			                        		<label for="boardImg">이미지 첨부</label> <span class="text-red-500">*</span>
 		                        			<input type="file" name="boardImg" class="form-file">
 			                        	</div>
 			                        

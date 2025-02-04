@@ -340,6 +340,7 @@ public class BoardController {
 		boardService.deleteComment(commentNo);
 		return "redirect:/board/getBoardOne?boardNo=" + boardNo;
 	}
+	
 	@GetMapping("/board/removeFile")
 	public String removeFile(@RequestParam Integer boardNo) {
 		boardService.deleteFile(boardNo);
