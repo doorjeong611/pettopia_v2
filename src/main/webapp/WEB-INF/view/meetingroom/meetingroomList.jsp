@@ -52,6 +52,18 @@
   text-overflow: ellipsis;
 }
 
+@font-face {
+    font-family: 'Cafe24Ssurround';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/Cafe24Ssurround.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.custom-font {
+	font-family: 'Cafe24Ssurround';
+}
+
+
 
 </style>
 
@@ -85,14 +97,18 @@
             <div class="container-fluid group-data-[content=boxed]:max-w-boxed mx-auto">
                 <div class="flex flex-col gap-2 py-4 md:flex-row md:items-center print:hidden">
                     <div class="grow">
-                        <h5 class="text-16">회의실 목록</h5>
+                        <h5 class="text-16 custom-font">회의실 목록</h5>
                     </div>
-                    <div class="ltr:md:text-end rtl:md:text-start"> 
-					    <!-- 서비스 추가 버튼, href 속성으로 addService 페이지로 이동 -->
-					    <a href="${pageContext.request.contextPath}/meetingroom/addMeetingroom" class="mr-1 bg-white text-custom-500 btn border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100">
-					        <i class="align-bottom ri-add-line me-1"></i> 회의실 등록
-					    </a>
-					</div>
+					<ul class="flex items-center gap-2 text-sm font-normal shrink-0">
+					    <li class="relative before:content-['\ea54'] before:font-remix ltr:before:-right-1 rtl:before:-left-1  before:absolute before:text-[18px] before:-top-[3px] ltr:pr-4 rtl:pl-4 before:text-slate-400 dark:text-zink-200">
+					        <a href="#" class="text-slate-400 dark:text-zink-200">회의실 예약</a>
+					    </li>
+					    <li class="text-slate-700 dark:text-zink-100">
+					        회의실 목록
+						</li>
+					</ul>
+                    
+                   
 					
                 </div>
                 <!-- Main content -->
@@ -134,64 +150,15 @@
 							</div>
 	                    </div>
 	                    
+	                   	<!-- 회의실 등록 -->
+	                    <div class="ltr:md:text-end rtl:md:text-start"> 
+						    <!-- 서비스 추가 버튼, href 속성으로 addService 페이지로 이동 -->
+						    <a href="${pageContext.request.contextPath}/meetingroom/addMeetingroom" class="mr-1 bg-white text-custom-500 btn border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100">
+						        <i class="align-bottom ri-add-line me-1"></i> 회의실 등록
+						    </a>
+						</div>  
 	                    
-	                    
-	                    <!-- 페이징 시작 -->
-						<div class="flex justify-end mt-4">
-						    <div class="flex gap-2 pagination-wrap">
-						        <!-- 이전 페이지 -->
-						        <c:if test="${currentPage > 1}">
-						            <a class="inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 focus:bg-custom-50 focus:text-custom-500"
-						               href="?currentPage=${currentPage - 1}&pageSize=${pageSize}">
-						                이전
-						            </a>
-						        </c:if>
-						        <c:if test="${currentPage == 1}">
-						            <a class="inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 disabled:cursor-auto disabled:text-slate-400">
-						                이전
-						            </a>
-						        </c:if>
-						
-						        <!-- 페이지 번호 -->
-						        <ul class="flex gap-2 mb-0">
-						            <c:forEach var="num" begin="1" end="${totalPages}">
-						                <c:choose>
-						                    <c:when test="${num == currentPage}">
-						                        <!-- 현재 페이지 -->
-						                        <li class="active">
-						                            <span class="inline-flex items-center justify-center bg-custom-500 border border-custom-500 text-white h-8 px-3 rounded">
-						                                ${num}
-						                            </span>
-						                        </li>
-						                    </c:when>
-						                    <c:otherwise>
-						                        <!-- 다른 페이지 -->
-						                        <li>
-						                            <a class="inline-flex items-center justify-center bg-white border border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 h-8 px-3 rounded"
-						                               href="?currentPage=${num}&pageSize=${pageSize}">
-						                                ${num}
-						                            </a>
-						                        </li>
-						                    </c:otherwise>
-						                </c:choose>
-						            </c:forEach>
-						        </ul>
-						
-						        <!-- 다음 페이지 -->
-						        <c:if test="${currentPage < totalPages}">
-						            <a class="inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 focus:bg-custom-50 focus:text-custom-500"
-						               href="?currentPage=${currentPage + 1}&pageSize=${pageSize}">
-						                다음
-						            </a>
-						        </c:if>
-						        <c:if test="${currentPage >= totalPages}">
-						            <a class="inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 disabled:cursor-auto disabled:text-slate-400">
-						                다음
-						            </a>
-						        </c:if>
-						    </div>
-						</div>
-						<!-- 페이징 끝 -->
+	                    					
 		            </div>
 		          </div>
                <!-- MAIN END -->

@@ -87,7 +87,7 @@ $(document).ready(function () {
 	            messageList.empty();
 	            
 	            if(response.length == 0){
-	                messageList.append('<div> 모든 메시지를 확인하셨습니다. </div>');
+	                messageList.append('<div class="text-center text-slate-400 p-4"> 모든 메시지를 확인하셨습니다. </div>');
 	            }
 	
 	            // 받은 데이터로 목록 추가

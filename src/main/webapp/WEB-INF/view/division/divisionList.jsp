@@ -49,6 +49,19 @@
 		font-family: 'GmarketSansMedium' , 'cursive';
 	}
 	
+	/* 인덱스 폰트 */
+@font-face {
+    font-family: 'PTBandocheB';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408@1.0/PTBandocheB.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+}
+	
+	.title-font{
+		font-family: 'PTBandocheB' , 'cursive';
+		
+	}
+	
 
 	
 
@@ -59,6 +72,7 @@
         /* 팀을 클릭하면 해당 팀의 조직도를 띄워줘야함 */
         $('#departDiv').on('click', '#deptDivSel', function () {
         
+        	
         	
             // 현재 클릭된 #deptDivSel 내부의 input#deptCode 값을 가져오기
             const deptCode = $(this).find('input#deptCode').val().trim();
@@ -189,13 +203,13 @@
             <div class="container-fluid group-data-[content=boxed]:max-w-boxed mx-auto">
                 <div class="flex flex-col gap-2 py-4 md:flex-row md:items-center print:hidden">
                     <div class="grow">
-                        <h5 class="text-16">부서 목록</h5>
+                        <h5 class="title-font">부서 목록</h5>
                     </div>
-                    <ul class="flex items-center gap-2 text-sm font-normal shrink-0">
+                    <ul class="flex items-center gap-2 text-sm font-normal shrink-0 ">
                         <li class="relative before:content-['\ea54'] before:font-remix ltr:before:-right-1 rtl:before:-left-1  before:absolute before:text-[18px] before:-top-[3px] ltr:pr-4 rtl:pl-4 before:text-slate-400 dark:text-zink-200">
                             <a href="#!" class="text-slate-400 dark:text-zink-200">부서 관리</a>
                         </li>
-                        <li class="text-slate-700 dark:text-zink-100">
+                        <li class="text-slate-700 dark:text-zink-100 ">
                             부서 목록
                         </li>
                     </ul>
@@ -225,16 +239,18 @@
 						        <!-- 하위 팀 목록 -->
 						        <div class="" id="departDiv" >
 						            <div class="grid xl:grid-cols-1 px-5">
-						                <span>부서를 선택해 주세요</span>
+						                <span class="title-font pt-2 text-slate-400 text-lg text-center">부서를 <br> 선택해 주세요</span>
 						            </div>
 						        </div >
 						        
 						        <!-- 조직도 -->
-						        <div id="orgchart" class="grid xl:grid-cols-1 " style="width:50%"  >
-						        	<div class="grid xl:grid-cols-4 px-5 hidden">
-						                <span>팀을 선택해 주세요</span>
-						            </div>
-						        </div>
+						 
+						        
+					 	   	<div id="orgchart" class="grid xl:grid-cols-1 " style="width:50%"  >
+						        	
+						         <div id="choiceTeam" class="grid xl:grid-cols-4 px-5 ">
+							           <span class="title-font pt-2 text-slate-400 text-lg text-center">팀을 <br> 선택해 주세요</span>
+							     </div>
 
 							</div>
 					    
