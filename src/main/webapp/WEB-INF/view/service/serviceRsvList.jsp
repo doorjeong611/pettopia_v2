@@ -98,7 +98,7 @@
 									                    <option value="CM" ${serviceRsvList.rsvStatus == 'CM' ? 'selected' : ''}>이용완료</option>
 									                </select>
 									            </td>
-									             <td id="noShow_${serviceRsvList.rsvNo}">
+									             <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500" id="noShow_${serviceRsvList.rsvNo}">
 									             	 ${serviceRsvList.rsvNoShow == '1' ? '노쇼' : ''}
 									            </td>
 		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${serviceRsvList.serviceName}</td>
