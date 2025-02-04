@@ -52,6 +52,9 @@ public interface BoardMapper {
 	
 //	게시글 작성 /board/addBoard 작업자 : 이준호	
 	Integer insertBoard (Board board);
+
+//  리스트 셀렉트  /board/boardOne
+	Map<String, Object> selectListByBoard(Integer boardNo);
 	
 //	게시판 리스트 /board/getBoardList 작업자 : 이준호	
 	List<Map<String, Object>> selectBoardList (Map<String, Object> combinedMap);
