@@ -389,22 +389,26 @@ public class MeetingRoomService {
 	    page.setLastPage(lastPage);
 	    
 		// 예약 List
-		List<MeetingRoomRsv> list = meetingRoomRsvMapper.selectMeetingRoomRsvList(paramMap);
+		List<Map<String, Object>> list = meetingRoomRsvMapper.selectMeetingRoomRsvList(paramMap);
 		
 		// "S1", "09:00 AM – 11:00 AM""S2", "11:00 AM – 12:00 PM" "S3", "01:00 PM – 03:00 PM" "S4", "03:00 PM – 05:00 PM""S5", "05:00 PM – 07:00 PM"
 		
 		for(int i=0; i<list.size(); i++) {
 			Map<String, Object> map = new HashMap<>();
 		
-			map.put("roomNo", list.get(i).getRoomNo());
-			map.put("empNo", list.get(i).getEmpNo());
-			map.put("rsvDate", list.get(i).getRsvDate());
-			map.put("conferenceTitle", list.get(i).getConferenceTitle());
-			map.put("conferenceDesc", list.get(i).getConferenceDesc());
-			map.put("conferenceUsers", list.get(i).getConferenceUsers());
-			map.put("timePeriod", list.get(i).getTimePeriod());
+			map.put("roomNo", list.get(i).get("roomNo"));
+			map.put("roomName", list.get(i).get("roomName"));
+			map.put("empNo", list.get(i).get("empNo"));
+			map.put("empName", list.get(i).get("empName"));
+			map.put("deptName", list.get(i).get("deptName"));
+			map.put("divisionName", list.get(i).get("divisionName"));
+			map.put("rsvDate", list.get(i).get("rsvDate"));
+			map.put("conferenceTitle", list.get(i).get("conferenceTitle"));
+			map.put("conferenceDesc", list.get(i).get("conferenceDesc"));
+			map.put("conferenceUsers", list.get(i).get("conferenceUsers"));
+			map.put("timePeriod", list.get(i).get("timePeriod"));
 			
-			switch (list.get(i).getTimePeriod()) {
+			switch ((String)list.get(i).get("timePeriod")) {
 				case "S1": map.put("timeRange", "09:00 AM – 11:00 AM"); break;
 				case "S2": map.put("timeRange", "11:00 AM – 12:00 PM"); break;
 				case "S3": map.put("timeRange", "01:00 PM – 03:00 PM"); break;

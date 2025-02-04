@@ -26,6 +26,20 @@
     overflow: hidden;
     text-overflow: ellipsis; 
 }
+
+   	/* 인덱스 폰트 */
+	@font-face {
+	    font-family: 'PTBandocheB';
+	    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408@1.0/PTBandocheB.woff2') format('woff2');
+	    font-weight: 400;
+	    font-style: normal;
+	}
+	
+	.title-font{
+		font-family: 'PTBandocheB' , 'cursive';
+		
+	}
+
 </style>
 
 
@@ -235,7 +249,7 @@ $(document).ready(function () {
                         </div>
 
     					<!-- 개인 정보 -->
-                        <div class="relative flex items-center dropdown h-header"">
+                        <div class="relative flex items-center dropdown h-header title-font">
                             <button type="button" class="inline-block p-0 transition-all duration-200 ease-linear bg-topbar rounded-full text-topbar-item dropdown-toggle btn hover:bg-topbar-item-bg-hover hover:text-topbar-item-hover group-data-[topbar=dark]:text-topbar-item-dark group-data-[topbar=dark]:bg-topbar-dark group-data-[topbar=dark]:hover:bg-topbar-item-bg-hover-dark group-data-[topbar=dark]:hover:text-topbar-item-hover-dark group-data-[topbar=brand]:bg-topbar-brand group-data-[topbar=brand]:hover:bg-topbar-item-bg-hover-brand group-data-[topbar=brand]:hover:text-topbar-item-hover-brand group-data-[topbar=dark]:dark:bg-zink-700 group-data-[topbar=dark]:dark:hover:bg-zink-600 group-data-[topbar=brand]:text-topbar-item-brand group-data-[topbar=dark]:dark:hover:text-zink-50 group-data-[topbar=dark]:dark:text-zink-200" id="dropdownMenuButton" data-bs-toggle="dropdown">
                                 <div class="bg-ligth-100 rounded-full">
                                     <img src="${pageContext.request.contextPath}/employeeFile/${loginEmp.empFileName != null ? loginEmp.empFileName : 'placeholder.png'}" alt="" class="w-[37.5px] h-[37.5px] rounded-full">

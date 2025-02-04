@@ -68,7 +68,7 @@ $(document).ready(function() {
         $('#file').removeClass('hidden');
         $('input, textarea').removeClass('border-none focus:outline-none');
         $('input, textarea').addClass('border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400 dark:placeholder:text-zink-200');
-        
+        $('#modify').addClass('hidden');
         
     });
     
@@ -151,16 +151,16 @@ $(document).ready(function() {
                             <div class="grid grid-cols-1 gap-x-5 md:grid-cols-4 xl:grid-cols-4">
                                 
                                 <div class="mb-4">
-                                    <label class="inline-block mb-2 text-base font-medium">회의실 이름<span class="text-red-500">*</span></label>
-                                    <input type="text" id="roomName" name="roomName" readonly class="form-input border-none focus:outline-none  placeholder:text-slate-400" placeholder="회의실 이름을 입력하세요." value="${roomInfo.roomName}">
+                                    <label class="inline-block mb-2 text-base font-medium">회의실 이름<span class="text-red-500"> *</span></label>
+                                    <input type="text" id="roomName" name="roomName" readonly class="form-input border-slate-200  focus:outline-none  placeholder:text-slate-400" placeholder="회의실 이름을 입력하세요." value="${roomInfo.roomName}">
                                 </div>
                                 <div class="mb-4">
-                                    <label class="inline-block mb-2 text-base font-medium">수용 인원<span class="text-red-500">*</span></label>
-                                    <input type="text" id="roomCapacity" name="roomCapacity" readonly class="form-input border-none focus:outline-none  placeholder:text-slate-400" placeholder="최대 수용인원을 입력하세요" value="${roomInfo.roomCapacity}">
+                                    <label class="inline-block mb-2 text-base font-medium">수용 인원<span class="text-red-500"> *</span></label>
+                                    <input type="text" id="roomCapacity" name="roomCapacity" readonly class="form-input border-slate-200  focus:outline-none  placeholder:text-slate-400" placeholder="최대 수용인원을 입력하세요" value="${roomInfo.roomCapacity}">
                                 </div>
                                 <div class="mb-4">
                                     <label class="inline-block mb-2 text-base font-medium">위치<span class="text-red-500"> *</span></label>
-                                    <input type="text" id="roomLocation" name="roomLocation" readonly class="form-input border-none focus:outline-none  placeholder:text-slate-400" placeholder="1박 당 가격을 입력하세요" value="${roomInfo.roomLocation}">
+                                    <input type="text" id="roomLocation" name="roomLocation" readonly class="form-input border-slate-200  focus:outline-none  placeholder:text-slate-400" placeholder="1박 당 가격을 입력하세요" value="${roomInfo.roomLocation}">
                                 </div>
                                 <div class="mb-4">
                                     <label class="inline-block mb-2 text-base font-medium">회의실 이미지 </label>
@@ -172,23 +172,26 @@ $(document).ready(function() {
                             </div>
                            
                             <div class="lg:col-span-2 xl:col-span-12 mb-4">
-                                  <label class="inline-block mb-2 text-base font-medium">회의실 정보 <span class="text-red-500">*</span></label>
-                                  <textarea readonly rows="10" id="roomInfo" name="roomInfo" class="form-input border-none focus:outline-none  placeholder:text-slate-400">${roomInfo.roomInfo}</textarea>
+                                  <label class="inline-block mb-2 text-base font-medium">회의실 정보 <span class="text-red-500"> *</span></label>
+                                  <textarea readonly rows="10" id="roomInfo" name="roomInfo" class="form-input border-slate-200  focus:outline-none  placeholder:text-slate-400">${roomInfo.roomInfo}</textarea>
                             </div>
                             
                             
                       
                             <div class="lg:col-span-2 xl:col-span-12 mb-4 hidden" id="file">
-								<label class="inline-block mb-2 text-base font-medium">파일 첨부<span class="text-red-500">*</span></label>
+								<label class="inline-block mb-2 text-base font-medium">파일 첨부<span class="text-red-500"></span></label>
 								<input readonly name="roomImg" type="file" class="cursor-pointer form-file border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500">	
 							</div>
+						    <div class="lg:col-span-2 xl:col-span-12 mb-4 pl-2">
+                                  <label class="inline-block mb-2 text-base font-medium text-slate-400">(<span class="text-red-500"> * </span>) 필수 작성 항목입니다.</label>
+                            </div>
                             
 					  <c:if test="${loginEmp.roleName == 'ROLE_ADMIN' }">  	
 	                        <div class="flex justify-end gap-2">
-	                            <button type="button" id="cancel" class="mr-1 text-red-500 bg-white border-red-500 btn hover:text-white hover:bg-red-600 hover:border-red-600 focus:text-white focus:bg-red-600 focus:border-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:border-red-600 active:ring active:ring-red-100"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="x" class="lucide lucide-x inline-block size-4"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg> <span class="align-middle">되돌리기</span></button>
+	                            <button type="button" id="cancel" class="mr-1 text-red-500 bg-white border-red-500 btn hover:text-white hover:bg-red-600 hover:border-red-600 focus:text-white focus:bg-red-600 focus:border-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:border-red-600 active:ring active:ring-red-100"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="x" class="lucide lucide-x inline-block size-4"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg> <span class="align-middle">다시 작성</span></button>
 	                            <button type="button" id="modify" class="mr-1 bg-white text-slate-500 btn border-slate-500 hover:text-white hover:bg-slate-600 hover:border-slate-600 focus:text-white focus:bg-slate-600 focus:border-slate-600 focus:ring focus:ring-slate-100 active:text-white active:bg-slate-600 active:border-slate-600 active:ring active:ring-slate-100">수정</button>
 	                            <button type="submit" class="mr-1 bg-white text-custom-500 btn border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100">저장</button>
-	                        	<a href="${pageContext.request.contextPath}/meetingroom/meetingroomList"><button type="button" class="mr-1 bg-white text-green-500 border-green-500 btn hover:text-white hover:bg-green-600 hover:border-green-600 focus:text-white focus:bg-green-600 focus:border-green-600 focus:ring focus:ring-green-100 active:text-white active:bg-green-600 active:border-green-600 active:ring active:ring-green-100">목록</button></a>
+	                        	<a href="${pageContext.request.contextPath}/meetingroom/getMeetingroomList"><button type="button" class="mr-1 bg-white text-green-500 border-green-500 btn hover:text-white hover:bg-green-600 hover:border-green-600 focus:text-white focus:bg-green-600 focus:border-green-600 focus:ring focus:ring-green-100 active:text-white active:bg-green-600 active:border-green-600 active:ring active:ring-green-100">목록</button></a>
 	                        </div>
                        </c:if>  
                        <c:if test="${loginEmp.roleName == 'ROLE_EMP' }">  
@@ -222,8 +225,9 @@ $(document).ready(function() {
 		
 		    <div class="fixed inset-0 flex items-center justify-center z-[1000] p-4">
 		    	<div class="w-screen md:w-[40rem] bg-white shadow rounded-md dark:bg-zink-600 flex flex-col ">
-		    		<div class="flex items-center justify-between p-4 dark:border-zink-500  ml-auto">
-				         <div class="">${roomInfo.roomName}</div>
+		    		<div class="flex items-center justify-between p-4 border-b border-slate-200">
+				         <div class="title-font text-lg pt-1">${roomInfo.roomName} 회의실</div>
+				         
 				         <button type="button" id="closeModal" class="transition-all duration-200 ease-linear text-slate-500 hover:text-red-500 dark:text-zink-200 dark:hover:text-red-500">
 				         	&#10060;
 				         </button>

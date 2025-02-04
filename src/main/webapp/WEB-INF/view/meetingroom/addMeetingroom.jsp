@@ -100,12 +100,15 @@
 							   
 							</div>
                             <div class="lg:col-span-2 xl:col-span-12 mb-4">
-                                  <label class="inline-block mb-2 text-base font-medium">회의실 정보 <span class="text-red-500">*</span></label>
+                                  <label class="inline-block mb-2 text-base font-medium">회의실 정보 <span class="text-red-500"> *</span></label>
                                   <textarea rows="10" id="roomInfo" name="roomInfo" class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="회의실 정보를 입력하세요" ></textarea>
                             </div>
                             <div class="lg:col-span-2 xl:col-span-12 mb-4">
-								<label class="inline-block mb-2 text-base font-medium">파일 첨부<span class="text-red-500">*</span></label>
+								<label class="inline-block mb-2 text-base font-medium">파일 첨부<span class="text-red-500"> *</span></label>
 								<input name="roomImg" id="roomImg" type="file" class="cursor-pointer form-file border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500">
+                            </div>
+                             <div class="lg:col-span-2 xl:col-span-12 mb-4 pl-2">
+                                  <label class="inline-block mb-2 text-base font-medium text-slate-400">(<span class="text-red-500"> * </span>) 필수 작성 항목입니다.</label>
                             </div>
                             
                             <!-- <div class="flex items-center justify-center border rounded-md cursor-pointer bg-slate-100 dropzone border-slate-200 dark:bg-zink-600 dark:border-zink-500">

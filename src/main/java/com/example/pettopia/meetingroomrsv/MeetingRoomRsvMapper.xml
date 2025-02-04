@@ -29,15 +29,23 @@
 	</insert>
 	
 	<!-- 회의실 예약 조회 -->
-	<select id="selectMeetingRoomRsvList" parameterType="map" resultType="com.example.pettopia.vo.MeetingRoomRsv">
-		SELECT room_no AS roomNo
-				, emp_no AS empNo
-				, rsv_date AS rsvDate
-				, conference_title AS conferenceTitle
-				, conference_desc AS conferenceDesc
-				, conference_users AS conferenceUsers
-				, time_period AS timePeriod
-		FROM meeting_room_rsv
+	<select id="selectMeetingRoomRsvList" parameterType="map" resultType="map">
+		SELECT mrr.room_no AS roomNo
+				, mr.room_name AS roomName
+				, mrr.emp_no AS empNo
+				, e.emp_name AS empName
+				, d.dept_name AS deptName
+				, di.division_name AS divisionName
+				, mrr.rsv_date AS rsvDate
+				, mrr.conference_title AS conferenceTitle
+				, mrr.conference_desc AS conferenceDesc
+				, mrr.conference_users AS conferenceUsers
+				, mrr.time_period AS timePeriod
+		FROM meeting_room_rsv mrr 
+		JOIN meeting_room mr ON mrr.room_no = mr.room_no
+		JOIN employee e ON e.emp_no = mrr.emp_no
+		JOIN department d ON d.dept_code = e.dept_code
+		JOIN division di ON d.division_code = di.division_code
 		ORDER BY rsvDate DESC
 		LIMIT #{beginRow}, #{rowPerPage}
 	</select>
