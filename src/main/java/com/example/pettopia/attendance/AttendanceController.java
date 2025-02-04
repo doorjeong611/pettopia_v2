@@ -139,45 +139,55 @@ public class AttendanceController {
     @GetMapping("employee/attendanceList")
     public String getAttendanceListByAdmin( @RequestParam(required = false) String empNo,
     										@RequestParam(required = false) String attendanceDate,
-    										@RequestParam(defaultValue = "1") int page, // 기본 페이지
-    							            @RequestParam(defaultValue = "10") int size, // 페이지 단위
+    										@RequestParam(defaultValue = "1") Integer currentPage,
+    										@RequestParam(defaultValue = "10") Integer size,
     							            @RequestParam(required = false) String empName,
     										Model model, Attendance attendance) {
     	
         // 직원 근태 상태 카운트 조회
     	Map<String, Object> employeeStatusCount = attendanceService.countEmployeeStatus(attendance);
     	
+    	
         model.addAttribute("presentEmployee", employeeStatusCount.get("P"));
         model.addAttribute("absentCount", employeeStatusCount.get("A"));
         model.addAttribute("annualLeaveCount", employeeStatusCount.get("V"));
         model.addAttribute("halfDayLeaveCount", employeeStatusCount.get("H"));
         
-        // 쿼리 파라미터 생성
-        Map<String, Object> params = new HashMap<>();
-        params.put("empNo", empNo);
-        params.put("attendanceDate", attendanceDate);
-        params.put("empName", empName);
-        
-        // 전체 개수 
-        int totalRecords = attendanceService.countAttendance(params);
-
-        // 전체 페이지
-        int totalPages = (int) Math.ceil((double) totalRecords / size);
-
-        // 시작 페이지 계산
-        int offset = (page - 1) * size;
-        
-        // 페이지 파라미터
-        params.put("offset", offset);
-        params.put("limit", size);
-        
+		// 페이지네이션 유효성 검사
+	    if (currentPage < 1) {
+	        currentPage = 1; // 기본값
+	    }
+	    if (size < 1 || size > 100) { // 최대 100개
+	        size = 10; // 기본값
+	    }
+	    
+		Map<String, Object> params = new HashMap<>();
+		
+	    // 페이지 오프셋 계산
+	    int offset = (currentPage - 1) * size;
+	    if (offset < 0) {
+	        offset = 0; // OFFSET이 음수가 되지 않도록 설정
+	    }
+	    
+	    // 페이지 파라미터 추가
+	    params.put("offset", offset);
+	    params.put("limit", size);
+	    params.put("empNo", empNo);
+	    params.put("attendanceDate", attendanceDate);
+	    params.put("empName", empName);
+	    
+	    // 전체 출석 수 가져오기
+	    int totalRecords = attendanceService.countAttendance(params); // 총 출석 수
+	    int totalPages = (int) Math.ceil((double) totalRecords / size); // 전체 페이지 수
+	    
     	// 직원 리스트
         List<Map<String, Object>> attendanceList = attendanceService.selectAttendance(params);
+        log.debug(TeamColor.OJY + "attendanceList------> " + attendanceList + TeamColor.RESET);
         
         // 직원리스트, 직원출석, 페이징
         model.addAttribute("attendanceList", attendanceList);
         model.addAttribute("employeeStatusCount", employeeStatusCount);
-        model.addAttribute("currentPage", page);
+        model.addAttribute("currentPage", currentPage);
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("totalResults", totalRecords);
         model.addAttribute("empName", empName);

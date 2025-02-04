@@ -86,10 +86,12 @@ public class MessageController {
 	    Map<String, Object> params = new HashMap<>();
 	    params.put("empNo", empNo);
 	    params.put("searchKeyword", searchKeyword);
+	    params.put("message_bin", "0");
 	    
 	    int totalRecords = messageService.countMessage(params); // 메시지 총 개수
 	    int totalPages = (int) Math.ceil((double) totalRecords / size); // 전체 페이지 수
-
+	    log.debug(TeamColor.OJY + "totalRecords------>" + totalRecords + TeamColor.RESET);
+	    
 	    // 페이지 오프셋 계산
 	    int offset = (currentPage - 1) * size;
 	    if (offset < 0) {
@@ -109,6 +111,7 @@ public class MessageController {
 	    model.addAttribute("totalPages", totalPages);
 	    model.addAttribute("totalResults", totalRecords);
 	    model.addAttribute("searchKeyword", searchKeyword);
+	    log.debug(TeamColor.OJY + "messageList------>" + messageList + TeamColor.RESET);
 	    
 	    return "message/messageList";
 	}
@@ -155,6 +158,7 @@ public class MessageController {
 	    Map<String, Object> params = new HashMap<>();
 	    params.put("empNo", empNo);
 	    params.put("searchKeyword", searchKeyword);
+	    params.put("message_bin", "1");
 	    
 	    int totalRecords = messageService.countMessage(params); // 메시지 총 개수
 	    int totalPages = (int) Math.ceil((double) totalRecords / size); // 전체 페이지 수
@@ -170,7 +174,7 @@ public class MessageController {
 	    params.put("limit", size);
 	    
 		// 쪽지 목록 조회
-		List<Map<String, Object>> messageList = messageService.getMessageList(params);
+		List<Map<String, Object>> messageList = messageService.getMessageBin(params);
 		model.addAttribute("messageList", messageList);
 		log.debug(TeamColor.OJY + "messageList------>" + messageList + TeamColor.RESET);
 		

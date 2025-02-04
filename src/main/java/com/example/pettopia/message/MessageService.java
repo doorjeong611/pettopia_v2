@@ -73,6 +73,11 @@ public class MessageService {
 	public List<Map<String, Object>> getMessageList(Map<String, Object> params) {
 		return messageMapper.getMessageList(params);
 	}
+	
+	// 오자윤 : /message/messageList 쪽지리스트 조횐
+	public List<Map<String, Object>> getMessageBin(Map<String, Object> params) {
+		return messageMapper.getMessageBin(params);
+	}
 
 	
 	// 오자윤 : /message/messageList 쪽지 휴지통 이동 -->

@@ -128,35 +128,48 @@
 								</form>
                              </div>
                           </div>
-                          <!-- 페이지네이션 -->
-                          <div id="pagination" class="flex justify-end mt-4">
-						    <ul class="flex flex-wrap items-center gap-2 shrink-0">
-						        <!-- 이전 버튼 -->
-						        <li>
-						            <a href="javascript:void(0);" class="inline-flex items-center justify-center bg-white dark:bg-zink-700 h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 dark:border-zink-500 text-slate-500 dark:text-zink-200 disabled">
-						                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="chevron-left" class="lucide lucide-chevron-left mr-1 size-4 rtl:rotate-180"><path d="m15 18-6-6 6-6"></path></svg> 이전
-						            </a>
-						        </li>
-						
-						        <!-- 페이지 번호 생성 -->
-						        
-						            <li>
-						                <a href="?page=1" class="inline-flex items-center justify-center bg-white dark:bg-zink-700 size-8 transition-all duration-150 ease-linear border rounded border-slate-200 dark:border-zink-500 text-slate-500 dark:text-zink-200 hover:text-custom-500 dark:hover:text-custom-500 hover:bg-custom-50 dark:hover:bg-custom-500/10 focus:bg-custom-50 dark:focus:bg-custom-500/10 focus:text-custom-500 dark:focus:text-custom-500 active">
-						                    1
-						                </a>
-						            </li>
-						        
-						
-						        <!-- 다음 버튼 -->
-						        <li>
-						            <a href="javascript:void(0);" class="inline-flex items-center justify-center bg-white dark:bg-zink-700 h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 dark:border-zink-500 text-slate-500 dark:text-zink-200 disabled">
-						                다음 
-						                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="chevron-right" class="lucide lucide-chevron-right ml-1 size-4 rtl:rotate-180"><path d="m9 18 6-6-6-6"></path></svg>
-						            </a>
-						        </li>
-						    </ul>
-						</div>
-                          
+                            <!-- 페이지네이션 넘버링 -->
+							<div class="flex justify-end mt-4">
+							    <div class="flex gap-2 pagination-wrap">
+							        <!-- 이전 페이지 -->
+							        <c:if test="${currentPage > 1}">
+							            <a class="inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 focus:bg-custom-50 focus:text-custom-500 page-item pagination-prev" 
+							               href="${pageContext.request.contextPath}/message/messageBin?currentPage=${currentPage - 1}&searchKeyword=${noticeList.searchKeyword}">
+							                이전
+							            </a>
+							        </c:if>
+							        <c:if test="${currentPage == 1}">
+							            <span class="inline-flex items-center justify-center bg-white h-8 px-3 border rounded border-slate-200 text-slate-400 cursor-not-allowed">
+							                이전
+							            </span>
+							        </c:if>
+							
+							        <!-- 페이지 번호 링크 -->
+							        <ul class="flex gap-2 mb-0">
+							            <c:forEach var="num" begin="1" end="${totalPages}">
+							                <c:if test="${num == currentPage}">
+							                    <li class="active"><a class="inline-flex items-center justify-center bg-custom-50 border border-custom-50 text-custom-500 h-8 px-3 rounded" href="#">${num}</a></li>
+							                </c:if>
+							                <c:if test="${num != currentPage}">
+							                    <li><a class="inline-flex items-center justify-center bg-white border border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 h-8 px-3 rounded" href="${pageContext.request.contextPath}/message/messageBin?currentPage=${num}">${num}</a></li>
+							                </c:if>
+							            </c:forEach>
+							        </ul>
+							
+							        <!-- 다음 페이지 -->
+							        <c:if test="${currentPage < totalPages}">
+							            <a class="inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 focus:bg-custom-50 focus:text-custom-500 page-item pagination-next" 
+							                href="${pageContext.request.contextPath}/message/messageBin?currentPage=${currentPage + 1}&searchKeyword=${noticeList.searchKeyword}">
+							                다음
+							            </a>
+							        </c:if>
+							        <c:if test="${currentPage >= totalPages}">
+							            <span class="inline-flex items-center justify-center bg-white h-8 px-3 border rounded border-slate-200 text-slate-400 cursor-not-allowed">
+							                다음
+							            </span>
+							        </c:if>
+							    </div>
+							</div>
                           
                           
                       </div><div class="simplebar-placeholder" style="width: 1176px; height: 93px;"></div></div><div class="simplebar-track simplebar-horizontal" style="visibility: hidden;"><div class="simplebar-scrollbar" style="width: 0px; display: none;"></div></div><div class="simplebar-track simplebar-vertical" style="visibility: hidden;"><div class="simplebar-scrollbar" style="height: 0px; display: none;"></div></div></div>

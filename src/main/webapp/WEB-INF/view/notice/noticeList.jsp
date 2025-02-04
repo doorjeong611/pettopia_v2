@@ -226,17 +226,24 @@
 
 </body>
 
-    <script>
-		/* $(document).ready(function(){ // <body>까지 메모리에 올라간 후 script 실행. */
-			console.log("jQuery 실행중");
-			$('#division').change(function() {// 부서별 공지 확인
-				
-				$('#searchCategoryForm').submit();
-			})
+<script>
+	/* $(document).ready(function(){ // <body>까지 메모리에 올라간 후 script 실행. */
+		console.log("jQuery 실행중");
+		$('#division').change(function() {// 부서별 공지 확인
 			
-			
-		/* }) */
-	</script>
+			$('#searchCategoryForm').submit();
+		})
+		
+		
+	/* }) */
 
+ 		// URL 쿼리 파라미터에서 메시지 가져오기
+        const urlParams = new URLSearchParams(window.location.search);
+        const message = urlParams.get('message');
 
+        // 메시지가 존재하면 alert 띄우기
+        if (message === 'accessDenied') {
+            alert('접근 권한이 없습니다.');
+        }
+</script>        
 </html>
