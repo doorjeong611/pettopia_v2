@@ -50,12 +50,12 @@
 	}
 	
 	/* 인덱스 폰트 */
-@font-face {
-    font-family: 'PTBandocheB';
-    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408@1.0/PTBandocheB.woff2') format('woff2');
-    font-weight: 400;
-    font-style: normal;
-}
+	@font-face {
+	    font-family: 'PTBandocheB';
+	    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408@1.0/PTBandocheB.woff2') format('woff2');
+	    font-weight: 400;
+	    font-style: normal;
+	}
 	
 	.title-font{
 		font-family: 'PTBandocheB' , 'cursive';

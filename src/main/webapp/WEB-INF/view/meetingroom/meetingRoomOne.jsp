@@ -34,6 +34,21 @@
 	    resize: none;
 	    overflow: auto; 
 	}
+	
+	
+		/* 인덱스 폰트 */
+	@font-face {
+	    font-family: 'PTBandocheB';
+	    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408@1.0/PTBandocheB.woff2') format('woff2');
+	    font-weight: 400;
+	    font-style: normal;
+	}
+	
+	.title-font{
+		font-family: 'PTBandocheB' , 'cursive';
+		
+	}
+    
     </style>
 <script type="text/javascript">
     // 메시지가 있을 경우 경고창을 띄움
@@ -123,7 +138,7 @@ $(document).ready(function() {
             <div class="container-fluid group-data-[content=boxed]:max-w-boxed mx-auto">
                 <div class="flex flex-col gap-2 py-4 md:flex-row md:items-center print:hidden">
                     <div class="grow">
-                        <h5 class="text-16">${roomInfo.roomName} 호</h5>
+                        <h5 class="title-font">${roomInfo.roomName} 회의실</h5>
                     </div>
                 </div>
                 <!-- Main content -->

@@ -52,16 +52,19 @@
   text-overflow: ellipsis;
 }
 
-@font-face {
-    font-family: 'Cafe24Ssurround';
-    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/Cafe24Ssurround.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-}
-
-.custom-font {
-	font-family: 'Cafe24Ssurround';
-}
+	/* 인덱스 폰트 */
+	@font-face {
+	    font-family: 'PTBandocheB';
+	    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408@1.0/PTBandocheB.woff2') format('woff2');
+	    font-weight: 400;
+	    font-style: normal;
+	}
+	
+	.title-font{
+		font-family: 'PTBandocheB' , 'cursive';
+		
+	}
+    
 
 
 
@@ -97,7 +100,7 @@
             <div class="container-fluid group-data-[content=boxed]:max-w-boxed mx-auto">
                 <div class="flex flex-col gap-2 py-4 md:flex-row md:items-center print:hidden">
                     <div class="grow">
-                        <h5 class="text-16 custom-font">회의실 목록</h5>
+                        <h5 class="text-16 title-font">회의실 목록</h5>
                     </div>
 					<ul class="flex items-center gap-2 text-sm font-normal shrink-0">
 					    <li class="relative before:content-['\ea54'] before:font-remix ltr:before:-right-1 rtl:before:-left-1  before:absolute before:text-[18px] before:-top-[3px] ltr:pr-4 rtl:pl-4 before:text-slate-400 dark:text-zink-200">

@@ -18,10 +18,24 @@
     <!-- Icons CSS -->
     
     <!-- Tailwind CSS -->
-    
-
-
   <link rel="stylesheet" href="./assets/css/tailwind2.css">
+  
+<style type="text/css">
+    /* 인덱스 폰트 */
+	@font-face {
+	    font-family: 'PTBandocheB';
+	    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408@1.0/PTBandocheB.woff2') format('woff2');
+	    font-weight: 400;
+	    font-style: normal;
+	}
+	
+	.title-font{
+		font-family: 'PTBandocheB' , 'cursive';
+		
+	}  
+</style>  
+  
+  
 </head>
 
 <body class="text-base bg-body-bg text-body font-public dark:text-zink-100 dark:bg-zink-800 group-data-[skin=bordered]:bg-body-bordered group-data-[skin=bordered]:dark:bg-zink-700">

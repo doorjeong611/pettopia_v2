@@ -122,7 +122,7 @@
                 	  
                 	  <!-- 결과값이 비어있지않다면 -->
                 	  <c:if test="${not empty boardList}">
-<div class="boardList overflow-x-auto">
+				<div class="boardList overflow-x-auto">
 				    <table class="w-full whitespace-nowrap">
 				        <thead class="bg-slate-100">
 				            <tr>
