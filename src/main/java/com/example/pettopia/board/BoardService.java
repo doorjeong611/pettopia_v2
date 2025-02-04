@@ -27,14 +27,17 @@ import lombok.extern.slf4j.Slf4j;
 public class BoardService {
 	@Autowired BoardMapper boardMapper;
 	@Autowired CommentMapper commentMapper;
+	
+	
 	   // 댓글 작성
     public int addComment(BoardComment boardComment) {
         return boardMapper.insertComment(boardComment);
     }
+        
 
     // 대댓글 작성
     public int addCommentDepth(BoardComment boardComment) {
-
+	    
         return boardMapper.insertCommentDepth(boardComment);
     }
 
@@ -43,74 +46,93 @@ public class BoardService {
 	List<Map<String,Object>> getSelectBoardComment(Integer boardNo){
 		return boardMapper.selectBoardComment(boardNo);
 	};
-	
-	// 게시글 수정
-	public void modifyBoardFile (Board board, MultipartFile boardImg, String boardImagePath) throws Exception {
-		int updateBoard = boardMapper.updateBoard(board);
-		if(updateBoard == 0) {
-			throw new RuntimeException("게시글 수정 실패");
-		}
-		log.debug("게시글 수정 완료 : ", board);
-		
-		if(boardImg != null && !boardImg.isEmpty()) {
-			BoardFile boardImage = new BoardFile();
-			boardImage.setBoardNo(board.getBoardNo());
-			boardImage.setOriginFileName(boardImg.getOriginalFilename());
-			
-			String fileName = UUID.randomUUID() + "." + getFileExtension(boardImg.getOriginalFilename());
-			boardImage.setFileName(fileName);
-			boardImage.setFileExt(getFileExtension(boardImg.getOriginalFilename()));
-			boardImage.setFileType(boardImg.getContentType());
-			
-			int updateBoardImg = boardMapper.updateBoardFile(boardImage);
-			if(updateBoardImg == 0) {
-				throw new RuntimeException("이미지 수정 실패");
-			}
-			log.debug("객실 이미지 수정 완료 : ", boardImage);
-			
-			File saveBoardFile = new File(boardImagePath,  fileName);
-			boardImg.transferTo(saveBoardFile);
-		}
+	public void modifyBoardFile(Board board, MultipartFile boardImg, String boardImagePath) throws Exception {
+	    // 게시글 업데이트
+	    int updateBoard = boardMapper.updateBoard(board);
+	    if (updateBoard == 0) {
+	        throw new RuntimeException("게시글 수정 실패");
+	    }
+	    log.debug("게시글 수정 완료 : ", board);
+
+	    // 이미지 파일이 첨부된 경우 처리
+	    if (boardImg != null && !boardImg.isEmpty()) {
+	        // 새로운 이미지 파일을 등록하는 로직
+	        BoardFile boardImage = new BoardFile();
+	        boardImage.setBoardNo(board.getBoardNo());
+	        boardImage.setOriginFileName(boardImg.getOriginalFilename());
+
+	        // 파일 이름을 UUID로 생성하여 중복을 방지
+	        String fileName = UUID.randomUUID() + "." + getFileExtension(boardImg.getOriginalFilename());
+	        boardImage.setFileName(fileName);
+	        boardImage.setFileExt(getFileExtension(boardImg.getOriginalFilename()));
+	        boardImage.setFileType(boardImg.getContentType());
+
+	        // 게시글에 이미지가 이미 있으면 기존 이미지를 삭제 후 새 이미지 추가 (업데이트)
+	        int updateBoardImg = boardMapper.updateBoardFile(boardImage);
+	        if (updateBoardImg == 0) {
+	            // 기존에 이미지가 없으면 새 이미지를 추가하는 로직으로 처리
+	            int insertBoardImg = boardMapper.insertBoardFile(boardImage);
+	            if (insertBoardImg == 0) {
+	                throw new RuntimeException("이미지 추가 실패");
+	            }
+	            log.debug("새 이미지 추가 완료 : ", boardImage);
+	        } else {
+	            log.debug("기존 이미지 수정 완료 : ", boardImage);
+	        }
+
+	        // 서버에 이미지 파일을 저장
+	        File saveBoardFile = new File(boardImagePath, fileName);
+	        boardImg.transferTo(saveBoardFile);
+	    } else {
+	        // 이미지가 첨부되지 않은 경우 기존 이미지를 유지하려면 특별한 로직을 추가할 수 있습니다.
+	        log.debug("이미지 파일이 첨부되지 않았습니다. 기존 이미지를 유지합니다.");
+	    }
 	}
+
 	
 	// 게시판 이미지 추가
 	public int addBoardFile (BoardFile boardFile) {
 		return boardMapper.insertBoardFile(boardFile);
 	}
-	
 	// 게시판 정보 추가
-	public int addBoardOne (Board board, MultipartFile boardImg, String boardImagePath)  throws Exception {
-		
-		boardMapper.insertBoard(board);
-		BoardFile boardImage = new BoardFile();
-		boardImage.setBoardNo(board.getBoardNo()); // boardNo 받아옴
-		boardImage.setOriginFileName(boardImg.getOriginalFilename()); // 오리지널 이미지 이름 받아옴
-		
-		// 고유 파일명 생성
-		String boardFileName = UUID.randomUUID().toString() + "." + getFileExtension(boardImg.getOriginalFilename());
-		boardImage.setFileName(boardFileName);
-		boardImage.setFileExt(getFileExtension(boardImg.getOriginalFilename()));
-		boardImage.setFileType(boardImg.getContentType());
-		
-		int imgBoardFileResult = addBoardFile(boardImage);
-		if(imgBoardFileResult == 0) {
-			throw new RuntimeException("이미지 등록 실패");
-		}
-		log.debug(TeamColor.LJH + "FileName ========> " + boardImage.getFileName() + TeamColor.RESET);
-		// 파일 저장
-		
-		File saveBoardFile = new File(boardImagePath,boardFileName);
-		boardImg.transferTo(saveBoardFile);
-		
-		
-		
-		
-		
-		log.debug(TeamColor.LJH + "Path ========> " + saveBoardFile.getAbsolutePath() + TeamColor.RESET);
-	       
-		return board.getBoardNo();
+	public int addBoardOne(Board board, MultipartFile boardImg, String boardImagePath) throws Exception {
+
+	    // 게시글 등록
+	    int boardRow = boardMapper.insertBoard(board);
+
+	    // 게시글 등록 성공 후, 파일이 존재하는 경우에만 파일 관련 작업 수행
+	    if (boardRow == 1 && boardImg != null && !boardImg.isEmpty()) {  // 빈 파일도 체크 추가
+
+	        // BoardFile 객체 생성
+	        BoardFile boardImage = new BoardFile();
+	        boardImage.setBoardNo(board.getBoardNo());  // boardNo 받아옴
+	        boardImage.setOriginFileName(boardImg.getOriginalFilename());  // 원본 파일명 설정
+
+	        // 고유 파일명 생성 (UUID 사용)
+	        String boardFileName = UUID.randomUUID().toString() + "." + getFileExtension(boardImg.getOriginalFilename());
+	        boardImage.setFileName(boardFileName);  // 고유 파일명 설정
+	        boardImage.setFileExt(getFileExtension(boardImg.getOriginalFilename()));  // 파일 확장자 설정
+	        boardImage.setFileType(boardImg.getContentType());  // 파일 타입 설정
+
+	        // 파일 등록을 위한 메소드 호출
+	        int imgBoardFileResult = addBoardFile(boardImage);
+	        if (imgBoardFileResult == 0) {
+	            throw new RuntimeException("이미지 등록 실패");
+	        }
+
+	        // 파일 저장 경로 설정
+	        File saveBoardFile = new File(boardImagePath, boardFileName);
+
+	        // 실제 파일 저장
+	        boardImg.transferTo(saveBoardFile);  // 파일을 서버 지정 위치에 저장
+
+	        log.debug(TeamColor.LJH + "FileName ========> " + boardImage.getFileName() + TeamColor.RESET);
+	        log.debug(TeamColor.LJH + "Path ========> " + saveBoardFile.getAbsolutePath() + TeamColor.RESET);
+	    }
+
+	    // 등록된 게시글 번호 반환
+	    return board.getBoardNo();
 	}
-	
 
 	
 // 게시판 이미지 정보 추가
@@ -154,6 +176,15 @@ public class BoardService {
         return boardMapper.selectBoardFile(boardNo);
     }
 	
+
+//  게시글 댓글 삭제 /board/removeComment 작업자 : 이준호
+	public void deleteComment(int commentNo) {
+		commentMapper.deleteComment(commentNo);
+	}
+// 게시글 파일 삭제	
+	public void deleteFile(int boardNo) {
+		boardMapper.deleteBoardFile(boardNo);	
+	}
 	
 //	게시글 댓글 통합 삭제 /board/removeBoard 작업자 : 이준호 
 	public void deleteBoardWithComment(int boardNo) {

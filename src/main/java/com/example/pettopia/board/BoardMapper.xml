@@ -3,8 +3,6 @@
 <mapper namespace="com.example.pettopia.board.BoardMapper">
 
 
-
-
 <!-- 댓글 작성 -->
 <insert id="insertComment" parameterType="com.example.pettopia.vo.BoardComment">
 INSERT INTO
@@ -152,7 +150,25 @@ WHERE
 			 board_header = "#{boardCategory}"
 		ORDER BY
 		    board_header, create_datetime DESC;
-	</select>	
+	</select>
+	
+	<select id="selectListByBoard" parameterType="integer" resultType="map">
+    SELECT
+        board_no AS boardNo,
+        board_title AS boardTitle,
+        board_writer_no AS boardWriterNo,
+        board_header AS boardHeader,
+        board_view AS boardView,
+        board_like AS boardLike,
+        DATE_FORMAT(create_datetime, '%y-%m-%d') AS createDate
+    FROM
+        board
+    WHERE
+        board_no = #{boardNo}
+    ORDER BY
+        board_header, create_datetime DESC;
+</select>
+	
 	
 	<!-- 게시글 작성 쿼리 /board/addBoard 작업자 : 이준호 -->
 	<insert id="insertBoard" parameterType="com.example.pettopia.vo.Board">
@@ -178,26 +194,25 @@ WHERE
   )
 </insert>
 	
-	<!-- 상세 글 보기 셀렉트 쿼리 /board/getBoardOne 작업자 : 이준호 -->
 	<select id="selectBoardByBoardOne" parameterType="map">
-		SELECT
-			b.board_no boardNo,
-			b.board_title boardTitle,
-			b.board_writer_no boardWriterNo,
-			b.board_content boardContent,
-			b.board_header boardHeader,
-			bf.file_name fileName,
-			b.board_like boardLike,
-			b.board_view boardView,
-			b.create_datetime createDatetime,
-			b.update_datetime updateDatetime
-		FROM 
-			board b
-		INNER JOIN
-			board_file bf ON b.board_no = bf.board_no
-		WHERE
-			 b.board_no = #{boardNo} 
-	</select>
+    SELECT
+        b.board_no boardNo,
+        b.board_title boardTitle,
+        b.board_writer_no boardWriterNo,
+        b.board_content boardContent,
+        b.board_header boardHeader,
+        bf.file_name fileName,  <!-- file_name은 LEFT JOIN으로 변경 후 NULL일 수도 있음 -->
+        b.board_like boardLike,
+        b.board_view boardView,
+        b.create_datetime createDatetime,
+        b.update_datetime updateDatetime
+    FROM 
+        board b
+    LEFT JOIN  <!-- INNER JOIN에서 LEFT JOIN으로 변경 -->
+        board_file bf ON b.board_no = bf.board_no
+    WHERE
+        b.board_no = #{boardNo}
+</select>
 	
 <select id="selectBoardList" parameterType="Map" resultType="Map">
     SELECT

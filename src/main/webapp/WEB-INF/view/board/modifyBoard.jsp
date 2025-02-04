@@ -77,30 +77,11 @@
 		
 	}
 	.boardContent .fileContentBox {
-		width: 84%;
+		width:100%;
 	}
 	.boardContent .fileContentBox input {
 	margin-top: 1%;
 	}
-	.boardContent .fileBtnBox {
-		margin-left: 5%;
-		width: 15%;
-	}
-	.boardContent .fileBtnBox .btn {
-		margin-right: 2%;
-	
-	}
-	.fileBtnRightBox {
-	margin-top: 28px;
-	}
-	.fileBtnRightBox button{
-	float: right;
-	}
-	.boardContent.boardFileBox { margin: 1% 0;}
-	.boardContent .boardFileBox > img {
-	max-width: 100%;
-    max-height: 300px;
-    object-fit: contain;}
 	
 </style>
 <body class="text-base bg-body-bg text-body font-public dark:text-zink-100 dark:bg-zink-800 group-data-[skin=bordered]:bg-body-bordered group-data-[skin=bordered]:dark:bg-zink-700">
@@ -176,15 +157,8 @@
 			                        		<label for="boardImg">이미지 첨부</label>
 		                        			<input type="file" name="boardImg" class="form-file">
 			                        	</div>
-			                        	<div class="fileBtnBox">
-				                        	<div class="fileBtnRightBox">
-				                        		<button type="button" class="text-red-500 cancel-btn bg-white btn hover:text-red-500 hover:bg-red-100 focus:text-red-500 focus:bg-red-100 active:text-red-500 active:bg-red-100 dark:bg-zink-700 dark:hover:bg-red-500/10 dark:focus:bg-red-500/10 dark:active:bg-red-500/10">파일삭제</button>
-		                        			</div>
-		                        		</div>
+			                        
                         			</div>
-		                        		<div class="boardFileBox">
-											 <img src="${pageContext.request.contextPath}/boardFile/${boardMap.fileName}" alt="게시글 이미지">
-										</div>
 			                        	
 	                        	</div>
                         	</div>

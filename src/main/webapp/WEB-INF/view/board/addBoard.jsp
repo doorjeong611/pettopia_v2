@@ -231,14 +231,33 @@
 <!-- jQuery library -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script>
-    $(document).ready(function() {
-        // 파일 삭제 버튼 클릭 시
-        $(".cancel-btn").click(function() {
-            // 해당하는 파일 입력 필드를 초기화
-            $("input[type='file']").val('');
-        });
+$(document).ready(function() {
+    // 파일 삭제 버튼 클릭 시
+    $(".cancel-btn").click(function() {
+        // 해당하는 파일 입력 필드를 초기화
+        $("input[type='file']").val('');
     });
+
+    // 폼 제출 시 유효성 검사
+    $("form").submit(function(event) {
+        var title = $("input[name='boardTitle']").val();  // 제목 값 가져오기
+        var content = $("textarea[name='boardContent']").val();  // 내용 값 가져오기
+
+        // 제목과 내용이 비어있거나 4글자 미만일 경우 경고창 띄우기
+        if (title.trim() === "" || title.length < 4) {
+            alert("제목을 4글자 이상 입력해주세요.");
+            event.preventDefault();  // 폼 제출 막기
+            return false;
+        }
+        if (content.trim() === "" || content.length < 10) {
+            alert("내용을 10글자 이상 입력해주세요.");
+            event.preventDefault();  // 폼 제출 막기
+            return false;
+        }
+    });
+});
 </script>
+
 </body>
 
 </html>

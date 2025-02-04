@@ -80,14 +80,13 @@ public class BoardController {
 	        // 대댓글인 경우: parentCommentNo 설정하고, commentDepth는 2로 설정
 	        boardComment.setParentCommentNo(parentCommentNo);  // 부모 댓글 번호 (부모의 commentNo를 parentCommentNo로 설정)
 	        boardComment.setCommentDepth("2");  // 대댓글이면 깊이는 2
-
 	    } else {
 	        // 일반 댓글인 경우: parentCommentNo는 null, commentDepth는 1로 설정
 	        boardComment.setParentCommentNo(null); // 일반 댓글은 parentCommentNo가 null
 	        boardComment.setCommentDepth("1");  // 일반 댓글 깊이는 1
 	    }
 
-	    // 대댓글 작성 처리
+	    // 댓글 작성 처리
 	    int result = boardService.addCommentDepth(boardComment);
 
 	    // 대댓글 작성 결과 처리
@@ -97,6 +96,7 @@ public class BoardController {
 	        return "redirect:/board/getBoardOne?boardNo=" + boardNo + "&error=true";
 	    }
 	}
+
 
 	@GetMapping("/board/modifyBoard")
 	public String modifyBoard(Authentication auth,
@@ -123,32 +123,39 @@ public class BoardController {
 
 	@PostMapping("/board/modifyBoard")
 	public String getModifyBoard(Authentication auth,
-								@ModelAttribute Board board,
-								@RequestParam(required = false) Integer boardNo,
-								@RequestParam("boardImg") MultipartFile boardImg,
-						        @RequestParam(value = "category") String boardCategory,
-						        @RequestParam(value = "content", defaultValue = "") String boardContent,
-								HttpSession session
-								) {
-		log.debug(TeamColor.LJH + "updateBoard : " + board + TeamColor.RESET);
-		 // category가 빈 값일 경우 null로 설정
+	                              @ModelAttribute Board board,
+	                              @RequestParam(required = false) Integer boardNo,
+	                              @RequestParam(value = "boardImg", required = false) MultipartFile boardImg,
+	                              @RequestParam(value = "category") String boardCategory,
+	                              @RequestParam(value = "content", defaultValue = "") String boardContent,
+	                              HttpSession session) {
+	    log.debug(TeamColor.LJH + "updateBoard : " + board + TeamColor.RESET);
+
+	    // category가 빈 값일 경우 null로 설정
 	    if (boardCategory.isEmpty()) {
 	        boardCategory = null;
 	    }
-		board.setBoardHeader(boardCategory);
-		String boardImagePath = session.getServletContext().getRealPath("/boardFile/");
-		try {
-			boardService.modifyBoardFile(board, boardImg, boardImagePath);
-		} catch (Exception e) {
-			log.debug(TeamColor.LJH + "게시글 수정 중 오류 발생 : " + e + TeamColor.RESET);
-			
-			e.printStackTrace();
-		}
-		 
-		
-		
-		return "redirect:/board/boardList";
+	    board.setBoardHeader(boardCategory);
+
+	    // 이미지 저장 경로 설정
+	    String boardImagePath = session.getServletContext().getRealPath("/boardFile/");
+	    
+	    // 이미지가 첨부된 경우만 파일 처리
+	    try {
+	        if (boardImg != null && !boardImg.isEmpty()) {
+	            boardService.modifyBoardFile(board, boardImg, boardImagePath);
+	        } else {
+	            // 이미지가 없으면 기존 파일을 유지하거나, 특정 동작을 추가할 수 있습니다.
+	            log.debug("이미지 파일이 첨부되지 않았습니다.");
+	        }
+	    } catch (Exception e) {
+	        log.debug(TeamColor.LJH + "게시글 수정 중 오류 발생 : " + e + TeamColor.RESET);
+	        e.printStackTrace();
+	    }
+	    
+	    return "redirect:/board/boardList";
 	}
+
 	
 	@GetMapping("/board/getBoardOne")
 	public String getBoardOne(Model model,
@@ -324,10 +331,19 @@ public class BoardController {
 	//	게시글 댓글 통합 삭제 /board/removeBoard 작업자 : 이준호
 	@GetMapping("/board/removeBoard")
 	public String removeBoard(@RequestParam Integer boardNo) {
-	
 		boardService.deleteBoardWithComment(boardNo);
 		return "redirect:/board/boardList";
 	}
 	
+	@GetMapping("/board/removeComment")
+	public String removeComment(@RequestParam Integer commentNo, @RequestParam Integer boardNo) {
+		boardService.deleteComment(commentNo);
+		return "redirect:/board/getBoardOne?boardNo=" + boardNo;
+	}
+	@GetMapping("/board/removeFile")
+	public String removeFile(@RequestParam Integer boardNo) {
+		boardService.deleteFile(boardNo);
+		return "redirect:/board/getBoardOne?boardNo=" + boardNo;
+	}
 	
 }

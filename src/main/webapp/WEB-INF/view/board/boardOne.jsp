@@ -152,6 +152,9 @@
 		text-align: left;
 	       resize: none;
 	    }
+	  
+	.replyBox .modifyCommentBox {}
+	.replyBox .deleteCommentBox {}  
 </style>
 
 <body class="text-base bg-body-bg text-body font-public dark:text-zink-100 dark:bg-zink-800 group-data-[skin=bordered]:bg-body-bordered group-data-[skin=bordered]:dark:bg-zink-700">
@@ -222,6 +225,7 @@
 								
 								<c:if test="${not empty boardMap.fileName}">
   									<div class="boardFileBox">
+  									
 										 <img src="${pageContext.request.contextPath}/boardFile/${boardMap.fileName}" alt="게시글 이미지">
 									</div>
 								</c:if>
@@ -246,37 +250,53 @@
 	                   	   
           
                    <!-- Start card-body -->
-						                    <div class="card-body">
-					    <div class="lineBox"></div>
-					
-					   <!-- 댓글 목록 (c:forEach) 부분) -->
-						<c:forEach var="c" items="${comment}">
-						    <c:if test="${c.commentDepth == 1}">
-						        <div class="commentMainBox">
-						            <div class="lineBox"></div>
-						            <div class="replyBox">
-						                <textarea class="form-input" name="commentContent" readonly>${c.commentContent}</textarea>
-						               <a class="btn replyBtn" href="javascript:void(0);" data-comment-id="${c.commentNo}" data-board-no="${boardNo}">답글 작성</a>
-						            </div>
-						        </div>
-						    </c:if>
-						</c:forEach>
-					
-					    <div class="lineBox"></div>
-					
-					    <!-- 댓글 작성 폼 -->
-					    <div class="commentMainBox">
-					        <div class="commentBox">
-					            <form id="formCategory" action="${pageContext.request.contextPath}/board/boardComment" method="post">
-					                <input type="hidden" name="boardNo" value="${boardNo}">
-					                <textarea class="form-input" name="commentContent"></textarea>
-					                <button type="submit">댓글 작성</button>
-					            </form>
-					        </div>
-					    </div>
-					</div>
-                   <!-- End card-body -->
-                  
+                  <div class="card-body">
+    <div class="lineBox"></div>
+
+<!-- 댓글 목록 (c:forEach) 부분 -->
+<c:forEach var="c" items="${comment}">
+    <c:if test="${empNo == boardMap.boardWriterNo}">
+        <div class="commentMainBox">
+            <div class="replyBox">
+                <textarea class="form-input" name="commentContent" id="commentContent_${c.commentNo}" readonly>${c.commentContent}</textarea>
+                <!-- 수정하기 버튼 클릭 시 readonly 해제, 저장하기 버튼으로 변경 -->
+                <div class="modifyCommentBox">
+                    <a href="javascript:void(0);" id="modifyBtn_${c.commentNo}" onclick="enableEdit(${c.commentNo})">수정하기</a>
+                    <!-- 저장하기 버튼 숨김 처리 -->
+                    <a href="javascript:void(0);" id="saveBtn_${c.commentNo}" style="display:none;" onclick="saveComment(${c.commentNo})">저장하기</a>
+                </div>
+                <div class="deleteCommentBox">
+                    <a href="${pageContext.request.contextPath}/board/removeComment?boardNo=${boardMap.boardNo}&commentNo=${c.commentNo}">삭제하기</a>
+                </div>
+            </div>
+        </div>
+    </c:if>
+    <c:if test="${empNo != boardMap.boardWriterNo}">
+        <div class="commentMainBox">
+            <div class="lineBox"></div>
+            <div class="replyBox">
+                <textarea class="form-input" name="commentContent" readonly>${c.commentContent}</textarea>
+            </div>
+        </div>
+    </c:if>
+</c:forEach>
+
+
+
+    <div class="lineBox"></div>
+
+    <!-- 댓글 작성 폼 -->
+    <div class="commentMainBox">
+        <div class="commentBox">
+            <form id="formCategory" action="${pageContext.request.contextPath}/board/boardComment" method="post">
+                <input type="hidden" name="boardNo" value="${boardNo}">
+                <textarea class="form-input" name="commentContent" placeholder="댓글을 작성하세요."></textarea>
+                <button class="mr-1 bg-white text-custom-500 btn border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600" type="submit">댓글 작성</button>
+            </form>
+        </div>
+    </div>
+</div>
+
                         
 	                   	   <!-- Start Footer -->
 					        <footer class="ltr:md:left-vertical-menu rtl:md:right-vertical-menu group-data-[sidebar-size=md]:ltr:md:left-vertical-menu-md group-data-[sidebar-size=md]:rtl:md:right-vertical-menu-md group-data-[sidebar-size=sm]:ltr:md:left-vertical-menu-sm group-data-[sidebar-size=sm]:rtl:md:right-vertical-menu-sm absolute right-0 bottom-0 px-4 h-14 group-data-[layout=horizontal]:ltr:left-0 group-data-[layout=horizontal]:rtl:right-0 left-0 border-t py-3 flex items-center dark:border-zink-600">
@@ -291,80 +311,59 @@
         </div>
         <!-- End Page-content -->
     </div>
-    <c:import url="/WEB-INF/view/inc/customizerButton.jsp"></c:import>
-    <script src="${pageContext.request.contextPath}/assets/libs/choices.js/public/assets/scripts/choices.min.js"></script>
-    <script src="${pageContext.request.contextPath}/assets/libs/@popperjs/core/umd/popper.min.js"></script>
-    <script src="${pageContext.request.contextPath}/assets/libs/tippy.js/tippy-bundle.umd.min.js"></script>
-    <script src="${pageContext.request.contextPath}/assets/libs/simplebar/simplebar.min.js"></script>
-    <script src="${pageContext.request.contextPath}/assets/libs/prismjs/prism.js"></script>
-    <script src="${pageContext.request.contextPath}/assets/libs/lucide/umd/lucide.js"></script>
-    <script src="${pageContext.request.contextPath}/assets/js/tailwick.bundle.js"></script>
-    <script src="${pageContext.request.contextPath}/assets/libs/dropzone/dropzone-min.js"></script>
-    <script src="${pageContext.request.contextPath}/assets/js/pages/form-file-upload.init.js"></script>
-    <script src="${pageContext.request.contextPath}/assets/libs/apexcharts/apexcharts.min.js"></script>
-    <script src="${pageContext.request.contextPath}/assets/js/pages/dashboards-ecommerce.init.js"></script>
-    <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
-    <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const replyButtons = document.querySelectorAll('.replyBtn');
-        
-        replyButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                // 부모 댓글 번호 가져오기
-                const parentCommentNo = button.getAttribute('data-comment-id');
-                const boardNo = button.getAttribute('data-board-no');  // board_no 가져오기
+<c:import url="/WEB-INF/view/inc/customizerButton.jsp"></c:import>
+<script src="${pageContext.request.contextPath}/assets/libs/choices.js/public/assets/scripts/choices.min.js"></script>
+<script src="${pageContext.request.contextPath}/assets/libs/@popperjs/core/umd/popper.min.js"></script>
+<script src="${pageContext.request.contextPath}/assets/libs/tippy.js/tippy-bundle.umd.min.js"></script>
+<script src="${pageContext.request.contextPath}/assets/libs/simplebar/simplebar.min.js"></script>
+<script src="${pageContext.request.contextPath}/assets/libs/prismjs/prism.js"></script>
+<script src="${pageContext.request.contextPath}/assets/libs/lucide/umd/lucide.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/tailwick.bundle.js"></script>
+<script src="${pageContext.request.contextPath}/assets/libs/dropzone/dropzone-min.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/pages/form-file-upload.init.js"></script>
+<script src="${pageContext.request.contextPath}/assets/libs/apexcharts/apexcharts.min.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/pages/dashboards-ecommerce.init.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
+<!-- 자바스크립트 수정 -->
+<!-- 자바스크립트 수정 -->
+<script type="text/javascript">
+    // 수정하기 버튼 클릭 시 readonly 해제 및 버튼 변경
+    function enableEdit(commentNo) {
+        var textarea = document.getElementById('commentContent_' + commentNo);
+        var modifyBtn = document.getElementById('modifyBtn_' + commentNo);
+        var saveBtn = document.getElementById('saveBtn_' + commentNo);
 
-                // 이미 열린 답글 폼을 모두 닫기
-                const allReplyForms = document.querySelectorAll('.replyForm');
-                allReplyForms.forEach(form => {
-                    form.style.display = 'none'; // 다른 폼들은 숨김 처리
-                });
+        // textarea의 readonly 속성 제거
+        textarea.removeAttribute('readonly');
 
-                // 새 답글 폼이 존재하는지 확인
-                const existingForm = button.parentNode.querySelector('.replyForm');
+        // 수정하기 버튼 숨기고 저장하기 버튼 보이게
+        modifyBtn.style.display = 'none';
+        saveBtn.style.display = 'inline-block';
+    }
 
-                if (existingForm) {
-                    // 이미 답글 폼이 있으면 그 폼만 표시
-                    existingForm.style.display = 'block';
-                } else {
-                    // 새로운 답글 폼을 생성하여 해당 댓글 아래에 추가
-                    const newReplyForm = document.createElement('div');
-                    newReplyForm.classList.add('commentMainBox', 'replyForm');
-                    newReplyForm.innerHTML = `
-                        <div class="commentBox">
-                            <form action="${pageContext.request.contextPath}/board/boardCommentDepth" method="post" id="replyForm_${parentCommentNo}">
-                                <input type="hidden" name="boardNo" value="${boardNo}">
-                                <input type="hidden" name="parentCommentNo" value="${parentCommentNo}"> <!-- 부모 댓글 번호 -->
-                                <textarea class="form-input" name="commentContent" placeholder="답글을 작성하세요" required></textarea>
-                                <button type="submit">대댓글 작성</button>
-                            </form>
-                        </div>
-                    `;
-                    
-                    // 버튼 클릭한 댓글 아래에 폼 추가
-                    button.parentNode.parentNode.appendChild(newReplyForm);
-                }
-            });
-        });
+    // 저장하기 버튼 클릭 시 댓글 내용 저장 (여기서는 서버와의 통신이 필요)
+    function saveComment(commentNo) {
+        var textarea = document.getElementById('commentContent_' + commentNo);
+        var modifiedContent = textarea.value;
 
-        // 유효성 검사: 폼 제출 전에 답글 내용이 비어있는지 체크
-        const replyForms = document.querySelectorAll('[id^="replyForm_"]');
-        
-        replyForms.forEach(form => {
-            form.addEventListener('submit', function(event) {
-                const textarea = form.querySelector('textarea');
-                
-                // 텍스트 영역이 비어 있으면 제출을 막고 경고 메시지 표시
-                if (!textarea.value.trim()) {
-                    event.preventDefault();
-                    alert('답글 내용을 입력해주세요!');
-                }
-            });
-        });
-    });
+        // 서버에 수정된 내용을 저장하는 코드 (AJAX 또는 form submission 필요)
+        // 예: AJAX 요청을 보내거나 form을 제출하는 방식
 
+        // 예시: 단순히 수정된 내용을 콘솔에 출력 (실제 구현은 서버와 연동 필요)
+        console.log('저장된 댓글 내용:', modifiedContent);
+
+        // 수정된 내용을 서버에 저장 후, 버튼 상태를 다시 수정하기로 변경할 수 있습니다.
+        // 버튼 변경 (저장하기 -> 수정하기)
+        var saveBtn = document.getElementById('saveBtn_' + commentNo);
+        var modifyBtn = document.getElementById('modifyBtn_' + commentNo);
+
+        // textarea에 readonly 다시 적용
+        textarea.setAttribute('readonly', 'readonly');
+
+        // 저장하기 버튼 숨기고 수정하기 버튼 보이게
+        saveBtn.style.display = 'none';
+        modifyBtn.style.display = 'inline-block';
+    }
 </script>
-
-
 </body>
 </html>
