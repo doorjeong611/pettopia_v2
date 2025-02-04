@@ -31,6 +31,7 @@ public class ServiceController {
     @Autowired
     private ServiceService serviceService;
     
+    // 상태 업데이트 (노쇼)
     @PostMapping("/service/updateRsvStatus")
     public ResponseEntity<?> updateRsvStatus(@RequestBody Map<String, Object> params) {
         try {

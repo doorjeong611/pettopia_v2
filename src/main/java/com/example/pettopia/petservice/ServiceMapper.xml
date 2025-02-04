@@ -31,8 +31,9 @@
 				pr.customer_no = c.customer_no
 		WHERE 1=1
 		<if test="searchWord != null and searchWord != ''">
-	        AND (service_name LIKE CONCAT('%', #{searchWord}, '%')
-	             OR service_desc LIKE CONCAT('%', #{searchWord}, '%'))
+	        AND (ps.service_name LIKE CONCAT('%', #{searchWord}, '%')
+	             OR ps.service_desc LIKE CONCAT('%', #{searchWord}, '%')
+	             OR c.customer_name LIKE CONCAT('%', #{searchWord}, '%'))
 	    </if>
 	    
 		LIMIT #{pageSize} OFFSET #{offset}
