@@ -20,9 +20,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class CustomerController {
     @Autowired
-    private CustomerService customerService; 
-    @GetMapping("/customer/getCustomerNo/{customerName}")
+    private CustomerService customerService;
+    
     @ResponseBody
+    @GetMapping("/customer/getCustomerNo/{customerName}")
     public Map<String, Object> getCustomerNo(@PathVariable String customerName) {
         Map<String, Object> response = new HashMap<>();
         

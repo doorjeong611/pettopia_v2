@@ -129,22 +129,21 @@ public class RoomController {
 		        @RequestParam("checkInDatetime") String checkInDatetime,
 		        @RequestParam("checkOutDatetime") String checkOutDatetime,
 		        RedirectAttributes redirectAttributes) {
-
+		    
+		    log.debug(TeamColor.WJ + "checkIn : " + checkInDatetime + " checkOut : " + checkOutDatetime + TeamColor.RESET);
+		    
 		    log.debug("Received customerNo: " + customerNo);
-		    // 날짜 형식 정의 (예: "2025-02-04 14:00:00")
-		    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		    
+		    // 예약 객체 생성 및 값 설정
+		    RoomRsv roomRsv = new RoomRsv();
+		    roomRsv.setRoomNo(roomNo);
+		    roomRsv.setCustomerNo(customerNo);
+		    
+		    // checkInDatetime과 checkOutDatetime을 그대로 String 값으로 설정
+		    roomRsv.setCheckInDatetime(checkInDatetime);
+		    roomRsv.setCheckOutDatetime(checkOutDatetime);
+
 		    try {
-		        // 문자열을 LocalDateTime으로 변환
-		        LocalDateTime checkIn = LocalDateTime.parse(checkInDatetime, formatter);
-		        LocalDateTime checkOut = LocalDateTime.parse(checkOutDatetime, formatter);
-
-		        // 예약 객체 생성 및 값 설정
-		        RoomRsv roomRsv = new RoomRsv();
-		        roomRsv.setRoomNo(roomNo);
-		        roomRsv.setCustomerNo(customerNo);
-		        roomRsv.setCheckInDatetime(checkIn);
-		        roomRsv.setCheckOutDatetime(checkOut);
-
 		        // 서비스 메서드를 통해 예약 등록
 		        roomService.addRoomRsv(roomRsv);
 
