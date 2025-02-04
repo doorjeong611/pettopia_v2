@@ -43,7 +43,15 @@
 	
 	<!-- 총 서비스 예약 내역 갯수 조회 -->
     <select id="countServiceRsvList" resultType="int">
-        SELECT COUNT(*) FROM pet_service_rsv WHERE 1=1
+        SELECT COUNT(*) 
+        FROM pet_service_rsv psr
+        INNER JOIN customer c
+        ON psr.customer_no = c.customer_no
+        WHERE 1=1
+        <if test="searchWord != null and searchWord != ''">
+	        AND (c.customer_name LIKE CONCAT('%', #{searchWord}, '%'))
+	    </if>
+	    
         
     </select>
 

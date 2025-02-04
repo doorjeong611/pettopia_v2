@@ -113,7 +113,7 @@
 						        <!-- 이전 그룹 버튼 -->
 						        <c:if test="${currentPage > 10}">
 						            <a class="inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 focus:bg-custom-50 focus:text-custom-500"
-						               href="?currentPage=${currentPage - 10}&pageSize=${pageSize}">
+						               href="?currentPage=${currentPage - 10}&searchWord=${searchWord}">
 						                이전
 						            </a>
 						        </c:if>
@@ -138,7 +138,7 @@
 						                        <c:otherwise>
 						                            <li>
 						                                <a class="inline-flex items-center justify-center bg-white border border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 h-8 px-3 rounded"
-						                                   href="?currentPage=${num}&pageSize=${pageSize}">
+						                                   href="?currentPage=${num}&searchWord=${searchWord}">
 						                                    ${num}
 						                                </a>
 						                            </li>
@@ -151,7 +151,7 @@
 						        <!-- 다음 그룹 버튼 -->
 						        <c:if test="${totalPages > 10}">
 						            <a class="inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 focus:bg-custom-50 focus:text-custom-500"
-						               href="?currentPage=${currentPage + 10}&pageSize=${pageSize}">
+						               href="?currentPage=${currentPage + 10}&searchWord=${searchWord}">
 						                다음
 						            </a>
 						        </c:if>
