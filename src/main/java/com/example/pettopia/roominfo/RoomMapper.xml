@@ -61,12 +61,27 @@
 			c.customer_no = r.customer_no
 	WHERE
 			1=1
+	<if test="searchWord != null and searchWord != ''">
+	        AND (c.customer_name LIKE CONCAT('%', #{searchWord}, '%'))
+	    </if>
+	ORDER BY r.check_in_datetime DESC
+	
 	LIMIT #{pageSize} OFFSET #{offset}
 			
 	</select>
 	<!-- 총 예약 내역 갯수 조회 -->
     <select id="countRoomRsvList" resultType="int">
-        SELECT COUNT(*) FROM room_rsv WHERE 1=1
+        SELECT COUNT(*) 
+        FROM room_rsv r
+        INNER JOIN room_info ri 
+        ON r.room_no = ri.room_no
+    	INNER JOIN customer c 
+    	ON c.customer_no = r.customer_no
+        WHERE 1=1
+        <if test="searchWord != null and searchWord != ''">
+	        AND (c.customer_name LIKE CONCAT('%', #{searchWord}, '%'))
+	    </if>
+         
     </select>
 
   <!-- 객실 삭제 -->

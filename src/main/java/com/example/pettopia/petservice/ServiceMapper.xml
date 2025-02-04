@@ -35,6 +35,7 @@
 	             OR ps.service_desc LIKE CONCAT('%', #{searchWord}, '%')
 	             OR c.customer_name LIKE CONCAT('%', #{searchWord}, '%'))
 	    </if>
+	    ORDER BY pr.rsv_datetime DESC
 	    
 		LIMIT #{pageSize} OFFSET #{offset}
 		
@@ -43,10 +44,7 @@
 	<!-- 총 서비스 예약 내역 갯수 조회 -->
     <select id="countServiceRsvList" resultType="int">
         SELECT COUNT(*) FROM pet_service_rsv WHERE 1=1
-        <if test="searchWord != null and searchWord != ''">
-	        AND (service_name LIKE CONCAT('%', #{searchWord}, '%')
-	             OR service_desc LIKE CONCAT('%', #{searchWord}, '%'))
-	    </if>
+        
     </select>
 
 	<!-- 서비스 삭제 -->

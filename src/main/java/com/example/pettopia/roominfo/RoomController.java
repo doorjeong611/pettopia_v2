@@ -50,10 +50,6 @@ public class RoomController {
 			 // 총 객실 수 및 페이지 계산
 			int totalRecords = roomService.countRoomRsvList(searchWord); // 총 고객 수 조회
 	        int totalPages = (int) Math.ceil((double) totalRecords / pageSize);
-
-		    // 페이지네이션 적용
-		    int startIdx = (currentPage - 1) * pageSize;
-		    int endIdx = Math.min(startIdx + pageSize, totalRecords);
 		    
 		    log.debug(TeamColor.WJ + "roomRsvList ====> " + roomRsvList + TeamColor.RESET);
 		    
@@ -62,6 +58,9 @@ public class RoomController {
 		    model.addAttribute("totalPages", totalPages);
 		    model.addAttribute("pageSize", pageSize); // 페이지 크기
 		    model.addAttribute("totalRecords", totalRecords);
+		    model.addAttribute("searchWord", searchWord);
+		    
+		    log.debug(TeamColor.WJ + "searchWord ====> " + searchWord + TeamColor.RESET);
 			return "room/roomRsvList";
 		}
 		
