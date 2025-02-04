@@ -92,11 +92,11 @@
                                 </div>
                                 <div class="mb-4">
                                     <label class="inline-block mb-2 text-base font-medium">체크인<span class="text-red-500">*</span></label>
-                                    <input type="date" id="checkIn" name="pricePerNight" class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200">
+                                    <input type="datetime-local" id="checkIn" name="checkInDatetime" class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200">
                                 </div>
                                 <div class="mb-4">
                                     <label class="inline-block mb-2 text-base font-medium">체크아웃<span class="text-red-500">*</span></label>
-                                    <input type="date" id="checkOut" name="pricePerNight" class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200">
+                                    <input type="datetime-local" id="checkOut" name="checkOutDatetime" class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200">
                                 </div>
                              </div>
                              <div class="lg:col-span-2 xl:col-span-12 mb-4">
@@ -166,23 +166,51 @@
     
     document.getElementById("RsvCustomerName").addEventListener("change", function() {
         let customerName = this.value;
-        fetch('/customer/getCustomerNo?customerName=' + customerName)
-        
-        .then(response => response.json()) // 응답이 JSON 형식으로 올 것으로 예상
-        .then(data => {
-          if (data.success) {
-            console.log('고객 번호:', data.customerNo);
-          } else {
-            console.error('오류:', data.message);
-          }
-        })
-        .catch(error => {
-          console.error('서버 오류:', error); // 응답이 HTML이라면 여기서 오류가 발생할 수 있음
-        });
+        let encodedCustomerName = encodeURIComponent(customerName); // 한글을 URL 인코딩
+
+        fetch('/pettopia/customer/getCustomerNo/' + encodedCustomerName) // 인코딩된 값으로 요청
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('서버 오류: ' + response.statusText);
+                }
+                return response.json(); // 응답을 JSON으로 변환
+            })
+            .then(data => {
+                if (data.success) {
+                    console.log('고객 번호:', data.customerNo);
+                    // customerNo 값을 hidden input 필드에 삽입
+                    document.querySelector('input[name="customerNo"]').value = data.customerNo;
+                } else {
+                    console.error('오류:', data.message);
+                }
+            })
+            .catch(error => {
+                console.error('서버 오류:', error); // 오류 메시지 출력
+            });
     });
 
-
 </script>
+
+<script>
+    // 기본값 설정
+    document.addEventListener("DOMContentLoaded", function() {
+        const today = new Date();
+
+        // 한국 시간대(UTC+09:00)로 변환
+        const koreaOffset = 9 * 60; // UTC+9 시간대 차이 (분 단위)
+
+        // checkIn: 오늘 날짜 오후 3시로 설정
+        today.setHours(15, 0, 0, 0); // 오후 3시로 설정
+        const checkInValue = new Date(today.getTime() + koreaOffset * 60 * 1000).toISOString().slice(0, 16); // 한국 시간으로 변환 후 yyyy-mm-ddThh:mm 형식으로 변환
+        document.getElementById("checkIn").value = checkInValue;
+
+        // checkOut: 오늘 날짜 오전 11시로 설정
+        today.setHours(11, 0, 0, 0); // 오전 11시로 설정
+        const checkOutValue = new Date(today.getTime() + koreaOffset * 60 * 1000).toISOString().slice(0, 16); // 한국 시간으로 변환 후 yyyy-mm-ddThh:mm 형식으로 변환
+        document.getElementById("checkOut").value = checkOutValue;
+    });
+</script>
+
 
 
 
