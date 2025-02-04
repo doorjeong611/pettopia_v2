@@ -194,13 +194,10 @@ public class NoticeService {
 	// 공지사항 상세보기 : 해당 공지사항 조회
 	public Map<String, Object> getNoticeOne(int noticeNo) {
 		
-		log.debug(TeamColor.KMJ+"[NoticeService - addNoticeView]");
-		log.debug(TeamColor.KMJ+ "noticeNo : " + noticeNo + TeamColor.RESET);
-		
 		Map<String, Object> noticeOne = noticeMapper.selectNoticeOne(noticeNo);
 		
+		log.debug(TeamColor.OJY+ "noticeOne 조회----->" + noticeOne + TeamColor.RESET);
 		return noticeOne; 
-		
 		
 	}
 	

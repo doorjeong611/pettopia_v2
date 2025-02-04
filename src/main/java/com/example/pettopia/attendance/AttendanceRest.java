@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -50,24 +51,49 @@ public class AttendanceRest {
             @RequestParam(required = false) String deptCode,
             @RequestParam(required = false) String divisionCode,
             @RequestParam(required = false) String empName,
-            @RequestParam(defaultValue = "0") int offset,
-            @RequestParam(defaultValue = "10") int limit) {
+            @RequestParam(defaultValue = "1") int currentPage, 
+            @RequestParam(defaultValue = "10") int size, Model model) {
     	
+		// 페이지네이션 유효성 검사
+	    if (currentPage < 1) {
+	        currentPage = 1; // 기본값
+	    }
+	    if (size < 1 || size > 100) { // 최대 100개
+	        size = 10; // 기본값
+	    }
+	    
+	    Map<String, Object> params = new HashMap<>();
+	    
+        // 페이지 오프셋 계산
+        int offset = (currentPage - 1) * size;
+        if (offset < 0) {
+            offset = 0; 
+        }
+        
         // 쿼리 파라미터 추가
-        Map<String, Object> params = new HashMap<>();
         params.put("attendanceDate", attendanceDate);
         params.put("deptCode", deptCode);
         params.put("divisionCode", divisionCode);
         params.put("empName", empName);
         params.put("offset", offset);
-        params.put("limit", limit);
-
+        params.put("limit", size);
+        
+        // 전체 출석 수 가져오기
+        int totalRecords = attendanceService.countAttendance(params); // 총 출석 수
+        int totalPages = (int) Math.ceil((double) totalRecords / size);
+        
 		 // 디버깅
 		 List<Map<String, Object>> attendanceList = attendanceService.selectAttendance(params);
 		 log.debug(TeamColor.OJY + "attendanceList: " + attendanceList + TeamColor.RESET);
 		 
+	    // 페이지 정보 모델에 추가
+	    model.addAttribute("attendanceList", attendanceList);
+	    model.addAttribute("currentPage", currentPage);
+	    model.addAttribute("totalPages", totalPages);
+	    model.addAttribute("totalRecords", totalRecords);
+		    
         // 직원리스트 반환
-        return attendanceService.selectAttendance(params);
+        return attendanceList;
     }
     
     

@@ -173,7 +173,7 @@
 
 	<!-- 공지사항 상세보기 : 해당 공지사항 조회 -->
 	<select id="selectNoticeOne" parameterType="int" resultType="map">
-		SELECT n.notice_no AS noticeNo
+		SELECT DISTINCT n.notice_no AS noticeNo
 				, n.writer_emp_no AS writerEmpNo
 				, e.emp_name AS empName
 				, n.dept_code AS deptCode
@@ -185,7 +185,7 @@
 				, n.create_datetime AS createDateTime
 				, n.is_pinned AS isPinned
 		FROM notice n 
-		LEFT OUTER JOIN department d ON n.dept_code = d.dept_code
+		LEFT OUTER JOIN department d ON n.dept_code = d.division_code
 		LEFT OUTER JOIN division di ON d.division_code = di.division_code
 		LEFT OUTER JOIN employee e ON n.writer_emp_no = e.emp_no
 		WHERE n.notice_no = #{noticeNo}

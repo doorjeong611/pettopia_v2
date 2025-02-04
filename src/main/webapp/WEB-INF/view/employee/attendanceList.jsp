@@ -184,20 +184,26 @@
 					    </tbody>
 				    </table>
 					
-					<!-- Pagination controls -->
-		            <div id="paginationContainer" style="margin-top: 20px; align-items: center; justify-self: end;">
-		                <c:if test="${currentPage > 1}">
-		                    <a href="${pageContext.request.contextPath}/employee/attendanceList?page=${currentPage - 1}&empName=${param.empName}" class="prev" style="margin-right: 10px; padding: 8px 12px; border: 1px solid #007bff; background-color: #ffffff; color: #007bff; border-radius: 4px; text-decoration: none;"> < 이전</a>
-		                </c:if>
-		
-		                <c:forEach var="pageNum" begin="1" end="${totalPages}">
-		                    <a href="${pageContext.request.contextPath}/employee/attendanceList?page=${pageNum}&empName=${param.empName}" class="page-num" style="margin-right: 10px; padding: 8px 12px; border: 1px solid #007bff; background-color: #ffffff; color: #007bff; border-radius: 4px; text-decoration: none;">${pageNum}</a>
-		                </c:forEach>
-		
-		                <c:if test="${currentPage < totalPages}">
-		                    <a href="${pageContext.request.contextPath}/employee/attendanceList?page=${currentPage + 1}&empName=${param.empName}" class="next" style="margin-left: 10px; padding: 8px 12px; border: 1px solid #007bff; background-color: #ffffff; color: #007bff; border-radius: 4px; text-decoration: none;"> 다음 > </a>
-		                </c:if>
-		            </div>
+					<!-- 페이지네이션 -->
+						<div class="flex justify-end mt-4">
+						    <div class="flex gap-2 pagination-wrap">
+						        <!-- 이전 페이지 -->
+						        <button id="prevPageBtn" class="inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 focus:bg-custom-50 focus:text-custom-500"
+						                disabled>
+						            이전
+						        </button>
+						
+						        <!-- 페이지 번호 링크 -->
+						        <ul id="paginationNumbers" class="flex gap-2 mb-0"></ul>
+						
+						        <!-- 다음 페이지 -->
+						        <button id="nextPageBtn" class="inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 focus:bg-custom-50 focus:text-custom-500"
+						                disabled>
+						            다음
+						        </button>
+						    </div>
+						</div>
+					
 					</div>
                             </div><!--end col-->
                             <div class="xl:col-span-2 xl:col-start-11">
@@ -241,20 +247,56 @@
                 </tbody>
             </table>
         
-        	<!-- Pagination controls -->
-            <div id="paginationContainer" style="margin-top: 20px; align-items: center; justify-self: end;">
-                <c:if test="${currentPage > 1}">
-                    <a href="${pageContext.request.contextPath}/employee/attendanceList?page=${currentPage - 1}&empName=${param.empName}" class="prev" style="margin-right: 10px; padding: 8px 12px; border: 1px solid #007bff; background-color: #ffffff; color: #007bff; border-radius: 4px; text-decoration: none;"> < 이전</a>
-                </c:if>
-
-                <c:forEach var="pageNum" begin="1" end="${totalPages}">
-                    <a href="${pageContext.request.contextPath}/employee/attendanceList?page=${pageNum}&empName=${param.empName}" class="page-num" style="margin-right: 10px; padding: 8px 12px; border: 1px solid #007bff; background-color: #ffffff; color: #007bff; border-radius: 4px; text-decoration: none;">${pageNum}</a>
-                </c:forEach>
-
-                <c:if test="${currentPage < totalPages}">
-                    <a href="${pageContext.request.contextPath}/attendanceList?page=${currentPage + 1}&empName=${param.empName}" class="next" style="margin-left: 10px; padding: 8px 12px; border: 1px solid #007bff; background-color: #ffffff; color: #007bff; border-radius: 4px; text-decoration: none;"> 다음 > </a>
-                </c:if>
-            </div>
+             <!-- 페이지네이션 넘버링 -->
+			<div class="flex justify-end mt-4">
+					    <div class="flex gap-2 pagination-wrap">
+					        <!-- 이전 페이지 -->
+					        <c:if test="${currentPage > 1}">
+					            <a class="inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 focus:bg-custom-50 focus:text-custom-500 page-item pagination-prev" 
+					               href="${pageContext.request.contextPath}/employee/attendanceList?currentPage=${currentPage - 1}&empName=${param.empName}&deptCode=${param.deptCode}&divisionCode=${param.divisionCode}">
+					                이전
+					            </a>
+					        </c:if>
+					        <c:if test="${currentPage == 1}">
+					            <span class="inline-flex items-center justify-center bg-white h-8 px-3 border rounded border-slate-200 text-slate-400 cursor-not-allowed">
+					                이전
+					            </span>
+					        </c:if>
+					
+					        <!-- 페이지 번호 링크 -->
+					        <ul class="flex gap-2 mb-0">
+					            <c:forEach var="num" begin="1" end="${totalPages}"> <!-- 전체 페이지 수에 따라 반복 -->
+					                <c:if test="${num == currentPage}">
+					                    <li class="active">
+					                        <a class="inline-flex items-center justify-center bg-custom-50 border border-custom-50 text-custom-500 h-8 px-3 rounded" href="#">
+					                            ${num}
+					                        </a>
+					                    </li>
+					                </c:if>
+					                <c:if test="${num != currentPage}">
+					                    <li>
+					                        <a class="inline-flex items-center justify-center bg-white border border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 h-8 px-3 rounded" 
+												href="${pageContext.request.contextPath}/employee/attendanceList?currentPage=${num}&empName=${param.empName}&deptCode=${param.deptCode}&divisionCode=${param.divisionCode}">${num}
+					                        </a>
+					                    </li>
+					                </c:if>
+					            </c:forEach>
+					        </ul>
+					
+					        <!-- 다음 페이지 -->
+					        <c:if test="${currentPage < totalPages}">
+					            <a class="inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 focus:bg-custom-50 focus:text-custom-500 page-item pagination-next" 
+					                href="${pageContext.request.contextPath}/employee/attendanceList?currentPage=${currentPage + 1}&empName=${param.empName}&deptCode=${param.deptCode}&divisionCode=${param.divisionCode}">
+					                다음
+					            </a>
+					        </c:if>
+					        <c:if test="${currentPage >= totalPages}">
+					            <span class="inline-flex items-center justify-center bg-white h-8 px-3 border rounded border-slate-200 text-slate-400 cursor-not-allowed">
+					                다음
+					            </span>
+					        </c:if>
+					    </div>
+					</div>
         </div>
         </div>
     </div></div>
@@ -299,6 +341,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const teamSelect = document.getElementById('teamSelect'); // 팀 선택
     const employeeSearchInput = document.getElementById('employeeSearchInput'); // 직원 이름 input
     const searchEmployeeBtn = document.getElementById('searchEmployeeBtn'); // 직원 검색 Btn
+    
+    const size = 10;
+    let currentPage = 1;
+    let totalPages = 1; //초기값
     
     function resetInputs() {
         departmentSelect.value = '';
@@ -389,7 +435,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 type: 'GET',
                 data: {
                     empStatus: 'E',
-                    empName: employeeName
+                    empName: employeeName,
+                    currentPage: currentPage,
+                    size: size
                 },
                 success: function(data) {
                     if (!data || data.length === 0) {
@@ -468,7 +516,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 type: 'GET',
                 data: {
                     empStatus: 'E', // 'E'는 재직중인 직원 필터링
-                    deptCode: teamCode || '' // 선택된 팀 코드 추가
+                    deptCode: teamCode || '', // 선택된 팀 코드 추가
+                    currentPage: currentPage, // 현재 페이지 추가
+                    size: size // 페이지 크기 추가
                 },
                 success: function(data) {
                     if (!data || data.length === 0) {
@@ -501,6 +551,9 @@ document.addEventListener('DOMContentLoaded', function() {
                             }
                             attendanceTableBody.append('<tr><td>' + employee.empNo + '</td>' + '<td>' + employee.empName + '</td>' + '<td>' + employee.attendanceDate + '</td>' + '<td>' + employee.clockInTime + '</td>' + '<td>' + employee.clockOutTime + '</td>' + '<td>' + statusText + '</td></tr>'); // 직원 데이터 테이블에 추가
                         });
+                        // 페이지네이션 업데이트
+                        totalPages = data.totalPages; // 전체 페이지 수 업데이트
+                        renderPagination();
                     }
                 },
                 error: function(error) {
@@ -509,7 +562,44 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     }
+    
+    function renderPagination() {
+    	 const paginationContainer = document.getElementById('paginationContainer');
+        paginationContainer.innerHTML = '';
 
+        if (totalPages > 1) {
+            for (let i = 1; i <= totalPages; i++) {
+                let btn = document.createElement('button');
+                btn.textContent = i;
+                btn.classList.add('pagination-btn');
+                if (i === currentPage) btn.classList.add('active');
+                btn.onclick = function () {
+                    goToPage(i);
+                };
+                paginationContainer.appendChild(btn);
+            }
+        }
+    }
+    
+    function goToPage(pageNumber) {
+        if (pageNumber < 1 || pageNumber > totalPages) return;
+        currentPage = pageNumber;
+        updateEmployeeList();
+    }
+
+    searchEmployeeBtn.addEventListener('click', function () {
+        currentPage = 1;
+        updateEmployeeList();
+    });
+
+    $('#employeeSearchInput').on('keydown', function (event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            currentPage = 1;
+            updateEmployeeList();
+        }
+    });
+    
     // 초기화 및 부서 목록 로드
     getDivisionList();
 });
