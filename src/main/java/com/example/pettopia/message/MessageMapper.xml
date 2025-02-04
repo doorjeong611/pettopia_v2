@@ -73,19 +73,17 @@
 	</delete>
 
 	<!-- 오자윤 : /message/messageList, Bin 페이징 개수 조회 -->
-	<select id="countMessage" resultType="int">
+	<select id="countMessage" parameterType="map" resultType="int">
 	    SELECT COUNT(*) 
-	    FROM (
-	        SELECT recipient_emp_no
-	        FROM message
-	        WHERE recipient_emp_no = #{empNo} AND message_bin = '0'
-	        
-	        UNION ALL
-	        
-	        SELECT recipient_emp_no
-	        FROM message
-	        WHERE recipient_emp_no = #{empNo} AND message_bin = '1'
-	    ) AS combined;
+	    FROM message 
+	    WHERE recipient_emp_no = #{empNo} 
+	      AND message_bin = #{message_bin}
+	    <if test="searchKeyword != null and searchKeyword != ''">
+	        AND (
+	            message_title LIKE CONCAT('%', #{searchKeyword}, '%') 
+	            OR sender_emp_no IN (SELECT emp_no FROM employee WHERE emp_name LIKE CONCAT('%', #{searchKeyword}, '%'))
+		        )
+	    </if>
 	</select>
 	
 	<!-- 오자윤 : /message/messageNote (모달)직원 선택 조회 -->
@@ -134,30 +132,65 @@
 	<!-- 오자윤 : /message/messageList 쪽지리스트 조회 -->
 	<select id="getMessageList" parameterType="map" resultType="map">
 	    SELECT 
-	        m.message_no messageNo,
-	        m.sender_emp_no senderEmpNo,
-	        e.emp_name senderName,
-	        m.recipient_emp_no recipientEmpNo,
-	        m.message_title messageTitle,
-	        m.message_content messageContent,
-	        m.message_state messageState,
-	        m.message_bin messageBin,
-	        DATE_FORMAT(m.create_datetime, '%Y-%m-%d %H:%i') createDatetime,
-	        DATE_FORMAT(m.update_datetime, '%Y-%m-%d %H:%i') updateDatetime
+	        m.message_no AS messageNo,
+	        m.sender_emp_no AS senderEmpNo,
+	        e.emp_name AS senderName,
+	        m.recipient_emp_no AS recipientEmpNo,
+	        m.message_title AS messageTitle,
+	        m.message_content AS messageContent,
+	        m.message_state AS messageState,
+	        m.message_bin AS messageBin,
+	        DATE_FORMAT(m.create_datetime, '%Y-%m-%d %H:%i') AS createDatetime,
+	        DATE_FORMAT(m.update_datetime, '%Y-%m-%d %H:%i') AS updateDatetime
 	    FROM 
 	        message m
 	    JOIN 
 	        employee e ON m.sender_emp_no = e.emp_no
 	    WHERE 
 	        m.recipient_emp_no = #{empNo}
-	        AND (
-	            #{searchKeyword} IS NULL OR 
-	              (m.message_title LIKE CONCAT('%', #{searchKeyword}, '%') OR e.emp_name LIKE CONCAT('%', #{searchKeyword}, '%'))  
-			    )  
-			ORDER BY  
-			    m.message_no ASC  
-			LIMIT  
-			    #{limit} OFFSET #{offset};
+	        AND m.message_bin = "0"
+	        <if test="searchKeyword != null and searchKeyword != ''">
+	            AND (
+	                m.message_title LIKE CONCAT('%', #{searchKeyword}, '%') 
+	                OR e.emp_name LIKE CONCAT('%', #{searchKeyword}, '%')
+	            )
+	        </if>
+	    ORDER BY  
+	        m.create_datetime DESC
+	    LIMIT  
+	        #{limit} OFFSET #{offset};
+	</select>
+	
+	<!-- 오자윤 : /message/messageList 쪽지휴지통 조회 -->
+	<select id="getMessageBin" parameterType="map" resultType="map">
+	    SELECT 
+	        m.message_no AS messageNo,
+	        m.sender_emp_no AS senderEmpNo,
+	        e.emp_name AS senderName,
+	        m.recipient_emp_no AS recipientEmpNo,
+	        m.message_title AS messageTitle,
+	        m.message_content AS messageContent,
+	        m.message_state AS messageState,
+	        m.message_bin AS messageBin,
+	        DATE_FORMAT(m.create_datetime, '%Y-%m-%d %H:%i') AS createDatetime,
+	        DATE_FORMAT(m.update_datetime, '%Y-%m-%d %H:%i') AS updateDatetime
+	    FROM 
+	        message m
+	    JOIN 
+	        employee e ON m.sender_emp_no = e.emp_no
+	    WHERE 
+	        m.recipient_emp_no = #{empNo}
+	        AND m.message_bin = "1"
+	        <if test="searchKeyword != null and searchKeyword != ''">
+	            AND (
+	                m.message_title LIKE CONCAT('%', #{searchKeyword}, '%') 
+	                OR e.emp_name LIKE CONCAT('%', #{searchKeyword}, '%')
+	            )
+	        </if>
+	    ORDER BY  
+	        m.create_datetime DESC
+	    LIMIT  
+	        #{limit} OFFSET #{offset};
 	</select>
 	
 	<!-- 오자윤 : /message/messageList 쪽지 휴지통 이동 -->

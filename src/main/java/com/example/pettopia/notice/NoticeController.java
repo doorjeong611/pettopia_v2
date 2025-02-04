@@ -123,7 +123,7 @@ public class NoticeController {
 	    
 	    // 관리자가 아닌 경우 리다이렉트
 	    if ("ROLE_EMP".equals(roleName)) {
-	        return "redirect:/notice/getNoticeList"; 
+	        return "redirect:/notice/getNoticeList?message=accessDenied"; 
 	    }
 	    
 	    // 부서 목록 가져오기
@@ -178,7 +178,7 @@ public class NoticeController {
 		
 		// 게시글 가져오기
 		Map<String, Object> noticeOne = noticeService.getNoticeOne(noticeNo); 
-		log.debug(TeamColor.OJY+ "noticeOne : " + noticeOne.toString());
+		log.debug(TeamColor.OJY+ "noticeOne-------->" + noticeOne.toString());
 		// 게시글 파일 가져오기
 		List<NoticeFile> noticeFileList = noticeFileService.getNoticeFileList(noticeNo); 
 		log.debug(TeamColor.OJY+ "파일 가져오기------> " + noticeFileList.toString());
@@ -201,7 +201,7 @@ public class NoticeController {
 		    
 		    // 권한에 따라 접근 제어
 		    if ("ROLE_EMP".equals(roleName)) {
-		        return "redirect:/notice/getNoticeList"; // 직원 권한일 경우 공지사항 목록으로 리다이렉트
+		        return "redirect:/notice/getNoticeList?message=accessDenied"; // 직원 권한일 경우 공지사항 목록으로 리다이렉트
 		    } else if ("ROLE_ADMIN".equals(roleName)) {
 		    
 			String path = session.getServletContext().getRealPath("/noticeFile/");
@@ -220,7 +220,8 @@ public class NoticeController {
 	    String roleName = empUserDetails.getRoleName();
 	    
 		 // 권한에 따라 접근 제어
-	    if ("ROLE_EMP".equals(roleName)) { return "redirect:/notice/getNoticeList";
+	    if ("ROLE_EMP".equals(roleName)) { 
+	    	return "redirect:/notice/getNoticeList?message=accessDenied"; 
 			 // 직원 권한일 경우 공지사항 목록으로 리다이렉트 
 			 } else if ("ROLE_ADMIN".equals(roleName)) {
 			// 부서 목록 가져오기
