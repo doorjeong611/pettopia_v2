@@ -1,5 +1,7 @@
 package com.example.pettopia.roominfo;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,22 +31,6 @@ import lombok.extern.slf4j.Slf4j;
 public class RoomController {
 		@Autowired
 		private RoomService roomService;
-		
-		// 객실 예약 추가
-		@PostMapping("/room/addRoomRsv")
-		public String addRoomRsv(@ModelAttribute RoomRsv roomRsv, RedirectAttributes redirectAttributes) {
-		    log.debug(TeamColor.WJ + "addRoomRsv 호출됨 - roomRsv ====> " + roomRsv + TeamColor.RESET);
-
-		    try {
-		        roomService.addRoomRsv(roomRsv);
-		        redirectAttributes.addFlashAttribute("successMessage", "객실 예약이 성공적으로 추가되었습니다!");
-		    } catch (Exception e) {
-		        log.debug(TeamColor.WJ + "객실 예약 추가 중 오류 발생 ====> " + e + TeamColor.RESET);
-		        redirectAttributes.addFlashAttribute("errorMessage", "객실 예약 중 오류가 발생했습니다.");
-		    }
-
-		    return "redirect:/room/getRoomRsvList";
-		}
 
 		
 		 // AJAX 요청을 받아 룸 타입별 객실 목록을 JSON으로 반환
@@ -135,31 +121,46 @@ public class RoomController {
 			return "room/addRoomRsv";
 		}
 		
-		// 객실 예약 등록 요청 처리
-	    @PostMapping("/room/getAddRoomRsv")
-	    public String getAddRoomRsv(@RequestParam("roomNo") int roomNo,
-	                              @RequestParam("customerNo") int customerNo,
-	                              @RequestParam("checkInDatetime") String checkInDatetime,
-	                              @RequestParam("checkOutDatetime") String checkOutDatetime,
-	                              Model model) {
+		// 객실 예약 추가
+		@PostMapping("/room/addRoomRsv")
+		public String addRoomRsv(
+		        @RequestParam("roomNo") int roomNo,
+		        @RequestParam("customerNo") int customerNo,
+		        @RequestParam("checkInDatetime") String checkInDatetime,
+		        @RequestParam("checkOutDatetime") String checkOutDatetime,
+		        RedirectAttributes redirectAttributes) {
 
-	        // 예약 객체 생성
-	        RoomRsv roomRsv = new RoomRsv();
-	        roomRsv.setRoomNo(roomNo);
-	        roomRsv.setCustomerNo(customerNo);
-	        roomRsv.setCheckInDatetime(checkInDatetime);
-	        roomRsv.setCheckOutDatetime(checkOutDatetime);
+		    log.debug("Received customerNo: " + customerNo);
+		    // 날짜 형식 정의 (예: "2025-02-04 14:00:00")
+		    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		    try {
+		        // 문자열을 LocalDateTime으로 변환
+		        LocalDateTime checkIn = LocalDateTime.parse(checkInDatetime, formatter);
+		        LocalDateTime checkOut = LocalDateTime.parse(checkOutDatetime, formatter);
 
-	        try {
-	            // 예약 추가
-	            roomService.addRoomRsv(roomRsv);
-	            model.addAttribute("message", "객실 예약이 완료되었습니다.");
-	        } catch (Exception e) {
-	            model.addAttribute("message", "예약 실패: " + e.getMessage());
-	        }
+		        // 예약 객체 생성 및 값 설정
+		        RoomRsv roomRsv = new RoomRsv();
+		        roomRsv.setRoomNo(roomNo);
+		        roomRsv.setCustomerNo(customerNo);
+		        roomRsv.setCheckInDatetime(checkIn);
+		        roomRsv.setCheckOutDatetime(checkOut);
 
-	        return "roomReservationResult"; // 결과 페이지로 이동
-	    }
+		        // 서비스 메서드를 통해 예약 등록
+		        roomService.addRoomRsv(roomRsv);
+
+		        // 예약 등록 성공 메시지 전달
+		        redirectAttributes.addFlashAttribute("successMessage", "객실 예약이 완료되었습니다.");
+		    } catch (Exception e) {
+		        log.error("객실 예약 등록 실패", e);
+		        // 예약 등록 실패 시 에러 메시지 전달
+		        redirectAttributes.addFlashAttribute("errorMessage", "예약 실패: " + e.getMessage());
+		    }
+
+		    // 예약 리스트 페이지로 리다이렉트
+		    return "redirect:/room/getRoomRsvList";
+		}
+
+		
 
 		// 객실 등록 처리
 	    @PostMapping("/room/addRoom")

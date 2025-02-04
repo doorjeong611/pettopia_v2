@@ -6,6 +6,11 @@
     INSERT INTO room_rsv (room_no, customer_no, check_in_datetime, check_out_datetime, rsv_status, create_datetime, update_datetime)
     VALUES (#{roomNo}, #{customerNo}, #{checkInDatetime}, #{checkOutDatetime}, '예약완료', NOW(), NOW())
 </insert>
+<!-- 고객 찾기 -->
+<select id="getCustomerNoByName" resultType="int">
+    SELECT customer_no FROM customer WHERE customer_name = #{customerName} LIMIT 1
+</select>
+
 
 
 	<!-- 룸 타입으로 필터링하여 조회 -->

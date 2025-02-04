@@ -59,7 +59,7 @@ public interface RoomMapper {
 	int insertRoomRsv(RoomRsv roomRsv);
 	
 	// 객실 예약 리스트 갯수 카운트
-	int countRoomRsvList(Map<String, Object> params);
+	int countRoomRsvList(Map<String, Object> params); 
 	
 
 }

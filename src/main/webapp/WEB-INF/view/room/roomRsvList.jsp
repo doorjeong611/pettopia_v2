@@ -98,6 +98,7 @@
 		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${r.roomNo}</td>
 		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${r.customerNo}</td>
 		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${r.customerName}</td>
+		                                        <input type="hidden" id="customerNo" name="customerNo">
 		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${r.pricePerNight}</td>
 		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${r.rsvStatus}</td>
 		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${r.checkInDatetime}</td>
@@ -208,6 +209,7 @@
 
 <!-- App js -->
 <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
+
 
 </body>
 

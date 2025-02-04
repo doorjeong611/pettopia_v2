@@ -1,12 +1,15 @@
 package com.example.pettopia.customer;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.pettopia.vo.Customer;
 
@@ -17,6 +20,26 @@ import lombok.extern.slf4j.Slf4j;
 public class CustomerController {
     @Autowired
     private CustomerService customerService; 
+    @GetMapping("/customer/getCustomerNo")
+    @ResponseBody
+    public Map<String, Object> getCustomerNo(@RequestParam("customerName") String customerName) {
+        Map<String, Object> response = new HashMap<>();
+        
+        // 서비스에서 고객 번호 조회
+        Integer customerNo = customerService.getCustomerNoByName(customerName);
+        log.debug(String.valueOf(customerNo));
+        
+        if (customerNo != null) {
+            response.put("success", true);
+            response.put("customerNo", customerNo);
+        } else {
+            response.put("success", false);
+            response.put("message", "해당 고객이 존재하지 않습니다.");
+        }
+
+        return response; // JSON 응답
+    }
+
     
     // 고객 조회, 페이징, 검색
     @GetMapping("/customer/getCustomerList")

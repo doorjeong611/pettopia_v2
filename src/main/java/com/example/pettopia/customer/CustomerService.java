@@ -28,4 +28,9 @@ public class CustomerService {
         params.put("searchWord", searchWord);
         return customerMapper.countCustomerList(params);
     }
+
+    // 고객 찾기
+    public Integer getCustomerNoByName(String customerName) {
+        return customerMapper.getCustomerNoByName(customerName);
+    }
 }
