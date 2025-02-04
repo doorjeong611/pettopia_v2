@@ -171,7 +171,7 @@
 
   <!-- Main Form -->
   <form action="${pageContext.request.contextPath}/admin/addEmployee" class="create-form" method="post" enctype="multipart/form-data" id="addEmployeeForm">
-    <div class="xl:col-span-9">
+    <div class="xl:col-span-9 ">
       <div class="card">
         <div class="card-body">
           <div class="max-h-[calc(theme('height.screen')_-_180px)] p-4 overflow-y-auto">
@@ -322,6 +322,7 @@
 
 
 
+	</div>
 
 		<!-- Start Footer -->
 		<footer
@@ -329,9 +330,12 @@
 			<c:import url="/WEB-INF/view/inc/footer.jsp"></c:import>
 		</footer>
 		<!-- End Footer -->
-	</div>
 
-	</div>
+	<!-- </div> -->
+	
+	
+	
+	
 	<!-- End Main Content -->
 	<c:import url="/WEB-INF/view/inc/customizerButton.jsp"></c:import>
 

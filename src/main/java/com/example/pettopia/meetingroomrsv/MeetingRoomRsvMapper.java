@@ -23,7 +23,7 @@ public interface MeetingRoomRsvMapper {
 	Integer insertMeetingRoomRsv(MeetingRoomRsv meetingRoomRsv);
 	
 	// 회의실 예약 리스트
-	List<MeetingRoomRsv> selectMeetingRoomRsvList(Map<String, Object> paramMap);
+	List<Map<String, Object>> selectMeetingRoomRsvList(Map<String, Object> paramMap);
 	
 	// 총 회의실 예약 수 조회
 	Integer selectCountMeetingRoomRsvList();
