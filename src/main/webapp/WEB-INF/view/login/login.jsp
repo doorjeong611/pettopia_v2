@@ -149,7 +149,7 @@ $(document).ready(function() {
                     
                     <div class="mt-8 pt-3">
                     	<div>
-                        	<button type="button" id="loginBtn" class=" w-full title-font text-white bg-custom-600 btn border-custom-500 hover:text-custom-600 hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100">로그인</button>
+                        	<button type="button" id="loginBtn" class=" w-full title-font text-white bg-custom-600 btn border-custom-500 hover:text-custom-600 hover:bg-white hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100">로그인</button>
 						</div>	                
                     	<div class="mt-4 pt-3 text-center">
                         	<!-- 임시 비밀번호 발급받기 버튼 -->
