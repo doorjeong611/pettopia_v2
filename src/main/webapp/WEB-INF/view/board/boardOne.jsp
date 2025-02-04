@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <!DOCTYPE html>
 <html lang="en" class="light scroll-smooth group" data-layout="vertical" data-sidebar="light" data-sidebar-size="lg" data-mode="light" data-topbar="light" data-skin="default" data-navbar="sticky" data-content="fluid" dir="ltr">
@@ -39,7 +40,12 @@
     .boardHeaderBox>div>label {
         padding-bottom: 2%;
     }
-
+	.boardContentBox > label{
+		padding-bottom: 1%;
+	}
+	.boardTitleBox > label{
+	 	padding-bottom: 1%;
+	}
     .boardHeaderBox>div:first-child {
         margin-left: 0;
     }
@@ -60,32 +66,15 @@
     }
 
     .boardContentBox .btnBox {
-        width: 35%;
+        width: 50%;
         display: flex;
         justify-content: flex-end;
         margin-top: 2%;
     }
-
-    .boardContentBox .btnBox div {
-        transition: all 0.3s;
-        border-radius: 15px;
-        width: 33.3%;
-        text-align: center;
-        margin: 0 1%;
+	 .boardContentBox .btnBox div{
+        margin:0 1%;
     }
-
-    .boardContentBox .btnBox div a {
-        display: block;
-        padding: 7% 10%;
-    }
-
-    .boardContentBox .btnBox:first-child {
-        margin-left: 0;
-    }
-
-    .boardContentBox .btnBox:last-child {
-        margin-right: 0;
-    }
+	
 
     .contentFooterBox {
         width: 100%;
@@ -93,32 +82,7 @@
         justify-content: flex-end;
     }
 
-    .boardContentBox .btnBox .modifyBtn {
-        background-color: #D6D6D6;
-    }
-
-    .boardContentBox .btnBox .deleteBtn {
-        background-color: #D6D6D6;
-    }
-
-    .boardContentBox .btnBox .returnBtn {
-        background-color: #D6D6D6;
-    }
-
-    .boardContentBox .btnBox .modifyBtn:hover {
-        background-color: #0eA5e9;
-        color: #CCEBF9;
-    }
-
-    .boardContentBox .btnBox .deleteBtn:hover {
-        background-color: #f75a45;
-        color: #FEEBEB;
-    }
-
-    .boardContentBox .btnBox .returnBtn:hover {
-        background-color: #898989;
-        color: #FFFFFF;
-    }
+  
    	.boardFileBox {width: 100%; margin: 1% 0; height: auto;}
    	.boardFileBox > img {margin: 0 auto;}
    	
@@ -146,15 +110,14 @@
 	   }
 	.commentMainBox .replyBox {padding: 3%; width: 100%; height: 100%; margin: 0 auto;}
 	.replyBox button {float: right; margin-right: 2%; margin-top: 1%;}
-	.replyBox .btn {float: right; margin-right: 2%; margin-top: 1%;}
+	.replyBox .btn {float: right; margin-top: 1%;}
 	.replyBox textarea {
 		height: 80px;
 		text-align: left;
 	       resize: none;
 	    }
 	  
-	.replyBox .modifyCommentBox {}
-	.replyBox .deleteCommentBox {}  
+	.replyBox .deleteCommentBox {float: right;}  
 </style>
 
 <body class="text-base bg-body-bg text-body font-public dark:text-zink-100 dark:bg-zink-800 group-data-[skin=bordered]:bg-body-bordered group-data-[skin=bordered]:dark:bg-zink-700">
@@ -212,20 +175,21 @@
                                 </div>
                                 <div>
                                     <label for="creatDateTime_input" class="inline-block text-base">작성일시</label>
-                                    <input type="text" class="form-input" id="creatDateTime_input" readonly value="${boardMap.createDatetime}">
+                                    <input type="text" class="form-input" id="creatDateTime_input" readonly value="${fn:substring(boardMap.createDatetime, 0, 10)}">
                                 </div>
                             </div>
 
                             <div class="boardTitleBox">
-                                <input type="text" class="form-input" value="${boardMap.boardTitle}" readonly onfocus='this.blur();'>
+                           	 	<label for="boardTitle_input" class="inline-block text-base">제목</label>
+                                <input id="boardTitle_input" type="text" class="form-input" value="${boardMap.boardTitle}" readonly onfocus='this.blur();'>
                             </div>
 
                             <div class="boardContentBox">
-                                <textarea class="form-input" readonly onfocus='this.blur();'>${boardMap.boardContent}</textarea>
+                            	<label for="boardContent_input" class="inline-block text-base">내용</label>
+                                <textarea id="boardContent_input" class="form-input" readonly onfocus='this.blur();'>${boardMap.boardContent}</textarea>
 								
 								<c:if test="${not empty boardMap.fileName}">
   									<div class="boardFileBox">
-  									
 										 <img src="${pageContext.request.contextPath}/boardFile/${boardMap.fileName}" alt="게시글 이미지">
 									</div>
 								</c:if>
@@ -233,9 +197,9 @@
                                     <!-- 버튼 박스 -->
                                     <c:if test="${empNo == boardMap.boardWriterNo}">
                                         <div class="btnBox">
-                                            <div class="modifyBtn"><a href="${pageContext.request.contextPath}/board/modifyBoard?boardNo=${boardMap.boardNo}">수정하기</a></div>
-                                            <div class="deleteBtn"><a href="${pageContext.request.contextPath}/board/removeBoard?boardNo=${boardMap.boardNo}">삭제하기</a></div>
-                                            <div class="returnBtn"><a href="${pageContext.request.contextPath}/board/boardList">돌아가기</a></div>
+                                            <div class="bg-white text-custom-500 btn border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600" ><a href="${pageContext.request.contextPath}/board/modifyBoard?boardNo=${boardMap.boardNo}">수정하기</a></div>
+                                            <div class="text-red-500 bg-white border-red-500 btn hover:text-white hover:bg-red-600 hover:border-red-600 focus:text-white focus:bg-red-600 focus:border-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:border-red-600 active:ring active:ring-red-100"><a href="${pageContext.request.contextPath}/board/removeBoard?boardNo=${boardMap.boardNo}">삭제하기</a></div>
+                                            <div class="text-green-500 bg-white border-green-500 btn hover:text-white hover:bg-green-600 hover:border-green-600 focus:text-white focus:bg-green-600 focus:border-green-600 focus:ring focus:ring-green-100 active:text-white active:bg-green-600 active:border-green-600 active:ring active:ring-green-100"><a href="${pageContext.request.contextPath}/board/boardList">돌아가기</a></div>
                                         </div>
                                     </c:if>
                                     <c:if test="${empNo != boardMap.boardWriterNo}">
@@ -253,21 +217,16 @@
                   <div class="card-body">
     <div class="lineBox"></div>
 
-<!-- 댓글 목록 (c:forEach) 부분 -->
-<c:forEach var="c" items="${comment}">
-    <c:if test="${empNo == boardMap.boardWriterNo}">
+    <!-- 댓글 목록 (c:forEach) 부분 -->
+  <c:forEach var="c" items="${comment}">
+   <c:if test="${empNo == boardMap.boardWriterNo}">
         <div class="commentMainBox">
+            <div class="lineBox"></div>
             <div class="replyBox">
-                <textarea class="form-input" name="commentContent" id="commentContent_${c.commentNo}" readonly>${c.commentContent}</textarea>
-                <!-- 수정하기 버튼 클릭 시 readonly 해제, 저장하기 버튼으로 변경 -->
-                <div class="modifyCommentBox">
-                    <a href="javascript:void(0);" id="modifyBtn_${c.commentNo}" onclick="enableEdit(${c.commentNo})">수정하기</a>
-                    <!-- 저장하기 버튼 숨김 처리 -->
-                    <a href="javascript:void(0);" id="saveBtn_${c.commentNo}" style="display:none;" onclick="saveComment(${c.commentNo})">저장하기</a>
-                </div>
-                <div class="deleteCommentBox">
-                    <a href="${pageContext.request.contextPath}/board/removeComment?boardNo=${boardMap.boardNo}&commentNo=${c.commentNo}">삭제하기</a>
-                </div>
+                <textarea class="form-input" name="commentContent" readonly>${c.commentContent}</textarea>
+                <div class="deleteCommentBox text-red-500 bg-white border-red-500 btn hover:text-white hover:bg-red-600 hover:border-red-600 focus:text-white focus:bg-red-600 focus:border-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:border-red-600 active:ring active:ring-red-100">
+                	<a href="${pageContext.request.contextPath}/board/removeComment?boardNo=${boardMap.boardNo}&commentNo=${c.commentNo}">삭제하기</a>
+				</div>
             </div>
         </div>
     </c:if>
@@ -324,46 +283,5 @@
 <script src="${pageContext.request.contextPath}/assets/libs/apexcharts/apexcharts.min.js"></script>
 <script src="${pageContext.request.contextPath}/assets/js/pages/dashboards-ecommerce.init.js"></script>
 <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
-<!-- 자바스크립트 수정 -->
-<!-- 자바스크립트 수정 -->
-<script type="text/javascript">
-    // 수정하기 버튼 클릭 시 readonly 해제 및 버튼 변경
-    function enableEdit(commentNo) {
-        var textarea = document.getElementById('commentContent_' + commentNo);
-        var modifyBtn = document.getElementById('modifyBtn_' + commentNo);
-        var saveBtn = document.getElementById('saveBtn_' + commentNo);
-
-        // textarea의 readonly 속성 제거
-        textarea.removeAttribute('readonly');
-
-        // 수정하기 버튼 숨기고 저장하기 버튼 보이게
-        modifyBtn.style.display = 'none';
-        saveBtn.style.display = 'inline-block';
-    }
-
-    // 저장하기 버튼 클릭 시 댓글 내용 저장 (여기서는 서버와의 통신이 필요)
-    function saveComment(commentNo) {
-        var textarea = document.getElementById('commentContent_' + commentNo);
-        var modifiedContent = textarea.value;
-
-        // 서버에 수정된 내용을 저장하는 코드 (AJAX 또는 form submission 필요)
-        // 예: AJAX 요청을 보내거나 form을 제출하는 방식
-
-        // 예시: 단순히 수정된 내용을 콘솔에 출력 (실제 구현은 서버와 연동 필요)
-        console.log('저장된 댓글 내용:', modifiedContent);
-
-        // 수정된 내용을 서버에 저장 후, 버튼 상태를 다시 수정하기로 변경할 수 있습니다.
-        // 버튼 변경 (저장하기 -> 수정하기)
-        var saveBtn = document.getElementById('saveBtn_' + commentNo);
-        var modifyBtn = document.getElementById('modifyBtn_' + commentNo);
-
-        // textarea에 readonly 다시 적용
-        textarea.setAttribute('readonly', 'readonly');
-
-        // 저장하기 버튼 숨기고 수정하기 버튼 보이게
-        saveBtn.style.display = 'none';
-        modifyBtn.style.display = 'inline-block';
-    }
-</script>
 </body>
 </html>
