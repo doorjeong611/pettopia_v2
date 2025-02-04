@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.pettopia.meetingroomimg.MeetingRoomImgMapper;
 import com.example.pettopia.meetingroomrsv.MeetingRoomRsvMapper;
+import com.example.pettopia.util.Page;
 import com.example.pettopia.util.TeamColor;
 import com.example.pettopia.vo.MeetingRoom;
 import com.example.pettopia.vo.MeetingRoomForm;
@@ -359,12 +360,36 @@ public class MeetingRoomService {
 	}
 	
 	// 회의실 예약 조회
-	public List<Map<String, Object>> getMeetingRoomRsvList(){
+	public Map<String, Object> getMeetingRoomRsvList(Page page){
 		
 		List<Map<String, Object>> rsvList = new ArrayList<>();
 		
+		// 페이지네이션
+		// 기본 설정
+	    page.setRowPerPage(10);
+	    Integer beginRow = page.getBeginRow();
+	    Integer rowPerPage = page.getRowPerPage();
+		
+	    // paramMap에 값 추가
+	    Map<String, Object> paramMap = new HashMap<>();
+	    paramMap.put("beginRow", beginRow);
+	    paramMap.put("rowPerPage", rowPerPage);
+		
+	    // 총 예약 수
+	    Integer totalCount = meetingRoomRsvMapper.selectCountMeetingRoomRsvList();
+	    log.debug(TeamColor.KMJ+"totalCount : " + totalCount);
+	    
+	    // 마지막 페이지 계산
+	    Integer lastPage = totalCount / rowPerPage;
+	    if (totalCount % rowPerPage != 0) {
+	        lastPage++;
+	    }
+	    
+	    log.debug(TeamColor.KMJ+"LastPage : " + lastPage);
+	    page.setLastPage(lastPage);
+	    
 		// 예약 List
-		List<MeetingRoomRsv> list = meetingRoomRsvMapper.selectMeetingRoomRsvList();
+		List<MeetingRoomRsv> list = meetingRoomRsvMapper.selectMeetingRoomRsvList(paramMap);
 		
 		// "S1", "09:00 AM – 11:00 AM""S2", "11:00 AM – 12:00 PM" "S3", "01:00 PM – 03:00 PM" "S4", "03:00 PM – 05:00 PM""S5", "05:00 PM – 07:00 PM"
 		
@@ -391,7 +416,16 @@ public class MeetingRoomService {
 			rsvList.add(map);
 		
 		}
-		return rsvList;
+		
+		
+		// 최종
+	    Map<String, Object> resultMap = new HashMap<>();
+	    resultMap.put("rsvList", rsvList);
+	    resultMap.put("page", page);
+		
+		
+		
+		return resultMap;
 	}
 	
 	

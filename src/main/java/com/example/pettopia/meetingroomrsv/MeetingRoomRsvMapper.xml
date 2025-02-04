@@ -29,7 +29,7 @@
 	</insert>
 	
 	<!-- 회의실 예약 조회 -->
-	<select id="selectMeetingRoomRsvList" resultType="com.example.pettopia.vo.MeetingRoomRsv">
+	<select id="selectMeetingRoomRsvList" parameterType="map" resultType="com.example.pettopia.vo.MeetingRoomRsv">
 		SELECT room_no AS roomNo
 				, emp_no AS empNo
 				, rsv_date AS rsvDate
@@ -38,7 +38,20 @@
 				, conference_users AS conferenceUsers
 				, time_period AS timePeriod
 		FROM meeting_room_rsv
+		ORDER BY rsvDate DESC
+		LIMIT #{beginRow}, #{rowPerPage}
 	</select>
+	
+	<!-- 총 회의시 예약 수 -->
+	<select id="selectCountMeetingRoomRsvList" resultType="Integer">
+		SELECT COUNT(*)
+		FROM meeting_room_rsv
+	</select>
+	
+	
+	
+	
+	
 	
 	
 </mapper>

@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.pettopia.meetingroomimg.MeetingRoomImgMapper;
+import com.example.pettopia.util.Page;
 import com.example.pettopia.util.TeamColor;
 import com.example.pettopia.vo.MeetingRoom;
 import com.example.pettopia.vo.MeetingRoomForm;
@@ -161,16 +162,17 @@ public class MeetingRoomController {
 	
 	// 회의실 예약 내역 페이지
 	@GetMapping("/meetingroom/meetingroomRsvList")
-	public String getMeetingroomRsvList(Model model) {
+	public String getMeetingroomRsvList(Model model, Page page) {
 		
 		log.debug(TeamColor.KMJ+"[MeetingRoomController - GET getMeetingroomRsvList()]");
 		
-		List<Map<String, Object>> rsvList = meetingRoomService.getMeetingRoomRsvList();
+		Map<String, Object> resultMap = meetingRoomService.getMeetingRoomRsvList(page);
+
+		log.debug(TeamColor.KMJ+"resultMap : " + resultMap.toString());
+		log.debug(TeamColor.KMJ+ "currentPage : " + page.getCurrentPage() + TeamColor.RESET);
 		
-		if(rsvList.size() > 0) {			
-			log.debug(TeamColor.KMJ+"rsvList : " + rsvList);
-		}
-		model.addAttribute("rsvList", rsvList);
+		model.addAttribute("rsvList", resultMap.get("rsvList"));
+		model.addAttribute("page", resultMap.get("page"));
 		
 		return "meetingroom/meetingRoomRsvList";
 	}
@@ -205,10 +207,10 @@ public class MeetingRoomController {
 			String errorMessage = "회의실 예약 실패! 잠시후 다시 시도해주세요.";
 			redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
 			
-			return "redirect:/meetingroom/getMeetingroomList";
+			return "redirect:/meetingroom/meetingroomRsvList";
 		}
 		
-		return "redirect:/meetingroom/getMeetingroomList";
+		return "redirect:/meetingroom/meetingroomRsvList";
 	}
 	
 	

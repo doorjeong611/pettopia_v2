@@ -30,6 +30,29 @@
 
   <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tailwind2.css">
 </head>
+
+<style>
+
+	/* 인덱스 폰트 */
+@font-face {
+    font-family: 'PTBandocheB';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408@1.0/PTBandocheB.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+}
+	.title-font{
+		font-family: 'PTBandocheB' , 'cursive';
+		font-weight: 400;
+	}
+
+	
+</style>
+
+
+
+
+
+
 <script type="text/javascript">
 $(document).ready(function() {
     var message = "${tempmsg}";
@@ -91,7 +114,7 @@ $(document).ready(function() {
                 
         
                 <div class="mt-8 text-center">
-                    <h4 class="mb-1 text-custom-500 dark:text-custom-500">PETTOPIA</h4>
+                    <h4 class="mb-1 text-custom-500 dark:text-custom-500 ">PETTOPIA</h4>
                     
                 </div>
                 <c:if test="${msg != null}">
@@ -106,32 +129,35 @@ $(document).ready(function() {
                         You have <b>successfully</b> signed in.
                     </div>
                     <div class="mb-3">
-                        <label for="username" class="inline-block mb-2 text-base font-medium">사번</label>
+                        <label for="username" class="title-font text-base font-bold inline-block mb-2 ">사번</label>
                         <input type="text" id="username" name="empNo" class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="사번 입력">
                         <div id="username-error" class="hidden mt-1 text-sm text-red-500">사번을 입력해주세요.</div>
                     </div>
                     <div class="mb-3">
-                        <label for="password" class="inline-block mb-2 text-base font-medium">비밀번호</label>
-                        <input type="password" id="password" name="empPw" class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="비밀번호 입력">
+                        <label for="password" class="title-font text-base font-bold inline-block mb-2 " >비밀번호</label>
+                        <input type="password" id="password" name="empPw" class="title-font form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="비밀번호 입력">
                         <div id="password-error" class="hidden mt-1 text-sm text-red-500">비밀번호를 입력해주세요.</div>
                     </div>
                     <div>
                         <div class="flex items-center gap-2">
-                            <input type="checkbox" name="remember-me" id="checkboxDefault1" class="border rounded-sm appearance-none size-4 bg-slate-100 border-slate-200 dark:bg-zink-600 dark:border-zink-500 checked:bg-custom-500 checked:border-custom-500 dark:checked:bg-custom-500 dark:checked:border-custom-500 checked:disabled:bg-custom-400 checked:disabled:border-custom-400" value="">
-                            <label for="checkboxDefault1" class="inline-block text-base font-medium align-middle cursor-pointer">사번 기억하기</label>
+                            <input type="checkbox" name="remember-me" id="checkboxDefault1" class="title-font border rounded-sm appearance-none size-4 bg-slate-100 border-slate-200 dark:bg-zink-600 dark:border-zink-500 checked:bg-custom-500 checked:border-custom-500 dark:checked:bg-custom-500 dark:checked:border-custom-500 checked:disabled:bg-custom-400 checked:disabled:border-custom-400" value="">
+                            <label for="checkboxDefault1" class="title-font text-base inline-block align-middle cursor-pointer" >사번 기억하기</label>
                         </div>
                         <div id="remember-error" class="hidden mt-1 text-sm text-red-500">Please check the "Remember me" before submitting the form.</div>
+                        
                     </div>
-                    <div class="mt-10">
-                        <button type="button" id="loginBtn" class="w-full text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20">로그인</button>
+                    
+                    <div class="mt-8 pt-3">
+                    	<div>
+                        	<button type="button" id="loginBtn" class=" w-full title-font text-white bg-custom-600 btn border-custom-500 hover:text-custom-600 hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100">로그인</button>
+						</div>	                
+                    	<div class="mt-4 pt-3 text-center">
+                        	<!-- 임시 비밀번호 발급받기 버튼 -->
+	                		<a href="${pageContext.request.contextPath}/sendTempPassword"> <span class="title-font text-slate-400 hover:text-slate-700 text-base">비밀번호 찾기</span></a>
+                        </div>
                     </div>
    
                 </form>
-                
-                <!-- 임시 비밀번호 발급받기 버튼 -->
-        			<div class="mt-10">
-                       <a href="${pageContext.request.contextPath}/sendTempPassword"> <button type="button" class="w-full text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20">비밀번호 찾기</button></a>
-                    </div>
             </div>
         </div>
     </div>

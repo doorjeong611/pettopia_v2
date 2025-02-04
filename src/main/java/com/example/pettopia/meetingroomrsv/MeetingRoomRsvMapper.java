@@ -1,6 +1,7 @@
 package com.example.pettopia.meetingroomrsv;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -22,5 +23,8 @@ public interface MeetingRoomRsvMapper {
 	Integer insertMeetingRoomRsv(MeetingRoomRsv meetingRoomRsv);
 	
 	// 회의실 예약 리스트
-	List<MeetingRoomRsv> selectMeetingRoomRsvList();
+	List<MeetingRoomRsv> selectMeetingRoomRsvList(Map<String, Object> paramMap);
+	
+	// 총 회의실 예약 수 조회
+	Integer selectCountMeetingRoomRsvList();
 }

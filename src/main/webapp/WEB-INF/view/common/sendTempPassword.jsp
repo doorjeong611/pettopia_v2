@@ -98,8 +98,13 @@
                         <div id="password-error" class="hidden mt-1 text-sm text-red-500">이메일을 입력해주세요.</div>
                     </div>
                     
-                    <div class="mt-10">
-                        <button type="button" id="sendTempPwBtn" class="w-full text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20">임시 비밀번호 발급</button>
+                    <div class="mt-10 flex justify-end gap-2">
+                    	<div>
+                        	<button type="button" id="sendTempPwBtn" class="bg-white text-custom-500 btn border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100">임시 비밀번호 발급</button>
+                    	</div>
+                    	<div>
+                    		<a href="${pageContext.request.contextPath}/loginForm"><button type="button" class="mr-1 bg-white text-green-500 border-green-500 btn hover:text-white hover:bg-green-600 hover:border-green-600 focus:text-white focus:bg-green-600 focus:border-green-600 focus:ring focus:ring-green-100 active:text-white active:bg-green-600 active:border-green-600 active:ring active:ring-green-100">홈으로</button></a>
+                    	</div>
                     </div>
     
                 </form>

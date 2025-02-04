@@ -29,15 +29,15 @@
 	    border-left: none; /* 선 제거 */
 	}
 	
-	@font-face {
-	    font-family: 'Cafe24Ssurround';
-	    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/Cafe24Ssurround.woff') format('woff');
-	    font-weight: normal;
-	    font-style: normal;
-	}
+@font-face {
+    font-family: 'PTBandocheB';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408@1.0/PTBandocheB.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+}
 	
 	.custom-font {
-		font-family: 'Cafe24Ssurround';
+		font-family: 'PTBandocheB';
 	}
 	
     </style>

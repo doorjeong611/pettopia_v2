@@ -39,11 +39,14 @@
                     <div class="grow">
                         <h5 class="text-16">예약 내역</h5>
                     </div>
-                    <ul class="flex items-center gap-2 text-sm font-normal shrink-0">
-                        <li class="relative before:font-remix ltr:before:-right-1 rtl:before:-left-1  before:absolute before:text-[18px] before:-top-[3px] ltr:pr-4 rtl:pl-4 before:text-slate-400 dark:text-zink-200">
-                            <a href="#!" class="text-slate-400 dark:text-zink-200">객실 예약 내역</a>
-                        </li>
-                    </ul>
+					<ul class="flex items-center gap-2 text-sm font-normal shrink-0">
+					    <li class="relative before:content-['\ea54'] before:font-remix ltr:before:-right-1 rtl:before:-left-1  before:absolute before:text-[18px] before:-top-[3px] ltr:pr-4 rtl:pl-4 before:text-slate-400 dark:text-zink-200">
+					        <a href="#" class="text-slate-400 dark:text-zink-200">회의실 예약</a>
+					    </li>
+					    <li class="text-slate-700 dark:text-zink-100">
+					        회의실 예약 내역
+						</li>
+					</ul>
                 </div>
                 <!-- Main content -->
                   <div class="card" id="">
@@ -90,8 +93,7 @@
 		                                       <!--  <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">
 		                                        	<input class="border rounded-sm appearance-none cursor-pointer size-4 bg-slate-100 border-slate-200 dark:bg-zink-600 dark:border-zink-500 checked:bg-custom-500 checked:border-custom-500 dark:checked:bg-custom-500 dark:checked:border-custom-500 checked:disabled:bg-custom-400 checked:disabled:border-custom-400" type="checkbox" id="" value="option"> 
 		                                        </td> -->
-		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">
-		                                            <a href="#" class="transition-all duration-150 ease-linear text-custom-500 hover:text-custom-600">${status.count}</a>		                                        </td>
+		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${status.count}</td>                                          
 		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${r.roomNo}</td>
 		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${r.empNo}</td>
 		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${r.conferenceTitle}</td>
@@ -111,58 +113,36 @@
                                 </div>
                             </div>
                         </div>
-                           <!-- 페이징 시작 -->
+                        
+                        <!-- 페이징 시작 -->
 						<div class="flex justify-end mt-4">
 						    <div class="flex gap-2 pagination-wrap">
 						        <!-- 이전 페이지 -->
-						        <c:if test="${currentPage > 1}">
-						            <a class="inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 focus:bg-custom-50 focus:text-custom-500"
-						               href="?currentPage=${currentPage - 1}&pageSize=${pageSize}">
-						                이전
-						            </a>
+						        <c:if test="${!(page.currentPage > 1)}">
+						            <button type="button" class="inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 [&amp;.disabled]:text-slate-400 [&amp;.disabled]:cursor-auto page-item pagination-prev pagination-prev disabled" >이전</button>
 						        </c:if>
-						        <c:if test="${currentPage == 1}">
-						            <a class="inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 disabled:cursor-auto disabled:text-slate-400">
-						                이전
-						            </a>
+						        <c:if test="${page.currentPage > 1}">
+						            <a class="inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 focus:bg-custom-50 focus:text-custom-500 [&amp;.active]:text-custom-500 [&amp;.active]:bg-custom-50 [&amp;.active]:border-custom-50 [&amp;.active]:hover:text-custom-700 [&amp;.disabled]:text-slate-400 [&amp;.disabled]:cursor-auto page-item pagination-prev pagination-next" href="${pageContext.request.contextPath}/meetingroom/meetingroomRsvList?currentPage=${page.currentPage - 1}">이전</a>
 						        </c:if>
 						
-						        <!-- 페이지 번호 -->
+						        <!-- 페이지 번호 링크 -->
 						        <ul class="flex gap-2 mb-0">
-						            <c:forEach var="num" begin="1" end="${totalPages}">
-						                <c:choose>
-						                    <c:when test="${num == currentPage}">
-						                        <!-- 현재 페이지 -->
-						                        <li class="active">
-						                            <span class="inline-flex items-center justify-center bg-custom-500 border border-custom-500 text-white h-8 px-3 rounded">
-						                                ${num}
-						                            </span>
-						                        </li>
-						                    </c:when>
-						                    <c:otherwise>
-						                        <!-- 다른 페이지 -->
-						                        <li>
-						                            <a class="inline-flex items-center justify-center bg-white border border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 h-8 px-3 rounded"
-						                               href="?currentPage=${num}&pageSize=${pageSize}">
-						                                ${num}
-						                            </a>
-						                        </li>
-						                    </c:otherwise>
-						                </c:choose>
+						            <c:forEach var="num" begin="${page.getStartPagingNum()}" end="${page.getEndPagingNum()}">
+						                <c:if test="${num == page.currentPage}">
+						                    <li class="active"><a class="inline-flex items-center justify-center bg-custom-50 border border-custom-50 text-custom-500 h-8 px-3 rounded" href="#">${num}</a></li>
+						                </c:if>
+						                <c:if test="${num != page.currentPage}">
+						                    <li><a class="inline-flex items-center justify-center bg-white border border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 h-8 px-3 rounded" href="${pageContext.request.contextPath}/meetingroom/meetingroomRsvList?currentPage=${num}">${num}</a></li>
+						                </c:if>
 						            </c:forEach>
 						        </ul>
 						
 						        <!-- 다음 페이지 -->
-						        <c:if test="${currentPage < totalPages}">
-						            <a class="inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 focus:bg-custom-50 focus:text-custom-500"
-						               href="?currentPage=${currentPage + 1}&pageSize=${pageSize}">
-						                다음
-						            </a>
+						        <c:if test="${page.currentPage < page.lastPage}">
+						            <a class="inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 dark:hover:bg-custom-500/10 focus:bg-custom-50 focus:text-custom-500 dark:focus:text-custom-500 [&amp;.active]:text-custom-500 [&amp;.active]:bg-custom-50 [&amp;.active]:border-custom-50 [&amp;.active]:hover:text-custom-700 [&amp;.disabled]:text-slate-400 [&amp;.disabled]:cursor-auto page-item pagination-prev pagination-next" href="${pageContext.request.contextPath}/meetingroom/meetingroomRsvList?currentPage=${page.currentPage + 1}">다음</a>
 						        </c:if>
-						        <c:if test="${currentPage >= totalPages}">
-						            <a class="inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 disabled:cursor-auto disabled:text-slate-400">
-						                다음
-						            </a>
+						        <c:if test="${page.currentPage >= page.lastPage}">
+						            <button type="button"  class="inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 [&amp;.disabled]:text-slate-400 [&amp;.disabled]:cursor-auto page-item pagination-prev pagination-prev disabled" >다음</button>
 						        </c:if>
 						    </div>
 						</div>
