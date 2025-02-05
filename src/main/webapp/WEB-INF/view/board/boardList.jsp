@@ -35,6 +35,7 @@
 	.emptyBox h3 {color:#94A3B8; text-align: center; padding-top: 3%; }
 	.emptyBox p {color:#94A3B8; font-size: 18px; text-align: center;margin-top: 1%; opacity: 0.7;}
 	
+	.textList p {display:inline-block;}
 
 </style>
 <body class="text-base bg-body-bg text-body font-public dark:text-zink-100 dark:bg-zink-800 group-data-[skin=bordered]:bg-body-bordered group-data-[skin=bordered]:dark:bg-zink-700">
@@ -136,27 +137,25 @@
 				
 				            <c:forEach var="bl" items="${boardList}">
 				                <tr>
-				                    <td class="px-3.5 py-3 border-y border-slate-200 text-center">${bl.boardNo}</td>
-				                    <td class="px-3.5 py-3 border-y border-slate-200 text-center">
+				                    <td class="textList px-3.5 py-3 border-y border-slate-200 text-center">${bl.boardNo}</td>
+				                    <td class="textList px-3.5 py-3 border-y border-slate-200 text-center">
 				                    	<c:if test="${bl.boardHeader == null}">
 										  <a href="${pageContext.request.contextPath}/board/getBoardOne?boardNo=${bl.boardNo}">${bl.boardTitle}
 				                            <!-- 댓글 수가 0이 아니면 댓글 수 표시 -->
-				                            <c:if test="${bl.commentCnt != 0}">
-				                                &nbsp;[${bl.commentCnt}]
+				                            <c:if test="${bl.commentCnt != 0}"><p class="text-red-500">[${bl.commentCnt}]</p>
 				                            </c:if>
 				                        </a>
 										</c:if>
 										<c:if test="${bl.boardHeader != null}">
 										  	<a href="${pageContext.request.contextPath}/board/getBoardOne?boardNo=${bl.boardNo}">[${bl.boardHeader}]&nbsp;${bl.boardTitle}
 					                            <!-- 댓글 수가 0이 아니면 댓글 수 표시 -->
-					                            <c:if test="${bl.commentCnt != 0}">
-					                                &nbsp;[${bl.commentCnt}]
+					                            <c:if test="${bl.commentCnt != 0}"><p class="text-red-500">[${bl.commentCnt}]</p>
 					                            </c:if>
 					                        </a>
 										</c:if>
 				                    </td>
-				                    <td class="px-3.5 py-3 border-y border-slate-200 text-center">${bl.boardView}</td>
-				                    <td class="px-3.5 py-3 border-y border-slate-200 text-center">${bl.createDate}</td>
+				                    <td class="textList px-3.5 py-3 border-y border-slate-200 text-center">${bl.boardView}</td>
+				                    <td class="textList px-3.5 py-3 border-y border-slate-200 text-center">${bl.createDate}</td>
 				                </tr>
 				            </c:forEach>
 				       
