@@ -310,7 +310,7 @@
 				<!--end add Employee-->
 			</div>
 			<!-- container-fluid -->
-		</div>
+		
 		<!-- End Page-content -->
 
 		<!-- loading overlay -->
@@ -322,7 +322,7 @@
 
 
 
-	</div>
+	
 
 		<!-- Start Footer -->
 		<footer
@@ -330,7 +330,8 @@
 			<c:import url="/WEB-INF/view/inc/footer.jsp"></c:import>
 		</footer>
 		<!-- End Footer -->
-
+	</div>		
+</div>
 	<!-- </div> -->
 	
 	
