@@ -36,7 +36,7 @@ INSERT INTO
 VALUES
 	(#{boardNo},#{commentWriterNo},#{parentCommentNo, jdbcType=INTEGER},#{commentContent},2, NOW(), NOW());
 </insert>
-<select id="selectBoardComment" parameterType="Integer" resultType="com.example.pettopia.vo.BoardComment">
+<select id="selectBoardComment" parameterType="Map" resultType="com.example.pettopia.vo.BoardComment">
     SELECT 
         comment_no AS commentNo, 
         board_no AS boardNo, 
@@ -54,8 +54,15 @@ VALUES
         parent_comment_no IS NULL DESC,   
         parent_comment_no ASC,            
         comment_depth ASC,                
-        create_datetime ASC;              
+        create_datetime ASC
 </select>
+
+<select id="countBoardComment" parameterType="Integer" resultType="Integer">
+    SELECT COUNT(*) 
+    FROM board_comment
+    WHERE board_no = #{boardNo};
+</select>
+
 <!-- 게시글 수정 -->
 <update id="updateBoard" parameterType="com.example.pettopia.vo.Board" >
 UPDATE

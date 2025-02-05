@@ -34,6 +34,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Slf4j
 public class BoardController {
 	@Autowired BoardService boardService;
+	
 	// 댓글 작성
 	@PostMapping("/board/boardComment")
 	public String addComment(BoardComment boardComment,
@@ -61,6 +62,8 @@ public class BoardController {
 	        return "redirect:/board/getBoardOne?boardNo=" + boardNo + "&error=true";
 	    }
 	}
+	
+	// 대댓글
 	@PostMapping("/board/boardCommentDepth")
 	public String addCommentDepth(BoardComment boardComment,
 	                               Authentication auth,
@@ -97,23 +100,19 @@ public class BoardController {
 	    }
 	}
 
-
+	// 게시글 수정 폼 호출
 	@GetMapping("/board/modifyBoard")
 	public String modifyBoard(Authentication auth,
 							  Model model,
 							  @RequestParam(required = false) Integer boardNo) {
-		 // 로그인 세션
+		// 로그인 세션
 	    EmpUserDetails empUserDetails = (EmpUserDetails) auth.getPrincipal();
 	    String empNo = empUserDetails.getUsername();;
 		
-	
 	    // 상세 글보기 셀렉트
 	    Map<String, Object> boardOneMap = boardService.getListByBoardOne(boardNo);
 	
-	    
-	    
 	    // 모델값
-	    
 	    model.addAttribute("empNo", empNo);
 		model.addAttribute("boardMap",boardOneMap);
 		model.addAttribute("boardNo",boardNo);
@@ -121,6 +120,7 @@ public class BoardController {
 		return "board/modifyBoard";
 	}
 
+	// 게시판 수정
 	@PostMapping("/board/modifyBoard")
 	public String getModifyBoard(Authentication auth,
 	                              @ModelAttribute Board board,
@@ -129,6 +129,7 @@ public class BoardController {
 	                              @RequestParam(value = "category") String boardCategory,
 	                              @RequestParam(value = "content", defaultValue = "") String boardContent,
 	                              HttpSession session) {
+		
 	    log.debug(TeamColor.LJH + "updateBoard : " + board + TeamColor.RESET);
 
 	    // category가 빈 값일 경우 null로 설정
@@ -140,17 +141,12 @@ public class BoardController {
 	    // 이미지 저장 경로 설정
 	    String boardImagePath = session.getServletContext().getRealPath("/boardFile/");
 	    
-	    // 이미지가 첨부된 경우만 파일 처리
 	    try {
-	        if (boardImg != null && !boardImg.isEmpty()) {
-	            boardService.modifyBoardFile(board, boardImg, boardImagePath);
-	        } else {
-	            // 이미지가 없으면 기존 파일을 유지하거나, 특정 동작을 추가할 수 있습니다.
-	            log.debug("이미지 파일이 첨부되지 않았습니다.");
-	        }
+	    	boardService.modifyBoardFile(board, boardImg, boardImagePath);
 	    } catch (Exception e) {
-	        log.debug(TeamColor.LJH + "게시글 수정 중 오류 발생 : " + e + TeamColor.RESET);
-	        e.printStackTrace();
+	        // 예외 처리 (로깅, 사용자에게 오류 메시지 등을 표시)
+	        log.error("수정 중 오류 발생", e);
+	        return "errorPage"; // 오류 페이지로 리다이렉트 또는 에러 처리
 	    }
 	    
 	    return "redirect:/board/boardList";

@@ -46,13 +46,15 @@ public class BoardService {
 	List<Map<String,Object>> getSelectBoardComment(Integer boardNo){
 		return boardMapper.selectBoardComment(boardNo);
 	};
+	
+	// 게시글 업데이트
 	public void modifyBoardFile(Board board, MultipartFile boardImg, String boardImagePath) throws Exception {
-	    // 게시글 업데이트
+	    
 	    int updateBoard = boardMapper.updateBoard(board);
 	    if (updateBoard == 0) {
 	        throw new RuntimeException("게시글 수정 실패");
 	    }
-	    log.debug("게시글 수정 완료 : ", board);
+	    log.debug("게시글 수정 정보 : ", board);
 
 	    // 이미지 파일이 첨부된 경우 처리
 	    if (boardImg != null && !boardImg.isEmpty()) {
@@ -83,9 +85,6 @@ public class BoardService {
 	        // 서버에 이미지 파일을 저장
 	        File saveBoardFile = new File(boardImagePath, fileName);
 	        boardImg.transferTo(saveBoardFile);
-	    } else {
-	        // 이미지가 첨부되지 않은 경우 기존 이미지를 유지하려면 특별한 로직을 추가할 수 있습니다.
-	        log.debug("이미지 파일이 첨부되지 않았습니다. 기존 이미지를 유지합니다.");
 	    }
 	}
 
