@@ -98,7 +98,7 @@
                                         <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ">번호</th>
                                         <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ">회의실</th>
                                         <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ">예약 팀(사원)</th>
-                                        <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ">회의 이름</th>
+                                        <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ">회의 주제</th>
                                         <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ">참여 인원</th>
                                         <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ">회의 날짜</th>
                                         <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ">회의 시간</th>
