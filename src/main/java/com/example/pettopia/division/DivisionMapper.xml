@@ -39,7 +39,7 @@
 		   		UPPER(REPLACE(division_name, ' ', '')) = UPPER(REPLACE(#{divisionName}, ' ', ''))
    		  	</if>
    		  	<if test="divisionCode != null">	
-   				AND UPPER(REPLACE(division_code, ' ', '')) = UPPER(REPLACE(#{divisionCode}, ' ', ''))
+   				OR UPPER(REPLACE(division_code, ' ', '')) = UPPER(REPLACE(#{divisionCode}, ' ', ''))
    			</if>	
    		</where>
 	</select>

@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
@@ -24,23 +25,36 @@ public class SecurityConfig {
         	.csrf(csrf -> csrf.disable()); // CSRF 보호를 비활성화 (개발 환경에서 편의성을 위해 사용)
 
         http.authorizeHttpRequests(auth -> auth
+        							.requestMatchers("/WEB-INF/view/login/**").anonymous() 
 					                // 특정 URL 경로에 대한 접근을 허용
-					                .requestMatchers("/WEB-INF/view/login/**", "/assets/**", "/rest/**", "/WEB-INF/view/common/**", "/sendTempPassword").permitAll()
+					                .requestMatchers("/assets/**", "/rest/**", "/WEB-INF/view/common/**", "/sendTempPassword").permitAll()
 					                // "/admin/**" 경로는 ADMIN 역할을 가진 사용자만 접근 가능
 					                .requestMatchers("/admin/**").hasRole("ADMIN")
 					                // 나머지 모든 요청은 인증된 사용자만 접근 가능
 					                .anyRequest().authenticated()
-					                );
+					              );
 
         http.formLogin(auth -> auth
-			            .loginPage("/loginForm") // 커스텀 로그인 페이지 URL 설정
+			            .loginPage("/login") // 커스텀 로그인 페이지 URL 설정
 			            .usernameParameter("empNo") // 사용자 이름 파라미터명 설정
 			            .passwordParameter("empPw") // 비밀번호 파라미터명 설정
-			            .loginProcessingUrl("/login") // 로그인 처리 URL 설정
+			            .loginProcessingUrl("/loginSuccess") // 로그인 처리 URL 설정
 			            .successHandler(loginSuccessHandler()) // 로그인 성공 후 처리할 핸들러 지정
 			            .failureHandler(loginFailureHandler()) // 로그인 실패 후 처리할 핸들러 지정
 			            .permitAll() // 로그인 관련 URL은 모두 접근 허용
 			            );
+        
+        // 중복 로그인 방지
+        http.sessionManagement(session -> session
+								.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+								.sessionConcurrency(concurrency -> concurrency
+														.maximumSessions(1)
+														.maxSessionsPreventsLogin(false)
+													)
+								);
+        
+        
+        
         
         http.logout(auth -> auth
                 .logoutUrl("/logout") 			// 로그아웃 요청 경로 설정
