@@ -212,15 +212,11 @@
 <!-- Sweet Alerts js -->
 <script src="${pageContext.request.contextPath}/assets/libs/sweetalert2/sweetalert2.min.js"></script>
 
-<!--dashboard ecommerce init js-->
-<script src="${pageContext.request.contextPath}/assets/js/pages/dashboards-ecommerce.init.js"></script>
-
 <!-- App js -->
 <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
 
 <!-- calendar min js -->
 <script src="${pageContext.request.contextPath}/assets/libs/fullcalendar/index.global.min.js"></script>
-<!-- <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/pages/schedule-calendar.init.js"></script>  -->
 
 <script>
 $(document).ready(function () {
