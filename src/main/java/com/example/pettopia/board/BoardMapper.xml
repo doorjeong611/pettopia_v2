@@ -9,14 +9,13 @@ INSERT INTO
 	board_comment (
     board_no ,
     comment_writer_no,
-    parent_comment_no,
     comment_content , 
     comment_depth , 
     create_datetime , 
     update_datetime 
 ) 
 VALUES
-	(#{boardNo}, #{commentWriterNo}, NULL,#{commentContent}, 1, NOW(), NOW());
+	(#{boardNo}, #{commentWriterNo},#{commentContent}, 1, NOW(), NOW());
 </insert>
 
 
@@ -27,22 +26,20 @@ INSERT INTO
 	board_comment (
     board_no ,
     comment_writer_no,
-    parent_comment_no,
     comment_content , 
     comment_depth , 
     create_datetime , 
     update_datetime 
 ) 
 VALUES
-	(#{boardNo},#{commentWriterNo},#{parentCommentNo, jdbcType=INTEGER},#{commentContent},2, NOW(), NOW());
+	(#{boardNo},#{commentWriterNo},#{commentContent},2, NOW(), NOW());
 </insert>
 <select id="selectBoardComment" parameterType="Map" resultType="com.example.pettopia.vo.BoardComment">
     SELECT 
         comment_no AS commentNo, 
         board_no AS boardNo, 
         comment_writer_no AS commentWriterNo, 
-        comment_content AS commentContent, 
-        parent_comment_no AS parentCommentNo, 
+        comment_content AS commentContent,  
         comment_depth AS commentDepth, 
         create_datetime AS createDatetime, 
         update_datetime AS updateDatetime
@@ -50,9 +47,7 @@ VALUES
         board_comment
     WHERE 
         board_no = #{boardNo}
-    ORDER BY 
-        parent_comment_no IS NULL DESC,   
-        parent_comment_no ASC,            
+    ORDER BY     
         comment_depth ASC,                
         create_datetime ASC
 </select>
