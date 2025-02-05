@@ -123,7 +123,7 @@ $(document).ready(function() {
 	                    <c:remove var="Loginmsg" scope="session"/>
 	                </div>
         		</c:if>
-                <form action="${pageContext.request.contextPath}/login" method="post" class="mt-10" id="signInForm">
+                <form action="${pageContext.request.contextPath}/loginSuccess" method="post" class="mt-10" id="signInForm">
                     
                     <div class="hidden px-4 py-3 mb-3 text-sm text-green-500 border border-green-200 rounded-md bg-green-50 dark:bg-green-400/20 dark:border-green-500/50" id="successAlert">
                         You have <b>successfully</b> signed in.
