@@ -24,7 +24,7 @@ public class LoginController {
 	@Autowired EmployeeService employeeService;
 	
 	// 로그인 폼으로 이동
-	@GetMapping("/login")
+	@GetMapping({"/","/login"})
 	public String login(Authentication authentication) {
 		
 		if (authentication != null && authentication.isAuthenticated()) {
