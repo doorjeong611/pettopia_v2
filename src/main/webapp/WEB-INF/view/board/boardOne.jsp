@@ -118,24 +118,6 @@
 	    }
 	  
 	.replyBox .deleteCommentBox {float: right;}  
-	
-	
-/* 인덱스 폰트 */
-@font-face {
-    font-family: 'PTBandocheB';
-    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408@1.0/PTBandocheB.woff2') format('woff2');
-    font-weight: 400;
-    font-style: normal;
-}
-
-.title-font{
-	font-family: 'PTBandocheB' , 'cursive';
-	
-}	
-	
-	
-	
-	
 </style>
 
 <body class="text-base bg-body-bg text-body font-public dark:text-zink-100 dark:bg-zink-800 group-data-[skin=bordered]:bg-body-bordered group-data-[skin=bordered]:dark:bg-zink-700">
@@ -156,7 +138,7 @@
                 <div class="container-fluid group-data-[content=boxed]:max-w-boxed mx-auto">
                     <div class="flex flex-col gap-2 py-4 md:flex-row md:items-center print:hidden">
                         <div class="grow">
-                            <h5 class="title-font">게시글 상세페이지</h5>
+                            <h5 class="text-16">게시글 상세페이지</h5>
                         </div>
 
                         <ul class="flex items-center gap-2 text-sm font-normal shrink-0">
@@ -216,7 +198,8 @@
                                     <c:if test="${empNo == boardMap.boardWriterNo}">
                                         <div class="btnBox">
                                             <div class="bg-white text-custom-500 btn border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600" ><a href="${pageContext.request.contextPath}/board/modifyBoard?boardNo=${boardMap.boardNo}">수정하기</a></div>
-                                            <div class="text-red-500 bg-white border-red-500 btn hover:text-white hover:bg-red-600 hover:border-red-600 focus:text-white focus:bg-red-600 focus:border-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:border-red-600 active:ring active:ring-red-100"><a href="${pageContext.request.contextPath}/board/removeBoard?boardNo=${boardMap.boardNo}">삭제하기</a></div>
+                                            <div class="text-red-500 bg-white border-red-500 btn hover:text-white hover:bg-red-600 hover:border-red-600 focus:text-white focus:bg-red-600 focus:border-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:border-red-600 active:ring active:ring-red-100">
+                                            	<a href="${pageContext.request.contextPath}/board/removeBoard?boardNo=${boardMap.boardNo}">삭제하기</a></div>
                                             <div class="text-green-500 bg-white border-green-500 btn hover:text-white hover:bg-green-600 hover:border-green-600 focus:text-white focus:bg-green-600 focus:border-green-600 focus:ring focus:ring-green-100 active:text-white active:bg-green-600 active:border-green-600 active:ring active:ring-green-100"><a href="${pageContext.request.contextPath}/board/boardList">돌아가기</a></div>
                                         </div>
                                     </c:if>
