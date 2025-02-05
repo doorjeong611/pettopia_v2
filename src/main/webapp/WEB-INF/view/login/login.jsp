@@ -135,7 +135,7 @@ $(document).ready(function() {
                     </div>
                     <div class="mb-3">
                         <label for="password" class="title-font text-base font-bold inline-block mb-2 " >비밀번호</label>
-                        <input type="password" id="password" name="empPw" class="title-font form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="비밀번호 입력">
+                        <input type="password" id="password" name="empPw" class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="비밀번호 입력">
                         <div id="password-error" class="hidden mt-1 text-sm text-red-500">비밀번호를 입력해주세요.</div>
                     </div>
                     <div>
@@ -172,49 +172,42 @@ $(document).ready(function() {
    <!--  <script src="${pageContext.request.contextPath}/assets/js/pages/auth-login.init.js"></script> --> <!-- 아이디, 비밀번호 유효성 검사 js -->
 
 <script>
-
-/* 페이지가 로드되고 localStorage에 empNo가 있다면 로그인폼에 넣고 체크박스에 체크하기 */
-window.onload = function() {
+$(document).ready(function() {
+    /* 페이지가 로드되면 localStorage에서 empNo를 확인하여, 값이 있으면 사번 입력란과 체크박스를 설정 */
     const rememberedEmpNo = localStorage.getItem("rememberEmpNo");
     if (rememberedEmpNo) {
-        document.getElementById("username").value = rememberedEmpNo;
-        document.getElementById("checkboxDefault1").checked = true;
+        $("#username").val(rememberedEmpNo);
+        $("#checkboxDefault1").prop("checked", true);
     }
-}
 
+    /* 폼이 제출될 때 체크박스 상태에 따라 localStorage에 empNo 저장/삭제 */
+    $("#signInForm").submit(function(event) {
+        const empNo = $("#username").val();
+        const rememberMe = $("#checkboxDefault1").prop("checked");
+        console.log('empNo : ' + empNo);
 
-/* 페이지가 로드되고 체크박스에 체크가 되어있다면 로그인 시 localStorage에 empNo 저장하기. */
-document.getElementById("signInForm").addEventListener("submit", function(event) {
-    const empNo = document.getElementById("username").value;
-    const rememberMe = document.getElementById("checkboxDefault1").checked;
-    console.log('empNo : ' + empNo);
-    if (rememberMe) {
-        localStorage.setItem("rememberEmpNo", empNo); // 사번을 로컬스토리지에 저장
-    } else {
-        localStorage.removeItem("rememberEmpNo"); // 체크 해제 시 로컬스토리지에서 사번 삭제
-    }
+        if (rememberMe) {
+            localStorage.setItem("rememberEmpNo", empNo); // 사번을 로컬스토리지에 저장
+        } else {
+            localStorage.removeItem("rememberEmpNo"); // 체크 해제 시 로컬스토리지에서 사번 삭제
+        }
+    });
+
+    /* 로그인 버튼 클릭 시 유효성 검사 */
+    $('#loginBtn').click(function() {
+        if ($('#username').val() == null || $('#username').val() == '') {
+            alert('사번을 입력하세요.');
+            $('#username').focus();
+            return;
+        }
+        if ($('#password').val() == null || $('#password').val() == '') {
+            alert('비밀번호를 입력하세요.');
+            $('#password').focus();
+            return;
+        }
+        $('#signInForm').submit();
+    });
 });
-
-$('#loginBtn').click(function() {
-	
-	if($('#username').val() == null || $('#username').val()== ''){
-		alert('사번을 입력하세요.');
-		$('#username').focus();
-		return
-	}
-	if($('#password').val() == null || $('#password').val()== ''){
-		alert('비밀번호를을 입력하세요.');
-		$('#password').focus();
-		return
-	}
-	
-	$('#signInForm').submit();
-	
-	
-});
-
-
-
 
 
 </script>
