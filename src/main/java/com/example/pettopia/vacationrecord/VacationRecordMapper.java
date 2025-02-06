@@ -23,4 +23,10 @@ public interface VacationRecordMapper {
 	// 오자윤 : /vacation/vacationList 직원 휴가 사용내역 -->
 	List<Map<String, Object>> getVacationUsage(Map<String, Object> params);
 	
+	// 직원 등록 : 휴가일수 15일 추가
+	Integer insertNewVacationRecord(String empNo);
+	
+	
+	
+	
 }

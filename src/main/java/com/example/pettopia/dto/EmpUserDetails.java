@@ -1,6 +1,5 @@
 package com.example.pettopia.dto;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
@@ -13,12 +12,9 @@ import com.example.pettopia.vo.Employee;
 import lombok.Data;
 
 @Data
-public class EmpUserDetails implements UserDetails, Serializable {
+public class EmpUserDetails implements UserDetails {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+
 	private final Employee employee;
 	private final Map<String, Object> employeeFile;
 
