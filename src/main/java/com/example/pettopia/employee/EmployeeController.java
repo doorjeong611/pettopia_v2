@@ -155,12 +155,16 @@ public class EmployeeController {
 		EmpUserDetails empUserDetails = (EmpUserDetails) auth.getPrincipal();
 		String diviCode = empUserDetails.getDeptCode().substring(0, 2); // divisionCode
 		String roleName = empUserDetails.getRoleName();
+		Integer loginEmpRankNo = empUserDetails.getRankNo();
+		
 		
 		log.debug(TeamColor.KMJ+"diviCode -  "+ diviCode + TeamColor.RESET);
 		log.debug(TeamColor.KMJ+"roleName -  "+ roleName + TeamColor.RESET);
 		
 		boolean isAllowedEmpStatus = false; // 인사부 관리자가 아니면 
 		if(diviCode.equals("HR") && roleName.equals("ROLE_ADMIN")) {
+			isAllowedEmpStatus = true;
+		}else if(loginEmpRankNo == 70) {
 			isAllowedEmpStatus = true;
 		}
 		
@@ -377,11 +381,16 @@ public class EmployeeController {
 		EmpUserDetails empUserDetails = (EmpUserDetails) auth.getPrincipal();
 		String loginEmpRoleName = empUserDetails.getRoleName();
 		String loginEmpDeptCode = empUserDetails.getDeptCode().substring(0, 2);
+		Integer loginEmpRankNo = empUserDetails.getRankNo();
 		
 		boolean isAdmin = false; // 인사부 관리자라면 true
 		
 		if(loginEmpDeptCode.equals("HR") && loginEmpRoleName.equals("ROLE_ADMIN")) {
 			isAdmin = true;
+			
+		}else if(loginEmpRankNo == 70) {
+			isAdmin = true;
+			
 		}
 		log.debug(TeamColor.KMJ+" isAdmin : "+ isAdmin + TeamColor.RESET);
 		model.addAttribute("isAdmin", isAdmin);
