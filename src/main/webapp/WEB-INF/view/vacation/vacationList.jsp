@@ -132,7 +132,7 @@
                      
                   <!-- 날짜검색 -->
                   <div id="container" style="gap: 20px; width: 100%; justify-content: space-between;">
-				    <!-- 날짜 검색 캘린더 -->
+				    <!-- 날짜 검색 -->
 				    <div style="display: flex; gap: 10px; width: 100%;">
 					  <div class="select-box" style="flex: 1; max-width: 250px;">
 					    <input type="text" id="startDate" class="border border-gray-300 rounded w-full p-2" title="시작일" placeholder="시작일" onfocus="this.type='date'" onblur="if(!this.value)this.type='text'" />
@@ -161,7 +161,7 @@
 					</div>
 
 			    </div>
-
+			    
 		    		<!-- 휴가 테이블-->
 				    <div style="display: flex; gap: 10px;">
 					<!-- 직원 리스트 테이블 -->
@@ -183,37 +183,55 @@
 				    </table>
 					
 					<!-- Pagination controls -->
-				<div id="pagination"  class="flex justify-end mt-4">
-				    <ul class="flex flex-wrap items-center gap-2 shrink-0">
-				        <!-- 이전 버튼 -->
-				        <li>
-				            <a href="${currentPage == 1 ? 'javascript:void(0);' : '?page=' + (currentPage - 1)}" class="inline-flex items-center justify-center bg-white dark:bg-zink-700 h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 dark:border-zink-500 text-slate-500 dark:text-zink-200 ${currentPage == 1 ? 'disabled' : ''}">
-				                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="chevron-left" class="lucide lucide-chevron-left mr-1 size-4 rtl:rotate-180">
-				                    <path d="m15 18-6-6 6-6"></path>
-				                </svg> 이전
-				            </a>
-				        </li>
-				
-				        <!-- 페이지 번호 생성 -->
-				        <c:forEach var="i" begin="1" end="${totalPages}">
-				            <li>
-				                <a href="?page=${i}" class="inline-flex items-center justify-center bg-white dark:bg-zink-700 size-8 transition-all duration-150 ease-linear border rounded border-slate-200 dark:border-zink-500 text-slate-500 dark:text-zink-200 hover:text-custom-500 dark:hover:text-custom-500 hover:bg-custom-50 dark:hover:bg-custom-500/10 focus:bg-custom-50 dark:focus:bg-custom-500/10 focus:text-custom-500 dark:focus:text-custom-500 ${i == currentPage ? 'active' : ''}">
-				                    ${i}
-				                </a>
-				            </li>
-				        </c:forEach>
-				
-				        <!-- 다음 버튼 -->
-				        <li>
-				            <a href="${currentPage == totalPages || totalPages == 1 ? 'javascript:void(0);' : '?page=' + (currentPage + 1)}" class="inline-flex items-center justify-center bg-white dark:bg-zink-700 h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 dark:border-zink-500 text-slate-500 dark:text-zink-200 ${currentPage == totalPages || totalPages == 1 ? 'disabled' : ''}">
-				                다음 
-				                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="chevron-right" class="lucide lucide-chevron-right ml-1 size-4 rtl:rotate-180">
-				                    <path d="m9 18 6-6-6-6"></path>
-				                </svg>
-				            </a>
-				        </li>
-				    </ul>
-				</div>
+					<div class="flex justify-end mt-4" id="paginationContainer">
+					    <div class="flex gap-2 pagination-wrap">
+					        <!-- 이전 페이지 -->
+					        <c:if test="${currentPage > 1}">
+					            <a class="inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 focus:bg-custom-50 focus:text-custom-500 page-item pagination-prev" 
+					               href="${pageContext.request.contextPath}/vacation/vacationList?currentPage=${currentPage - 1}&startDate=${param.startDate}&endDate=${param.endDate}">
+					                이전
+					            </a>
+					        </c:if>
+					        <c:if test="${currentPage == 1}">
+					            <span class="inline-flex items-center justify-center bg-white h-8 px-3 border rounded border-slate-200 text-slate-400 cursor-not-allowed">
+					                이전
+					            </span>
+					        </c:if>
+					
+					        <!-- 페이지 번호 링크 -->
+					        <ul class="flex gap-2 mb-0">
+					            <c:forEach var="num" begin="1" end="${totalPages}"> <!-- 전체 페이지 수에 따라 반복 -->
+					                <c:if test="${num == currentPage}">
+					                    <li class="active">
+					                        <a class="inline-flex items-center justify-center bg-custom-50 border border-custom-50 text-custom-500 h-8 px-3 rounded" href="#">
+					                            ${num}
+					                        </a>
+					                    </li>
+					                </c:if>
+					                <c:if test="${num != currentPage}">
+					                    <li>
+					                        <a class="inline-flex items-center justify-center bg-white border border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 h-8 px-3 rounded" 
+												href="${pageContext.request.contextPath}/vacation/vacationList?currentPage=${num}&startDate=${param.startDate}&endDate=${param.endDate}">${num}
+					                        </a>
+					                    </li>
+					                </c:if>
+					            </c:forEach>
+					        </ul>
+					
+					        <!-- 다음 페이지 -->
+					        <c:if test="${currentPage < totalPages}">
+					            <a class="inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 focus:bg-custom-50 focus:text-custom-500 page-item pagination-next" 
+					                href="${pageContext.request.contextPath}/vacation/vacationList?currentPage=${currentPage - 1}&startDate=${param.startDate}&endDate=${param.endDate}">
+					                다음
+					            </a>
+					        </c:if>
+					        <c:if test="${currentPage >= totalPages}">
+					            <span class="inline-flex items-center justify-center bg-white h-8 px-3 border rounded border-slate-200 text-slate-400 cursor-not-allowed">
+					                다음
+					            </span>
+					        </c:if>
+					    </div>
+					</div>
 
 					</div>
                             </div><!--end col-->
@@ -223,7 +241,7 @@
                             
                         </div><!--end grid-->
                         <div id="existingAttendance" style="display-block;">
-                            <table class="attendance-table">
+                         <table class="attendance-table">
                           <thead class="ltr:text-left rtl:text-right bg-slate-100 text-slate-500 dark:bg-zink-600 dark:text-zink-200">
                     <tr>
                         <th class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">직원이름</th>
@@ -235,6 +253,16 @@
                     </tr>
                 </thead>
                 <tbody>
+					<!-- 조회된 휴가가 없을 경우 메시지 표시 -->
+                    <c:if test="${not empty noVacationMessage}">
+				    <table class="w-full">
+		                <th colspan="6" class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500 text-center">
+		                    <div class="text-center text-slate-500">
+		                        ${noVacationMessage}
+		                    </div>
+		                </th>
+				    </table>
+                    </c:if>
                     <c:forEach var="v" items="${vacationList}">
                         <tr>
                             <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${v.empName}</td>
@@ -255,38 +283,55 @@
                 </tbody>
             </table>
         
-        	<!-- Pagination controls -->
-            <div id="pagination" class="flex justify-end mt-4">
-			    <ul class="flex flex-wrap items-center gap-2 shrink-0">
-			        <!-- 이전 버튼 -->
-			        <li>
-			            <a href="${currentPage == 1 ? 'javascript:void(0);' : '?page=' + (currentPage - 1)}" class="inline-flex items-center justify-center bg-white dark:bg-zink-700 h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 dark:border-zink-500 text-slate-500 dark:text-zink-200 ${currentPage == 1 ? 'disabled' : ''}">
-			                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="chevron-left" class="lucide lucide-chevron-left mr-1 size-4 rtl:rotate-180">
-			                    <path d="m15 18-6-6 6-6"></path>
-			                </svg> 이전
-			            </a>
-			        </li>
-			
-			        <!-- 페이지 번호 생성 -->
-			        <c:forEach var="i" begin="1" end="${totalPages}">
-			            <li>
-			                <a href="?page=${i}" class="inline-flex items-center justify-center bg-white dark:bg-zink-700 size-8 transition-all duration-150 ease-linear border rounded border-slate-200 dark:border-zink-500 text-slate-500 dark:text-zink-200 hover:text-custom-500 dark:hover:text-custom-500 hover:bg-custom-50 dark:hover:bg-custom-500/10 focus:bg-custom-50 dark:focus:bg-custom-500/10 focus:text-custom-500 dark:focus:text-custom-500 ${i == currentPage ? 'active' : ''}">
-			                    ${i}
-			                </a>
-			            </li>
-			        </c:forEach>
-			
-			        <!-- 다음 버튼 -->
-			        <li>
-			            <a href="${currentPage == totalPages || totalPages == 1 ? 'javascript:void(0);' : '?page=' + (currentPage + 1)}" class="inline-flex items-center justify-center bg-white dark:bg-zink-700 h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 dark:border-zink-500 text-slate-500 dark:text-zink-200 ${currentPage == totalPages || totalPages == 1 ? 'disabled' : ''}">
-			                다음 
-			                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="chevron-right" class="lucide lucide-chevron-right ml-1 size-4 rtl:rotate-180">
-			                    <path d="m9 18 6-6-6-6"></path>
-			                </svg>
-			            </a>
-			        </li>
-			    </ul>
-			</div>
+					<div class="flex justify-end mt-4">
+					    <div class="flex gap-2 pagination-wrap">
+					        <!-- 이전 페이지 -->
+					        <c:if test="${currentPage > 1}">
+					            <a class="inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 focus:bg-custom-50 focus:text-custom-500 page-item pagination-prev" 
+					               href="${pageContext.request.contextPath}/vacation/vacationList?currentPage=${currentPage - 1}&startDate=${param.startDate}&endDate=${param.endDate}">
+					                이전
+					            </a>
+					        </c:if>
+					        <c:if test="${currentPage == 1}">
+					            <span class="inline-flex items-center justify-center bg-white h-8 px-3 border rounded border-slate-200 text-slate-400 cursor-not-allowed">
+					                이전
+					            </span>
+					        </c:if>
+					
+					        <!-- 페이지 번호 링크 -->
+					        <ul class="flex gap-2 mb-0">
+					            <c:forEach var="num" begin="1" end="${totalPages}"> <!-- 전체 페이지 수에 따라 반복 -->
+					                <c:if test="${num == currentPage}">
+					                    <li class="active">
+					                        <a class="inline-flex items-center justify-center bg-custom-50 border border-custom-50 text-custom-500 h-8 px-3 rounded" href="#">
+					                            ${num}
+					                        </a>
+					                    </li>
+					                </c:if>
+					                <c:if test="${num != currentPage}">
+					                    <li>
+					                        <a class="inline-flex items-center justify-center bg-white border border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 h-8 px-3 rounded" 
+												href="${pageContext.request.contextPath}/vacation/vacationList?currentPage=${num}&startDate=${param.startDate}&endDate=${param.endDate}">${num}
+					                        </a>
+					                    </li>
+					                </c:if>
+					            </c:forEach>
+					        </ul>
+					
+					        <!-- 다음 페이지 -->
+					        <c:if test="${currentPage < totalPages}">
+					            <a class="inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 focus:bg-custom-50 focus:text-custom-500 page-item pagination-next" 
+					                href="${pageContext.request.contextPath}/vacation/vacationList?currentPage=${currentPage - 1}&startDate=${param.startDate}&endDate=${param.endDate}">
+					                다음
+					            </a>
+					        </c:if>
+					        <c:if test="${currentPage >= totalPages}">
+					            <span class="inline-flex items-center justify-center bg-white h-8 px-3 border rounded border-slate-200 text-slate-400 cursor-not-allowed">
+					                다음
+					            </span>
+					        </c:if>
+					    </div>
+					</div>
 
         </div>
         </div>
@@ -374,7 +419,9 @@ $(document).ready(function() {
             data: {
                 page: page,
                 startDate: startDate || '', 
-                endDate: endDate || ''   
+                endDate: endDate || '',
+                limit: limit, 
+                offset: offset 
             },
             success: function(response) {
                 renderVacationList(response.vacationList); // 데이터 렌더링
@@ -436,17 +483,42 @@ $(document).ready(function() {
 
         // 이전 버튼
         if (currentPage > 1) {
-            paginationContainer.append(`<a href="#" class="prev" data-page="${currentPage - 1}" style="margin-right: 10px; padding: 8px 12px; border: 1px solid #007bff; background-color: #ffffff; color: #007bff; border-radius: 4px; text-decoration: none;"> < 이전</a>`);
+            paginationContainer.append(`
+                <a class="pagination-prev inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 focus:bg-custom-50 focus:text-custom-500"
+                   data-page="${currentPage - 1}" href="#">
+                    이전
+                </a>
+            `);
+        } else {
+            paginationContainer.append(`
+                <span class="inline-flex items-center justify-center bg-white h-8 px-3 border rounded border-slate-200 text-slate-400 cursor-not-allowed">
+                    이전
+                </span>
+            `);
         }
 
         // 페이지 번호 버튼
         for (let i = 1; i <= totalPages; i++) {
-            paginationContainer.append(`<a href="#" class="page-num" data-page="${i}" style="margin-right: 10px; padding: 8px 12px; border: 1px solid #007bff; background-color: #ffffff; color: #007bff; border-radius: 4px; text-decoration: none;">${i}</a>`);
+            paginationContainer.append(`
+                <a class="page-num inline-flex items-center justify-center ${i == currentPage ? 'bg-custom-50 border-custom-50 text-custom-500' : 'bg-white border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50'} h-8 px-3 rounded"
+                   data-page="${i}" href="#">${i}</a>
+            `);
         }
 
         // 다음 버튼
         if (currentPage < totalPages) {
-            paginationContainer.append(`<a href="#" class="next" data-page="${currentPage + 1}" style="margin-left: 10px; padding: 8px 12px; border: 1px solid #007bff; background-color: #ffffff; color: #007bff; border-radius: 4px; text-decoration: none;"> 다음 > </a>`);
+            paginationContainer.append(`
+                <a class="pagination-next inline-flex items-center justify-center bg-white h-8 px-3 transition-all duration-150 ease-linear border rounded border-slate-200 text-slate-500 hover:text-custom-500 hover:bg-custom-50 focus:bg-custom-50 focus:text-custom-500"
+                   data-page="${currentPage + 1}" href="#">
+                    다음
+                </a>
+            `);
+        } else {
+            paginationContainer.append(`
+                <span class="inline-flex items-center justify-center bg-white h-8 px-3 border rounded border-slate-200 text-slate-400 cursor-not-allowed">
+                    다음
+                </span>
+            `);
         }
     }
 });

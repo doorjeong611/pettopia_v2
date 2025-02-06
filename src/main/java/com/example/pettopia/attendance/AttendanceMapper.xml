@@ -65,15 +65,24 @@
 <!-- 오자윤 : /employee/attendanceList 직원 상태 카운트 -->
 <select id="countEmployeeStatus" resultType="Map">
 	SELECT 
-	    COUNT(CASE WHEN attendance_status = 'P' THEN 1 END) AS 'P',  -- 출근
-	    COUNT(CASE WHEN attendance_status = 'L' THEN 1 END) AS 'L',  -- 지각
-	    COUNT(CASE WHEN attendance_status = 'A' THEN 1 END) AS 'A',  -- 결근
-	    COUNT(CASE WHEN attendance_status = 'V' THEN 1 END) AS 'V',  -- 연차
-	    COUNT(CASE WHEN attendance_status = 'H' THEN 1 END) AS 'H'   -- 반차
+	    COUNT(e.emp_no) AS 'totalEmployees',  -- 전체 직원 수
+	    COUNT(CASE WHEN a.attendance_status = 'P' THEN 1 END) AS 'P',  -- 출근 수
+	    COUNT(CASE WHEN a.attendance_status = 'L' THEN 1 END) AS 'L',  -- 지각 수
+	    COUNT(CASE WHEN d.vacation_type = 'AL' AND d.approval_status = 'A' THEN 1 END) AS 'V',  -- 연차 수
+	    COUNT(CASE WHEN (d.vacation_type IN ('HLA', 'HLP') AND d.approval_status = 'A') THEN 1 END) AS 'H',  -- 반차 수
+	    COUNT(e.emp_no) - 
+	    COUNT(CASE WHEN a.attendance_status = 'P' THEN 1 END) - 
+	    COUNT(CASE WHEN a.attendance_status = 'L' THEN 1 END) - 
+	    COUNT(CASE WHEN d.vacation_type = 'AL' AND d.approval_status = 'A' THEN 1 END) - 
+	    COUNT(CASE WHEN (d.vacation_type IN ('HLA', 'HLP') AND d.approval_status = 'A') THEN 1 END) AS 'A' -- 결근 수
 	FROM 
-	    attendance
+	    employee e
+	LEFT JOIN 
+	    attendance a ON e.emp_no = a.emp_no AND a.attendance_date = CURDATE() 
+	LEFT JOIN 
+	    document d ON a.emp_no = d.doc_writer_no AND d.start_date &lt;= CURDATE() AND d.end_date &gt;= CURDATE() 
 	WHERE 
-	    attendance_date = CURDATE();
+	    e.emp_status = 'E';  -- 재직 중인 직원만 포함
 </select>
 
 <!-- 오자윤 : /employee/attendance 근태리스트 -->
