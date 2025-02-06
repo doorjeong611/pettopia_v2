@@ -19,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.pettopia.employeefile.EmployeeFileMapper;
 import com.example.pettopia.util.TeamColor;
+import com.example.pettopia.vacationrecord.VacationRecordMapper;
 import com.example.pettopia.vo.Employee;
 import com.example.pettopia.vo.EmployeeFile;
 import com.example.pettopia.vo.EmployeeForm;
@@ -34,6 +35,7 @@ public class EmployeeService {
 	
 	@Autowired EmployeeMapper employeeMapper;
 	@Autowired EmployeeFileMapper employeeFileMapper;
+	@Autowired VacationRecordMapper vacationRecordMapper;
 	
 	@Autowired JavaMailSender javaMailSender;
 	
@@ -145,11 +147,16 @@ public class EmployeeService {
 		log.debug(TeamColor.KMJ + "empNo :" + empNo);
 		log.debug(TeamColor.KMJ + "resultRow :" + resultRow);
 		
+		
+		// VACATION_RECORD 15일 추가
+		Integer vacResultRow = vacationRecordMapper.insertNewVacationRecord(empNo);
+
+		
 		int fileResultRow = 0;
 		
 		
 		// 직원 정보 등록 성공시
-		if(resultRow == 1 && employeeForm.getEmployeeFile() != null) {
+		if(resultRow == 1 && vacResultRow == 1 && employeeForm.getEmployeeFile() != null) {
 			
 			// 프로필 사진 등록
 			MultipartFile empFile = employeeForm.getEmployeeFile();

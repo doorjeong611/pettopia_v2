@@ -198,7 +198,7 @@
 	<select id="selectEmployeeOne" parameterType="String" resultType="map">
 		SELECT e.emp_no AS empNo
 				, ef.emp_file_no AS empFileNo
-				, CONCAT(ef.file_name,ef.file_ext) AS empFileName
+				, IFNULL(CONCAT(ef.file_name,ef.file_ext),'placeholder.png') AS empFileName
 				, e.emp_name AS empName
 				, e.emp_email AS empEmail
 				, e.emp_birth AS empBirth
@@ -217,12 +217,12 @@
 				, r.rank_no AS rankNo
 				, r.rank_name AS rankName
 		FROM employee e 
-		JOIN employee_file ef ON e.emp_no = ef.emp_no
+		LEFT JOIN employee_file ef ON e.emp_no = ef.emp_no
 		JOIN department d ON e.dept_code = d.dept_code
 		JOIN division di ON d.division_code = di.division_code
 		JOIN `rank` r ON e.rank_no = r.rank_no
 		WHERE e.emp_no LIKE #{empNo}
-		AND (ef.file_purpose = 'P' OR ef.file_purpose IS NULL) 
+		AND (ef.file_purpose = 'P' OR ef.file_purpose IS NULL)
 	</select>
 
 	<!-- employeeSummary : 직원 공식 정보 상세보기 -->

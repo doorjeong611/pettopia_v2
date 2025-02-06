@@ -112,4 +112,11 @@
 		LIMIT #{limit} OFFSET #{offset};
     </select>
     
+    <!-- 직원 등록 : 15일 추가 -->
+    <insert id="insertNewVacationRecord" parameterType="String" >
+    	INSERT INTO vacation_record(emp_no) 
+		VALUES (#{empNo})
+    </insert>
+    
+    
 </mapper>
