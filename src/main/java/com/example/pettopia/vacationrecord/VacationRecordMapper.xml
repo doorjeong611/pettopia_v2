@@ -80,9 +80,10 @@
 		    vacation_record vr ON e.emp_no = vr.emp_no
 		LEFT JOIN 
 		    document d ON e.emp_no = d.doc_writer_no AND d.doc_type = 'V' AND d.approval_status = 'A'
+	    WHERE
+	    	e.emp_no = #{empNo}
 		GROUP BY 
 		    e.emp_no, e.emp_name, vr.total_vacation;
-
 	    </select>
 	    
 	<!-- 오자윤 : /vacation/vacationList 직원 휴가 사용내역 -->
