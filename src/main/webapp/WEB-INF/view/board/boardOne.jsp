@@ -83,8 +83,8 @@
     }
 
   
-   	.boardFileBox {width: 100%; margin: 1% 0; height: auto;}
-   	.boardFileBox > img {margin: 0 auto; width: 80%; height: auto;}
+   	.boardFileBox {width: 100%; margin: 1% 0;}
+   	.boardFileBox > img {margin: 0 auto; width: 80%;}
    	
    	
    	.commentMainBox {width: 70%; height: auto; margin: 3% auto;}
@@ -185,14 +185,20 @@
                             </div>
 
                             <div class="boardContentBox">
-                            	<label for="boardContent_input" class="inline-block text-base">내용</label>
-                                <textarea id="boardContent_input" class="form-input" readonly onfocus='this.blur();'>${boardMap.boardContent}</textarea>
-								
-								<c:if test="${not empty boardMap.fileName}">
-  									<div class="boardFileBox">
-										 <img src="${pageContext.request.contextPath}/boardFile/${boardMap.fileName}" alt="게시글 이미지">
-									</div>
-								</c:if>
+							    <label for="boardContent_input" class="inline-block text-base">내용</label>
+							    <textarea id="boardContent_input" class="form-input" readonly onfocus='this.blur();'>${boardMap.boardContent}</textarea>
+							
+							    <c:if test="${not empty boardMap.fileName}">
+							        <div class="boardFileBox w-full h-[500px] overflow-hidden relative">
+							            <img src="${pageContext.request.contextPath}/boardFile/${boardMap.fileName}" alt="게시글 이미지" class="w-full h-full object-contain object-center">
+							        </div>
+							    </c:if>
+							</div>
+
+
+
+							
+							<div>
                                 <div class="contentFooterBox">
                                     <!-- 버튼 박스 -->
                                     <c:if test="${empNo == boardMap.boardWriterNo}">
