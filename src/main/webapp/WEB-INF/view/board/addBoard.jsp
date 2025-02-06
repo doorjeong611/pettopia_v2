@@ -255,6 +255,7 @@ $(document).ready(function() {
     $("form").submit(function(event) {
         var title = $("input[name='boardTitle']").val();  // 제목 값 가져오기
         var content = $("textarea[name='boardContent']").val();  // 내용 값 가져오기
+        var fileInput = $("input[type='file']")[0];  // 파일 입력 필드 가져오기
 
         // 제목과 내용이 비어있거나 4글자 미만일 경우 경고창 띄우기
         if (title.trim() === "" || title.length < 4) {
@@ -267,10 +268,24 @@ $(document).ready(function() {
             event.preventDefault();  // 폼 제출 막기
             return false;
         }
+
+        // 이미지 파일만 허용 (확장자 검사)
+        var file = fileInput.files[0];
+        if (file) {
+            var fileName = file.name;
+            var fileExtension = fileName.split('.').pop().toLowerCase(); // 파일 확장자 추출
+
+            // 허용된 확장자 목록 (webp 추가)
+            var allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+
+            if (!allowedExtensions.includes(fileExtension)) {
+                alert("이미지 파일만 업로드 가능합니다.");
+                event.preventDefault();  // 폼 제출 막기
+                return false;
+            }
+        }
     });
 });
 </script>
-
 </body>
-
 </html>
