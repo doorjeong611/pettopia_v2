@@ -155,12 +155,16 @@ public class EmployeeController {
 		EmpUserDetails empUserDetails = (EmpUserDetails) auth.getPrincipal();
 		String diviCode = empUserDetails.getDeptCode().substring(0, 2); // divisionCode
 		String roleName = empUserDetails.getRoleName();
+		Integer loginEmpRankNo = empUserDetails.getRankNo();
+		
 		
 		log.debug(TeamColor.KMJ+"diviCode -  "+ diviCode + TeamColor.RESET);
 		log.debug(TeamColor.KMJ+"roleName -  "+ roleName + TeamColor.RESET);
 		
 		boolean isAllowedEmpStatus = false; // 인사부 관리자가 아니면 
 		if(diviCode.equals("HR") && roleName.equals("ROLE_ADMIN")) {
+			isAllowedEmpStatus = true;
+		}else if(loginEmpRankNo == 70) {
 			isAllowedEmpStatus = true;
 		}
 		
