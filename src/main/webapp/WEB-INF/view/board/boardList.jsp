@@ -36,6 +36,13 @@
 	.emptyBox p {color:#94A3B8; font-size: 18px; text-align: center;margin-top: 1%; opacity: 0.7;}
 	
 	.textList p {display:inline-block;}
+	
+	.title-cell {
+    white-space: nowrap;         /* 텍스트가 한 줄로 표시되도록 */
+    overflow: hidden;            /* 넘치는 텍스트를 숨김 */
+    text-overflow: ellipsis;     /* 넘치는 텍스트를 '...'으로 표시 */
+    max-width: 200px;            /* 필요한 너비로 조절 (적절히 조정) */
+}
 
 </style>
 <body class="text-base bg-body-bg text-body font-public dark:text-zink-100 dark:bg-zink-800 group-data-[skin=bordered]:bg-body-bordered group-data-[skin=bordered]:dark:bg-zink-700">
