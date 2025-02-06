@@ -543,6 +543,13 @@ $(document).ready(function() {
 	        return;
 	    }
 
+	    
+	    /* 마지막 확인(confirm) 추가 */
+	    if (!confirm("수정 후 재로그인이 필요합니다.")) {
+	        event.preventDefault(); // 사용자가 "아니오" 선택 시 제출 막기
+	        return;
+	    }
+
 		console.log('overlay 시작');
 
 	    $('#loading-overlay').css('display', 'flex');   /* 로딩 화면 표시 */

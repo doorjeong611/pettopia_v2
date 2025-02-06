@@ -60,6 +60,11 @@ $(document).ready(function() {
     if (message) {
         alert(message);
     }
+    var msg = "${msg}";
+    console.log('msg : '+msg);
+    if (msg) {
+        alert(msg);
+    }
 });
 </script>
 

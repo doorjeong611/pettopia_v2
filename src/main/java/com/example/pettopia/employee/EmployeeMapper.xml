@@ -44,6 +44,7 @@
 				, e.role_name AS roleName
 				, di.division_name AS divisionName
 				, di.division_code AS divisionCode
+				, e.rank_no AS rankNo
 		FROM employee e
 		JOIN department d ON e.dept_code = d.dept_code
 		JOIN division di ON d.division_code = di.division_code
