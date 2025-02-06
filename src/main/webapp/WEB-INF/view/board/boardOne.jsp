@@ -84,7 +84,7 @@
 
   
    	.boardFileBox {width: 100%; margin: 1% 0; height: auto;}
-   	.boardFileBox > img {margin: 0 auto;}
+   	.boardFileBox > img {margin: 0 auto; width: 80%; height: auto;}
    	
    	
    	.commentMainBox {width: 70%; height: auto; margin: 3% auto;}

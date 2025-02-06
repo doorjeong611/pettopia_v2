@@ -207,22 +207,41 @@
 <!-- jQuery library -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script>
-//폼 제출 시 유효성 검사
-$("form").submit(function(event) {
-    var title = $("input[name='boardTitle']").val();  // 제목 값 가져오기
-    var content = $("textarea[name='boardContent']").val();  // 내용 값 가져오기
+$(document).ready(function() {
+    // 폼 제출 시 유효성 검사
+    $("form").submit(function(event) {
+        var title = $("input[name='boardTitle']").val();  // 제목 값 가져오기
+        var content = $("textarea[name='boardContent']").val();  // 내용 값 가져오기
+        var fileInput = $("input[name='boardImg']")[0];  // 파일 입력 필드 가져오기
 
-    // 제목과 내용이 비어있거나 4글자 미만일 경우 경고창 띄우기
-    if (title.trim() === "" || title.length < 4) {
-        alert("제목을 4글자 이상 입력해주세요.");
-        event.preventDefault();  // 폼 제출 막기
-        return false;
-    }
-    if (content.trim() === "" || content.length < 10) {
-        alert("내용을 10글자 이상 입력해주세요.");
-        event.preventDefault();  // 폼 제출 막기
-        return false;
-    }
+        // 제목과 내용이 비어있거나 4글자 미만일 경우 경고창 띄우기
+        if (title.trim() === "" || title.length < 4) {
+            alert("제목을 4글자 이상 입력해주세요.");
+            event.preventDefault();  // 폼 제출 막기
+            return false;
+        }
+        if (content.trim() === "" || content.length < 10) {
+            alert("내용을 10글자 이상 입력해주세요.");
+            event.preventDefault();  // 폼 제출 막기
+            return false;
+        }
+
+        // 파일 첨부 유효성 검사 (이미지 파일만 허용)
+        var file = fileInput.files[0];
+        if (file) {
+            var fileName = file.name;
+            var fileExtension = fileName.split('.').pop().toLowerCase();  // 파일 확장자 추출
+
+            // 허용된 확장자 목록 (webp 포함)
+            var allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+
+            if (!allowedExtensions.includes(fileExtension)) {
+                alert("이미지 파일만 업로드 가능합니다.");
+                event.preventDefault();  // 폼 제출 막기
+                return false;
+            }
+        }
+    });
 });
 </script>
 </body>
