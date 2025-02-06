@@ -297,13 +297,17 @@ public class EmployeeService {
 		// divisionCode == HR, roleName = ROLE_ADMIN -> isHRAdmin == true
 		String divisionCode = (String) empDivRoleInfo.get("divisionCode");   // select로 가져온 부서
 		String roleName = (String) empDivRoleInfo.get("roleName");
+		Integer rankNo = (Integer) empDivRoleInfo.get("rankNo");
 		
 		log.debug(TeamColor.KMJ + "divisionCode : " + divisionCode );
 		log.debug(TeamColor.KMJ + "roleName : " + roleName );
+		log.debug(TeamColor.KMJ + "rankNo : " + rankNo );
 		
 		boolean isHRAdmin = false;
 		
 		if(divisionCode.equals("HR") && roleName.equals("ROLE_ADMIN")) {
+			isHRAdmin = true;
+		}else if(rankNo == 70) {
 			isHRAdmin = true;
 		}
 		

@@ -352,9 +352,10 @@ public class EmployeeController {
 	
 	// modifyEmployeeOne : 직원 개인 정보 수정
 	@PostMapping("/employee/modifyEmployeeOne")
-	public String modifyEmployeeOne(EmployeeForm employeeForm, @RequestParam String empFileNo, @RequestParam String empStatus, @RequestParam String isTeamLeader,  HttpSession session) {
+	public String modifyEmployeeOne(EmployeeForm employeeForm, @RequestParam String empFileNo, @RequestParam String empStatus, @RequestParam String isTeamLeader,  HttpSession session, RedirectAttributes redirectAttributes) {
 		log.debug(TeamColor.KMJ+" EmployeeController : POST modifyEmployeeOne()" + TeamColor.RESET);
 		
+		log.debug(TeamColor.KMJ+" empNo : "+ employeeForm.getEmpNo() + TeamColor.RESET);
 		log.debug(TeamColor.KMJ+" empFileNo : "+ empFileNo + TeamColor.RESET);
 		log.debug(TeamColor.KMJ+" empStatus : "+ empStatus + TeamColor.RESET);
 		log.debug(TeamColor.KMJ+" isTeamLeader : "+ isTeamLeader + TeamColor.RESET);
@@ -365,9 +366,14 @@ public class EmployeeController {
 		// 직원 정보 수정
 		boolean result = employeeService.modifyEmployeeOne(employeeForm, path, empFileNo, empStatus, isTeamLeader);
 		
+		if(result = true) {
+
+			return "redirect:/logout";
+		}else {
+			return "redirect:/employee/modifyEmployeeOne"+employeeForm.getEmpNo();
+		}
 		
 		
-		return "common/petTopiaMain";
 	}
 	
 	
