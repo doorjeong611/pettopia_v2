@@ -251,7 +251,7 @@ public class NoticeController {
 	        if (noticeFileList.isEmpty()) {
 	        	String path = null;
 	        	
-        	 // 1. 공지사항 저장
+        	 // 공지사항 저장
     	    log.debug(TeamColor.OJY + "notice------> " + notice + TeamColor.RESET); // 파일 사이즈
             noticeService.addNotice(notice, noticeFile, path);
             return "redirect:/notice/getNoticeList";
