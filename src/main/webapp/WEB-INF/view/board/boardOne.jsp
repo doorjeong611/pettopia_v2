@@ -96,11 +96,11 @@
 }
 
 	.commentBox textarea, .replyBox textarea {
-	    height: 80px; 
-	    resize: none; 
+	  height: 100px;
+      resize: none; 
 	}
-	.commentBox button {float: right; margin-right: 2%; margin-top: 1%;}
-	.commentBox .btn {float: right; margin-right: 2%; margin-top: 1%;}
+	.commentBox button {float: right; margin-right: 1%; margin-top: 1%;}
+	.commentBox .btn {float: right; margin-right: 1%; margin-top: 1%;}
 	.lineBox {width: 100%; border: 1px solid #f1f5f9; margin: 0 auto;}
 	
 	.replyBox {
@@ -112,7 +112,7 @@
 	.replyBox button {float: right; margin-right: 2%; margin-top: 1%;}
 	.replyBox .btn {float: right; margin-top: 1%;}
 	.replyBox textarea {
-		height: 80px;
+		height: 120px;
 		text-align: left;
 	       resize: none;
 	    }
@@ -193,29 +193,31 @@
 							            <img src="${pageContext.request.contextPath}/boardFile/${boardMap.fileName}" alt="게시글 이미지" class="w-full h-full object-contain object-center">
 							        </div>
 							    </c:if>
+							    <!-- 버튼 박스 모음 -->
+							    <div>
+	                                <div class="contentFooterBox">
+	                                    <!-- 버튼 박스 -->
+	                                    <c:if test="${empNo == boardMap.boardWriterNo}">
+	                                        <div class="btnBox">
+	                                            <div class="bg-white text-custom-500 btn border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600" ><a href="${pageContext.request.contextPath}/board/modifyBoard?boardNo=${boardMap.boardNo}">수정하기</a></div>
+	                                            <div class="text-red-500 bg-white border-red-500 btn hover:text-white hover:bg-red-600 hover:border-red-600 focus:text-white focus:bg-red-600 focus:border-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:border-red-600 active:ring active:ring-red-100">
+	                                            	<a href="${pageContext.request.contextPath}/board/removeBoard?boardNo=${boardMap.boardNo}">삭제하기</a></div>
+	                                            <div class="text-green-500 bg-white border-green-500 btn hover:text-white hover:bg-green-600 hover:border-green-600 focus:text-white focus:bg-green-600 focus:border-green-600 focus:ring focus:ring-green-100 active:text-white active:bg-green-600 active:border-green-600 active:ring active:ring-green-100"><a href="${pageContext.request.contextPath}/board/boardList">목록</a></div>
+	                                        </div>
+	                                    </c:if>
+	                                    <c:if test="${empNo != boardMap.boardWriterNo}">
+	                                        <div class="btnBox">
+	                                            <div class="text-green-500 bg-white border-green-500 btn hover:text-white hover:bg-green-600 hover:border-green-600 focus:text-white focus:bg-green-600 focus:border-green-600 focus:ring focus:ring-green-100 active:text-white active:bg-green-600 active:border-green-600 active:ring active:ring-green-100"><a href="${pageContext.request.contextPath}/board/boardList">목록</a></div>
+	                                        </div>
+	                                    </c:if>
+	                                </div>
+	                            </div>
 							</div>
 
 
 
 							
-							<div>
-                                <div class="contentFooterBox">
-                                    <!-- 버튼 박스 -->
-                                    <c:if test="${empNo == boardMap.boardWriterNo}">
-                                        <div class="btnBox">
-                                            <div class="bg-white text-custom-500 btn border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600" ><a href="${pageContext.request.contextPath}/board/modifyBoard?boardNo=${boardMap.boardNo}">수정하기</a></div>
-                                            <div class="text-red-500 bg-white border-red-500 btn hover:text-white hover:bg-red-600 hover:border-red-600 focus:text-white focus:bg-red-600 focus:border-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:border-red-600 active:ring active:ring-red-100">
-                                            	<a href="${pageContext.request.contextPath}/board/removeBoard?boardNo=${boardMap.boardNo}">삭제하기</a></div>
-                                            <div class="text-green-500 bg-white border-green-500 btn hover:text-white hover:bg-green-600 hover:border-green-600 focus:text-white focus:bg-green-600 focus:border-green-600 focus:ring focus:ring-green-100 active:text-white active:bg-green-600 active:border-green-600 active:ring active:ring-green-100"><a href="${pageContext.request.contextPath}/board/boardList">목록</a></div>
-                                        </div>
-                                    </c:if>
-                                    <c:if test="${empNo != boardMap.boardWriterNo}">
-                                        <div class="btnBox">
-                                            <div class="returnBtn"><a href="${pageContext.request.contextPath}/board/boardList">돌아가기</a></div>
-                                        </div>
-                                    </c:if>
-                                </div>
-                            </div>
+							
                         </div>
                        <!-- End card-body -->
 	                   	   
@@ -226,18 +228,18 @@
 
     <!-- 댓글 목록 (c:forEach) 부분 -->
   <c:forEach var="c" items="${comment}">
-   <c:if test="${empNo == boardMap.boardWriterNo}">
-        <div class="commentMainBox">
-            <div class="lineBox"></div>
-            <div class="replyBox">
-                <textarea class="form-input" name="commentContent" readonly>${c.commentContent}</textarea>
-                <div class="deleteCommentBox text-red-500 bg-white border-red-500 btn hover:text-white hover:bg-red-600 hover:border-red-600 focus:text-white focus:bg-red-600 focus:border-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:border-red-600 active:ring active:ring-red-100">
-                	<a href="${pageContext.request.contextPath}/board/removeComment?boardNo=${boardMap.boardNo}&commentNo=${c.commentNo}">삭제하기</a>
-				</div>
+   <c:if test="${empNo == c.commentWriterNo}">
+    <div class="commentMainBox">
+        <div class="lineBox"></div>
+        <div class="replyBox">
+            <textarea class="form-input" name="commentContent" readonly>${c.commentContent}</textarea>
+            <div class="deleteCommentBox text-red-500 bg-white border-red-500 btn hover:text-white hover:bg-red-600 hover:border-red-600 focus:text-white focus:bg-red-600 focus:border-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:border-red-600 active:ring active:ring-red-100">
+                <a href="${pageContext.request.contextPath}/board/removeComment?boardNo=${boardMap.boardNo}&commentNo=${c.commentNo}">삭제하기</a>
             </div>
         </div>
-    </c:if>
-    <c:if test="${empNo != boardMap.boardWriterNo}">
+    </div>
+</c:if>
+    <c:if test="${empNo != c.commentWriterNo}">
         <div class="commentMainBox">
             <div class="lineBox"></div>
             <div class="replyBox">
