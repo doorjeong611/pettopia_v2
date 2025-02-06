@@ -162,7 +162,7 @@
                 	template: 'ula',
                     mouseScrool: OrgChart.none,
                     enableSearch: false,
-                    scaleInitial: 0.8,
+                    scaleInitial: 0.7,
                     nodes: hierarchy,
                     nodeBinding: {// 노드에 표시할 내용
                     	 img_0: "img",
@@ -215,7 +215,7 @@
                     </ul>
                 </div>
                 <!-- Main content -->
-				<div class="card pl-8" style="height:50rem;">
+				<div class="card pl-2" style="height:50rem;">
 					<!-- 버튼 -->
 					<div class="px-4 py-4 flex justify-end gap-1">
 						<button id="manageDiviBtn" type="button" class="bg-white text-custom-500 btn border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100">
@@ -228,35 +228,28 @@
 
 
 					<div class="card pl-8 overflow-y-auto simplebar-scrollable-y shadow-none" style="height:45rem;" data-simplebar>
-						   	
-						
-							<div class="card-body flex gap-6 ">
-						    
-						        <!-- 상위 부서 목록 -->
-								<div class="grid xl:grid-cols-1" id="divisionDiv" >
-						        </div>
-						        
-						        <!-- 하위 팀 목록 -->
-						        <div class="" id="departDiv" >
-						            <div class="grid xl:grid-cols-1 px-5">
-						                <span class="title-font pt-2 text-slate-400 text-lg text-center">부서를 <br> 선택해 주세요</span>
-						            </div>
-						        </div >
-						        
-						        <!-- 조직도 -->
-						 
-						        
-					 	   	<div id="orgchart" class="grid xl:grid-cols-1 " style="width:50%"  >
-						        	
-						         <div id="choiceTeam" class="grid xl:grid-cols-4 px-5 ">
-							           <span class="title-font pt-2 text-slate-400 text-lg text-center">팀을 <br> 선택해 주세요</span>
-							     </div>
-
-							</div>
+					  <div class="card-body flex gap-3">
 					    
+					    <!-- 상위 부서 목록 -->
+					    <div class="flex-shrink-0 w-1/4" id="divisionDiv" style="width: 210px;">
+					    </div>
 					    
+					    <!-- 하위 팀 목록 -->
+					    <div class="flex-shrink-0 w-1/4 px-5" id="departDiv" style="text-align: center; padding-top: 10px; padding-left: 15px;">
+					      <span class="title-font pt-6 text-slate-400 text-lg text-center">부서를 <br> 선택해 주세요</span>
+					    </div>
+					    
+					    <!-- 조직도 -->
+					    <div id="orgchart" class="flex-grow">
+					      <div id="choiceTeam" class="grid xl:grid-cols-4 px-2">
+					        <span class="title-font pt-2 text-slate-400 text-lg text-center">팀을 <br> 선택해 주세요</span>
+					      </div>
+					    </div>
+					  </div>
 					</div>
-				</div>
+
+
+
 				<!-- 끝 :  card -->
                 
                 
