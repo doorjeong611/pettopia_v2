@@ -60,31 +60,32 @@
 
 	<!-- 오자윤 : /vacation/vacationList 직원 휴가 카운팅 -->
 	<select id="getVacationCount" resultType="Map">
-		SELECT 
-		    e.emp_no AS empNo,
-		    e.emp_name AS empName,
-		    vr.total_vacation AS total_vacation_days, <!-- 총 연차 -->
-		    SUM(CASE 
-		        WHEN d.vacation_type = 'AL' THEN DATEDIFF(d.end_date, d.start_date) + 1
-		        WHEN d.vacation_type IN ('HLA', 'HLP') THEN 0.5
-		        ELSE 0 
-		    END) AS used_vacation_days, <!-- 사용한 휴가 -->
-		    (vr.total_vacation - SUM(CASE 
-		        WHEN d.vacation_type = 'AL' THEN DATEDIFF(d.end_date, d.start_date) + 1
-		        WHEN d.vacation_type IN ('HLA', 'HLP') THEN 0.5
-		        ELSE 0 
-		    END)) AS remaining_vacation_days <!-- 잔여 휴가 -->
-		FROM 
-		    employee e
-		JOIN 
-		    vacation_record vr ON e.emp_no = vr.emp_no
-		LEFT JOIN 
-		    document d ON e.emp_no = d.doc_writer_no AND d.doc_type = 'V' AND d.approval_status = 'A'
+	    SELECT 
+	        e.emp_no AS empNo,
+	        e.emp_name AS empName,
+	        COALESCE(vr.total_vacation, 0) AS total_vacation_days,
+	        COALESCE(SUM(CASE 
+	            WHEN d.vacation_type = 'AL' THEN DATEDIFF(d.end_date, d.start_date) + 1
+	            WHEN d.vacation_type IN ('HLA', 'HLP') THEN 0.5
+	            ELSE 0 
+	        END), 0) AS used_vacation_days,
+	        COALESCE(vr.total_vacation, 0) - COALESCE(SUM(CASE 
+	            WHEN d.vacation_type = 'AL' THEN DATEDIFF(d.end_date, d.start_date) + 1
+	            WHEN d.vacation_type IN ('HLA', 'HLP') THEN 0.5
+	            ELSE 0 
+	        END), 0) AS remaining_vacation_days
+	    FROM 
+	        employee e
+	    JOIN 
+	        vacation_record vr ON e.emp_no = vr.emp_no
+	    LEFT JOIN 
+	        document d ON e.emp_no = d.doc_writer_no AND d.doc_type = 'V' AND d.approval_status = 'A'
 	    WHERE
-	    	e.emp_no = #{empNo}
-		GROUP BY 
-		    e.emp_no, e.emp_name, vr.total_vacation;
-	    </select>
+	        e.emp_no = #{empNo}
+	    GROUP BY 
+	        e.emp_no, e.emp_name, vr.total_vacation;
+	</select>
+
 	    
 	<!-- 오자윤 : /vacation/vacationList 직원 휴가 사용내역 -->
     <select id="getVacationUsage" resultType="Map">
