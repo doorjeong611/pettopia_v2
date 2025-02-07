@@ -36,6 +36,12 @@ public class EmpUserDetailsService implements UserDetailsService {
 	    // empNo를 사용하여 DB에서 직원 정보를 조회 (예: 직원 이름, 이메일 등)
 	    Employee employee = employeeMapper.selectEmployeeInfo(empNo);
 	    
+	    
+	    if (employee == null) {
+	        throw new UsernameNotFoundException("사용자를 찾을 수 없습니다: ");
+	    }
+	    
+	    
 	    // empNo를 사용하여 직원과 관련된 추가 정보를 조회 (예: 파일 관련 정보 등)
 	    Map<String, Object> empFile = employeeMapper.selectEmployeeOne(empNo);
 	    
@@ -45,6 +51,7 @@ public class EmpUserDetailsService implements UserDetailsService {
 	    
 	    // 디버그 로그로 EmpUserDetails 객체의 내용을 출력하여 디버깅에 사용
 	    log.debug(TeamColor.KMJ + "details:--------------" + details.toString() + TeamColor.RESET);
+	    
 	    
 	    // 생성된 EmpUserDetails 객체를 반환하여 Spring Security의 인증 시스템에 사용
 	    return details;

@@ -60,7 +60,7 @@ $(document).ready(function() {
     if (message) {
         alert(message);
     }
-    var msg = "${msg}";
+    var msg = "${Loginmsg}";
     console.log('msg : '+msg);
     if (msg) {
         alert(msg);
