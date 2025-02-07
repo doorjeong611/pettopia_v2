@@ -82,27 +82,19 @@
 	<!-- selectReservationStats : 오늘의 객실 점유율 -->
 	<select id="selectReservationStats" resultType="Map">
 		SELECT 
-    today_reservations 'todayReservedRooms',
-    yesterday_reservations 'yesterdayReservedRooms',
-    ROUND(IFNULL((today_reservations - yesterday_reservations) / NULLIF(yesterday_reservations, 0) * 100, 0), 1) 'changePercentage',
-    CASE 
-        WHEN (today_reservations - yesterday_reservations) &lt; 0 THEN '감소'
-        ELSE '증가'
-    END 'changeStatus',
-    40 'totalRooms',
-    ROUND(IFNULL((SELECT COUNT(*) FROM room_rsv WHERE DATE(check_in_datetime) = CURDATE()) / 40 * 100, 0), 1) 'occupancyRate'
-FROM (
-    SELECT 
-        (SELECT COUNT(*) 
-         FROM room_rsv 
-         WHERE (DATE(check_in_datetime) = CURDATE() OR (DATE(check_in_datetime) &lt; CURDATE() AND DATE(check_out_datetime) >= CURDATE()))) today_reservations,
-
-        (SELECT COUNT(*) 
-         FROM room_rsv 
-         WHERE DATE(check_out_datetime) = CURDATE() - INTERVAL 1 DAY) yesterday_reservations
-) reservationCounts;
-
-
+		    SUM(CASE WHEN NOW() BETWEEN check_in_datetime AND check_out_datetime AND rsv_status = '예약완료' THEN 1 ELSE 0 END) AS todayReservedRooms,
+		    SUM(CASE WHEN DATE_SUB(NOW(), INTERVAL 1 DAY) BETWEEN DATE(check_in_datetime) AND DATE(check_out_datetime) AND rsv_status = '예약완료' THEN 1 ELSE 0 END) AS yesterdayReservedRooms,
+		    40 AS totalRooms,
+		    ROUND((SUM(CASE WHEN NOW() BETWEEN check_in_datetime AND check_out_datetime AND rsv_status = '예약완료' THEN 1 ELSE 0 END) / 40) * 100, 1) AS occupancyRate,
+		    ROUND((SUM(CASE WHEN DATE_SUB(NOW(), INTERVAL 1 DAY) BETWEEN DATE(check_in_datetime) AND DATE(check_out_datetime) AND rsv_status = '예약완료' THEN 1 ELSE 0 END) / 40) * 100, 1) AS occupancy_percentage_yesterday,
+		    ROUND(ROUND((SUM(CASE WHEN NOW() BETWEEN check_in_datetime AND check_out_datetime AND rsv_status = '예약완료' THEN 1 ELSE 0 END) / 40) * 100, 1) - 
+		    ROUND((SUM(CASE WHEN DATE_SUB(NOW(), INTERVAL 1 DAY) BETWEEN DATE(check_in_datetime) AND DATE(check_out_datetime) AND rsv_status = '예약완료' THEN 1 ELSE 0 END) / 40) * 100, 1), 1) AS changePercentage,
+		    CASE 
+		        WHEN (SUM(CASE WHEN NOW() BETWEEN check_in_datetime AND check_out_datetime AND rsv_status = '예약완료' THEN 1 ELSE 0 END) - 
+		              SUM(CASE WHEN DATE_SUB(NOW(), INTERVAL 1 DAY) BETWEEN DATE(check_in_datetime) AND DATE(check_out_datetime) AND rsv_status = '예약완료' THEN 1 ELSE 0 END)) >= 0 THEN '증가'
+		        ELSE '감소'
+		    END AS changeStatus
+		FROM room_rsv;
 	</select>
 
 

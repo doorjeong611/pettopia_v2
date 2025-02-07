@@ -44,6 +44,18 @@
     max-width: 200px;            /* 필요한 너비로 조절 (적절히 조정) */
 }
 
+@font-face {
+	    font-family: 'PTBandocheB';
+	    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408@1.0/PTBandocheB.woff2') format('woff2');
+	    font-weight: 400;
+	    font-style: normal;
+	}
+	
+	.title-font{
+		font-family: 'PTBandocheB' , 'cursive';
+		
+	}
+
 </style>
 <body class="text-base bg-body-bg text-body font-public dark:text-zink-100 dark:bg-zink-800 group-data-[skin=bordered]:bg-body-bordered group-data-[skin=bordered]:dark:bg-zink-700">
 <div class="group-data-[sidebar-size=sm]:min-h-sm group-data-[sidebar-size=sm]:relative">
@@ -64,14 +76,14 @@
             <div class="container-fluid group-data-[content=boxed]:max-w-boxed mx-auto">
                 <div class="flex flex-col gap-2 py-4 md:flex-row md:items-center print:hidden">
                     <div class="grow">
-                       <h5 class="text-16">사내 게시판</h5>
+                       <h5 class="title-font">사내 게시판</h5>
                     </div>
                      <ul class="flex items-center gap-2 text-sm font-normal shrink-0">
                         <li class="relative before:content-['\ea54'] before:font-remix ltr:before:-right-1 rtl:before:-left-1  before:absolute before:text-[18px] before:-top-[3px] ltr:pr-4 rtl:pl-4 before:text-slate-400 dark:text-zink-200">
-                            <a href="#!" class="text-slate-400 dark:text-zink-200">사내 게시판</a>
+                            <a href="${pageContext.request.contextPath}/board/boardList" class="text-slate-400">사내 게시판</a>
                         </li>
                         <li class="text-slate-700 dark:text-zink-100">
-                            게시판 리스트
+                            게시판 목록
                         </li>
                     </ul>
                 </div>
