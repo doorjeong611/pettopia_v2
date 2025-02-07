@@ -71,9 +71,7 @@
     $(document).ready(function () {
         /* 팀을 클릭하면 해당 팀의 조직도를 띄워줘야함 */
         $('#departDiv').on('click', '#deptDivSel', function () {
-        
-        	
-        	
+
             // 현재 클릭된 #deptDivSel 내부의 input#deptCode 값을 가져오기
             const deptCode = $(this).find('input#deptCode').val().trim();
 
@@ -89,6 +87,8 @@
                     // JSON 데이터를 계층 구조로 변환
                     const hierarchy = createHierarchy(response);
                     console.log("response : "+ response);
+                    // 기존의 OrgChart 초기화 (새로 그리기 전에 제거)
+                    clearOrgChart();
                     // 계층 구조 데이터로 조직도 그리기
                     drawOrgChart(hierarchy);
                 },
@@ -98,89 +98,92 @@
             });
 
             // 계층 구조로 변환
-			function createHierarchy(data) {
-			    console.log("createHierarchy 실행 확인");
-			    console.log("data : ", data);  // data를 출력하여 들어오는 데이터 확인
-			
-			    var hierarchy = []; // 최상위 노드를 담을 배열
-			    var depthMap = {}; // 각 깊이에 해당하는 마지막 노드를 저장 (배열로 저장)
-			
-			    // 데이터 반복 처리
-			    $.each(data, function (index, node) {
-			        var newNode = {
-			            id: node.empNo, 				// 직원 번호를 고유 ID로 사용
-			            name: node.empName , 			// 이름과 직급 표시
-			            pid: '', 						// pid 미리 빈 문자열로 설정
-			            title: node.rankName,			// 직급
-			            img : "${pageContext.request.contextPath}/employeeFile/"+node.fileName,
-			            nameWithRank: node.empName + " (" + node.rankName + ")" // "이름 (직급)" 형식으로 출력
-			            
-			        };
-			
-			        // 최상위 노드 (depth == 1)인 경우
-			        if (node.depth == 1) {
-			            console.log("디버깅 확인 1 - 최상위 노드: ", newNode);
-			            hierarchy.push(newNode); // 최상위 노드는 바로 배열에 추가
-			        } else {
-			            console.log("디버깅 확인 2 - 부모 찾기: ", node);
-			
-			            // 부모 노드 찾기 (같은 depth의 마지막 노드가 부모)
-			            var parentNode = depthMap[node.depth - 1] ? depthMap[node.depth - 1].slice(-1)[0] : null;
-			            if (parentNode) {
-			                newNode.pid = parentNode.id; // 부모 노드 ID 설정
-			                console.log("부모 노드 설정: ", parentNode);
-			            } else {
-			                console.error("Parent node not found for depth " + node.depth + ":", node);
-			            }
-			        }
-			
-			        // 현재 노드를 해당 depth에 추가
-			        if (!depthMap[node.depth]) {
-			            depthMap[node.depth] = [];
-			        }
-			        depthMap[node.depth].push(newNode);
-			        console.log("현재 depthMap 상태: ", depthMap); // depthMap 상태를 확인
-			    });
-			
-			    // depthMap에서 각 깊이의 노드를 모두 hierarchy 배열에 추가
-			    $.each(depthMap, function(depth, nodes) {
-			        hierarchy = hierarchy.concat(nodes);
-			    });
-			
-			    // 디버깅용 데이터 확인
-			    console.log("계층 구조 데이터:", hierarchy);
-			
-			    return hierarchy;
-			}
+            function createHierarchy(data) {
+                console.log("createHierarchy 실행 확인");
+                console.log("data : ", data);  // data를 출력하여 들어오는 데이터 확인
 
+                var hierarchy = []; // 최상위 노드를 담을 배열
+                var depthMap = {}; // 각 깊이에 해당하는 마지막 노드를 저장 (배열로 저장)
+
+                // 데이터 반복 처리
+                $.each(data, function (index, node) {
+                    var newNode = {
+                        id: node.empNo, 				// 직원 번호를 고유 ID로 사용
+                        name: node.empName , 			// 이름과 직급 표시
+                        pid: '', 						// pid 미리 빈 문자열로 설정
+                        title: node.rankName,			// 직급
+                        img : "${pageContext.request.contextPath}/employeeFile/"+node.fileName,
+                        nameWithRank: node.empName + " (" + node.rankName + ")" // "이름 (직급)" 형식으로 출력
+                    };
+
+                    // 최상위 노드 (depth == 1)인 경우
+                    if (node.depth == 1) {
+                        console.log("디버깅 확인 1 - 최상위 노드: ", newNode);
+                        hierarchy.push(newNode); // 최상위 노드는 바로 배열에 추가
+                    } else {
+                        console.log("디버깅 확인 2 - 부모 찾기: ", node);
+
+                        // 부모 노드 찾기 (같은 depth의 마지막 노드가 부모)
+                        var parentNode = depthMap[node.depth - 1] ? depthMap[node.depth - 1].slice(-1)[0] : null;
+                        if (parentNode) {
+                            newNode.pid = parentNode.id; // 부모 노드 ID 설정
+                            console.log("부모 노드 설정: ", parentNode);
+                        } else {
+                            console.error("Parent node not found for depth " + node.depth + ":", node);
+                        }
+                    }
+
+                    // 현재 노드를 해당 depth에 추가
+                    if (!depthMap[node.depth]) {
+                        depthMap[node.depth] = [];
+                    }
+                    depthMap[node.depth].push(newNode);
+                    console.log("현재 depthMap 상태: ", depthMap); // depthMap 상태를 확인
+                });
+
+                // depthMap에서 각 깊이의 노드를 모두 hierarchy 배열에 추가
+                $.each(depthMap, function(depth, nodes) {
+                    hierarchy = hierarchy.concat(nodes);
+                });
+
+                // 디버깅용 데이터 확인
+                console.log("계층 구조 데이터:", hierarchy);
+
+                return hierarchy;
+            }
+
+            // 기존 OrgChart 초기화
+            function clearOrgChart() {
+                // 기존 OrgChart 인스턴스 제거
+                if (window.orgChartInstance) {
+                    window.orgChartInstance.destroy();
+                }
+                // 기존 chart를 비워줍니다.
+                $('#orgchart').empty();
+            }
 
             // Balkan OrgChart 초기화 및 그리기
             function drawOrgChart(hierarchy) {
                 console.log("OrgChart에 전달된 데이터:", hierarchy); // 디버깅용
 
-                const chart = new OrgChart(document.getElementById('orgchart'), {
-                	template: 'ula',
+                window.orgChartInstance = new OrgChart(document.getElementById('orgchart'), {
+                    template: 'olivia',
                     mouseScrool: OrgChart.none,
                     enableSearch: false,
                     scaleInitial: 0.7,
                     nodes: hierarchy,
                     nodeBinding: {// 노드에 표시할 내용
-                    	 img_0: "img",
-                         field_0: "nameWithRank",
-                         field_1: "id"  
-                                                 
+                        img_0: "img",
+                        field_0: "nameWithRank",
+                        field_1: "id"  
                     }
                 });
-                
-                
-             
             }
         }); /* 끝:  팀을 클릭하면 해당 팀의 조직도를 띄워줘야함 */
-        
-
-        
     });
-    </script>
+</script>
+
+
 	
 </head>
 

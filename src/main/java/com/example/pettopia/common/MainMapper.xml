@@ -54,7 +54,7 @@
 		INNER JOIN `rank` r2 ON e2.rank_no = r2.rank_no
 		INNER JOIN `rank` r3 ON e3.rank_no = r3.rank_no
 		INNER JOIN `rank` r4 ON e4.rank_no = r4.rank_no
-		WHERE d.doc_bin = '0' 
+		WHERE d.doc_bin = '0' AND d.approval_status = 'P'
 		AND ((da.init_approver_no = #{empNo} AND da.init_approval_status IS NULL)
 			OR (da.mid_approver_no = #{empNo} AND da.mid_approval_status IS NULL AND da.init_approval_status IS NOT NULL)
 			OR (da.final_approver_no = #{empNo} AND da.final_approval_status IS NULL AND da.mid_approval_status IS NOT NULL))
