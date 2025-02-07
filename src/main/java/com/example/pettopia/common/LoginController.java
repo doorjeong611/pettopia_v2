@@ -25,14 +25,15 @@ public class LoginController {
 	
 	// 로그인 폼으로 이동
 	@GetMapping({"/","/login"})
-	public String login(Authentication authentication) {
+	public String login(Authentication authentication, HttpSession session) {
+		log.debug(TeamColor.OJY+"a3242432442424234324"+ TeamColor.RESET);
+		
 		
 		if (authentication != null && authentication.isAuthenticated()) {
             // 이미 로그인된 사용자가 로그인 페이지로 접근하려고 하면 홈 페이지로 리다이렉트
             return "redirect:/common/petTopiaMain";
         }
 		
-	
 		return "login/login";
 	}
 	

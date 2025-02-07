@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.pettopia.employee.EmployeeMapper;
@@ -14,6 +15,7 @@ import com.example.pettopia.message.MessageMapper;
 import com.example.pettopia.message.MessageService;
 import com.example.pettopia.util.TeamColor;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
@@ -63,7 +65,6 @@ public class NotificationRest {
 		
 		return messageList;
 	}
-	
 	
 	
 	
