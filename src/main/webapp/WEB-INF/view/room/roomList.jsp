@@ -73,20 +73,32 @@
                     <div class="grow">
                         <h5 class="title-font">객실 목록</h5>
                     </div>
-                    <div class="ltr:md:text-end rtl:md:text-start"> 
-					    <!-- 서비스 추가 버튼, href 속성으로 addService 페이지로 이동 -->
-					    <a href="${pageContext.request.contextPath}/room/getAddRoom" class="mr-1 bg-white text-custom-500 btn border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100">
-					        <i class="align-bottom ri-add-line me-1"></i> 객실 등록
-					    </a>
-					</div>
-					 <select id="roomTypeFilter" class="border p-2 rounded">
+                    <ul class="flex items-center gap-2 text-sm font-normal shrink-0">
+					    <li class="relative before:content-['\ea54'] before:font-remix ltr:before:-right-1 rtl:before:-left-1  before:absolute before:text-[18px] before:-top-[3px] ltr:pr-4 rtl:pl-4 before:text-slate-400 dark:text-zink-200">
+					        <a href="${pageContext.request.contextPath}/room/getRoomList" class="text-slate-400">예약 관리</a>
+					    </li>
+					    <li class="text-slate-700">
+					        객실 목록
+						</li>
+					</ul>
+				</div>
+				
+				<div class="flex justify-between items-center mb-4">
+				    <select id="roomTypeFilter" class="border p-2 rounded form-select" style="width: 100px;">
 				        <option value="">전체</option>
 				        <option value="S" ${roomType == 'S' ? 'selected' : ''}>싱글</option>
 				        <option value="D" ${roomType == 'D' ? 'selected' : ''}>더블</option>
 				        <option value="ST" ${roomType == 'ST' ? 'selected' : ''}>스탠다드</option>
 				        <option value="F" ${roomType == 'F' ? 'selected' : ''}>패밀리</option>
 				    </select>
-                </div>
+				    
+				    <div class="ltr:md:text-end"> 
+				        <a href="${pageContext.request.contextPath}/room/getAddRoom" class="mr-1 bg-white text-custom-500 btn border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100">
+				            <i class="align-bottom ri-add-line me-1"></i> 객실 등록
+				        </a>
+				    </div>
+				</div>
+
                 <!-- Main content -->
                 <div class="card">
 	                <div class="card-body">

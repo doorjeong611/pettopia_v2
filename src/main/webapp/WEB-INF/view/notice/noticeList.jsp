@@ -96,7 +96,7 @@
 								      </select>
 									<!-- 게시글 검색 버튼 -->
 										<div class="relative grow" style="width: 300px;">
-                                            <input type="text" name="searchTitle" value="" id="searchTitle" class="ltr:pl-2 pr-4 search form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" style="text-align:left;" placeholder="검색어를 입력하세요">
+                                            <input type="text" name="searchTitle" value="" id="searchTitle" class="ltr:pl-4 pr-4 search form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" style="text-align:left;" placeholder="검색어를 입력하세요">
                                              <button type="submit" class="absolute right-0 top-0 h-full px-4 text-slate-500">
                                             	<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="search" class="lucide lucide-search inline-block size-4 absolute ltr:left-2.5 rtl:right-2.5 top-2.5 text-slate-500 dark:text-zink-200 fill-slate-100 dark:fill-zink-600"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
                                             </button>
@@ -130,7 +130,7 @@
                                     	<c:forEach var="no" items="${noticeList.noticeList}" varStatus="status">
                                     		<c:if test="${no.isPinned == 'Y' }">
 	                                    		<tr style="background-color: #f0f4ff">
-		                                    		<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500" style="text-align: center;">${(noticeList.currentPage - 1) * noticeList.limit + status.index + 1}</td>
+		                                    		<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500" style="text-align: center;">${no.noticeNo}</td>
 		                                    		<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500" style="text-align: center;">${no.divisionName == 'ALL' ? '전체' : no.divisionName}</td>
 		                                    		<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500" style="text-align: center;"><a href="${pageContext.request.contextPath}/notice/getNoticeOne?noticeNo=${no.noticeNo}">${no.noticeTitle}</a></td>
 		                                    		<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500" style="text-align: center;">${no.noticeView}</td>
@@ -140,7 +140,7 @@
                                     		</c:if>
                                     		<c:if test="${no.isPinned == 'N' }">
 	                                    		<tr>
-		                                    		<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500" style="text-align: center;">${(noticeList.currentPage - 1) * noticeList.limit + status.index + 1}</td>
+		                                    		<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500" style="text-align: center;">${no.noticeNo}</td>
 		                                    		<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500" style="text-align: center;">${no.divisionName == 'ALL' ? '전체' : no.divisionName}</td>
 		                                    		<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500" style="text-align: center;"><a href="${pageContext.request.contextPath}/notice/getNoticeOne?noticeNo=${no.noticeNo}">${no.noticeTitle}</a></td>
 		                                    		<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500" style="text-align: center;">${no.noticeView}</td>

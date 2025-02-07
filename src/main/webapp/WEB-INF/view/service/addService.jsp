@@ -53,14 +53,14 @@
             <div class="container-fluid group-data-[content=boxed]:max-w-boxed mx-auto">
                 <div class="flex flex-col gap-2 py-4 md:flex-row md:items-center print:hidden">
                     <div class="grow">
-                        <h5 class="title-font">서비스 등록</h5>
+                        <h5 class="title-font">펫 서비스 등록</h5>
                     </div>
                     <ul class="flex items-center gap-2 text-sm font-normal shrink-0">
                         <li class="relative before:content-['\ea54'] before:font-remix ltr:before:-right-1 rtl:before:-left-1  before:absolute before:text-[18px] before:-top-[3px] ltr:pr-4 rtl:pl-4 before:text-slate-400 dark:text-zink-200">
-                            <a href="#!" class="text-slate-400 dark:text-zink-200">서비스 관리</a>
+                            <a href="${pageContext.request.contextPath}/service/getServiceList" class="text-slate-400 dark:text-zink-200">펫 서비스 목록</a>
                         </li>
                         <li class="text-slate-700 dark:text-zink-100">
-                            서비스 등록
+                            펫 서비스 등록
                         </li>
                     </ul>
                 </div>
