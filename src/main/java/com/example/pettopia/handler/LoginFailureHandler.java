@@ -1,6 +1,7 @@
 package com.example.pettopia.handler;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
@@ -24,8 +25,7 @@ public class LoginFailureHandler implements AuthenticationFailureHandler{
 		// 로그인 실패시
 		request.getSession().setAttribute("Loginmsg", "아이디 혹은 비밀번호를 확인하세요.");
 		response.sendRedirect("login/login");
-		
-		
+
 		
 	}
 
