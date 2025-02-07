@@ -186,7 +186,7 @@
 
             <!-- 직원 프로필 사진  -->
             <div class="relative mx-auto mb-4 rounded-full shadow-md size-24 bg-slate-100 profile-user dark:bg-zink-500">
-              <img id="profileImg" src="${pageContext.request.contextPath }/assets/images/placeholder/placeholder.png" alt="" class="object-cover w-15 h-15 rounded-full user-profile-image">
+              <img id="profileImg" src="${pageContext.request.contextPath }/employeeFile/placeholder.png" alt="" class="object-cover w-15 h-15 rounded-full user-profile-image">
               <div class="absolute bottom-0 flex items-center justify-center rounded-full size-8 ltr:right-0 rtl:left-0 profile-photo-edit">
                 <input id="profile-img-file-input" name="employeeFile" type="file" class="hidden profile-img-file-input" accept="image/*">
                 <label for="profile-img-file-input" class="flex items-center justify-center bg-white rounded-full shadow-lg cursor-pointer size-8 dark:bg-zink-600 profile-photo-edit">
@@ -619,6 +619,18 @@ $(document).ready(function() {
         }
     });
 
+	
+    /* Reset 버튼 클릭 시 프로필 이미지 초기화 */
+    $('#btnReset').click(function() {
+        const placeholderImg = `${pageContext.request.contextPath}/employeeFile/placeholder.png`;
+
+        $('#profileImg').attr('src', placeholderImg); // 기본 이미지로 변경
+        $('#profile-img-file-input').val(''); // 파일 입력 필드 초기화
+    });
+	
+	
+	
+	
 
 });
 </script>
