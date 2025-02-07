@@ -172,8 +172,17 @@
 											    <span class="px-2.5 py-0.5 text-xs inline-block font-medium rounded border bg-purple-100 border-purple-200 text-purple-500">회의</span>
 											</c:if>
 											
-											<!-- 내용 부분 -->
-									        <h6 class="mb-1 ml-2 text-15 inline-block">${ts.scheduleTitle}</h6>
+									        <!-- 내용 부분 -->
+										    <h6 class="mb-1 ml-2 text-15 inline-block">
+										        <script>
+										            var title = "${ts.scheduleTitle}";
+										            var maxLength = 18;
+										            if (title.length > maxLength) {
+										                title = title.substring(0, maxLength) + '...';
+										            }
+										            document.write(title);
+										        </script>
+										    </h6>
 											
 									        <p class="text-sm text-slate-400">${ts.startDatetime}</p>
 								    	</div>
@@ -354,6 +363,7 @@
                             
                             <c:if test="${not empty messageList}">
                             	<div class="flex flex-col justify-start simplebar-scrollable-y" style="mix-height: 170px; max-height: 170px;" data-simplebar="init" data-simplebar-track="custom">
+                            	
 		                            <c:forEach var="ml" items="${messageList}">
 		                            	<button onclick="window.location.href='${pageContext.request.contextPath}/message/messageOne?messageNo=${ml.messageNo}'" class="flex items-center space-x-2 w-full h-12 p-2 text-left bg-transparent hover:bg-slate-100 rounded-md transition duration-500" style="padding-right: 15px;">
 										    <div class="w-10 h-10 rounded-md shrink-0 bg-slate-100">

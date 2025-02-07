@@ -77,7 +77,7 @@ $(document).ready(function () {
                 }
             },
             error: function (error) {
-                alert('안 읽은 쪽지 ajax 실패');
+            	alert('안 읽은 쪽지 리스트 조회 실패');
             }
         });
     }
@@ -156,7 +156,7 @@ $(document).ready(function () {
 	            });
 	        },
 	        error: function (error) {
-	            alert('안 읽은 쪽지 리스트 ajax 실패');
+	        	window.location.reload();
 	        }
 	    });
 	}
