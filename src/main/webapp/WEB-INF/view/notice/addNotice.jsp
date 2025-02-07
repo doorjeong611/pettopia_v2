@@ -102,21 +102,23 @@
 				        <div class="card-body p-6">
 				        	 <form id="saveForm" action="${pageContext.request.contextPath}/notice/addNotice" method="post" autocomplete="off" enctype="multipart/form-data">
 				                <!-- Department and Title -->
-				                <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+				                <div class="grid grid-cols-6 flex gap-4 md:grid-cols-2">
 			                    <!-- Department -->
-								<div class="col-span-1">
+								<div class="col-span-6">
+									<div class="col-span-1">
 									    <label class="block mb-2 text-base font-medium">부서</label>
-									    <select name="divisionCode" id="division" class="mr-2" onchange="setDeptCode()">
-									        <option value="" style="text-align: center;">전체</option>
+									    <select name="divisionCode" id="division" class="form-select mr-2 border border-gray-300 rounded-md" onchange="setDeptCode()" style="max-width:150px;">
+									        <option value="" >전체</option>
 									       <c:forEach var="d" items="${divisionList}">
-									           <option value="${d.divisionCode}" style="text-align: center">${d.divisionName}</option>
+									           <option value="${d.divisionCode}" >${d.divisionName}</option>
 									       </c:forEach>
 									    </select>
 									    <input type="hidden" id="deptCode" name="deptCode" value="">
-									</div>
+									</div>    
+								</div>
 				
 				                    <!-- Title -->
-				                    <div class="col-span-1 mb-4">
+				                    <div class="col-span-4 mb-4">
 				                        <label class="block mb-2 text-base font-medium">제목</label>
 				                        <input type="text" name="noticeTitle" class="w-full form-input border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-custom-500" placeholder="제목을 입력하세요">
 				                    </div>
@@ -153,9 +155,9 @@
 				                </div>
 			                
 				                <!-- Buttons -->
-				                <div class="flex justify-end gap-4 mt-8">
+				                <div class="flex justify-end gap-2 mt-8">
 				                    <a href="${pageContext.request.contextPath}/notice/addNotice" method="post">
-				                        <button type="submit" class="mr-1 bg-white text-custom-500 btn border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100">업로드</button>
+				                        <button type="submit" class="mr-1 bg-white text-custom-500 btn border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100">글 작성</button>
 				                    </a>
 				                    <a href="${pageContext.request.contextPath}/notice/getNoticeList">
 				                        <button type="button" class="text-green-500 bg-white border-green-500 btn hover:text-white hover:bg-green-600 hover:border-green-600 focus:text-white focus:bg-green-600 focus:border-green-600 focus:ring focus:ring-green-100 active:text-white active:bg-green-600 active:border-green-600 active:ring active:ring-green-100">목록</button>

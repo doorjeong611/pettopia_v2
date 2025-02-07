@@ -11,6 +11,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta content="Minimal Admin & Dashboard Template" name="description">
     <meta content="Themesdesign" name="author">
+    <!-- Simplebar CSS -->
+	<link href="https://cdn.jsdelivr.net/npm/simplebar@5.0.0/dist/simplebar.min.css" rel="stylesheet" />
+	<!-- Simplebar JS -->
+	<script src="https://cdn.jsdelivr.net/npm/simplebar@5.0.0/dist/simplebar.min.js"></script>
     <!-- App favicon -->
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/assets/images/pettopia_favicon.ico">
     <!-- Layout config Js -->
@@ -19,10 +23,6 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tailwind2.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     
-    <!-- Simplebar CSS -->
-	<link href="https://cdn.jsdelivr.net/npm/simplebar@5.0.0/dist/simplebar.min.css" rel="stylesheet" />
-	<!-- Simplebar JS -->
-	<script src="https://cdn.jsdelivr.net/npm/simplebar@5.0.0/dist/simplebar.min.js"></script>
     
     <style>
     .last-div-class {
