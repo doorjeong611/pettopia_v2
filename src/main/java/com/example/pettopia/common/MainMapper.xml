@@ -82,21 +82,27 @@
 	<!-- selectReservationStats : 오늘의 객실 점유율 -->
 	<select id="selectReservationStats" resultType="Map">
 		SELECT 
-		    today_reservations 'todayReservedRooms',
-		    yesterday_reservations 'yesterdayReservedRooms',
-		    ROUND(IFNULL((today_reservations - yesterday_reservations) / NULLIF(yesterday_reservations, 0) * 100, 0), 1) 'changePercentage',
-		    CASE 
-		        WHEN (today_reservations - yesterday_reservations) &lt; 0 THEN '감소'
-		        ELSE '증가'
-		    END 'changeStatus',
-		    40 'totalRooms',
-		    (SELECT COUNT(*) FROM room_rsv WHERE DATE(check_in_datetime) = CURDATE()) 'todayReservedRooms',
-		    ROUND(IFNULL((SELECT COUNT(*) FROM room_rsv WHERE DATE(check_in_datetime) = CURDATE()) / 40 * 100, 0), 1) 'occupancyRate'
-		FROM (
-		    SELECT 
-		        (SELECT COUNT(*) FROM room_rsv WHERE DATE(check_in_datetime) = CURDATE()) today_reservations,
-		        (SELECT COUNT(*) FROM room_rsv WHERE DATE(check_out_datetime) = CURDATE() - INTERVAL 1 DAY) yesterday_reservations
-		) reservationCounts;
+    today_reservations 'todayReservedRooms',
+    yesterday_reservations 'yesterdayReservedRooms',
+    ROUND(IFNULL((today_reservations - yesterday_reservations) / NULLIF(yesterday_reservations, 0) * 100, 0), 1) 'changePercentage',
+    CASE 
+        WHEN (today_reservations - yesterday_reservations) &lt; 0 THEN '감소'
+        ELSE '증가'
+    END 'changeStatus',
+    40 'totalRooms',
+    ROUND(IFNULL((SELECT COUNT(*) FROM room_rsv WHERE DATE(check_in_datetime) = CURDATE()) / 40 * 100, 0), 1) 'occupancyRate'
+FROM (
+    SELECT 
+        (SELECT COUNT(*) 
+         FROM room_rsv 
+         WHERE (DATE(check_in_datetime) = CURDATE() OR (DATE(check_in_datetime) &lt; CURDATE() AND DATE(check_out_datetime) >= CURDATE()))) today_reservations,
+
+        (SELECT COUNT(*) 
+         FROM room_rsv 
+         WHERE DATE(check_out_datetime) = CURDATE() - INTERVAL 1 DAY) yesterday_reservations
+) reservationCounts;
+
+
 	</select>
 
 

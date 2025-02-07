@@ -312,10 +312,10 @@ fetchMonthlyReservationStatistics(lastYear);
 //월 별 펫 서비스 매출 현황
 var petServiceSalesStatisticsOptions = {
     series: [{
-        name: 'Total Sales',
+        name: '서비스 총 매출',
         data: [44, 55, 41, 67, 22, 43, 21, 49, 20, 41, 67, 22,]
     }, {
-        name: 'Total Profit',
+        name: '서비스 순 이익',
         data: [11, 17, 15, 15, 21, 14, 15, 13, 5, 15, 15, 21,]
     }],
     chart: {
