@@ -126,9 +126,9 @@
 								                    <input type="hidden" class="messageNo" value="${message.messageNo}" style="text-align: center;" />
 								                	<input style="margin-left: 4px; text-align: center;" type="checkbox" class="moveToBin" name="messageNo" value="${message.messageNo}" /> 
 								                    <span style="margin-left: 37px; display: inline-block; text-align: center;">${message.messageState}</span>
-								                    <span style="margin-left: -23px; display: inline-block; width: 150px; text-align: center;">${message.senderName}</span> <!-- 보낸 사람 -->
-								                  	<a href="${pageContext.request.contextPath}/message/messageOne?messageNo=${message.messageNo}" style="margin-left: 202px; text-align: center; display: inline-block; width: 300px;">${message.messageTitle}</a> <!-- 제목 -->
-								                   <span style="margin-left: 312px; display: inline-block; width: 150px; text-align: center;">${message.createDatetime}</span> <!-- 날짜 -->
+								                    <span style="margin-left: -20px; display: inline-block; width: 150px; text-align: center;">${message.senderName}</span> <!-- 보낸 사람 -->
+								                  	<a href="${pageContext.request.contextPath}/message/messageOne?messageNo=${message.messageNo}" style="margin-left: 210px; text-align: center; display: inline-block; width: 300px;">${message.messageTitle}</a> <!-- 제목 -->
+								                   <span style="margin-left: 315px; display: inline-block; width: 150px; text-align: center;">${message.createDatetime}</span> <!-- 날짜 -->
 								                </td>
 								            </tr>
 								            </c:if>

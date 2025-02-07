@@ -134,8 +134,8 @@
 											    <input style="margin-left: 17px; text-align: center;"  type="checkbox" class="deleteMessage" id="deleteMessage" name="messageNo" value="${message.messageNo}" /> 
 											    <span style="margin-left: 44px; display: inline-block; text-align: center;">${message.messageState}</span>
 											    <span style="margin-left: 37px; display: inline-block; width: 300px;">${message.senderName}</span> <!-- 보낸 사람 -->
-											    <a href="${pageContext.request.contextPath}/message/messageOne?messageNo=${message.messageNo}" style="margin-left: -22px; text-align: center; display: inline-block; width: 300px;">${message.messageTitle}</a>
-											    <span style="margin-left: 314px; display: inline-block; text-align: center; width: 150px;">${message.createDatetime}</span> <!-- 날짜 -->
+											    <a href="${pageContext.request.contextPath}/message/messageOne?messageNo=${message.messageNo}" style="margin-left: -5px; text-align: center; display: inline-block; width: 300px;">${message.messageTitle}</a>
+											    <span style="margin-left: 320px; display: inline-block; text-align: center; width: 150px;">${message.createDatetime}</span> <!-- 날짜 -->
 											</td>
 								            </tr>
 								            </c:if>
