@@ -149,15 +149,7 @@
 					            <path d="m21 21-4.3-4.3"></path>
 					        </svg>
 					    </button>
-					<span class="mx-2 border-l border-slate-300 dark:border-zink-500 h-5"></span>
-					    <button type="button" id="btnRefresh" class="mr-1 p-2 bg-white text-custom-500 btn btn-sm hover:text-custom-500 hover:bg-custom-100 focus:text-custom-500 focus:bg-custom-100 active:text-custom-500 active:bg-custom-100" style="font-size: 14px; display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; margin-right:0px;">
-					        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-refresh-cw size-4">
-					            <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path>
-					            <path d="M21 3v5h-5"></path>
-					            <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path>
-					            <path d="M8 16H3v5"></path>
-					        </svg>
-					    </button>
+
 					</div>
 
 			    </div>
@@ -400,11 +392,12 @@ $(document).ready(function() {
         }
 
         // 페이지 번호를 1로 초기화
-        loadVacationData(1, startDate, endDate); // 첫 페이지의 데이터를 로드
+        loadVacationData(1, startDate || null, endDate || null); // 첫 페이지의 데이터를 로드
     });
     
     // 전체 목록 보기 버튼 클릭 이벤트
     $('#btnRefresh').on('click', function() {
+    	event.preventDefault();
     	// 버튼 리셋
         $('#startDate').val('');
         $('#endDate').val('');
@@ -420,8 +413,8 @@ $(document).ready(function() {
                 page: page,
                 startDate: startDate || '', 
                 endDate: endDate || '',
-                limit: limit, 
-                offset: offset 
+                size: 10, 
+                offset: 0 
             },
             success: function(response) {
                 renderVacationList(response.vacationList); // 데이터 렌더링
