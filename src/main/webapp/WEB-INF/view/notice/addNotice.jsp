@@ -85,11 +85,11 @@
             <div class="container-fluid group-data-[content=boxed]:max-w-boxed mx-auto">
                 <div class="flex flex-col gap-2 py-4 md:flex-row md:items-center print:hidden">
                     <div class="grow">
-                        <h3 class="title-font">공지사항 작성</h3>
+                        <h5 class="title-font">공지사항 작성</h5>
                     </div>
                     <ul class="flex items-center gap-2 text-sm font-normal shrink-0">
                         <li class="relative before:content-['\ea54'] before:font-remix ltr:before:-right-1 rtl:before:-left-1  before:absolute before:text-[18px] before:-top-[3px] ltr:pr-4 rtl:pl-4 before:text-slate-400 dark:text-zink-200">
-                            <a href="#!" class="text-slate-400 dark:text-zink-200">공지사항</a>
+                            <a href="${pageContext.request.contextPath}/notice/getNoticeList" class="text-slate-400 dark:text-zink-200">공지사항</a>
                         </li>
                         <li class="text-slate-700 dark:text-zink-100">
                             공지사항 작성
@@ -102,7 +102,7 @@
 				        <div class="card-body p-6">
 				        	 <form id="saveForm" action="${pageContext.request.contextPath}/notice/addNotice" method="post" autocomplete="off" enctype="multipart/form-data">
 				                <!-- Department and Title -->
-				                <div class="grid grid-cols-6 flex gap-4 md:grid-cols-2">
+				                <div class="grid grid-cols-6 flex gap-2 md:grid-cols-2">
 			                    <!-- Department -->
 								<div class="col-span-6">
 									<div class="col-span-1">
@@ -118,7 +118,8 @@
 								</div>
 				
 				                    <!-- Title -->
-				                    <div class="col-span-4 mb-4">
+				                    <div class="col-span-8"></div>
+				                    <div class="col-span-2 mb-4">
 				                        <label class="block mb-2 text-base font-medium">제목</label>
 				                        <input type="text" name="noticeTitle" class="w-full form-input border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-custom-500" placeholder="제목을 입력하세요">
 				                    </div>

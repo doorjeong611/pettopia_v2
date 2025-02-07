@@ -88,7 +88,7 @@
             <div class="container-fluid group-data-[content=boxed]:max-w-boxed mx-auto">
                 <div class="flex flex-col gap-2 py-4 md:flex-row md:items-center print:hidden">
                     <div class="grow">
-                        <h3 class="title-font">공지사항 수정하기</h3>
+                        <h5 class="title-font">공지사항 수정하기</h5>
                     </div>
                     <ul class="flex items-center gap-2 text-sm font-normal shrink-0">
                         <li class="relative before:content-['\ea54'] before:font-remix ltr:before:-right-1 rtl:before:-left-1  before:absolute before:text-[18px] before:-top-[3px] ltr:pr-4 rtl:pl-4 before:text-slate-400 dark:text-zink-200">
@@ -106,21 +106,22 @@
 				        	 <form id="saveForm" action="${pageContext.request.contextPath}/notice/modifyNoticeOne" method="post" autocomplete="off" enctype="multipart/form-data">
 				        	 <input type="hidden" name="noticeNo" value="${existingNotice.noticeNo}">
 				                <!-- Department and Title -->
-				                <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+				                <div class="grid grid-cols-1 gap-2 md:grid-cols-2">
 								<!-- Department -->
 				                    <div class="col-span-1">
 				                        <label class="block mb-2 text-base font-medium">부서</label>
-				                        <select name="divisionCode" id="division" class="mr-2" onchange="setDeptCode()">
-				                            <option value="" style="text-align: center;">전체</option>
+				                        <select name="divisionCode" id="division" class="form-select mr-2 border border-gray-300 rounded-md" onchange="setDeptCode()" style="max-width:150px;">
+				                            <option value="">전체</option>
 				                            <c:forEach var="d" items="${divisionList}">
-				                                <option value="${d.divisionCode}" style="text-align: center" <c:if test="${d.divisionCode == existingNotice.deptCode}">selected</c:if>>${d.divisionName}</option>
+				                                <option value="${d.divisionCode}" <c:if test="${d.divisionCode == existingNotice.deptCode}">selected</c:if>>${d.divisionName}</option>
 				                            </c:forEach>
 				                        </select>
 				                        <input type="hidden" id="deptCode" name="deptCode" value="">
 				                    </div>
 				
 				                    <!-- Title -->
-				                    <div class="col-span-1 mb-4">
+				                    <div class="col-span-8"></div>
+				                    <div class="col-span-2 mb-4">
 				                        <label class="block mb-2 text-base font-medium">제목</label>
 				                        <input type="text" name="noticeTitle" class="w-full form-input border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-custom-500" placeholder="제목을 입력하세요" value="${existingNotice.noticeTitle}">
 				                    </div>
@@ -175,7 +176,7 @@
 
 			                
 				                <!-- Buttons -->
-				                <div class="flex justify-end gap-4 mt-8">
+				                <div class="flex justify-end gap-2 mt-8">
 				                    <button type="submit" class="mr-1 bg-white text-custom-500 btn border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100">수정완료</button>
 				                    <a href="${pageContext.request.contextPath}/notice/getNoticeList">
 				                    <button type="button" class="text-green-500 bg-white border-green-500 btn hover:text-white hover:bg-green-600 hover:border-green-600 focus:text-white focus:bg-green-600 focus:border-green-600 focus:ring focus:ring-green-100 active:text-white active:bg-green-600 active:border-green-600 active:ring active:ring-green-100">목록</button>

@@ -73,10 +73,10 @@
                     </div>
                     <ul class="flex items-center gap-2 text-sm font-normal shrink-0">
                         <li class="relative before:content-['\ea54'] before:font-remix ltr:before:-right-1 rtl:before:-left-1  before:absolute before:text-[18px] before:-top-[3px] ltr:pr-4 rtl:pl-4 before:text-slate-400 dark:text-zink-200">
-                            <a href="#!" class="text-slate-400 dark:text-zink-200">공지사항</a>
+                            <a href="${pageContext.request.contextPath}/notice/getNoticeList" class="text-slate-400 dark:text-zink-200">공지사항</a>
                         </li>
                         <li class="text-slate-700 dark:text-zink-100">
-                            공지사항
+                            공지사항 목록
                         </li>
                     </ul>
                 </div>
@@ -88,17 +88,17 @@
                               <div class="relative" style="margin-bottom:20px"> <!-- 카테고리 선택 + 검색 -->
 								  <form action="${pageContext.request.contextPath}/notice/getNoticeList" method="get" id="searchCategoryForm" style="display: flex; justify-content: space-between; align-items: center;">
 								    <div style="display: flex; align-items: center;">
-								      <select name="divisionCode" id="division" class="mr-2">
-								        <option value="" style="text-align: center;">전체</option>
+								      <select name="divisionCode" id="division" class="form-select mr-2" style="max-width: 190px; text-align: center;">
+								        <option value="">전체</option>
 								        <c:forEach var="dvs" items="${noticeList.divisionList}">
-								          <option value="${dvs.divisionCode}" ${dvs.divisionCode == CurrentdivisionCode ? 'selected' : ''} style="text-align: center">${dvs.divisionName}</option>
+								          <option value="${dvs.divisionCode}" ${dvs.divisionCode == CurrentdivisionCode ? 'selected' : ''}>${dvs.divisionName}</option>
 								        </c:forEach>
 								      </select>
 									<!-- 게시글 검색 버튼 -->
-										<div class="relative grow">
-                                            <input type="text" name="searchTitle" value="" id="searchTitle" class="ltr:pl-8 rtl:pr-8 search form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" style="text-align:left;" placeholder="검색어를 입력하세요.">
+										<div class="relative grow" style="width: 300px;">
+                                            <input type="text" name="searchTitle" value="" id="searchTitle" class="ltr:pl-2 pr-4 search form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" style="text-align:left;" placeholder="검색어를 입력하세요">
                                              <button type="submit" class="absolute right-0 top-0 h-full px-4 text-slate-500">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="search" class="lucide lucide-search inline-block size-4 absolute ltr:left-2.5 rtl:right-2.5 top-2.5 text-slate-500 dark:text-zink-200 fill-slate-100 dark:fill-zink-600"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+                                            	<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="search" class="lucide lucide-search inline-block size-4 absolute ltr:left-2.5 rtl:right-2.5 top-2.5 text-slate-500 dark:text-zink-200 fill-slate-100 dark:fill-zink-600"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
                                             </button>
                                         </div>
 								    </div>
@@ -106,7 +106,7 @@
 								    <!-- Right part: 게시글 작성 and 삭제 buttons -->
 								    <div style="display: flex; align-items: center;">
 								      <a href="${pageContext.request.contextPath}/notice/addNotice" class="mr-1 bg-white text-custom-500 btn border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100" method="get"> 
-								        게시글 작성
+								        공지사항 작성
 								      </a>
 								    </div> 
 								  </form>
