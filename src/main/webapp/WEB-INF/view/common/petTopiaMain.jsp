@@ -174,16 +174,15 @@
 											
 									        <!-- 내용 부분 -->
 										    <h6 class="mb-1 ml-2 text-15 inline-block">
-										        <script>
-										            var title = "${ts.scheduleTitle}";
-										            var maxLength = 18;
-										            if (title.length > maxLength) {
-										                title = title.substring(0, maxLength) + '...';
-										            }
-										            document.write(title);
-										        </script>
-										    </h6>
-											
+											    <c:choose>
+											        <c:when test="${fn:length(ts.scheduleTitle) > 14}">
+											            ${fn:substring(ts.scheduleTitle, 0, 14)}&nbsp;...
+											        </c:when>
+											        <c:otherwise>
+											            ${ts.scheduleTitle}
+											        </c:otherwise>
+											    </c:choose>
+											</h6>
 									        <p class="text-sm text-slate-400">${ts.startDatetime}</p>
 								    	</div>
 									</c:forEach>
@@ -604,7 +603,6 @@
 <!-- End Main Content -->
 <c:import url="/WEB-INF/view/inc/customizerButton.jsp"></c:import>
 
-<script src='${pageContext.request.contextPath}/assets/libs/choices.js/public/assets/scripts/choices.min.js'></script>
 <script src="${pageContext.request.contextPath}/assets/libs/@popperjs/core/umd/popper.min.js"></script>
 <script src="${pageContext.request.contextPath}/assets/libs/tippy.js/tippy-bundle.umd.min.js"></script>
 <script src="${pageContext.request.contextPath}/assets/libs/prismjs/prism.js"></script>
@@ -617,71 +615,79 @@
 <!-- App js -->
 <script src="${pageContext.request.contextPath}/assets/js/app.js"></script>
 <script>
-	/* 로그인시 empStatus -> 'T'라면 비밀번호 변경 alert */
-	/* var changePwMsg = "${changePwMsg}"; */
+	//출퇴근 체크
+	function checkAttendance(event, action) {
+	    event.preventDefault(); // 기본 동작 방지
 	
-    var date = new Date();
-    var year = date.getFullYear();
-    var month = ("0" + (1 + date.getMonth())).slice(-2);
-    var day = ("0" + date.getDate()).slice(-2);
+	    const clockInTime = "${attendanceList[0] != null ? attendanceList[0].clockInTime : ''}";
+	    const clockOutTime = "${attendanceList[0] != null ? attendanceList[0].clockOutTime : ''}";
+	
+	    if (action === 'in') {
+	        if (clockInTime) {
+	            alert("이미 출근하셨습니다 😊");
+	            return false; 
+	        }
+	    } else if (action === 'out') {
+	        if (clockOutTime) {
+	            alert("이미 퇴근하셨습니다 😊");
+	            return false; 
+	        } else if (!clockInTime) {
+	            alert("출근시간을 입력해주세요 ⏰");
+	            return false; 
+	        }
+	    }
+	
+	    event.target.submit(); // 유효성 통과 시 폼 제출
+	    return true; 
+	}
+	
+	// 출퇴근 체크 함수 연결 (예시)
+	// 예를 들어, 출근 버튼을 클릭할 때 checkAttendance 호출
+	$('#clockInButton').click(function(event) {
+	    checkAttendance(event, 'in');
+	});
+	
+	$('#clockOutButton').click(function(event) {
+	    checkAttendance(event, 'out');
+	});
 
-    const formattedDate = year + '-' + month + '-' + day;
-    console.log('Formatted Date:', formattedDate); // debug
-    
-    $('#scheduleTitle').html('<i class="ri-calendar-check-line mr-1"></i> ' + month + '월  ' + day +'일 일정');
-    $('#reservationStatsTitle').html('<i class="ri-pie-chart-line"></i> ' + month + '월  ' + day +'일 객실 점유율');
-    $('#noSchedule').html(formattedDate);
-    
-    document.querySelectorAll('.date-output').forEach(function (element) {
-        const dateStr = element.getAttribute('data-date');  // data-date 속성에서 날짜를 읽음
-        const formattedCreateDate = dayjs(dateStr).locale('ko').format('dddd hh:mm A');  // '수요일 03:42 PM' 형식으로
-        element.textContent = formattedCreateDate;  // 포맷된 날짜를 요소에 삽입
-    });
-	
+
     $(document).ready(function() {
-        var empStatus = "${empStatus}"; 
+        // 날짜 형식화
+        var date = new Date();
+        var year = date.getFullYear();
+        var month = ("0" + (1 + date.getMonth())).slice(-2);
+        var day = ("0" + date.getDate()).slice(-2);
+        const formattedDate = year + '-' + month + '-' + day;
+        console.log('Formatted Date:', formattedDate); // debug
+
+        $('#scheduleTitle').html('<i class="ri-calendar-check-line mr-1"></i> ' + month + '월  ' + day +'일 일정');
+        $('#reservationStatsTitle').html('<i class="ri-pie-chart-line"></i> ' + month + '월  ' + day +'일 객실 점유율');
+        $('#noSchedule').html(formattedDate);
+
+        document.querySelectorAll('.date-output').forEach(function (element) {
+            const dateStr = element.getAttribute('data-date');  // data-date 속성에서 날짜를 읽음
+            const formattedCreateDate = dayjs(dateStr).locale('ko').format('dddd hh:mm A');  // '수요일 03:42 PM' 형식으로
+            element.textContent = formattedCreateDate;  // 포맷된 날짜를 요소에 삽입
+        });
+
+        // 비밀번호 변경 알림
+        var empStatus = "${empStatus}";
         console.log(empStatus);
         if (empStatus === 'T') {
             alert("비밀번호를 변경해주세요 😊");
         }
-        
+
+        // 연도 선택 시 텍스트 변경
         $('#yearSelect').change(function() {
             var selectedValue = $(this).val();
             $('#selectedYear').text(selectedValue);
         });
     });
-
-
-
-
-</script>
-
-<script>
-   	function checkAttendance(event, action) {
-    	event.preventDefault(); // 기본 동작 방지
-    	
-        const clockInTime = "${attendanceList[0] != null ? attendanceList[0].clockInTime : ''}";
-        const clockOutTime = "${attendanceList[0] != null ? attendanceList[0].clockOutTime : ''}";
-	
-        if (action === 'in') {
-            if (clockInTime) {
-                alert("이미 출근하셨습니다 😊");
-                return false; 
-            }
-        } else if (action === 'out') {
-            if (clockOutTime) {
-                alert("이미 퇴근하셨습니다 😊");
-                return false; 
-            } else if (!clockInTime) {
-                alert("출근시간을 입력해주세요 ⏰");
-                return false; 
-            }
-        }
         
-        event.target.submit(); // 유효성 통과 시 폼 제출
-        return true; 
-    }
 </script>
+
+
 
 </body>
 
