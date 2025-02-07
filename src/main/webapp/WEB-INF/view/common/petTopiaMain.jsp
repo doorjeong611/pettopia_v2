@@ -29,12 +29,12 @@
 	    border-left: none; /* 선 제거 */
 	}
 	
-@font-face {
-    font-family: 'PTBandocheB';
-    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408@1.0/PTBandocheB.woff2') format('woff2');
-    font-weight: 400;
-    font-style: normal;
-}
+	@font-face {
+	    font-family: 'PTBandocheB';
+	    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408@1.0/PTBandocheB.woff2') format('woff2');
+	    font-weight: 400;
+	    font-style: normal;
+	}
 	
 	.custom-font {
 		font-family: 'PTBandocheB';
@@ -566,8 +566,8 @@
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="bar-chart" class="lucide lucide-bar-chart"><line x1="12" x2="12" y1="20" y2="10"></line><line x1="18" x2="18" y1="20" y2="4"></line><line x1="6" x2="6" y1="20" y2="16"></line></svg>
                                         </div>
                                         <div class="grow">
-                                            <p class="mb-1 text-slate-500 dark:text-zink-200">Total Sales</p>
-                                            <h5 class="text-15">$<span class="counter-value" data-target="1517.36">1,517.36</span>k</h5>
+                                            <p class="mb-1 text-slate-500 dark:text-zink-200">서비스 총 매출</p>
+                                            <h5 class="text-15"><span class="counter-value" data-target="45123000.">1,517,000</span>&nbsp;원</h5>
                                         </div>
                                     </div>
                                 </div>
@@ -577,8 +577,8 @@
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="trending-up" class="lucide lucide-trending-up"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline><polyline points="16 7 22 7 22 13"></polyline></svg>
                                         </div>
                                         <div class="grow">
-                                            <p class="mb-1 text-slate-500 dark:text-zink-200">Total Profit</p>
-                                            <h5 class="text-15">$<span class="counter-value" data-target="746.84">746.84</span>k</h5>
+                                            <p class="mb-1 text-slate-500 dark:text-zink-200">서비스 순 이익</p>
+                                            <h5 class="text-15"><span class="counter-value" data-target="37429000.">3,517,000</span>&nbsp;원</h5>
                                         </div>
                                     </div>
                                 </div>
