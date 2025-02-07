@@ -809,7 +809,7 @@
 				        
 				         
 				        <!-- Modal Content -->
-				        <div class="max-h-[calc(theme('height.screen')_-_180px)] p-4 overflow-y-auto">
+				        <div class="max-h-[calc(theme('height.screen')_-_180px)] p-4 overflow-y-auto" style="max-height: 400px;">
 				            <h4 class="mb-3 text-16">직원 검색</h4>
 				            <div class="flex items-center mb-4">
 							    <input type="text" id="approverSearch" value="" class="form-input mr-2" style="width: 26rem;" placeholder="직원 검색">
@@ -864,7 +864,7 @@
 						</div>
 				        
 				        <!-- Modal Content -->
-				        <div class="max-h-[calc(theme('height.screen')_-_180px)] p-4 overflow-y-auto">
+				        <div class="max-h-[calc(theme('height.screen')_-_180px)] p-4 overflow-y-auto" style="max-height: 400px;">
 				            <h4 class="mb-3 text-16">직원 검색</h4>
 				            <div class="flex items-center mb-4">
 							    <input type="text" id="backupSearch" value="" class="form-input mr-2" style="width: 26rem;" placeholder="직원 검색">

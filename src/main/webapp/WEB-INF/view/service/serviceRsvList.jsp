@@ -55,11 +55,14 @@
             <div class="container-fluid group-data-[content=boxed]:max-w-boxed mx-auto">
                 <div class="flex flex-col gap-2 py-4 md:flex-row md:items-center print:hidden">
                     <div class="grow">
-                        <h5 class="title-font">서비스 예약내역</h5>
+                        <h5 class="title-font">펫 서비스 예약내역</h5>
                     </div>
                     <ul class="flex items-center gap-2 text-sm font-normal shrink-0">
-                        <li class="relative before:font-remix ltr:before:-right-1 rtl:before:-left-1  before:absolute before:text-[18px] before:-top-[3px] ltr:pr-4 rtl:pl-4 before:text-slate-400 dark:text-zink-200">
-                            <a href="#!" class="text-slate-400 dark:text-zink-200">서비스 예약내역</a>
+                        <li class="relative before:content-['\ea54'] before:font-remix ltr:before:-right-1 rtl:before:-left-1  before:absolute before:text-[18px] before:-top-[3px] ltr:pr-4 rtl:pl-4 before:text-slate-400 dark:text-zink-200">
+                            <a href="${pageContext.request.contextPath}/service/getServiceRsvList" class="text-slate-400 dark:text-zink-200">예약 내역</a>
+                        </li>
+                        <li class="text-slate-700 dark:text-zink-100">
+                            펫 서비스 예약 내역
                         </li>
                     </ul>
                 </div>
@@ -69,7 +72,7 @@
                         <div class="grid grid-cols-1 gap-5 mb-5 xl:grid-cols-2">
                             <form action="${pageContext.request.contextPath}/service/getServiceRsvList" method="get" style="justify-content: flex-end;">
 				                <div class="relative xl:w-3/6">
-			                        <input type="text" name="searchWord" value="${searchWord}" class="ltr:pl-8 rtl:pr-8 search form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="Search for ...">
+			                        <input type="text" name="searchWord" value="${searchWord}" class="ltr:pl-3 search form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="예약자 / 서비스 정보를 입력하세요">
 			                         <button type="submit" class="absolute right-0 top-0 h-full px-4 text-slate-500">
 			                        	<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="search" class="lucide lucide-search inline-block size-4 absolute ltr:left-2.5 rtl:right-2.5 top-2.5 text-slate-500 dark:text-zink-200 fill-slate-100 dark:fill-zink-600"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
 			                        </button>
@@ -81,29 +84,29 @@
                             <table class="w-full whitespace-nowrap" id="serviceTable">
                                 <thead class="bg-slate-100 dark:bg-zink-600">
                                     <tr>
-                                        <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right" data-sort="customer_name">No</th>
-                                        <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right" data-sort="email">예약자</th>
-                                        <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right" data-sort="phone">예약날짜</th>
-                                        <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right" data-sort="phone">예약상태</th>
-                                        <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right" data-sort="phone">노쇼여부</th>
-                                        <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right" data-sort="phone">서비스이름</th>
-                                        <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-left rtl:text-right" data-sort="phone">서비스설명</th>
+                                        <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-center" data-sort="customer_name">예약 번호</th>
+                                        <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-center" data-sort="email">예약자</th>
+                                        <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-center" data-sort="phone">예약 날짜</th>
+                                        <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-center" data-sort="phone">예약 상태</th>
+                                        <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-center" data-sort="phone">노쇼 여부</th>
+                                        <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-center" data-sort="phone">서비스 이름</th>
+                                        <th class="sort px-3.5 py-2.5 font-semibold border-b border-slate-200 dark:border-zink-500 ltr:text-center" data-sort="phone">서비스 설명</th>
                                         
                                     </tr>
                                 </thead>
                                  <tbody>
 		                                <c:forEach var="serviceRsvList" items="${serviceRsvList}">
 		                                    <tr class="even:bg-slate-50 hover:bg-slate-50 even:hover:bg-slate-100 dark:even:bg-zink-600/50 dark:hover:bg-zink-600 dark:even:hover:bg-zink-600">
-		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">
+		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500 text-center">
 		                                            <a href="#" class="transition-all duration-150 ease-linear text-custom-500 hover:text-custom-600">${serviceRsvList.rsvNo}</a>
 		                                        </td>
-		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${serviceRsvList.customerName}</td>
-												<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">
+		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500 text-center">${serviceRsvList.customerName}</td>
+												<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500 text-center">
 												    <c:set var="rsvDatetime" value="${fn:replace(serviceRsvList.rsvDatetime, 'T', ' ')}"/>
 												    ${rsvDatetime}
 												</td>
 												
-												<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">
+												<td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500 text-center">
 									                <select class="rsv-status border rounded px-2 py-1"
 									                        onchange="updateRsvStatus(this, '${serviceRsvList.rsvNo}', '${serviceRsvList.rsvDatetime}')">
 									                    <option value="CF" ${serviceRsvList.rsvStatus == 'CF' ? 'selected' : ''}>예약완료</option>
@@ -112,11 +115,11 @@
 									                    <option value="CM" ${serviceRsvList.rsvStatus == 'CM' ? 'selected' : ''}>이용완료</option>
 									                </select>
 									            </td>
-									             <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500" id="noShow_${serviceRsvList.rsvNo}">
-									             	 ${serviceRsvList.rsvNoShow == '1' ? '노쇼' : ''}
+									             <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500 text-center" id="noShow_${serviceRsvList.rsvNo}">
+									             	 <span class="text-red-500">${serviceRsvList.rsvNoShow == '1' ? 'No Show' : ''}</span>
 									            </td>
-		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${serviceRsvList.serviceName}</td>
-		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500">${serviceRsvList.serviceDesc}</td>
+		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500 text-center">${serviceRsvList.serviceName}</td>
+		                                        <td class="px-3.5 py-2.5 border-y border-slate-200 dark:border-zink-500 text-center">${serviceRsvList.serviceDesc}</td>
 		                                        
 		                                    </tr>
 		                                </c:forEach> 

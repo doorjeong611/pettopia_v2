@@ -73,7 +73,7 @@
                                 
                                    <div class="flex grid grid-cols-1 gap-5 lg:grid-cols-2 xl:grid-cols-12">
 									    <!-- 부서, 제목 -->
-									    <div class="lg:col-span-2">
+									    <div class="lg:col-span-3">
 									        <label for="docTitle" class="inline-block mb-2 text-base font-medium text-center">제목</label>
 									        <input type="text" style="justify-content: center; align-items: center; overflow: auto; border: 1px solid #ccc; border-radius: 8px;" name="docTitle" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" style="border: none; outline: none;" value="${noticeOne.noticeTitle }" readonly >
 									    </div><!--end col-->
@@ -91,7 +91,7 @@
 									        <label for="docWriterNo" class="inline-block mb-2 text-base font-medium text-center">작성일</label> 
 									        <input type="text" style="justify-content: center; align-items: center; overflow: auto; border: 1px solid #ccc; border-radius: 8px;" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" style="border: none; outline: none;" value="${fn:substring(noticeOne.createDateTime, 0, 10) }" readonly>
 									    </div><!--end col-->
-									    <div class="col-span-1 lg:col-span-2">
+									    <div class="col-span-1 lg:col-span-1">
 									        <label for="docWriterNo" class="inline-block mb-2 text-base font-medium text-center">조회수</label>
 									        <input type="text" style="justify-content: center; align-items: center; overflow: auto; border: 1px solid #ccc; border-radius: 8px;" class="form-input border-slate-200 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 disabled:border-slate-300 disabled:text-slate-500 placeholder:text-slate-400" style="border: none; outline: none;" value="${noticeOne.noticeView }" readonly>
 									    </div><!--end col-->

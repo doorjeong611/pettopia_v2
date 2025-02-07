@@ -41,6 +41,7 @@
 	SELECT
 			r.rsv_no rsvNo,
 			r.room_no roomNo,
+			ri.room_name roomName,
 			r.customer_no customerNo,
 			r.check_in_datetime checkInDatetime,
 			r.check_out_datetime checkOutDatetime,
