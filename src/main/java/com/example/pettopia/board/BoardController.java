@@ -104,15 +104,22 @@ public class BoardController {
 	@GetMapping("/board/modifyBoard")
 	public String modifyBoard(Authentication auth,
 							  Model model,
+							  @RequestParam(required = false) String boardCategory,
 							  @RequestParam(required = false) Integer boardNo) {
 		// 로그인 세션
 	    EmpUserDetails empUserDetails = (EmpUserDetails) auth.getPrincipal();
 	    String empNo = empUserDetails.getUsername();;
 		
+	  
+	    
 	    // 상세 글보기 셀렉트
 	    Map<String, Object> boardOneMap = boardService.getListByBoardOne(boardNo);
-	
+	    String boardHeader = (String) boardOneMap.get("boardHeader");
+	   
+	    log.debug("boardHeader >>>> : "+boardHeader);
+	    
 	    // 모델값
+	    model.addAttribute("boardCategory", boardHeader);
 	    model.addAttribute("empNo", empNo);
 		model.addAttribute("boardMap",boardOneMap);
 		model.addAttribute("boardNo",boardNo);
