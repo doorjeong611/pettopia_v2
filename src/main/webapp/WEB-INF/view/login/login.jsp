@@ -215,6 +215,26 @@ $(document).ready(function() {
         }
         $('#signInForm').submit();
     });
+    
+    /* 엔터키 눌렀을 때 유효성 검사 */
+    $(document).keypress(function(event) {
+        if (event.which == 13) {  // 엔터키 코드
+            if ($('#username').val() == null || $('#username').val() == '') {
+                alert('사번을 입력하세요.');
+                $('#username').focus();
+                return false;
+            }
+            if ($('#password').val() == null || $('#password').val() == '') {
+                alert('비밀번호를 입력하세요.');
+                $('#password').focus();
+                return false;
+            }
+            $('#signInForm').submit();
+        }
+    });
+    
+    
+    
 });
 
 

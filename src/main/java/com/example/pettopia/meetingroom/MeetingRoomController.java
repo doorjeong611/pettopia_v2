@@ -94,7 +94,7 @@ public class MeetingRoomController {
 	
 	// 회의실 수정하기
 	@PostMapping("/meetingroom/modifyMeetingRoom")
-	public String modifyMeetingRoom(HttpSession session, MeetingRoomForm meetingRoomForm, String roomNo, String roomImgNo, RedirectAttributes redirectAttributes) {
+	public String modifyMeetingRoom(HttpSession session, MeetingRoomForm meetingRoomForm, Integer roomNo, String roomImgNo, RedirectAttributes redirectAttributes) {
 		log.debug(TeamColor.KMJ+"[MeetingRoomController - POST modifyMeetingRoom()]");
 		
 		log.debug(TeamColor.KMJ+"roomNo : " + roomNo);
@@ -103,7 +103,7 @@ public class MeetingRoomController {
 		
 		// 회의실 정보 수정
 		MeetingRoom roomInfo = new MeetingRoom();
-		roomInfo.setRoomNo(Integer.parseInt(roomNo));
+		roomInfo.setRoomNo(roomNo);
 		roomInfo.setRoomName(meetingRoomForm.getRoomName());
 		roomInfo.setRoomLocation(meetingRoomForm.getRoomLocation());
 		roomInfo.setRoomCapacity(meetingRoomForm.getRoomCapacity());
@@ -123,15 +123,15 @@ public class MeetingRoomController {
 			log.debug(TeamColor.KMJ+"roomImgResult : " + roomImgResult);
 		}
 		
-		if(roomInfoResult != true || roomImgResult != true) {
+		if(roomInfoResult != true ) {
 			String errorMessage = "회의실 수정 실패! 잠시후 다시 시도해주세요.";
 			redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
-			return "redirect:/meetingroom/getMeetingRoomOne";
+			return "redirect:/meetingroom/getMeetingroomList";
 		}
 		
 		
 		
-		return "redirect:/meetingroom/getMeetingRoomOne?roomNo="+roomNo;
+		return "redirect:/meetingroom/getMeetingroomList";
 	}
 	
 	// 회의실 삭제
