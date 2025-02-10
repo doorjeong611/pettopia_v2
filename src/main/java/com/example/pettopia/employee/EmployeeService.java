@@ -599,11 +599,30 @@ public class EmployeeService {
 		boolean result = false; // 수정 성공시 true
 	
 		if(employee.getRankNo() != null) { 
-			if(employee.getRankNo() == 50) { // 직급이 50일 경우 팀장 'H'
-				employee.setIsTeamLeader("H");
-			}else {
-				employee.setIsTeamLeader("");
+			
+			Integer rankNo = employee.getRankNo();
+			
+			switch (rankNo)	{
+			
+				case 70 : employee.setIsTeamLeader("H");
+						  employee.setRoleName("ROLE_ADMIN");
+						  break;
+				case 60 : employee.setRoleName("ROLE_ADMIN");
+						  employee.setIsTeamLeader("");
+				  		  break;
+				case 50 : employee.setIsTeamLeader("H");
+						  employee.setRoleName("ROLE_ADMIN");
+						  break; 
+				case 40 : employee.setRoleName("ROLE_ADMIN");
+				  		  employee.setIsTeamLeader("");
+						  break;		  
+				  		  
+				default:  employee.setRoleName("ROLE_EMP");
+						  employee.setIsTeamLeader("");
+						  break;
+					
 			}
+			
 			
 		}
 		if(employee.getEmpStatus() != null && employee.getEmpStatus().equals("R")) {
