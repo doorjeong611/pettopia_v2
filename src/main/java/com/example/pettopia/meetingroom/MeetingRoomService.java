@@ -154,7 +154,7 @@ public class MeetingRoomService {
 	}
 	
 	// 회의실 이미지 수정
-	public boolean modifyMeetingRoomImg(String path, MultipartFile roomImg, String roomImgNo, String roomNo) {
+	public boolean modifyMeetingRoomImg(String path, MultipartFile roomImg, String roomImgNo, Integer roomNo) {
 		log.debug(TeamColor.KMJ+"[MeetingRoomService - modifyMeetingRoomImg()]");
 		
 		boolean result = false; // 정보 수정 성공시 true
@@ -183,7 +183,7 @@ public class MeetingRoomService {
 		MeetingRoomImg meetingRoomImg = new MeetingRoomImg();
 		
 		meetingRoomImg.setRoomImgNo(Integer.parseInt(roomImgNo));
-		meetingRoomImg.setRoomNo(Integer.parseInt(roomNo));
+		meetingRoomImg.setRoomNo(roomNo);
 		meetingRoomImg.setFileName(fileName);
 		meetingRoomImg.setOriginFileName(orginFileName);
 		meetingRoomImg.setFileType(fileType);

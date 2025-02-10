@@ -95,7 +95,9 @@
 
 
 	<div class="col-span-12 xl:col-span-9 ">
-
+		 <div class="xl:col-span-12 flex justify-end gap-2 mt-4">
+         		<a href="${pageContext.request.contextPath}/employeeList"><button type="button" class="btn border-green-500 text-green-500 bg-white btn hover:bg-green-100">목록</button></a>
+      	  </div>
           <!-- 직원 정보 -->
           <form action="${pageContext.request.contextPath}/employee/modifyEmployeSummary" method="post" id="modifyEmpSumForm" class="flex-1">
             <input type="hidden" name="sendEmpNo" value="${empInfo.empNo}">
@@ -197,7 +199,6 @@
         </div>
           </form>
          
-      
 	</div> 
           
           
