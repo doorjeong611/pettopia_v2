@@ -164,6 +164,64 @@ $(document).ready(function() {
 	                		<a href="${pageContext.request.contextPath}/sendTempPassword"> <span class="title-font text-slate-400 hover:text-slate-700 text-base">비밀번호 찾기</span></a>
                         </div>
                     </div>
+                    	
+                    <!-- 로그인 정보 버튼 -->
+				    <div class="text-end">
+				        <span id="loginInfoBtn" class="title-font text-custom-500 hover:text-custom-600 text-base" style="cursor:pointer;">
+				            로그인 정보
+				        </span>
+				    </div>
+				    
+				    <!-- 모달 창 -->
+				    <div class="title-font" id="loginModal" style="display:none; position:fixed; z-index:1; left:0; top:0; width:100%; height:100%; background-color: rgba(0, 0, 0, 0.4);">
+				        <div style="background-color: white; margin: 10% auto; border-radius: 10px; width: 80%; max-width: 500px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+				            <div class="p-3 bg-slate-100" style="border-top-left-radius: 12px; border-top-right-radius: 12px;">
+							    <span id="closeBtn" style="color:#aaa; font-size:28px; font-weight:bold; float:right; cursor:pointer;">&times;</span>
+							    <h3 class="p-1" style="margin-top: 0; color: #000;">로그인 계정 정보</h3>
+							</div>
+				            <div class="p-3 px-5">
+					            <div class="user-info p-3" id="user1" data-username="202300001" data-password="aaaa1234!">
+					                <p class="text-custom-500">1. 송혜교 (경영부서 / 조직경영팀 / 사장)</p>
+					                <p><span class="">사번</span> : <span>202300001</span></p> 
+					                <p><span class="">비밀번호</span> : aaaa1234!</p>
+					                <p class="text-slate-600" style="font-size: small; font-family: initial; font-weight: initial;">
+					                	* 모든 권한이 있는 사장 계정
+					                </p>
+					            </div>
+					            <hr>
+					            <div class="user-info p-3" id="user1" data-username="202500120" data-password="aaaa1234!">
+					                <p class="text-custom-500">2. 김지민 (인사부서 / 인사팀 / 부장)</p>
+					                <p><span class="">사번</span> : <span>202500120</span></p> 
+					                <p><span class="">비밀번호</span> : aaaa1234!</p>
+					                <p class="text-slate-600" style="font-size: small; font-family: initial; font-weight: initial;">
+					                	* 인사부, 팀장 권한이 있는 인사부 팀장 계정
+					                </p>
+					            </div>
+					            <hr>
+					            <div class="user-info p-3" id="user1" data-username="202500070" data-password="!pettopia1234">
+					                <p class="text-custom-500">3. 김채고 (영업부서 / 해외영업팀 / 부장)</p>
+					                <p><span class="">사번</span> : <span>202500070</span></p> 
+					                <p><span class="">비밀번호</span> : !pettopia1234</p>
+					                <p class="text-slate-600" style="font-size: small; font-family: initial; font-weight: initial;">
+					                	* 팀장 권한이 있는 계정
+					                </p>
+					            </div>
+					            <hr>
+					            <div class="user-info p-3" id="user1" data-username="202500138" data-password="!pettopia1234">
+					                <p class="text-custom-500">4. 박지훈 (법무부서 / 소송 및 분쟁 해결팀 / 사원)</p>
+					                <p><span class="">사번</span> : <span>202500138</span></p> 
+					                <p><span class="">비밀번호</span> : !pettopia1234</p>
+					                <p class="text-slate-600" style="font-size: small; font-family: initial; font-weight: initial;">
+					                	* 아무 권한이 없는 일반 사원 계정
+					                </p>
+					            </div>
+					            <hr>
+					            <div class="pt-3">
+					                <p class="text-red-500" style="font-size:small; font-family: initial; font-weight: initial;">* 클릭 시 해당 계정으로 로그인 할 수 있습니다.</p>
+					            </div>
+				            </div>
+				        </div>
+				    </div>
    
                 </form>
             </div>
@@ -233,6 +291,36 @@ $(document).ready(function() {
         }
     });
     
+    
+ // 로그인 정보 버튼 클릭 시 모달 열기
+    $('#loginInfoBtn').click(function() {
+        $('#loginModal').fadeIn(); // 모달 열기 (페이드 인 효과)
+    });
+
+    // 모달 닫기 버튼 클릭 시 모달 닫기
+    $('#closeBtn').click(function() {
+        $('#loginModal').fadeOut(); // 모달 닫기 (페이드 아웃 효과)
+    });
+
+    // 모달 밖을 클릭하면 모달 닫기
+    $(window).click(function(event) {
+        if ($(event.target).is('#loginModal')) {
+            $('#loginModal').fadeOut(); // 모달 닫기
+        }
+    });
+    
+ 	// 사용자 정보를 클릭하면 input 필드에 값 입력
+    $('.user-info').click(function() {
+        var username = $(this).data('username');
+        var password = $(this).data('password');
+
+        // 사번과 비밀번호를 input에 채워넣기
+        $('#username').val(username);
+        $('#password').val(password);
+
+        // 모달 닫기
+        $('#loginModal').fadeOut();
+    });
     
     
 });

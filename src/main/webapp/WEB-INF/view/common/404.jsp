@@ -12,15 +12,15 @@
     <meta content="Minimal Admin & Dashboard Template" name="description">
     <meta content="Themesdesign" name="author">
     <!-- App favicon -->
-    <link rel="shortcut icon" href="./assets/images/favicon.ico">
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/assets/images/favicon.ico">
     <!-- Layout config Js -->
-    <script src="assets/js/layout.js"></script>
+    <script src="${pageContext.request.contextPath}/assets/js/layout.js"></script>
     <!-- Icons CSS -->
     
     <!-- Tailwind CSS -->
     
 
-  <link rel="stylesheet" href="./assets/css/tailwind2.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/tailwind2.css">
 </head>
 
 <body class="flex items-center justify-center min-h-screen py-16 bg-cover bg-auth-pattern dark:bg-auth-pattern-dark font-public">
@@ -28,17 +28,17 @@
     <div class="mb-0 border-none shadow-none lg:w-[500px] card bg-white/70 dark:bg-zink-500/70">
         <div class="!px-10 !py-12 card-body">
             <a href="index">
-                <img src="./assets/images/logo-light.png" alt="" class="hidden h-6 mx-auto dark:block">
-                <img src="./assets/images/logo-dark.png" alt="" class="block h-6 mx-auto dark:hidden">
+                <img src="${pageContext.request.contextPath}/assets/images/logo-pettopia.png" alt="" class="block h-12 mx-auto dark:hidden">
             </a>
             
             <div class="mt-10">
-                <img src="./assets/images/error-404.png" alt="" class="h-64 mx-auto">
+                <img src="${pageContext.request.contextPath}/assets/images/error-404.png" alt="" class="h-64 mx-auto">
             </div>
             <div class="mt-8 text-center">
-                <h4 class="mb-2 text-purple-500">OPPS, PAGE NOT FOUND</h4>
-                <p class="mb-6 text-slate-500 dark:text-zink-200">It will be as straightforward as Occidental; in fact, it will be just like Occidental to an English speaker.</p>
-                <a href="${pageContext.request.contextPath}/common/petTopiaMain" class="text-white transition-all duration-200 ease-linear btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20"><i data-lucide="home" class="inline-block size-3 ltr:mr-1 rtl:ml-1"></i> <span class="align-middle">Back to Home</span></a>
+                <h4 class="mb-2 text-purple-500">접근 권한이 없습니다.</h4>
+                <p class="text-slate-500">이 페이지나 기능에 접근하기 위한 권한이 없습니다.</p>
+                <p class="mb-6 text-slate-500">관리자에게 문의하거나 권한을 요청해 주세요.</p>
+                <a href="${pageContext.request.contextPath}/common/petTopiaMain" class="text-white transition-all duration-200 ease-linear btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20"><i data-lucide="home" class="inline-block size-3 ltr:mr-1 rtl:ml-1"></i> <span class="align-middle">돌아가기</span></a>
             </div>
         </div>
     </div>
