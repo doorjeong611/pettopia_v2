@@ -34,7 +34,8 @@
 
 
 # 📚 데이터 베이스 구조
-<img src="https://github.com/user-attachments/assets/3e61b3b8-8a0b-4cf0-89df-cf5153af9f96"  width="700" height="600"/>
+<img src="https://github.com/user-attachments/assets/465928d6-d102-4adf-b7d6-7a9a30ae8d30"  width="700" height="600"/>
+
 
 # 🗂️ 주요 기능
 이 사이트는 전자상거래 통합 관리 플랫폼입니다. <br>
