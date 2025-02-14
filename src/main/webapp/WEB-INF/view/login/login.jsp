@@ -167,9 +167,11 @@ $(document).ready(function() {
                     	
                     <!-- 로그인 정보 버튼 -->
 				    <div class="text-end">
-				        <span id="loginInfoBtn" class="title-font text-custom-500 hover:text-custom-600 text-base" style="cursor:pointer;">
-				            로그인 정보
-				        </span>
+				       <button> 
+                            <span id="loginInfoBtn" class="title-font text-custom-500 hover:text-custom-600 text-base" style="cursor:pointer;">
+                                로그인 정보
+                            </span>
+                        </button>
 				    </div>
 				    
 				    <!-- 모달 창 -->
